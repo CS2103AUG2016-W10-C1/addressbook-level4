@@ -41,7 +41,7 @@ public class PersonCard extends UiPart{
 
     @FXML
     public void initialize() {
-        name.setText(person.getName().title);
+        name.setText(person.getTitle().title);
         id.setText(displayedIndex + ". ");
         deadline.setText(person.getDeadline().value);
         address.setText(person.getAddress().value);
