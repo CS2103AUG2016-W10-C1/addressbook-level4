@@ -154,21 +154,21 @@ public class LogicManagerTest {
         assertCommandBehavior(
                 "add Valid Title 12345 e/valid@email.butNoDeadlinePrefix a/valid, address", expectedMessage);
         assertCommandBehavior(
-                "add Valid Title p/12345 valid@email.butNoPrefix a/valid, address", expectedMessage);
+                "add Valid Title d/12345 valid@email.butNoPrefix a/valid, address", expectedMessage);
         assertCommandBehavior(
-                "add Valid Title p/12345 e/valid@email.butNoAddressPrefix valid, address", expectedMessage);
+                "add Valid Title d/12345 e/valid@email.butNoAddressPrefix valid, address", expectedMessage);
     }
 
     @Test
     public void execute_add_invalidPersonData() throws Exception {
         assertCommandBehavior(
-                "add []\\[;] p/12345 e/valid@e.mail a/valid, address", Title.MESSAGE_TITLE_CONSTRAINTS);
+                "add []\\[;] d/12345 e/valid@e.mail a/valid, address", Title.MESSAGE_TITLE_CONSTRAINTS);
         assertCommandBehavior(
-                "add Valid Title p/not_numbers e/valid@e.mail a/valid, address", Deadline.MESSAGE_DEADLINE_CONSTRAINTS);
+                "add Valid Title d/not_numbers e/valid@e.mail a/valid, address", Deadline.MESSAGE_DEADLINE_CONSTRAINTS);
         assertCommandBehavior(
-                "add Valid Title p/12345 e/notAnEmail a/valid, address", Email.MESSAGE_EMAIL_CONSTRAINTS);
+                "add Valid Title d/12345 e/notAnEmail a/valid, address", Email.MESSAGE_EMAIL_CONSTRAINTS);
         assertCommandBehavior(
-                "add Valid Title p/12345 e/valid@e.mail a/valid, address t/invalid_-[.tag", Tag.MESSAGE_TAG_CONSTRAINTS);
+                "add Valid Title d/12345 e/valid@e.mail a/valid, address t/invalid_-[.tag", Tag.MESSAGE_TAG_CONSTRAINTS);
 
     }
 
@@ -417,7 +417,7 @@ public class LogicManagerTest {
             cmd.append("add ");
 
             cmd.append(p.getName().toString());
-            cmd.append(" p/").append(p.getDeadline());
+            cmd.append(" d/").append(p.getDeadline());
             cmd.append(" e/").append(p.getEmail());
             cmd.append(" a/").append(p.getAddress());
 
