@@ -5,7 +5,7 @@ import seedu.taskman.model.tag.Tag;
 import seedu.taskman.model.tag.UniqueTagList;
 import seedu.taskman.model.task.ReadOnlyTask;
 import seedu.taskman.model.task.UniqueTaskList;
-import seedu.taskman.model.ReadOnlyAddressBook;
+import seedu.taskman.model.ReadOnlyTaskDiary;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * An Immutable AddressBook that is serializable to XML format
+ * An Immutable TaskDiary that is serializable to XML format
  */
-@XmlRootElement(name = "addressbook")
-public class XmlSerializableAddressBook implements ReadOnlyAddressBook {
+@XmlRootElement(name = "taskDiary")
+public class XmlSerializableTaskDiary implements ReadOnlyTaskDiary {
 
     @XmlElement
     private List<XmlAdaptedTask> tasks;
@@ -33,12 +33,12 @@ public class XmlSerializableAddressBook implements ReadOnlyAddressBook {
     /**
      * Empty constructor required for marshalling
      */
-    public XmlSerializableAddressBook() {}
+    public XmlSerializableTaskDiary() {}
 
     /**
      * Conversion
      */
-    public XmlSerializableAddressBook(ReadOnlyAddressBook src) {
+    public XmlSerializableTaskDiary(ReadOnlyTaskDiary src) {
         tasks.addAll(src.getTaskList().stream().map(XmlAdaptedTask::new).collect(Collectors.toList()));
         tags = src.getTagList();
     }

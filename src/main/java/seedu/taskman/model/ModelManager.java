@@ -8,73 +8,72 @@ import seedu.taskman.model.task.ReadOnlyTask;
 import seedu.taskman.model.task.Task;
 import seedu.taskman.model.task.UniqueTaskList;
 import seedu.taskman.model.task.UniqueTaskList.TaskNotFoundException;
-import seedu.taskman.commons.events.model.AddressBookChangedEvent;
+import seedu.taskman.commons.events.model.TaskDiaryChangedEvent;
 import seedu.taskman.commons.core.ComponentManager;
 
 import java.util.Set;
 import java.util.logging.Logger;
 
 /**
- * Represents the in-memory model of the address book data.
+ * Represents the in-memory model of the task diary data.
  * All changes to any model should be synchronized.
  */
 public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
-    private final AddressBook addressBook;
+    private final TaskDiary taskDiary;
     private final FilteredList<Task> filteredTasks;
 
     /**
-     * Initializes a ModelManager with the given AddressBook
-     * AddressBook and its variables should not be null
+     * Initializes a ModelManager with the given TaskDiary
+     * TaskDiary and its variables should not be null
      */
-    public ModelManager(AddressBook src, UserPrefs userPrefs) {
+    public ModelManager(TaskDiary src, UserPrefs userPrefs) {
         super();
         assert src != null;
         assert userPrefs != null;
 
-        logger.fine("Initializing with address book: " + src + " and user prefs " + userPrefs);
+        logger.fine("Initializing with Task Diary: " + src + " and user prefs " + userPrefs);
 
-        addressBook = new AddressBook(src);
-        filteredTasks = new FilteredList<>(addressBook.getTasks());
+        taskDiary = new TaskDiary(src);
+        filteredTasks = new FilteredList<>(taskDiary.getTasks());
     }
 
     public ModelManager() {
-        this(new AddressBook(), new UserPrefs());
+        this(new TaskDiary(), new UserPrefs());
     }
 
-    public ModelManager(ReadOnlyAddressBook initialData, UserPrefs userPrefs) {
-        addressBook = new AddressBook(initialData);
-        filteredTasks = new FilteredList<>(addressBook.getTasks());
-    }
-
-    @Override
-    public void resetData(ReadOnlyAddressBook newData) {
-        addressBook.resetData(newData);
-        indicateAddressBookChanged();
+    public ModelManager(ReadOnlyTaskDiary initialData, UserPrefs userPrefs) {
+        taskDiary = new TaskDiary(initialData);
+        filteredTasks = new FilteredList<>(taskDiary.getTasks());
     }
 
     @Override
-    public ReadOnlyAddressBook getAddressBook() {
-        return addressBook;
+    public void resetData(ReadOnlyTaskDiary newData) {
+        taskDiary.resetData(newData);
+        indicateTaskDiaryChanged();
+    }
+
+    public ReadOnlyTaskDiary getTaskDiary() {
+        return taskDiary;
     }
 
     /** Raises an event to indicate the model has changed */
-    private void indicateAddressBookChanged() {
-        raise(new AddressBookChangedEvent(addressBook));
+    private void indicateTaskDiaryChanged() {
+        raise(new TaskDiaryChangedEvent(taskDiary));
     }
 
     @Override
     public synchronized void deleteTask(ReadOnlyTask target) throws TaskNotFoundException {
-        addressBook.removeTask(target);
-        indicateAddressBookChanged();
+        taskDiary.removeTask(target);
+        indicateTaskDiaryChanged();
     }
 
     @Override
     public synchronized void addTask(Task task) throws UniqueTaskList.DuplicateTaskException {
-        addressBook.addTask(task);
+        taskDiary.addTask(task);
         updateFilteredListToShowAll();
-        indicateAddressBookChanged();
+        indicateTaskDiaryChanged();
     }
 
     //=========== Filtered Task List Accessors ===============================================================

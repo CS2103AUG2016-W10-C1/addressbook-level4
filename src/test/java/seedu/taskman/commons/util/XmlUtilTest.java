@@ -3,9 +3,9 @@ package seedu.taskman.commons.util;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import seedu.taskman.model.AddressBook;
-import seedu.taskman.storage.XmlSerializableAddressBook;
-import seedu.taskman.testutil.AddressBookBuilder;
+import seedu.taskman.model.TaskDiary;
+import seedu.taskman.storage.XmlSerializableTaskDiary;
+import seedu.taskman.testutil.TaskDiaryBuilder;
 import seedu.taskman.testutil.TestUtil;
 
 import javax.xml.bind.JAXBException;
@@ -19,8 +19,8 @@ public class XmlUtilTest {
     private static final String TEST_DATA_FOLDER = FileUtil.getPath("src/test/data/XmlUtilTest/");
     private static final File EMPTY_FILE = new File(TEST_DATA_FOLDER + "empty.xml");
     private static final File MISSING_FILE = new File(TEST_DATA_FOLDER + "missing.xml");
-    private static final File VALID_FILE = new File(TEST_DATA_FOLDER + "validAddressBook.xml");
-    private static final File TEMP_FILE = new File(TestUtil.getFilePathInSandboxFolder("tempAddressBook.xml"));
+    private static final File VALID_FILE = new File(TEST_DATA_FOLDER + "validTaskDiary.xml");
+    private static final File TEMP_FILE = new File(TestUtil.getFilePathInSandboxFolder("tempTaskDiary.xml"));
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -28,7 +28,7 @@ public class XmlUtilTest {
     @Test
     public void getDataFromFile_nullFile_AssertionError() throws Exception {
         thrown.expect(AssertionError.class);
-        XmlUtil.getDataFromFile(null, AddressBook.class);
+        XmlUtil.getDataFromFile(null, TaskDiary.class);
     }
 
     @Test
@@ -40,18 +40,18 @@ public class XmlUtilTest {
     @Test
     public void getDataFromFile_missingFile_FileNotFoundException() throws Exception {
         thrown.expect(FileNotFoundException.class);
-        XmlUtil.getDataFromFile(MISSING_FILE, AddressBook.class);
+        XmlUtil.getDataFromFile(MISSING_FILE, TaskDiary.class);
     }
 
     @Test
     public void getDataFromFile_emptyFile_DataFormatMismatchException() throws Exception {
         thrown.expect(JAXBException.class);
-        XmlUtil.getDataFromFile(EMPTY_FILE, AddressBook.class);
+        XmlUtil.getDataFromFile(EMPTY_FILE, TaskDiary.class);
     }
 
     @Test
     public void getDataFromFile_validFile_validResult() throws Exception {
-        XmlSerializableAddressBook dataFromFile = XmlUtil.getDataFromFile(VALID_FILE, XmlSerializableAddressBook.class);
+        XmlSerializableTaskDiary dataFromFile = XmlUtil.getDataFromFile(VALID_FILE, XmlSerializableTaskDiary.class);
         assertEquals(9, dataFromFile.getTaskList().size());
         assertEquals(0, dataFromFile.getTagList().size());
     }
@@ -59,7 +59,7 @@ public class XmlUtilTest {
     @Test
     public void saveDataToFile_nullFile_AssertionError() throws Exception {
         thrown.expect(AssertionError.class);
-        XmlUtil.saveDataToFile(null, new AddressBook());
+        XmlUtil.saveDataToFile(null, new TaskDiary());
     }
 
     @Test
@@ -71,23 +71,23 @@ public class XmlUtilTest {
     @Test
     public void saveDataToFile_missingFile_FileNotFoundException() throws Exception {
         thrown.expect(FileNotFoundException.class);
-        XmlUtil.saveDataToFile(MISSING_FILE, new AddressBook());
+        XmlUtil.saveDataToFile(MISSING_FILE, new TaskDiary());
     }
 
     @Test
     public void saveDataToFile_validFile_dataSaved() throws Exception {
         TEMP_FILE.createNewFile();
-        XmlSerializableAddressBook dataToWrite = new XmlSerializableAddressBook(new AddressBook());
+        XmlSerializableTaskDiary dataToWrite = new XmlSerializableTaskDiary(new TaskDiary());
         XmlUtil.saveDataToFile(TEMP_FILE, dataToWrite);
-        XmlSerializableAddressBook dataFromFile = XmlUtil.getDataFromFile(TEMP_FILE, XmlSerializableAddressBook.class);
-        assertEquals((new AddressBook(dataToWrite)).toString(),(new AddressBook(dataFromFile)).toString());
+        XmlSerializableTaskDiary dataFromFile = XmlUtil.getDataFromFile(TEMP_FILE, XmlSerializableTaskDiary.class);
+        assertEquals((new TaskDiary(dataToWrite)).toString(),(new TaskDiary(dataFromFile)).toString());
         //TODO: use equality instead of string comparisons
 
-        AddressBookBuilder builder = new AddressBookBuilder(new AddressBook());
-        dataToWrite = new XmlSerializableAddressBook(builder.withTask(TestUtil.generateSampleTaskData().get(0)).withTag("Friends").build());
+        TaskDiaryBuilder builder = new TaskDiaryBuilder(new TaskDiary());
+        dataToWrite = new XmlSerializableTaskDiary(builder.withTask(TestUtil.generateSampleTaskData().get(0)).withTag("Friends").build());
 
         XmlUtil.saveDataToFile(TEMP_FILE, dataToWrite);
-        dataFromFile = XmlUtil.getDataFromFile(TEMP_FILE, XmlSerializableAddressBook.class);
-        assertEquals((new AddressBook(dataToWrite)).toString(),(new AddressBook(dataFromFile)).toString());
+        dataFromFile = XmlUtil.getDataFromFile(TEMP_FILE, XmlSerializableTaskDiary.class);
+        assertEquals((new TaskDiary(dataToWrite)).toString(),(new TaskDiary(dataFromFile)).toString());
     }
 }

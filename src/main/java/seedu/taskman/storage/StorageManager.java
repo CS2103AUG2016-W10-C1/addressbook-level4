@@ -3,10 +3,10 @@ package seedu.taskman.storage;
 import com.google.common.eventbus.Subscribe;
 import seedu.taskman.commons.core.ComponentManager;
 import seedu.taskman.commons.core.LogsCenter;
-import seedu.taskman.commons.events.model.AddressBookChangedEvent;
+import seedu.taskman.commons.events.model.TaskDiaryChangedEvent;
 import seedu.taskman.commons.events.storage.DataSavingExceptionEvent;
 import seedu.taskman.commons.exceptions.DataConversionException;
-import seedu.taskman.model.ReadOnlyAddressBook;
+import seedu.taskman.model.ReadOnlyTaskDiary;
 import seedu.taskman.model.UserPrefs;
 
 import java.io.IOException;
@@ -14,23 +14,23 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
- * Manages storage of AddressBook data in local storage.
+ * Manages storage of TaskDiary data in local storage.
  */
 public class StorageManager extends ComponentManager implements Storage {
 
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
-    private AddressBookStorage addressBookStorage;
+    private TaskDiaryStorage taskDiaryStorage;
     private UserPrefsStorage userPrefsStorage;
 
 
-    public StorageManager(AddressBookStorage addressBookStorage, UserPrefsStorage userPrefsStorage) {
+    public StorageManager(TaskDiaryStorage taskDiaryStorage, UserPrefsStorage userPrefsStorage) {
         super();
-        this.addressBookStorage = addressBookStorage;
+        this.taskDiaryStorage = taskDiaryStorage;
         this.userPrefsStorage = userPrefsStorage;
     }
 
-    public StorageManager(String addressBookFilePath, String userPrefsFilePath) {
-        this(new XmlAddressBookStorage(addressBookFilePath), new JsonUserPrefsStorage(userPrefsFilePath));
+    public StorageManager(String taskDiaryFilePath, String userPrefsFilePath) {
+        this(new XmlTaskDiaryStorage(taskDiaryFilePath), new JsonUserPrefsStorage(userPrefsFilePath));
     }
 
     // ================ UserPrefs methods ==============================
@@ -46,42 +46,42 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
 
-    // ================ AddressBook methods ==============================
+    // ================ TaskDiary methods ==============================
 
     @Override
-    public String getAddressBookFilePath() {
-        return addressBookStorage.getAddressBookFilePath();
+    public String getTaskDiaryFilePath() {
+        return taskDiaryStorage.getTaskDiaryFilePath();
     }
 
     @Override
-    public Optional<ReadOnlyAddressBook> readAddressBook() throws DataConversionException, IOException {
-        return readAddressBook(addressBookStorage.getAddressBookFilePath());
+    public Optional<ReadOnlyTaskDiary> readTaskDiary() throws DataConversionException, IOException {
+        return readTaskDiary(taskDiaryStorage.getTaskDiaryFilePath());
     }
 
     @Override
-    public Optional<ReadOnlyAddressBook> readAddressBook(String filePath) throws DataConversionException, IOException {
+    public Optional<ReadOnlyTaskDiary> readTaskDiary(String filePath) throws DataConversionException, IOException {
         logger.fine("Attempting to read data from file: " + filePath);
-        return addressBookStorage.readAddressBook(filePath);
+        return taskDiaryStorage.readTaskDiary(filePath);
     }
 
     @Override
-    public void saveAddressBook(ReadOnlyAddressBook addressBook) throws IOException {
-        saveAddressBook(addressBook, addressBookStorage.getAddressBookFilePath());
+    public void saveTaskDiary(ReadOnlyTaskDiary taskDiary) throws IOException {
+        saveTaskDiary(taskDiary, taskDiaryStorage.getTaskDiaryFilePath());
     }
 
     @Override
-    public void saveAddressBook(ReadOnlyAddressBook addressBook, String filePath) throws IOException {
+    public void saveTaskDiary(ReadOnlyTaskDiary taskDiary, String filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
-        addressBookStorage.saveAddressBook(addressBook, filePath);
+        taskDiaryStorage.saveTaskDiary(taskDiary, filePath);
     }
 
 
     @Override
     @Subscribe
-    public void handleAddressBookChangedEvent(AddressBookChangedEvent event) {
+    public void handleTaskDiaryChangedEvent(TaskDiaryChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Local data changed, saving to file"));
         try {
-            saveAddressBook(event.data);
+            saveTaskDiary(event.data);
         } catch (IOException e) {
             raise(new DataSavingExceptionEvent(e));
         }

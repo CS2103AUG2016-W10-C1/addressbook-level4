@@ -5,10 +5,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import seedu.taskman.commons.events.model.AddressBookChangedEvent;
+import seedu.taskman.commons.events.model.TaskDiaryChangedEvent;
 import seedu.taskman.commons.events.storage.DataSavingExceptionEvent;
-import seedu.taskman.model.AddressBook;
-import seedu.taskman.model.ReadOnlyAddressBook;
+import seedu.taskman.model.TaskDiary;
+import seedu.taskman.model.ReadOnlyTaskDiary;
 import seedu.taskman.model.UserPrefs;
 import seedu.taskman.testutil.TypicalTestTasks;
 import seedu.taskman.testutil.EventsCollector;
@@ -54,25 +54,25 @@ public class StorageManagerTest {
     }
 
     @Test
-    public void addressBookReadSave() throws Exception {
-        AddressBook original = new TypicalTestTasks().getTypicalAddressBook();
-        storageManager.saveAddressBook(original);
-        ReadOnlyAddressBook retrieved = storageManager.readAddressBook().get();
-        assertEquals(original, new AddressBook(retrieved));
-        //More extensive testing of AddressBook saving/reading is done in XmlAddressBookStorageTest
+    public void taskDiaryReadSave() throws Exception {
+        TaskDiary original = new TypicalTestTasks().getTypicalTaskDiary();
+        storageManager.saveTaskDiary(original);
+        ReadOnlyTaskDiary retrieved = storageManager.readTaskDiary().get();
+        assertEquals(original, new TaskDiary(retrieved));
+        //More extensive testing of TaskDiary saving/reading is done in XmlTaskDiaryStorageTest
     }
 
     @Test
-    public void getAddressBookFilePath(){
-        assertNotNull(storageManager.getAddressBookFilePath());
+    public void getTaskDiaryFilePath(){
+        assertNotNull(storageManager.getTaskDiaryFilePath());
     }
 
     @Test
-    public void handleAddressBookChangedEvent_exceptionThrown_eventRaised() throws IOException {
+    public void handleTaskDiaryChangedEvent_exceptionThrown_eventRaised() throws IOException {
         //Create a StorageManager while injecting a stub that throws an exception when the save method is called
-        Storage storage = new StorageManager(new XmlAddressBookStorageExceptionThrowingStub("dummy"), new JsonUserPrefsStorage("dummy"));
+        Storage storage = new StorageManager(new XmlTaskDiaryStorageExceptionThrowingStub("dummy"), new JsonUserPrefsStorage("dummy"));
         EventsCollector eventCollector = new EventsCollector();
-        storage.handleAddressBookChangedEvent(new AddressBookChangedEvent(new AddressBook()));
+        storage.handleTaskDiaryChangedEvent(new TaskDiaryChangedEvent(new TaskDiary()));
         assertTrue(eventCollector.get(0) instanceof DataSavingExceptionEvent);
     }
 
@@ -80,14 +80,14 @@ public class StorageManagerTest {
     /**
      * A Stub class to throw an exception when the save method is called
      */
-    class XmlAddressBookStorageExceptionThrowingStub extends XmlAddressBookStorage{
+    class XmlTaskDiaryStorageExceptionThrowingStub extends XmlTaskDiaryStorage {
 
-        public XmlAddressBookStorageExceptionThrowingStub(String filePath) {
+        public XmlTaskDiaryStorageExceptionThrowingStub(String filePath) {
             super(filePath);
         }
 
         @Override
-        public void saveAddressBook(ReadOnlyAddressBook addressBook, String filePath) throws IOException {
+        public void saveTaskDiary(ReadOnlyTaskDiary taskDiary, String filePath) throws IOException {
             throw new IOException("dummy exception");
         }
     }

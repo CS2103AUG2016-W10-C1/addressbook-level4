@@ -1,9 +1,9 @@
 package seedu.taskman.storage;
 
-import seedu.taskman.commons.events.model.AddressBookChangedEvent;
+import seedu.taskman.commons.events.model.TaskDiaryChangedEvent;
 import seedu.taskman.commons.events.storage.DataSavingExceptionEvent;
 import seedu.taskman.commons.exceptions.DataConversionException;
-import seedu.taskman.model.ReadOnlyAddressBook;
+import seedu.taskman.model.ReadOnlyTaskDiary;
 import seedu.taskman.model.UserPrefs;
 
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * API of the Storage component
  */
-public interface Storage extends AddressBookStorage, UserPrefsStorage {
+public interface Storage extends TaskDiaryStorage, UserPrefsStorage {
 
     @Override
     Optional<UserPrefs> readUserPrefs() throws DataConversionException, IOException;
@@ -21,18 +21,18 @@ public interface Storage extends AddressBookStorage, UserPrefsStorage {
     void saveUserPrefs(UserPrefs userPrefs) throws IOException;
 
     @Override
-    String getAddressBookFilePath();
+    String getTaskDiaryFilePath();
 
     @Override
-    Optional<ReadOnlyAddressBook> readAddressBook() throws DataConversionException, IOException;
+    Optional<ReadOnlyTaskDiary> readTaskDiary() throws DataConversionException, IOException;
 
     @Override
-    void saveAddressBook(ReadOnlyAddressBook addressBook) throws IOException;
+    void saveTaskDiary(ReadOnlyTaskDiary taskDiary) throws IOException;
 
     /**
-     * Saves the current version of the Address Book to the hard disk.
+     * Saves the current version of the Task diary to the hard disk.
      *   Creates the data file if it is missing.
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
      */
-    void handleAddressBookChangedEvent(AddressBookChangedEvent abce);
+    void handleTaskDiaryChangedEvent(TaskDiaryChangedEvent abce);
 }

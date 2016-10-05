@@ -11,10 +11,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Wraps all data at the address-book level
+ * Wraps all data at the task-diary level
  * Duplicates are not allowed (by .equals comparison)
  */
-public class AddressBook implements ReadOnlyAddressBook {
+public class TaskDiary implements ReadOnlyTaskDiary {
 
     private final UniqueTaskList tasks;
     private final UniqueTagList tags;
@@ -24,24 +24,24 @@ public class AddressBook implements ReadOnlyAddressBook {
         tags = new UniqueTagList();
     }
 
-    public AddressBook() {}
+    public TaskDiary() {}
 
     /**
-     * Tasks and Tags are copied into this addressbook
+     * Tasks and Tags are copied into this taskDiary
      */
-    public AddressBook(ReadOnlyAddressBook toBeCopied) {
+    public TaskDiary(ReadOnlyTaskDiary toBeCopied) {
         this(toBeCopied.getUniqueTaskList(), toBeCopied.getUniqueTagList());
     }
 
     /**
-     * Tasks and Tags are copied into this addressbook
+     * Tasks and Tags are copied into this taskDiary
      */
-    public AddressBook(UniqueTaskList tasks, UniqueTagList tags) {
+    public TaskDiary(UniqueTaskList tasks, UniqueTagList tags) {
         resetData(tasks.getInternalList(), tags.getInternalList());
     }
 
-    public static ReadOnlyAddressBook getEmptyAddressBook() {
-        return new AddressBook();
+    public static ReadOnlyTaskDiary getEmptyTaskDiary() {
+        return new TaskDiary();
     }
 
 //// list overwrite operations
@@ -63,14 +63,14 @@ public class AddressBook implements ReadOnlyAddressBook {
         setTags(newTags);
     }
 
-    public void resetData(ReadOnlyAddressBook newData) {
+    public void resetData(ReadOnlyTaskDiary newData) {
         resetData(newData.getTaskList(), newData.getTagList());
     }
 
 //// task-level operations
 
     /**
-     * Adds a task to the address book.
+     * Adds a task to the task diary.
      * Also checks the new task's tags and updates {@link #tags} with any new tags found,
      * and updates the Tag objects in the task to point to those in {@link #tags}.
      *
@@ -150,9 +150,9 @@ public class AddressBook implements ReadOnlyAddressBook {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof AddressBook // instanceof handles nulls
-                && this.tasks.equals(((AddressBook) other).tasks)
-                && this.tags.equals(((AddressBook) other).tags));
+                || (other instanceof TaskDiary // instanceof handles nulls
+                && this.tasks.equals(((TaskDiary) other).tasks)
+                && this.tags.equals(((TaskDiary) other).tags));
     }
 
     @Override
