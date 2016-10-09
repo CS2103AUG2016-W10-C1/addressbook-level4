@@ -26,11 +26,11 @@ public class Parser {
     private static final Pattern KEYWORDS_ARGS_FORMAT =
             Pattern.compile("(?<keywords>\\S+(?:\\s+\\S+)*)"); // one or more keywords separated by whitespace
 
-    private static final Pattern PERSON_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
+    private static final Pattern TASK_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("(?<title>[^/]+)"
-                    + " (?<isDeadlinePrivate>p?)d/(?<deadline>[^/]+)"
-                    + " (?<isEmailPrivate>p?)e/(?<email>[^/]+)"
-                    + " (?<isAddressPrivate>p?)a/(?<address>[^/]+)"
+                    + " d/(?<deadline>[^/]+)"
+                    + " f/(?<frequency>[^/]+)"
+                    + " s/(?<schedule>[^/]+)"
                     + "(?<tagArguments>(?: t/[^/]+)*)"); // variable number of tags
 
     public Parser() {}
@@ -84,7 +84,7 @@ public class Parser {
      * @return the prepared command
      */
     private Command prepareAdd(String args){
-        final Matcher matcher = PERSON_DATA_ARGS_FORMAT.matcher(args.trim());
+        final Matcher matcher = TASK_DATA_ARGS_FORMAT.matcher(args.trim());
         // Validate arg string format
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
@@ -93,8 +93,7 @@ public class Parser {
             return new AddCommand(
                     matcher.group("title"),
                     matcher.group("deadline"),
-                    matcher.group("status"),
-                    matcher.group("readOnlyTask"),
+                    matcher.group("frequency"),
                     matcher.group("schedule"),
                     getTagsFromArgs(matcher.group("tagArguments"))
             );

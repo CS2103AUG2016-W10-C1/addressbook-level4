@@ -26,7 +26,7 @@ public class AddCommandTest extends TaskManGuiTest {
 
         //add duplicate task
         commandBox.runCommand(td.taskCS2102.getAddCommand());
-        assertResultMessage(AddCommand.MESSAGE_DUPLICATE_PERSON);
+        assertResultMessage(AddCommand.MESSAGE_DUPLICATE_EVENT);
         assertTrue(taskListPanel.isListMatching(currentList));
 
         //add to empty list
