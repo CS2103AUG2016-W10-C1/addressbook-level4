@@ -18,8 +18,8 @@ public class Task extends Event implements ReadOnlyTask {
     private Status status;
 
     public Task(@Nonnull Title title, @Nonnull UniqueTagList tags,
-                @Nullable Deadline deadline, @Nullable Frequency frequency,
-                @Nullable Schedule schedule) {
+                @Nullable Deadline deadline, @Nullable Schedule schedule,
+                @Nullable Frequency frequency) {
         super(title, tags, frequency, schedule);
         this.deadline = deadline;
         this.status = new Status("");
@@ -30,7 +30,7 @@ public class Task extends Event implements ReadOnlyTask {
      */
     public Task(@Nonnull ReadOnlyTask source) {
         this(source.getTitle(), source.getTags(), source.getDeadline().orElse(null),
-                source.getFrequency().orElse(null), source.getSchedule().orElse(null));
+        		source.getSchedule().orElse(null), source.getFrequency().orElse(null));
         setStatus(source.getStatus());
     }
 
@@ -45,8 +45,8 @@ public class Task extends Event implements ReadOnlyTask {
     }
 
     @Override
-	public Status getStatus() {
-		return status;
+	public Optional<Schedule> getSchedule() {
+        return super.getSchedule();
 	}
 
 	@Override
@@ -55,10 +55,10 @@ public class Task extends Event implements ReadOnlyTask {
 	}
 
 	@Override
-	public Optional<Schedule> getSchedule() {
-        return super.getSchedule();
+	public Status getStatus() {
+		return status;
 	}
-    
+
     @Override
     public UniqueTagList getTags() {
         return super.getTags();
@@ -92,9 +92,9 @@ public class Task extends Event implements ReadOnlyTask {
         return Objects.hash(
                 super.getTitle(),
                 deadline,
+                super.getSchedule(),
                 status,
                 super.getFrequency(),
-                super.getSchedule(),
                 super.getTags()
         );
     }
