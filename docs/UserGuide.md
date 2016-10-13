@@ -115,9 +115,9 @@ Command Format: `list [{e/, all/}] [KEYWORD]... [t/TAG]... `
     e.g. `CS3244` will match `CS3244 Homework`, a task with tags `t/CS2103T` and `t/hw` will match a search for `t/hw`
 
 Examples:
-* `find CS2103T`<br>
+* `list CS2103T`<br>
   Returns Tasks with `CS2103T` in their titles
-* `find CS2101 CS3230 CS2103T t/hw`<br>
+* `list CS2101 CS3230 CS2103T t/hw`<br>
   Returns any task or event having titles `CS2101`, `CS3230`, or `CS2103T` or tag `hw`
 
 #### Completing a Task: `complete`
@@ -161,8 +161,9 @@ Examples:
   Deletes the 2nd task in TaskMan.
 * `list CS2101`<br>
   `delete list`<br>
-  Deletes all of the tasks in the result(s) of the `find` command.
+  Deletes all of the tasks in the result(s) of the `list` command.
 
+<!--
 #### Select a task: `select`
 Selects the task identified by the index number used in the last task listing.<br>
 Command Format: `select INDEX`
@@ -175,9 +176,10 @@ Examples:
 * `list`<br>
   `select 2`<br>
   Selects the 2nd task in TaskMan.
-* `find CS2101`<br>
+* `list CS2101`<br>
   `select 1`<br>
-  Selects the 1st task in the results of the `find` command.
+  Selects the 1st task in the results of the `list` command.
+-->
 
 #### Showing all tags: `tag`
 Shows all tags used by the user<br>
@@ -192,17 +194,17 @@ Adds tags to the specified task from TaskMan<br>
 Command Format: `tag INDEX [t/TAG]...`
 
 Examples:
-* `find CS2103T`
+* `list CS2103T`
   `tag 1 t/V0.1`<br>
-  Tags the first task in the result(s) of `find CS2103T` with the tag V0.1.
+  Tags the first task in the result(s) of `list CS2103T` with the tag V0.1.
 
 #### Removing tags from Tasks: `untag`
 Removes tags from the specified task from TaskMan
 Command Format: `untag INDEX [t/TAG]...` or `untag all`
 Examples:
-* `find CS2103T`
+* `list CS2103T`
   `untag 1 t/V0.1`<br>
-  Untags the tag V0.1 from the first task in the result(s) of `find CS2103T`.
+  Untags the tag V0.1 from the first task in the result(s) of `list CS2103T`.
 * `list`
   `untag 1 all`<br>
   Untags all tags from the the first task in list result(s).
