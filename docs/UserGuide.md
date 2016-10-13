@@ -9,10 +9,11 @@
 * [Command Summary](#command-summary)
 
 
-##About
-TaskMan is a task management application that aims to simplify the way you work with your tasks and events. It is a Java desktop application that can work offline, without requiring Internet connection. 
+## About
+TaskMan is a task management application that aims to ease the way you record and search through your tasks and events. It is a desktop application which stores data locally. TaskMan is specifically designed for users who favour working entirely from the keyboard. Instead of navigating through the application with mouse clicks, you simply need to type the right keywords to invoke the necessary commands.
 
-It uses a simple graphical user interface to display your events and tasks. Instead of trying to find and click buttons all over the screen, you just need to type through your keyboard to give the necessary commands, and TaskMan will do the rest for you. 
+This guide will get you started in just a few steps. It also has detailed 'how to' instructions on each feature of the application and a command summary which can be referred to anytime.
+
 
 ## Quick Start
 
@@ -29,9 +30,9 @@ It uses a simple graphical user interface to display your events and tasks. Inst
    e.g. typing **`help`** and pressing <kbd>Enter</kbd> will open the help window.
 5. Some example commands you can try:
    * **`list`**: lists all tasks
-   * **`add`**` CS2103T Tutorial d/wed 0959 start/tue 2359 end/wed 4am` :
-     adds a task titled `CS2103T Tutorial` to TaskMan
-   * **`delete`**` 3`: deletes the 3rd task shown in the current list
+   * **`add`**` eat vitamins s/fri 1400 for 5 minutes f/2 days t/ribena` :
+     adds a task titled `eat vitamins` to TaskMan
+   * **`delete`**` 3`: deletes the third task shown in the current list
    * **`exit`**: exits the app
 6. Refer to the [Features](#features) section below for details of each command.<br>
 
@@ -50,34 +51,38 @@ Command Format: `help`
 
 > Help is also shown if you enter an incorrect command e.g. `abcd`
  
-#### Adding a task: `add`
+#### Adding a task: `add t`
 Adds a task to TaskMan<br>
 Command Format: `add TITLE [d/DEADLINE] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
 
 Parameter | Format
 -------- | :-------- 
-`SCHEDULE` | `DATETIME`, `DATETIME to DATETIME` or `DATETIME for X{hr/d/wk/mth/yr}` where X is a number (non-negative integer or decimal) and h is hour, d is day, w is week. Event is taken to be 1 hour long if not specified. 
-`DEADLINE` and `DATETIME` | `[this/next] ddd [hhmm]` (more flexibility will be expected in later versions)
-`FREQUENCY` | `X{hr/d/wk/mth/yr}` where X is a natural number, hr is hour, d is day, wk is week, mth is month, and yr is year.
+`SCHEDULE` | `DATETIME`, `DATETIME to DATETIME` or `DATETIME for DURATION` 
+`DEADLINE` and `DATETIME` | `[this/next] ddd [hhmm]`
+`DURATION` | `<number> <unit of time>`
+`FREQUENCY` | See `DURATION`
 
-The `SCHEDULE` represents the period of time the task is scheduled to be worked on. The presence of just `c/` will mark the task as completed.
+The `SCHEDULE` represents the period of time the task is scheduled to be worked on.
 
 > Tasks can have any number of tags. Tags may contain spaces and are case-insensitive (i.e. tags "school", "School", and "SCHOOL" are the same tags).
 
 Examples:
-* `add CS2103T Pre-Tutorial Work d/wed 0959 s/tue 2359 to wed 4am`
-* `add CS2101 HW d/next mon 1159 t/CS2101 t/V0.0`
-* `add Take a shower d/thu 0200 s/thu 0200 to fri 0030 f/1d t/Life`
+* `add learn driving`
+* `add cs2101 homework d/next mon 1200`
+* `add cs3244 revision s/tue 0000 to tue 0200`
+* `add cs2103t tutorial t/java`
+* `add eat vitamins s/fri 1400 for 5 minutes f/2 days t/ribena`
+* `add backup server s/mon 0800 for 2 hours f/3 months`
 
-#### Adding an event: 'add e'
-Adds a task to TaskMan<br>
+#### Adding an event: `add e`
+Adds an event to TaskMan<br>
 Command Format: `add e TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
 
 Parameter | Format
 -------- | :-------- 
-`SCHEDULE` | `DATETIME`, `DATETIME to DATETIME` or `DATETIME for X{hr/d/wk/mth/yr}` where X is a number (non-negative integer or decimal) and h is hour, d is day, w is week. Event is taken to be 1 hour long if not specified. 
-`DATETIME` | `[this/next] ddd [hhmm]` (more flexibility will be expected in later versions)
-`FREQUENCY` | `X{hr/d/wk/mth/yr}` where X is a natural number, hr is hour, d is day, wk is week, mth is month, and yr is year.
+`SCHEDULE` | `DATETIME`, `DATETIME to DATETIME` or `DATETIME for DURATION`
+`DURATION` | `<number> <unit of time>`
+`FREQUENCY` | See `DURATION`
 
 The `SCHEDULE` represents the period of time which the event is occurring.
 
@@ -87,24 +92,23 @@ Examples:
 * `add CS2103T Lecture s/fri 1400 to fri 1600 f/1wk t/CS2103T`
 * `add Project Meeting s/mon 1400 to mon 1400 t/CS2101 t/Lunch Time`
 
-####Changing the View: `view`
+#### Changing the View: `view`
 Shows a different view based on the parameters entered.<br>
 Command Format: view [{more/less/cal/day}]
+
 Examples:
 * `view more`<br>
-Show more details in the list
+Shows more details in the list
 * `view less`<br>
-Show less details in the list
+Shows less details in the list
 * `view cal`<br>
 Shows a GUI calendar in for the specified month
 * `view day`<br>
 Shows a detailed view of the entire day, inclusive of tasks and vacant timeblocks 
 
-
 #### Listing all tasks: `list`
 Shows a list of all tasks or events, depending on the view, whose titles contain any of the given keywords or contains any given tags.<br>
 Command Format: `list [{e/, all/}] [KEYWORD]... [t/TAG]... `
-
 
 > * The list returns tasks only by default. Lists with `e/` returns events only while lists with `all/` returns both tasks and events.
 > * The search is case-insensitive. e.g `cs3244` will match `CS3244`
@@ -115,9 +119,9 @@ Command Format: `list [{e/, all/}] [KEYWORD]... [t/TAG]... `
     e.g. `CS3244` will match `CS3244 Homework`, a task with tags `t/CS2103T` and `t/hw` will match a search for `t/hw`
 
 Examples:
-* `find CS2103T`<br>
+* `list CS2103T`<br>
   Returns Tasks with `CS2103T` in their titles
-* `find CS2101 CS3230 CS2103T t/hw`<br>
+* `list CS2101 CS3230 CS2103T t/hw`<br>
   Returns any task or event having titles `CS2101`, `CS3230`, or `CS2103T` or tag `hw`
 
 #### Completing a Task: `complete`
@@ -133,22 +137,22 @@ Command Format: `edit INDEX TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
 
 Parameter | Format
 -------- | :-------- 
-`SCHEDULE` | `DATETIME`, `DATETIME to DATETIME` (or `DATETIME for X{hr/d/wk/mth/yr}` in later versions) where X is a number (non-negative integer or decimal) and h is hour, d is day, w is week. Event is taken to be 1 hour long if not specified. 
-`DATETIME` | `[this/next] ddd [hhmm]` (more flexibility will be expected in later versions)
+`SCHEDULE` | `DATETIME`, `DATETIME to DATETIME` or `DATETIME for DURATION` 
+`DEADLINE` and `DATETIME` | `[this/next] ddd [hhmm]`
+`DURATION` | `<number> <unit of time>`
+`FREQUENCY` | See `DURATION`
 `STATUS` | `y/n` where y denotes complete and n denotes incomplete
-`FREQUENCY` | `X{hr/d/wk/mth/yr}` where X is a natural number, hr is hour, d is day, wk is week, mth is month, and yr is year.
-
 
 Fields which are not present are assumed to stay unchanged. By adding tags, previous tags are removed and the new tags are added to the task/event.
 
 Examples:
 * `list`<br>
   `edit 1 CS2103T Tutorial s/mon 2200 to tue 0200`<br>
-  Changes title of the 1st task/event to `CS2103T Tutorial` and the schedule to `mon 2200 to tue 0200`
+  Changes title of the first task/event to `CS2103T Tutorial` and the schedule to `mon 2200 to tue 0200`
 * `edit CS2101 Tutorial d/thu 1159`
 
 #### Deleting a task: `delete`
-Deletes the specified task from TaskMan. Irreversible.<br>
+Deletes the specified task from TaskMan. <!-- Irreversible. But we can undo, LOL. --><br>
 Command Format: `delete INDEX` or `delete list`
 
 > Deletes the task at the specified `INDEX` or `list`.
@@ -158,11 +162,12 @@ Command Format: `delete INDEX` or `delete list`
 Examples:
 * `list`<br>
   `delete 2`<br>
-  Deletes the 2nd task in TaskMan.
+  Deletes the second task in the TaskMan display.
 * `list CS2101`<br>
   `delete list`<br>
-  Deletes all of the tasks in the result(s) of the `find` command.
+  Deletes all of the tasks in the result(s) of the `list` command.
 
+<!--
 #### Select a task: `select`
 Selects the task identified by the index number used in the last task listing.<br>
 Command Format: `select INDEX`
@@ -174,10 +179,11 @@ Command Format: `select INDEX`
 Examples:
 * `list`<br>
   `select 2`<br>
-  Selects the 2nd task in TaskMan.
-* `find CS2101`<br>
+  Selects the second task in TaskMan.
+* `list CS2101`<br>
   `select 1`<br>
-  Selects the 1st task in the results of the `find` command.
+  Selects the first task in the results of the `list` command.
+-->
 
 #### Showing all tags: `tag`
 Shows all tags used by the user<br>
@@ -185,24 +191,24 @@ Command Format: `tag list`
 
 Examples:
 * `tag list`<br>
-  Outputs: V0.1  V0.2  V0.3  Apple  Pear  Orange
+  Outputs: Pen Pineapple Apple P3n
 
 #### Adding tags to tasks: `tag`
 Adds tags to the specified task from TaskMan<br>
 Command Format: `tag INDEX [t/TAG]...`
 
 Examples:
-* `find CS2103T`
+* `list CS2103T`
   `tag 1 t/V0.1`<br>
-  Tags the first task in the result(s) of `find CS2103T` with the tag V0.1.
+  Tags the first task in the result(s) of `list CS2103T` with the tag V0.1.
 
 #### Removing tags from Tasks: `untag`
 Removes tags from the specified task from TaskMan
 Command Format: `untag INDEX [t/TAG]...` or `untag all`
 Examples:
-* `find CS2103T`
+* `list CS2103T`
   `untag 1 t/V0.1`<br>
-  Untags the tag V0.1 from the first task in the result(s) of `find CS2103T`.
+  Untags the tag V0.1 from the first task in the result(s) of `list CS2103T`.
 * `list`
   `untag 1 all`<br>
   Untags all tags from the the first task in list result(s).
@@ -219,27 +225,30 @@ Examples:
 Sorts the recent listing of tasks according to the specified attribute. Default sort order is ascending.<br>
 Command Format: `sort ATTRIBUTE` [desc]
 
-`ATTRIBUTE` can be either `TITLE`, `DEADLINE`, `START`, or `END`.
+`ATTRIBUTE` can be any of the fields seen in `add`.
 
 Examples:
-* sort start desc
+* sort title desc
+* sort deadline
+* sort schedule
+* sort frequency desc
 
 #### Viewing command history: `history`
-List the latest 10 commands **which have made changes to the data** in reverse chronological order.<br>
+List the 10 most recently executed commands **which have made changes to the data** in reverse chronological order.<br>
 Command Format: `history`
 
 #### Undoing commands: `undo`
-Undo the last X commands in the command history. Irreversible. The command history stores a maximum of the 10 latest commands **which have made changes to the data**.<br>
+Undo the X most recently executed commands in the command history. Irreversible. The command history stores a maximum of the 10 most recently executed commands **which have made changes to the data**.<br>
 Command Format: `undo [number]` or `undo all`
 
 Examples:
 * `undo`<br>
-  Undo the latest command in TaskMan.
+  Undo the most recently executed command in TaskMan.
 * `undo 2`<br>
   `undo 3`<br>
-  Undo the latest 5 commands in TaskMan.
+  Undo the 5 most recently executed commands in TaskMan.
 * `undo all`<br>
-  Undo the latest 10 commands in Taskman.
+  Undo the 10 most recently executed commands in Taskman.
 
 <!--
 #### Clearing all entries: `clear`
