@@ -18,9 +18,9 @@ public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
-    // kiv: let parameters be objects. we can easily generate the usage in that case
-    // todo: update message
-    // UG/DG
+    // KIV: Let parameters be objects. We can easily generate the usage in that case.
+    // TODO: Update message. I'm so confused about the order of the arguments urgh...
+    // UG/DG (what is this for?)
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits an existing task. "
             + "Parameters: INDEX [TITLE] [d/DEADLINE] [c/STATUS] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...\n"
             + "Example: " + COMMAND_WORD
@@ -29,7 +29,7 @@ public class EditCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Task updated: %1$s";
     public static final String MESSAGE_DUPLICATE_TASK = "A task with the same name already exists in TaskMan";
 
-    private final ArgumentContainer argsContainer;
+    protected final ArgumentContainer argsContainer;
     private Activity beforeEdit;
     private Activity afterEdit;
     private Activity.ActivityType activityType;
@@ -119,14 +119,14 @@ public class EditCommand extends Command {
         }
     }
 
-    private static class ArgumentContainer {
+    protected static class ArgumentContainer {
         public final int targetIndex;
-        public final String title;
-        public final String deadline;
-        public final String status;
-        public final String schedule;
-        public final String frequency;
-        public final Set<String> tags;
+        public String title;
+        public String deadline;
+        public String status;
+        public String schedule;
+        public String frequency;
+        public Set<String> tags;
 
         public ArgumentContainer(int targetIndex, String title, String deadline, String status, String schedule, String frequency, Set<String> tags) {
             this.targetIndex = targetIndex;
