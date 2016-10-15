@@ -9,7 +9,7 @@ import seedu.taskman.model.event.*;
  */
 public class TypicalTestTasks {
 
-    public static TestTask taskCS2101, taskCS2103T, taskCS2309, taskCS3244, taskCS2105, taskCS2106, taskCS2107, taskCS2102, taskCS2104;
+    public TestTask taskCS2101, taskCS2103T, taskCS2309, taskCS3244, taskCS2105, taskCS2106, taskCS2107, taskCS2102, taskCS2104;
 
     public TypicalTestTasks() {
         try {
@@ -30,7 +30,7 @@ public class TypicalTestTasks {
         }
     }
 
-    public static void loadTaskManWithSampleData(TaskMan ab) {
+    public void loadTaskManWithSampleData(TaskMan ab) {
 
         try {
             ab.addTask(new Task(taskCS2101));
