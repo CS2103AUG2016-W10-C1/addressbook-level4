@@ -12,13 +12,12 @@ import java.time.Instant;
 public class Frequency {
     public static final String MESSAGE_FREQUENCY_CONSTRAINTS =
             "Task frequency should only contain frequency and unit of time in the format: ";
-    // TODO: What is this differed thing?
     // differed: swap to multiple duration format
     public static final String FREQUENCY_VALIDATION_REGEX = "^" + DateTimeParser.SINGLE_DURATION + "$";
     public static final int MULTIPLIER_TIME_UNIX_TO_JAVA = 1000;
 
     public final Long seconds;
-    public final PrettyTime p = new PrettyTime();
+    public final PrettyTime prettyTimeFormatter = new PrettyTime();
 
     public Frequency(String frequency) throws IllegalValueException {
         assert frequency != null;
@@ -41,7 +40,7 @@ public class Frequency {
     @Override
     public String toString() {
     	// TODO: Verify if it is "exactly 1 year instead of 360 days"
-        return p.format(new Date(seconds * MULTIPLIER_TIME_UNIX_TO_JAVA));
+        return prettyTimeFormatter.format(new Date(seconds * MULTIPLIER_TIME_UNIX_TO_JAVA));
     }
 
     @Override
