@@ -14,7 +14,6 @@ import static seedu.taskman.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 
 /**
  * Parses user input.
- * // todo: rename to CommandParser when refactoring
  */
 public class CommandParser {
 
