@@ -65,16 +65,27 @@ public class Schedule {
                 String duration = matcher.group(3).trim();
                 endEpochSecond = DateTimeParser.durationToUnixTime(startEpochSecond, duration);
             } else {
-                String end = matcher.group(3).trim();
-                endEpochSecond = DateTimeParser.getUnixTime(end, ERROR_BAD_END_DATETIME);
+                String endString = matcher.group(3).trim();
+                long endEpochCandidate = DateTimeParser.getUnixTime(endString, ERROR_BAD_END_DATETIME);
+
+                // user may have forgotten to type 'next' before the relative datetime
+                // "sun 2359 to mon 2359" should be "... next mon 2359"
+                endEpochSecond = (startEpochSecond > endEpochCandidate)
+                        ? addNextToRelativeDateTime(endString)
+                        : endEpochCandidate;
+            }
+
+            if (startEpochSecond > endEpochSecond) {
+                throw new IllegalValueException(ERROR_NEGATIVE_DURATION);
             }
         }
-
-        if (endEpochSecond < startEpochSecond) {
-            throw new IllegalValueException(ERROR_NEGATIVE_DURATION);
-        }
     }
-    
+
+    private long addNextToRelativeDateTime(String dateTime) throws IllegalValueException {
+        dateTime = "next " + dateTime ;
+        return DateTimeParser.getUnixTime(dateTime , ERROR_BAD_END_DATETIME);
+    }
+
     public static boolean isValidSchedule(String test) {
         try {
             new Schedule(test);
