@@ -100,16 +100,14 @@ public class DateTimeParser {
         Instant instant = Instant.ofEpochSecond(epochSecond);
         return ZonedDateTime
         		.ofInstant(instant, ZoneId.systemDefault())
-        		.format(formatter)
-        		.toString();
+        		.format(formatter);
     }
 
     public static String epochSecondToShortDateTime(long epochSecond) {
         Instant instant = Instant.ofEpochSecond(epochSecond);
         return LocalDateTime
         		.ofInstant(instant, ZoneId.systemDefault())
-        		.format(formatter)
-        		.toString();
+        		.format(formatter);
     }
 
     public static class IllegalDateTimeException extends IllegalValueException {
