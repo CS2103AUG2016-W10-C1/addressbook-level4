@@ -168,17 +168,15 @@ public class CommandParser {
     }
     
     private Command prepareComplete(String args) {
-        final Matcher matcher = TASK_COMPLETE_ARGS_FORMAT.matcher(args.trim());
 
-        if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CompleteCommand.MESSAGE_USAGE));
+        Optional<Integer> index = parseIndex(args);
+        if(!index.isPresent()){
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, CompleteCommand.MESSAGE_USAGE));
         }
 
-        String indexString = matcher.group("targetIndex").trim();
-        int index = Integer.parseInt(indexString);
-
         return new CompleteCommand(
-		        index,
+		        index.get(),
 		        null,
 		        null,
 		        null,

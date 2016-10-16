@@ -21,7 +21,5 @@ public class CompleteCommand extends EditCommand {
             @Nullable String schedule, @Nullable String frequency, @Nullable Set<String> tags) {
 		super(targetIndex, title, deadline, STATUS_COMPLETE, schedule, frequency, tags);
 	}
-	
-	// TODO: Find out why no updating
 
 }
