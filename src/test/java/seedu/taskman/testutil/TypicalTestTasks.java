@@ -23,7 +23,7 @@ public class TypicalTestTasks {
             
             //Manually added
             taskCS2102 = new TaskBuilder().withTitle("CS2102").withDeadline("tue 1200").withFrequency("2 days").withSchedule("tue 1000, tue 1200").build();
-            taskCS2104 = new TaskBuilder().withTitle("CS2104").withDeadline("mon 1000").withFrequency("1 day").withSchedule("sun 2300 to mon 0100").build();
+            taskCS2104 = new TaskBuilder().withTitle("CS2104").withDeadline("mon 1000").withFrequency("1 day").withSchedule("sun 2300 to next mon 0100").build();
         } catch (IllegalValueException e) {
             e.printStackTrace();
             assert false : "error building typical tasks";
