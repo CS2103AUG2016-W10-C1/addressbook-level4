@@ -14,7 +14,7 @@ import java.util.Optional;
 public class Task extends Event implements ReadOnlyTask, MutableTagsEvent {
 
     private Deadline deadline;
-    private Status status;
+    public Status status;
 
     public Task(@Nonnull Title title, @Nonnull UniqueTagList tags,
                 @Nullable Deadline deadline,

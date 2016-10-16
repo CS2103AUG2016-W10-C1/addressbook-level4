@@ -98,23 +98,27 @@ public class EditCommand extends Command {
         switch (activityType){
             case TASK:
             default: {
-                afterEdit = new Activity(new Task(
+            	Task task = new Task(
                         argsContainer.title == null
-                                ? beforeEdit.getTitle()
-                                : new Title(argsContainer.title),
-                        argsContainer.tags == null
-                                ? beforeEdit.getTags()
-                                : new UniqueTagList(tagSet),
-                        argsContainer.deadline == null
-                                ? beforeEdit.getDeadline().orElse(null)
-                                : new Deadline(argsContainer.deadline),
-                        argsContainer.schedule == null
-                                ? beforeEdit.getSchedule().orElse(null)
-                                : new Schedule (argsContainer.schedule),
-                        argsContainer.frequency == null
-                                ? beforeEdit.getFrequency().orElse(null)
-                                : new Frequency(argsContainer.frequency)
-                ));
+                        ? beforeEdit.getTitle()
+                        : new Title(argsContainer.title),
+                argsContainer.tags == null
+                        ? beforeEdit.getTags()
+                        : new UniqueTagList(tagSet),
+                argsContainer.deadline == null
+                        ? beforeEdit.getDeadline().orElse(null)
+                        : new Deadline(argsContainer.deadline),
+                argsContainer.schedule == null
+                        ? beforeEdit.getSchedule().orElse(null)
+                        : new Schedule (argsContainer.schedule),
+                argsContainer.frequency == null
+                        ? beforeEdit.getFrequency().orElse(null)
+                        : new Frequency(argsContainer.frequency)
+            	);
+            	task.status = argsContainer.status == null
+                        ? beforeEdit.getStatus().orElse(null)
+                        : new Status(argsContainer.status);
+                afterEdit = new Activity(task);
             }
         }
     }

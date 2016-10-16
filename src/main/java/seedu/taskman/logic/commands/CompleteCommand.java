@@ -2,6 +2,8 @@ package seedu.taskman.logic.commands;
 
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 public class CompleteCommand extends EditCommand {
 	
 	public static final String COMMAND_WORD = "complete";
@@ -14,8 +16,9 @@ public class CompleteCommand extends EditCommand {
 
     public static final String MESSAGE_SUCCESS = "Task completed: %1$s";
 
-	public CompleteCommand(int targetIndex, String title, String deadline, String status, String schedule,
-			String frequency, Set<String> tags) {
+    public CompleteCommand(int targetIndex,
+            @Nullable String title, @Nullable String deadline, @Nullable String status,
+            @Nullable String schedule, @Nullable String frequency, @Nullable Set<String> tags) {
 		super(targetIndex, title, deadline, STATUS_COMPLETE, schedule, frequency, tags);
 	}
 	
