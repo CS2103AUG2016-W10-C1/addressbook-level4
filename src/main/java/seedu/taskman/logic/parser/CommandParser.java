@@ -4,6 +4,7 @@ import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.commons.util.StringUtil;
 import seedu.taskman.logic.commands.*;
 import seedu.taskman.model.Model;
+import seedu.taskman.model.Model.FilterMode;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -22,36 +23,78 @@ public class CommandParser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
-    private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
+    private static final Pattern TASK_INDEX_ARGS_FORMAT = Pattern.compile(Argument.TARGET_INDEX.pattern);
 
-    private static final String LIST_EVENT_FLAG = "e/";
+    private enum ListFlag{
+        LIST_EVENT("e/", FilterMode.EVENT_ONLY),
+        LIST_ALL("all/", FilterMode.ALL);
+        
+        public final String flag;
+        public final FilterMode filterMode;
+        
+        ListFlag(String flag, FilterMode filterMode){
+            this.flag = flag;
+            this.filterMode = filterMode;
+        }
+        
+        public static String get_Pattern(){
+            ListFlag[] values = ListFlag.values();
+            if(values.length == 0){
+                return "";
+            }
+            StringBuilder builder = new StringBuilder();
+            for(int i = 0; i< values.length; i++){
+                if(i != 0){
+                    builder.append('|');
+                }
+                builder.append("(?:");
+                builder.append(values[i].flag);
+                builder.append(")");
+            }
+            return builder.toString();
+        }
+    }
+    
+    private static final Pattern LIST_ARGS_FORMAT = Pattern.compile("(?<filter>" + ListFlag.get_Pattern() + ")?" +
+                    "(?<keywords>(?:\\s*[^/]+)*?)??(?<tagArguments>(?:\\s*t/[^/]+)*)?"); // one or more keywords separated by whitespace
 
-    private static final String LIST_ALL_FLAG = "all/";
-
-    private static final Pattern LIST_ARGS_FORMAT =
-            Pattern.compile("(?<filter>(?:" + LIST_EVENT_FLAG + ")|(?:" + LIST_ALL_FLAG +"))?" +
-                    "\\s*(?<keywords>(?:\\S+\\s*)*?)??(?<tagArguments>(?:t/[^/]+\\s*)*)?"); // one or more keywords separated by whitespace
-
-    // TODO: All fields currently compulsory
+    private enum Argument{
+        TARGET_INDEX("(?<targetIndex>.+)"),
+        TITLE("(?<title>[^/]+)"),
+        DEADLINE("(?:\\s+d/(?<deadline>[^/]+))?"),
+        SCHEDULE("(?:\\s+s/(?<schedule>[^/]+))?"),
+        STATUS("(?:\\s+c/(?<status>[^/]+))?"),
+        FREQUENCY("(?:\\s+f/(?<frequency>[^/]+))?"),
+        TAG("(?<tagArguments>(?:\\s*t/[^/]+)*)?");
+        
+        private final String pattern;
+        
+        Argument(String pattern){
+            this.pattern = pattern;
+        }
+        
+        @Override
+        public String toString(){
+            return pattern;
+        }
+    }
+    
     private static final Pattern TASK_ADD_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
-            Pattern.compile("(?<title>[^/]+)"
-                    + " d/(?<deadline>[^/]+)"
-                    + " s/(?<schedule>[^/]+)"
-                    + " f/(?<frequency>[^/]+)"
-                    + "(?<tagArguments>(?: t/[^/]+)*)"); // variable number of tags
+            Pattern.compile("" + Argument.TITLE
+                    + Argument.DEADLINE
+                    + Argument.SCHEDULE
+                    + Argument.FREQUENCY
+                    + Argument.TAG); // variable number of tags
 
     // TODO: All fields currently compulsory
     private static final Pattern TASK_EDIT_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
-            Pattern.compile("(?<targetIndex>[1-9]* ?)"
-                    + "(?<title>[^/]+)"
-                    + " d/(?<deadline>[^/]+)"
-                    + " c/(?<status>[^/]+)"
-                    + " s/(?<schedule>[^/]+)"
-                    + " f/(?<frequency>[^/]+)"
-                    + "(?<tagArguments>(?: t/[^/]+)*)"); // variable number of tags
-    
-    private static final Pattern TASK_COMPLETE_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
-            Pattern.compile("(?<targetIndex>[1-9]* ?)");
+            Pattern.compile("" + Argument.TARGET_INDEX
+                    + Argument.TITLE
+                    + Argument.DEADLINE
+                    + Argument.STATUS
+                    + Argument.SCHEDULE
+                    + Argument.FREQUENCY
+                    + Argument.TAG); // variable number of tags
 
     public CommandParser() {}
 
@@ -224,7 +267,7 @@ public class CommandParser {
      *   Returns an {@code Optional.empty()} otherwise.
      */
     private Optional<Integer> parseIndex(String command) {
-        final Matcher matcher = PERSON_INDEX_ARGS_FORMAT.matcher(command.trim());
+        final Matcher matcher = TASK_INDEX_ARGS_FORMAT.matcher(command.trim());
         if (!matcher.matches()) {
             return Optional.empty();
         }
@@ -257,16 +300,9 @@ public class CommandParser {
             //filter
             final String filter = matcher.group("filter");
             Model.FilterMode filterMode = Model.FilterMode.TASK_ONLY;
-            if(filter != null){
-                switch (filter){
-                    case LIST_EVENT_FLAG: {
-                        filterMode = Model.FilterMode.EVENT_ONLY;
-                        break;
-                    }
-                    case LIST_ALL_FLAG: {
-                        filterMode = Model.FilterMode.ALL;
-                        break;
-                    }
+            for(ListFlag listFlag: ListFlag.values()){
+                if(listFlag.flag.equals(filter)){
+                    filterMode = listFlag.filterMode;
                 }
             }
 
