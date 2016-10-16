@@ -64,7 +64,7 @@ Given below is a quick overview of each component.
 
 [**`Commons`**](#common-classes) represents a collection of classes used by multiple other components.
 Two of those classes play important roles at the architecture level.
-* `EventsCentre` : This class (written using [Google's Event Bus library](https://github.com/google/guava/wiki/EventBusExplained))
+* `EventsCenter` : This class (written using [Google's Event Bus library](https://github.com/google/guava/wiki/EventBusExplained))
   is used by components to communicate with other components using events (i.e. a form of _Event Driven_ design)
 * `LogsCenter` : Used by many classes to write log messages to the App's log file.
 
@@ -170,11 +170,11 @@ Classes used by multiple components are in the `seedu.taskman.commons` package.
 We are using `java.util.logging` package for logging. The `LogsCenter` class is used to manage the logging levels
 and logging destinations.
 
-* The logging level can be controlled using the `logLevel` setting in the configuration file
+* The logging level can be controlled using the `logLevel` setting in the configuration file.
   (See [Configuration](#configuration))
 * The `Logger` for a class can be obtained using `LogsCenter.getLogger(Class)` which will log messages according to
-  the specified logging level
-* Currently log messages are output through: `Console` and to a `.log` file.
+  the specified logging level.
+* Currently, log messages are output through: `Console` and to a `.log` file.
 
 **Logging Levels**
 
@@ -187,7 +187,7 @@ and logging destinations.
 ### Configuration
 
 Certain properties of the application can be controlled (e.g App name, logging level) through the configuration file 
-(default: `config.json`):
+(default: `config.json`).
 
 
 ## Testing
@@ -204,7 +204,7 @@ Tests can be found in the `./src/test/java` folder.
   to run as a JUnit test.
 
 **Using Gradle**:
-* See [UsingGradle.md](UsingGradle.md) for how to run tests using Gradle.
+* See [UsingGradle.md](UsingGradle.md) on how to run tests using Gradle.
 
 We have two types of tests:
 
@@ -226,6 +226,7 @@ Thanks to the [TestFX](https://github.com/TestFX/TestFX) library we use,
  our GUI tests can be run in the _headless_ mode. 
  In the headless mode, GUI tests do not show up on the screen.
  That means the developer can do other things on the Computer while the tests are running.<br>
+
  See [UsingGradle.md](UsingGradle.md#running-tests) to learn how to run tests in headless mode.
   
 ## Dev Ops
@@ -245,8 +246,8 @@ Here are the steps to create a new release.
  
  1. Generate a JAR file [using Gradle](UsingGradle.md#creating-the-jar-file).
  2. Tag the repo with the version number. e.g. `v0.1`
- 2. [Crete a new release using GitHub](https://help.github.com/articles/creating-releases/) 
-    and upload the JAR file your created.
+ 2. [Create a new release using GitHub](https://help.github.com/articles/creating-releases/) 
+    and upload the JAR file you created.
    
 ### Managing Dependencies
 
