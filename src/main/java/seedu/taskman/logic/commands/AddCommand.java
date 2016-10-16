@@ -40,9 +40,15 @@ public class AddCommand extends Command {
         this.toAdd = new Task(
                 new Title(title),
                 new UniqueTagList(tagSet),
-                new Deadline(deadline),
-                new Schedule(schedule),
-                new Frequency(frequency)
+                deadline == null
+                    ? null
+                    : new Deadline(deadline),
+                schedule == null
+                    ? null
+                    : new Schedule(schedule),
+                frequency == null
+                    ? null
+                    : new Frequency(frequency)
         );
     }
 
