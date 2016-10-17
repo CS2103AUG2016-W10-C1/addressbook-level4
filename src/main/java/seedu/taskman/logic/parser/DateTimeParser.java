@@ -11,6 +11,8 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Generates machine readable datetime from natural language datetime
@@ -23,10 +25,9 @@ public class DateTimeParser {
             "can use natural language, eg: 2nd Wed from now, 9pm";
     public static final String DESCRIPTION_DATE_TIME_SHORT = "DATE & TIME";
     public static final String SINGLE_DURATION =
-            "(?:(?:[1-9]+[0-9]*) (?:(?:min)|(?:hour)|(?:day)|(?:week)|(?:month)|(?:year))s? ?)";
-    // TODO: use in the future to allow "3 days 4 hours"
+            "(?:[1-9]+[0-9]*) (?:(?:min)|(?:hour)|(?:day)|(?:week)|(?:month)|(?:year))s?";
     public static final String MULTIPLE_DURATION =
-            "^" + SINGLE_DURATION + "+$";
+            "(" + SINGLE_DURATION + ",? ?)+";
     public static final String DESCRIPTION_DURATION = "<number> <min/hour/day/week/month/year(s)>";
     public static final String TIME_BEFORE_DATE_ERROR = "Do not enter time before date";
     private static final String GENERIC_ERROR_DATETIME = "Invalid date time";
@@ -79,13 +80,19 @@ public class DateTimeParser {
      * Converts a natural duration to an end time in unix time (seconds)
      */
     public static long durationToUnixTime(long startUnixTime, String naturalDuration) throws IllegalDateTimeException {
-        if (!naturalDuration.matches(SINGLE_DURATION)) {
+        if (!naturalDuration.matches(MULTIPLE_DURATION)) {
             throw new IllegalDateTimeException("failed to match regex");
         } else {
             long unixTimeNow = Instant.now().getEpochSecond();
-            long actualDurationSeconds = getUnixTime(naturalDuration) - unixTimeNow;
-            long endUnixTime = startUnixTime + actualDurationSeconds;
+            long actualDurationSeconds = 0;
 
+            Pattern firstDuration = Pattern.compile(SINGLE_DURATION);
+            Matcher matcher = firstDuration.matcher(naturalDuration);
+            while (matcher.find()) {
+                actualDurationSeconds += getUnixTime(matcher.group()) - unixTimeNow;
+            }
+
+            long endUnixTime = startUnixTime + actualDurationSeconds;
             if (endUnixTime < startUnixTime) {
                 throw new IllegalDateTimeException(GENERIC_ERROR_DURATION);
             } else {
