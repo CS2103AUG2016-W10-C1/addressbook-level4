@@ -13,8 +13,9 @@ import java.util.Set;
 public interface Model {
 
     public enum FilterMode {
-        TASK_ONLY,
         EVENT_ONLY,
+        DEADLINE_ONLY,
+        FLOATING_ONLY,
         ALL
     }
 

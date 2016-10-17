@@ -152,8 +152,9 @@ public class ModelManager extends ComponentManager implements Model {
         public boolean run(Activity activity) {
             // (fit task/event type && (no keyword || contain a keyword) && (no tag || contain a tag))
             return (filterMode == FilterMode.ALL
-                        || (filterMode == FilterMode.EVENT_ONLY && activity.getType()== Activity.ActivityType.EVENT)
-                        || (filterMode == FilterMode.TASK_ONLY && activity.getType() == Activity.ActivityType.TASK))
+                        || (filterMode == FilterMode.EVENT_ONLY && activity.getSchedule().isPresent())
+                        || (filterMode == FilterMode.DEADLINE_ONLY && activity.getDeadline().isPresent()
+                        || filterMode == FilterMode.FLOATING_ONLY && !activity.getDeadline().isPresent()))
                     && (titleKeyWords == null || titleKeyWords.isEmpty() || titleKeyWords.stream()
                             .filter(keyword -> StringUtil.containsIgnoreCase(activity.getTitle().title, keyword))
                             .findAny()
