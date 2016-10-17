@@ -14,7 +14,7 @@ public interface Model {
 
     public enum FilterMode {
         EVENT_ONLY,
-        TASK_ONLY, // TODO - Change to deadline
+        DEADLINE_ONLY,
         FLOATING_ONLY,
         ALL
     }
