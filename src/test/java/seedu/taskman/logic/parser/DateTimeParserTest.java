@@ -1,17 +1,13 @@
 package seedu.taskman.logic.parser;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import seedu.taskman.commons.exceptions.IllegalValueException;
 
 import java.time.*;
 
-import static java.time.temporal.TemporalAdjusters.nextOrSame;
+import static java.time.temporal.TemporalAdjusters.next;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class DateTimeParserTest {
     private static final long timeDifferenceThreshold = 30L; // 30 seconds
@@ -55,13 +51,12 @@ public class DateTimeParserTest {
         assertEquals(timeNow + durationInSeconds ,unixDateTime2);
     }
 
-    // todo: find out why this test fails on wednesday...
-    //@Test
+    @Test
     public void parse_RelativeDateTime_Success() throws Exception {
         long parsedUnixTime = DateTimeParser.getUnixTime("wed 10am");
 
         ZonedDateTime input = OffsetDateTime.now().atZoneSameInstant(ZoneOffset.UTC);
-        ZonedDateTime nextWed = input.with(nextOrSame(DayOfWeek.WEDNESDAY))
+        ZonedDateTime nextWed = input.with(next(DayOfWeek.WEDNESDAY))
                 .withHour(10)
                 .withMinute(0)
                 .withSecond(0)
