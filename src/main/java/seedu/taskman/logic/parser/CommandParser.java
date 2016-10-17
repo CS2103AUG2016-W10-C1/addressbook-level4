@@ -28,6 +28,7 @@ public class CommandParser {
 
     private enum ListFlag{
         LIST_EVENT("e/", FilterMode.EVENT_ONLY),
+        LIST_TASK("d/", FilterMode.TASK_ONLY),
         LIST_ALL("all/", FilterMode.ALL);
         
         public final String flag;
