@@ -26,7 +26,7 @@ public class EditCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Task updated: %1$s";
     public static final String MESSAGE_DUPLICATE_TASK = "A task with the same name already exists in TaskMan";
 
-    protected final ArgumentContainer argsContainer;
+    private final ArgumentContainer argsContainer;
     private Activity beforeEdit;
     private Activity afterEdit;
     private Activity.ActivityType activityType;
@@ -123,7 +123,7 @@ public class EditCommand extends Command {
         }
     }
 
-    protected static class ArgumentContainer {
+    private static class ArgumentContainer {
         public final int targetIndex;
         public String title;
         public String deadline;
