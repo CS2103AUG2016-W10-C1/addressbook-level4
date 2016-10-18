@@ -18,9 +18,6 @@ public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
-    // kiv: let parameters be objects. we can easily generate the usage in that case
-    // todo: update message
-    // UG/DG
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits an existing task. "
             + "Parameters: INDEX [TITLE] [d/DEADLINE] [c/STATUS] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...\n"
             + "Example: " + COMMAND_WORD
@@ -29,7 +26,7 @@ public class EditCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Task updated: %1$s";
     public static final String MESSAGE_DUPLICATE_TASK = "A task with the same name already exists in TaskMan";
 
-    private final ArgumentContainer argsContainer;
+    protected final ArgumentContainer argsContainer;
     private Activity beforeEdit;
     private Activity afterEdit;
     private Activity.ActivityType activityType;
@@ -63,7 +60,7 @@ public class EditCommand extends Command {
         } catch (UniqueActivityList.ActivityNotFoundException pnfe) {
 
             indicateAttemptToExecuteIncorrectCommand();
-            return new CommandResult(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            return new CommandResult(Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX);
 
         } catch (UniqueActivityList.DuplicateActivityException e) {
 
@@ -82,7 +79,7 @@ public class EditCommand extends Command {
 
         if (lastShownList.size() < argsContainer.targetIndex) {
             indicateAttemptToExecuteIncorrectCommand();
-            throw new IllegalValueException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            throw new IllegalValueException(Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX);
         }
 
         beforeEdit = lastShownList.get(argsContainer.targetIndex - 1);
@@ -98,35 +95,42 @@ public class EditCommand extends Command {
         switch (activityType){
             case TASK:
             default: {
-                afterEdit = new Activity(new Task(
+            	Task task = new Task(
                         argsContainer.title == null
-                                ? beforeEdit.getTitle()
-                                : new Title(argsContainer.title),
-                        argsContainer.tags == null
-                                ? beforeEdit.getTags()
-                                : new UniqueTagList(tagSet),
-                        argsContainer.deadline == null
-                                ? beforeEdit.getDeadline().orElse(null)
-                                : new Deadline(argsContainer.deadline),
-                        argsContainer.schedule == null
-                                ? beforeEdit.getSchedule().orElse(null)
-                                : new Schedule (argsContainer.schedule),
-                        argsContainer.frequency == null
-                                ? beforeEdit.getFrequency().orElse(null)
-                                : new Frequency(argsContainer.frequency)
-                ));
+                        ? beforeEdit.getTitle()
+                        : new Title(argsContainer.title),
+                argsContainer.tags == null
+                        ? beforeEdit.getTags()
+                        : new UniqueTagList(tagSet),
+                argsContainer.deadline == null
+                        ? beforeEdit.getDeadline().orElse(null)
+                        : new Deadline(argsContainer.deadline),
+                argsContainer.schedule == null
+                        ? beforeEdit.getSchedule().orElse(null)
+                        : new Schedule (argsContainer.schedule),
+                argsContainer.frequency == null
+                        ? beforeEdit.getFrequency().orElse(null)
+                        : new Frequency(argsContainer.frequency)
+            	);
+            	// TODO: Do we need the code below for consistency? ArgumentContainer has status field too.
+            	/*
+            	task.status = argsContainer.status == null
+                        ? beforeEdit.getStatus().orElse(null)
+                        : new Status(argsContainer.status);
+                */
+                afterEdit = new Activity(task);
             }
         }
     }
 
-    private static class ArgumentContainer {
+    protected static class ArgumentContainer {
         public final int targetIndex;
-        public final String title;
-        public final String deadline;
-        public final String status;
-        public final String schedule;
-        public final String frequency;
-        public final Set<String> tags;
+        public String title;
+        public String deadline;
+        public String status;
+        public String schedule;
+        public String frequency;
+        public Set<String> tags;
 
         public ArgumentContainer(int targetIndex, String title, String deadline, String status, String schedule, String frequency, Set<String> tags) {
             this.targetIndex = targetIndex;

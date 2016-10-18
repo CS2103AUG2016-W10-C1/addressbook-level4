@@ -249,7 +249,7 @@ public class LogicManagerTest {
      * @param commandWord to test assuming it targets a single task in the last shown list based on visible index.
      */
     private void assertIndexNotFoundBehaviorForCommand(String commandWord) throws Exception {
-        String expectedMessage = MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
+        String expectedMessage = MESSAGE_INVALID_EVENT_DISPLAYED_INDEX;
         TestDataHelper helper = new TestDataHelper();
         List<Task> taskList = helper.generateTaskList(2);
 
@@ -283,7 +283,7 @@ public class LogicManagerTest {
         helper.addToModel(model, threeTasks);
 
         assertCommandBehavior("select 2",
-                String.format(SelectCommand.MESSAGE_SELECT_PERSON_SUCCESS, 2),
+                String.format(SelectCommand.MESSAGE_SELECT_EVENT_SUCCESS, 2),
                 expectedAB,
                 expectedAB.getActivityList());
         assertEquals(1, targetedJumpIndex);
@@ -308,12 +308,39 @@ public class LogicManagerTest {
         List<Task> threeTasks = helper.generateTaskList(3);
 
         TaskMan expectedAB = helper.generateTaskMan(threeTasks);
-        //Wrap Task in Activity to delete
+        // Wrap Task in Activity to delete
         expectedAB.removeActivity(new Activity(threeTasks.get(1)));
         helper.addToModel(model, threeTasks);
 
         assertCommandBehavior("delete 2",
-                String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS, threeTasks.get(1)),
+                String.format(DeleteCommand.MESSAGE_DELETE_EVENT_SUCCESS, threeTasks.get(1)),
+                expectedAB,
+                expectedAB.getActivityList());
+    }
+    
+    @Test
+    public void execute_completeInvalidArgsFormat_errorMessageShown() throws Exception {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, CompleteCommand.MESSAGE_USAGE);
+        assertIncorrectIndexFormatBehaviorForCommand("complete", expectedMessage);
+    }
+
+    @Test
+    public void execute_completeIndexNotFound_errorMessageShown() throws Exception {
+        assertIndexNotFoundBehaviorForCommand("complete");
+    }
+
+    @Test
+    public void execute_complete_completesCorrectTask() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        List<Task> threeTasks = helper.generateTaskList(3);
+
+        TaskMan expectedAB = helper.generateTaskMan(threeTasks);
+        // Wrap Task in Activity to complete
+        expectedAB.completeActivity(new Activity(threeTasks.get(1)));
+        helper.addToModel(model, threeTasks);
+
+        assertCommandBehavior("complete 2",
+                String.format(CompleteCommand.MESSAGE_SUCCESS, threeTasks.get(1).getTitle()),
                 expectedAB,
                 expectedAB.getActivityList());
     }
@@ -459,6 +486,7 @@ public class LogicManagerTest {
         List<Activity> expectedList = new ArrayList<>();
         expectedList.add(new Activity(helper.generateTask(1)));
         expectedList.add(new Activity(helper.generateTask(5)));
+        // TODO: This passes and fails randomly
         assertCommandBehavior("list 1 5 t/tag2 t/tag6",
                 Command.getMessageForTaskListShownSummary(expectedList.size()),
                 expectedAB,
