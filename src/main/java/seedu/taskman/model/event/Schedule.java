@@ -41,9 +41,14 @@ public class Schedule {
     }
 
 
+     //todo: implement this
     @Override
     public String toString() {
-        return "Not yet implemented"; //todo: implement this
+        if (timeSlots.size() > 0) {
+            return timeSlots.get(0).toString();
+        } else {
+            return "";
+        }
     }
 
     @Override
