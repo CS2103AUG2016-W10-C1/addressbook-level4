@@ -307,12 +307,39 @@ public class LogicManagerTest {
         List<Task> threeTasks = helper.generateTaskList(3);
 
         TaskMan expectedAB = helper.generateTaskMan(threeTasks);
-        //Wrap Task in Activity to delete
+        // Wrap Task in Activity to delete
         expectedAB.removeActivity(new Activity(threeTasks.get(1)));
         helper.addToModel(model, threeTasks);
 
         assertCommandBehavior("delete 2",
                 String.format(DeleteCommand.MESSAGE_DELETE_EVENT_SUCCESS, threeTasks.get(1)),
+                expectedAB,
+                expectedAB.getActivityList());
+    }
+    
+    @Test
+    public void execute_completeInvalidArgsFormat_errorMessageShown() throws Exception {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, CompleteCommand.MESSAGE_USAGE);
+        assertIncorrectIndexFormatBehaviorForCommand("complete", expectedMessage);
+    }
+
+    @Test
+    public void execute_completeIndexNotFound_errorMessageShown() throws Exception {
+        assertIndexNotFoundBehaviorForCommand("complete");
+    }
+
+    @Test
+    public void execute_complete_completesCorrectTask() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        List<Task> threeTasks = helper.generateTaskList(3);
+
+        TaskMan expectedAB = helper.generateTaskMan(threeTasks);
+        // Wrap Task in Activity to complete
+        expectedAB.completeActivity(new Activity(threeTasks.get(1)));
+        helper.addToModel(model, threeTasks);
+
+        assertCommandBehavior("complete 2",
+                String.format(CompleteCommand.MESSAGE_SUCCESS, threeTasks.get(1).getTitle()),
                 expectedAB,
                 expectedAB.getActivityList());
     }
@@ -458,6 +485,7 @@ public class LogicManagerTest {
         List<Activity> expectedList = new ArrayList<>();
         expectedList.add(new Activity(helper.generateTask(1)));
         expectedList.add(new Activity(helper.generateTask(5)));
+        // TODO: This passes and fails randomly
         assertCommandBehavior("list 1 5 t/tag2 t/tag6",
                 Command.getMessageForTaskListShownSummary(expectedList.size()),
                 expectedAB,

@@ -71,7 +71,7 @@ public class CompleteCommand extends Command {
         try {
             model.deleteActivity(activityToComplete);
             model.addActivity(afterComplete);
-            return new CommandResult(String.format(MESSAGE_SUCCESS, afterComplete));
+            return new CommandResult(String.format(MESSAGE_SUCCESS, afterComplete.getTitle().title));
         } catch (UniqueActivityList.ActivityNotFoundException pnfe) {
 
             indicateAttemptToExecuteIncorrectCommand();
