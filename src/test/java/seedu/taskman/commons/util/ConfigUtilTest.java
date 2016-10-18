@@ -59,7 +59,7 @@ public class ConfigUtilTest {
 
     @Test
     public void read_valuesMissingFromFile_defaultValuesUsed() throws DataConversionException {
-        ConfigData expectedData = Config.getInstance().getDataClone();
+        ConfigData expectedData = new ConfigData();
         read("EmptyConfig.json");
         assertEquals(expectedData, Config.getInstance().getDataClone());
     }

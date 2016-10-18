@@ -42,7 +42,7 @@ public class TestApp extends MainApp {
 
     @Override
     protected void initConfig(String configFilePath) {
-        initConfig(configFilePath);
+        super.initConfig(configFilePath);
         config.setAppTitle(APP_TITLE);
         config.setTaskManFilePath(saveFileLocation);
         config.setUserPrefsFilePath(DEFAULT_PREF_FILE_LOCATION_FOR_TESTING);

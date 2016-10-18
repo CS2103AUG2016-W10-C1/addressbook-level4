@@ -20,7 +20,7 @@ public class ConfigTest {
                 "Preference file Location : preferences.json\n" +
                 "Local data file location : data/taskMan.xml\n" +
                 "TaskMan name : MyTaskMan";
-
+        Config.resetInstance();
         assertEquals(defaultConfigAsString, Config.getInstance().toString());
     }
 
