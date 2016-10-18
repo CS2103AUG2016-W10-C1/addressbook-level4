@@ -218,15 +218,7 @@ public class CommandParser {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, CompleteCommand.MESSAGE_USAGE));
         }
 
-        return new CompleteCommand(
-		        index.get(),
-		        null,
-		        null,
-		        null,
-		        null,
-		        null,
-		        null
-		);
+        return new CompleteCommand(index.get());
     }
 
     /**
