@@ -2,6 +2,7 @@ package seedu.taskman.model;
 
 import javafx.collections.ObservableList;
 import seedu.taskman.model.event.Activity;
+import seedu.taskman.model.event.Event;
 import seedu.taskman.model.event.MutableTagsEvent;
 import seedu.taskman.model.tag.Tag;
 import seedu.taskman.model.tag.UniqueTagList;
@@ -81,9 +82,9 @@ public class TaskMan implements ReadOnlyTaskMan {
      *
      * @throws UniqueActivityList.DuplicateActivityException if an equivalent task already exists.
      */
-    public void addTask(Task task) throws UniqueActivityList.DuplicateActivityException {
-        syncTagsWithMasterList(task);
-        activities.add(new Activity(task));
+    public void addEvent(Event event) throws UniqueActivityList.DuplicateActivityException {
+        syncTagsWithMasterList(event);
+        activities.add(new Activity(event));
     }
 
     /**

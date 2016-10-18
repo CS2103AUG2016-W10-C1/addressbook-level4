@@ -90,6 +90,12 @@ public class CommandParser {
                     + Argument.SCHEDULE
                     + Argument.FREQUENCY
                     + Argument.TAG); // variable number of tags
+    
+    private static final Pattern TASK_MARK_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
+            Pattern.compile("" + Argument.TITLE
+                    + Argument.SCHEDULE
+                    + Argument.FREQUENCY
+                    + Argument.TAG); // variable number of tags
 
     // todo: all fields currently compulsory
     private static final Pattern TASK_EDIT_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
@@ -121,6 +127,9 @@ public class CommandParser {
 
             case DoCommand.COMMAND_WORD:
                 return prepareDo(arguments);
+                
+            case MarkCommand.COMMAND_WORD:
+                return prepareMark(arguments);
 
             case EditCommand.COMMAND_WORD:
                 return prepareEdit(arguments);
@@ -164,6 +173,30 @@ public class CommandParser {
             return new DoCommand(
                     matcher.group("title"),
                     matcher.group("deadline"),
+                    matcher.group("schedule"),
+                    matcher.group("frequency"),
+                    getTagsFromArgs(matcher.group("tagArguments"))
+            );
+        } catch (IllegalValueException ive) {
+            return new IncorrectCommand(ive.getMessage());
+        }
+    }
+    
+    /**
+     * Parses arguments in the context of the mark event command.
+     *
+     * @param args full command args string
+     * @return the prepared command
+     */
+    private Command prepareMark(String args){
+        final Matcher matcher = TASK_MARK_ARGS_FORMAT.matcher(args.trim());
+        // Validate arg string format
+        if (!matcher.matches()) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MarkCommand.MESSAGE_USAGE));
+        }
+        try {
+            return new MarkCommand(
+                    matcher.group("title"),
                     matcher.group("schedule"),
                     matcher.group("frequency"),
                     getTagsFromArgs(matcher.group("tagArguments"))

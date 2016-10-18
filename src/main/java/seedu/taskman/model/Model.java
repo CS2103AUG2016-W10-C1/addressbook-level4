@@ -2,6 +2,7 @@ package seedu.taskman.model;
 
 import seedu.taskman.commons.core.UnmodifiableObservableList;
 import seedu.taskman.model.event.Activity;
+import seedu.taskman.model.event.Event;
 import seedu.taskman.model.event.Task;
 import seedu.taskman.model.event.UniqueActivityList;
 
@@ -28,8 +29,8 @@ public interface Model {
     /** Deletes the given activity. */
     void deleteActivity(Activity target) throws UniqueActivityList.ActivityNotFoundException;
 
-    /** Adds the given task */
-    void addTask(Task task) throws UniqueActivityList.DuplicateActivityException;
+    /** Adds the given event */
+    void addEvent(Event task) throws UniqueActivityList.DuplicateActivityException;
 
     void addActivity(Activity activity) throws  UniqueActivityList.DuplicateActivityException;
 

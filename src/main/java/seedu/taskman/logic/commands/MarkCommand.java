@@ -11,38 +11,35 @@ import java.util.Set;
 /**
  * Adds a Task to the task man.
  */
-public class DoCommand extends Command {
+public class MarkCommand extends Command {
 
-    public static final String COMMAND_WORD = "do";
+    public static final String COMMAND_WORD = "mark";
 
     // todo, differed: let parameters be objects. we can easily generate the usage in that case
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a task to TaskMan.\n"
-            + "Parameters: TITLE d/DEADLINE s/SCHEDULE f/FREQUENCY [t/TAG]...\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an event to TaskMan.\n"
+            + "Parameters: TITLE s/SCHEDULE f/FREQUENCY [t/TAG]...\n"
             + "Example: " + COMMAND_WORD
-            + " pay utility bills d/next fri 1800 s/tdy 1800, tdy 1830 f/1 month t/bills";
+            + " star gazing s/tdy 2300, tdy 2359 f/1 week t/leisure";
 
-    public static final String MESSAGE_SUCCESS = "New task added: %1$s";
-    public static final String MESSAGE_DUPLICATE_EVENT = "This task already exists in TaskMan";
+    public static final String MESSAGE_SUCCESS = "New event added: %1$s";
+    public static final String MESSAGE_DUPLICATE_EVENT = "This event already exists in TaskMan";
 
-    private final Task toAdd;
+    private final Event toAdd;
 
     /**
      * Convenience constructor using raw values.
      *
      * @throws IllegalValueException if any of the raw values are invalid
      */
-    public DoCommand(String title, String deadline, String schedule, String frequency, Set<String> tags)
+    public MarkCommand(String title, String schedule, String frequency, Set<String> tags)
             throws IllegalValueException {
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagName : tags) {
             tagSet.add(new Tag(tagName));
         }
-        this.toAdd = new Task(
+        this.toAdd = new Event(
                 new Title(title),
                 new UniqueTagList(tagSet),
-                deadline == null
-                    ? null
-                    : new Deadline(deadline),
                 schedule == null
                     ? null
                     : new Schedule(schedule),

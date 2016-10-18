@@ -33,13 +33,13 @@ public class TypicalTestTasks {
     public static void loadTaskManWithSampleData(TaskMan ab) {
 
         try {
-            ab.addTask(new Task(taskCS2101));
-            ab.addTask(new Task(taskCS2103T));
-            ab.addTask(new Task(taskCS2309));
-            ab.addTask(new Task(taskCS3244));
-            ab.addTask(new Task(taskCS2105));
-            ab.addTask(new Task(taskCS2106));
-            ab.addTask(new Task(taskCS2107));
+            ab.addEvent(new Task(taskCS2101));
+            ab.addEvent(new Task(taskCS2103T));
+            ab.addEvent(new Task(taskCS2309));
+            ab.addEvent(new Task(taskCS3244));
+            ab.addEvent(new Task(taskCS2105));
+            ab.addEvent(new Task(taskCS2106));
+            ab.addEvent(new Task(taskCS2107));
         } catch (UniqueActivityList.DuplicateActivityException e) {
             assert false : "not possible";
         }
