@@ -68,8 +68,8 @@ public class TestTask implements ReadOnlyTask {
     }
     
     @Override
-    public Optional<Schedule> getSchedule() {
-        return Optional.ofNullable(schedule);
+    public Schedule getSchedule() {
+        return schedule;
     }
 
     @Override

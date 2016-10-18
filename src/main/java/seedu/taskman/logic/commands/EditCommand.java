@@ -109,7 +109,7 @@ public class EditCommand extends Command {
                                 ? beforeEdit.getDeadline().orElse(null)
                                 : new Deadline(argsContainer.deadline),
                         argsContainer.schedule == null
-                                ? beforeEdit.getSchedule().orElse(null)
+                                ? beforeEdit.getSchedule()
                                 : new Schedule (argsContainer.schedule),
                         argsContainer.frequency == null
                                 ? beforeEdit.getFrequency().orElse(null)

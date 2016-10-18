@@ -17,9 +17,6 @@ import java.util.*;
  */
 public class UniqueTagList implements Iterable<Tag> {
 
-    /**
-     * Signals that an operation would have violated the 'no duplicates' property of the list.
-     */
     public static class DuplicateTagException extends DuplicateDataException {
         protected DuplicateTagException() {
             super("Operation would result in duplicate tags");
@@ -28,9 +25,6 @@ public class UniqueTagList implements Iterable<Tag> {
 
     private final ObservableList<Tag> internalList = FXCollections.observableArrayList();
 
-    /**
-     * Constructs empty TagList.
-     */
     public UniqueTagList() {}
 
     /**
@@ -98,19 +92,11 @@ public class UniqueTagList implements Iterable<Tag> {
         }
     }
 
-    /**
-     * Returns true if the list contains an equivalent Tag as the given argument.
-     */
     public boolean contains(Tag toCheck) {
         assert toCheck != null;
         return internalList.contains(toCheck);
     }
 
-    /**
-     * Adds a Tag to the list.
-     *
-     * @throws DuplicateTagException if the Tag to add is a duplicate of an existing Tag in the list.
-     */
     public void add(Tag toAdd) throws DuplicateTagException {
         assert toAdd != null;
         if (contains(toAdd)) {

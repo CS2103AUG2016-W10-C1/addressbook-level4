@@ -513,9 +513,11 @@ public class LogicManagerTest {
             if (p.getFrequency().isPresent()) {
                 cmd.append(" f/").append(p.getFrequency().get().seconds / 60 + " mins");
             }
-            if (p.getSchedule().isPresent()) {
-                String start = DateTimeParser.epochSecondToShortDateTime(p.getSchedule().get().startEpochSecond);
-                String end = DateTimeParser.epochSecondToShortDateTime(p.getSchedule().get().endEpochSecond);
+            List<TimeSlot> timeSlots = p.getSchedule().getTimeSlots();
+            if (timeSlots.size() > 0) {
+                TimeSlot timeSlot = timeSlots.get(0);
+                String start = DateTimeParser.epochSecondToShortDateTime(timeSlot.startEpochSecond);
+                String end = DateTimeParser.epochSecondToShortDateTime(timeSlot.endEpochSecond);
                 cmd.append(" s/").
                         append(start).
                         append(" to ").

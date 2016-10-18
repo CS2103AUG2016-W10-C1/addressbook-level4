@@ -1,105 +1,54 @@
 package seedu.taskman.model.event;
 
-import com.google.common.base.Objects;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import seedu.taskman.commons.exceptions.IllegalValueException;
-import seedu.taskman.logic.parser.DateTimeParser;
+import seedu.taskman.commons.util.CollectionUtil;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Collection;
 
 public class Schedule {
-    // UG/DG: specify new datetime format
-    // todo: indicate in example that format: "month-date-year time". there MUST be a space before time, not colon
-	public static final String MESSAGE_SCHEDULE_CONSTRAINTS =
-            "Task schedule should only contain dates and times in the format: " +
-                    // DATETIME to DATETIME
-                    DateTimeParser.DESCRIPTION_DATE_TIME_SHORT + " (a \",\" or \"to\") " +
-                    DateTimeParser.DESCRIPTION_DATE_TIME_SHORT +
-                    // DATETIME for DURATION
-                    "\nOr the format:\n" + DateTimeParser.DESCRIPTION_DATE_TIME_SHORT + " for " +
-                    DateTimeParser.DESCRIPTION_DURATION +
-                    "\nDATETIME: " + DateTimeParser.DESCRIPTION_DATE_TIME_FULL;
 
-    public static final String ERROR_NEGATIVE_DURATION = "Duration is negative!";
-    public static final String ERROR_BAD_START_DATETIME = "Bad start datetime";
-    public static final String ERROR_BAD_END_DATETIME = "Bad end datetime";
+    private final ObservableList<TimeSlot> timeSlots;
 
-    public static final String SCHEDULE_DIVIDER_GROUP = "((?:, )|(?: to )|(?: for ))";
-	public static final String SCHEDULE_VALIDATION_REGEX =
-            "(.*)" + SCHEDULE_DIVIDER_GROUP + "(.*)";
-
-    public final long startEpochSecond;
-    public final long endEpochSecond;
+    public Schedule() {
+        timeSlots = FXCollections.observableArrayList();
+    }
 
     public Schedule(long startEpochSecond, long endEpochSecond) throws IllegalValueException {
+        this();
+        timeSlots.add(new TimeSlot(startEpochSecond, endEpochSecond));
+    }
 
-        boolean endIsBeforeStart = (endEpochSecond - startEpochSecond) < 0;
-        if (startEpochSecond <= 0 || endEpochSecond <= 0 || endIsBeforeStart) {
-            throw new IllegalValueException(ERROR_NEGATIVE_DURATION);
+    public Schedule(String singleTimeSlot) throws IllegalValueException {
+        this();
+        timeSlots.add(new TimeSlot(singleTimeSlot));
+    }
+
+    // TODO: add "no overlap exception"
+    public Schedule(Collection<TimeSlot> timeSlots) throws IllegalValueException {
+        this();
+        CollectionUtil.assertNoNullElements(timeSlots);
+        // TODO: unique check is insufficient, check for no overlaps
+        if (!CollectionUtil.elementsAreUnique(timeSlots)) {
+            throw new IllegalValueException("Overlaps Exist!");
         }
-        this.startEpochSecond = startEpochSecond;
-        this.endEpochSecond = endEpochSecond;
+        this.timeSlots.addAll(timeSlots);
     }
 
-    public Schedule(String schedule) throws IllegalValueException {
-        schedule = schedule.trim();
-        Pattern pattern = Pattern.compile(SCHEDULE_VALIDATION_REGEX);
-        Matcher matcher = pattern.matcher(schedule);
-        if (!matcher.matches()) {
-            throw new IllegalValueException(MESSAGE_SCHEDULE_CONSTRAINTS);
-        } else {
-            String start = matcher.group(1).trim();
-            String divider = matcher.group(2).trim();
-            boolean endingIsDuration = divider.contains("for");
-
-            try {
-                startEpochSecond = DateTimeParser.getUnixTime(start);
-            } catch (DateTimeParser.IllegalDateTimeException e) {
-                throw new IllegalValueException(
-                        MESSAGE_SCHEDULE_CONSTRAINTS + "\n" +
-                        ERROR_BAD_START_DATETIME + ", '" + start + "'");
-            }
-
-            if (endingIsDuration) {
-                String duration = matcher.group(3).trim();
-                endEpochSecond = DateTimeParser.durationToUnixTime(startEpochSecond, duration);
-            } else {
-                String endString = matcher.group(3).trim();
-                long endEpochCandidate = DateTimeParser.getUnixTime(endString, ERROR_BAD_END_DATETIME);
-
-                // user may have forgotten to type 'next' before the relative datetime
-                // "sun 2359 to mon 2359" should be "... next mon 2359"
-                endEpochSecond = (startEpochSecond > endEpochCandidate)
-                        ? addNextToRelativeDateTime(endString)
-                        : endEpochCandidate;
-            }
-
-            if (startEpochSecond > endEpochSecond) {
-                throw new IllegalValueException(ERROR_NEGATIVE_DURATION);
-            }
-        }
+    public ObservableList<TimeSlot> getTimeSlots() {
+        return timeSlots;
     }
 
-    private long addNextToRelativeDateTime(String dateTime) throws IllegalValueException {
-        dateTime = "next " + dateTime ;
-        return DateTimeParser.getUnixTime(dateTime , ERROR_BAD_END_DATETIME);
-    }
 
-    public static boolean isValidSchedule(String test) {
-        try {
-            new Schedule(test);
-            return true;
-        } catch (IllegalValueException e) {
-            return false;
-        }
-    }
-
+     //todo: implement this
     @Override
     public String toString() {
-        return DateTimeParser.epochSecondToShortDateTime(startEpochSecond) +
-                " to\n" +
-                DateTimeParser.epochSecondToDetailedDateTime(endEpochSecond);
+        if (timeSlots.size() > 0) {
+            return timeSlots.get(0).toString();
+        } else {
+            return "";
+        }
     }
 
     @Override
@@ -107,13 +56,12 @@ public class Schedule {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Schedule schedule = (Schedule) o;
-        return startEpochSecond == schedule.startEpochSecond &&
-                endEpochSecond == schedule.endEpochSecond;
+        return this.timeSlots.equals(schedule.timeSlots);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(startEpochSecond, endEpochSecond);
+        return timeSlots.hashCode();
     }
 
 }

@@ -10,30 +10,30 @@ import seedu.taskman.model.event.Frequency;
 import seedu.taskman.model.event.Schedule;
 
 /**
- * Provides a handle to a task row in the task list panel.
+ * Provides a handle to a activity row in the activity list panel.
  */
 public class TaskRowHandle extends GuiHandle {
-    private Activity task;
+    private Activity activity;
 
-    public TaskRowHandle(GuiRobot guiRobot, Stage primaryStage, Activity task){
+    public TaskRowHandle(GuiRobot guiRobot, Stage primaryStage, Activity activity){
         super(guiRobot, primaryStage, null);
-        this.task = task;
+        this.activity = activity;
     }
 
     public String getTitle() {
-        return task.getTitle().title;
+        return activity.getTitle().title;
     }
     
     public Optional<Deadline> getDeadline() {
-        return task.getDeadline();
+        return activity.getDeadline();
     }
     
-    public Optional<Schedule> getSchedule() {
-        return task.getSchedule();
+    public Schedule getSchedule() {
+        return activity.getSchedule();
     }
     
     public Optional<Frequency> getFrequency() {
-        return task.getFrequency();
+        return activity.getFrequency();
     }
 
     public boolean isSameTask(Activity task){

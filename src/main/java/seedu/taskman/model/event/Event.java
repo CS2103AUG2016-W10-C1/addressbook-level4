@@ -21,7 +21,7 @@ public class Event implements ReadOnlyEvent, MutableTagsEvent {
     private UniqueTagList tags;
 
     public Event(@Nonnull Title title, @Nonnull UniqueTagList tags,
-                 @Nullable Schedule schedule, @Nullable Frequency frequency) {
+                 @Nonnull Schedule schedule, @Nullable Frequency frequency) {
         assert !CollectionUtil.isAnyNull(title, tags);
         this.title = title;
         this.frequency = frequency;
@@ -34,7 +34,7 @@ public class Event implements ReadOnlyEvent, MutableTagsEvent {
      */
     public Event(ReadOnlyEvent source) {
         this(source.getTitle(), source.getTags(),
-                source.getSchedule().orElse(null),
+                source.getSchedule(),
                 source.getFrequency().orElse(null)
         );
     }
@@ -45,8 +45,8 @@ public class Event implements ReadOnlyEvent, MutableTagsEvent {
     }
 
     @Override
-	public Optional<Schedule> getSchedule() {
-		return Optional.ofNullable(schedule);
+	public Schedule getSchedule() {
+		return schedule;
 	}
 
 	public Optional<Frequency> getFrequency() {

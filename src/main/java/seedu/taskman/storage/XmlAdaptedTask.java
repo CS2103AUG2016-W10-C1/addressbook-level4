@@ -24,13 +24,11 @@ public class XmlAdaptedTask {
     @XmlElement(required = false)
     private Long frequency;
 
-    @XmlElement(required = false)
-    private Long scheduleStart;
-    @XmlElement(required = false)
-    private Long scheduleEnd;
 
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
+    @XmlElement
+    private List<XmlAdaptedTimeSlot> xmlTimeSlots = new ArrayList<>();
 
     /**
      * No-arg constructor for JAXB use.
@@ -55,11 +53,6 @@ public class XmlAdaptedTask {
             deadline = source.getDeadline().get().epochSecond;
         }
 
-        if (source.getSchedule().isPresent()) {
-            Schedule schedule = source.getSchedule().get();
-            scheduleStart = schedule.startEpochSecond;
-            scheduleEnd = schedule.endEpochSecond;
-        }
 
         if (source.getFrequency().isPresent()) {
             frequency = source.getFrequency().get().seconds;
@@ -68,6 +61,11 @@ public class XmlAdaptedTask {
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
+        }
+
+        xmlTimeSlots = new ArrayList<>();
+        for (TimeSlot timeSlot : source.getSchedule().getTimeSlots()) {
+            xmlTimeSlots.add(new XmlAdaptedTimeSlot(timeSlot));
         }
     }
 
@@ -82,19 +80,21 @@ public class XmlAdaptedTask {
         for (XmlAdaptedTag tag : tagged) {
             taskTags.add(tag.toModelType());
         }
+        final List<TimeSlot> timeSlots = new ArrayList<>();
+        for (XmlAdaptedTimeSlot timeSlot : xmlTimeSlots) {
+            timeSlots.add(timeSlot.toModelType());
+        }
+
         final Title title = new Title(this.title);
         final Status status = new Status(this.status);
         final UniqueTagList tags = new UniqueTagList(taskTags);
+        final Schedule schedule = new Schedule(timeSlots);
         final Deadline deadline = this.deadline != null
                 ? new Deadline(this.deadline)
                 : null;
         final Frequency frequency = this.frequency != null
                 ? new Frequency(this.frequency)
                 : null;
-        final Schedule schedule = this.scheduleStart != null && this.scheduleEnd != null
-                ? new Schedule(this.scheduleStart, this.scheduleEnd)
-                : null;
-
         Task task = new Task(title, tags, deadline, schedule, frequency);
         task.setStatus(status);
         return task;
