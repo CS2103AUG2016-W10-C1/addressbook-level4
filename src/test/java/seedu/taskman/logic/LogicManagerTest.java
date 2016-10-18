@@ -11,6 +11,7 @@ import seedu.taskman.logic.commands.*;
 import seedu.taskman.commons.events.ui.JumpToListRequestEvent;
 import seedu.taskman.commons.events.ui.ShowHelpRequestEvent;
 import seedu.taskman.commons.events.model.TaskManChangedEvent;
+import seedu.taskman.logic.parser.DateTimeParser;
 import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.Model;
 import seedu.taskman.model.ModelManager;
@@ -179,15 +180,15 @@ public class LogicManagerTest {
     public void execute_add_successful() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
-        Task toBeAdded = helper.adam();
-        TaskMan expectedAB = new TaskMan();
-        expectedAB.addTask(toBeAdded);
+        Task toBeAdded = helper.food();
+        TaskMan expectedTaskMan = new TaskMan();
+        expectedTaskMan.addTask(toBeAdded);
 
         // execute command and verify result
         assertCommandBehavior(helper.generateAddCommand(toBeAdded),
                 String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded),
-                expectedAB,
-                expectedAB.getActivityList());
+                expectedTaskMan,
+                expectedTaskMan.getActivityList());
 
     }
 
@@ -195,7 +196,7 @@ public class LogicManagerTest {
     public void execute_addDuplicate_notAllowed() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
-        Task toBeAdded = helper.adam();
+        Task toBeAdded = helper.food();
         TaskMan expectedAB = new TaskMan();
         expectedAB.addTask(toBeAdded);
 
@@ -248,7 +249,7 @@ public class LogicManagerTest {
      * @param commandWord to test assuming it targets a single task in the last shown list based on visible index.
      */
     private void assertIndexNotFoundBehaviorForCommand(String commandWord) throws Exception {
-        String expectedMessage = MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
+        String expectedMessage = MESSAGE_INVALID_EVENT_DISPLAYED_INDEX;
         TestDataHelper helper = new TestDataHelper();
         List<Task> taskList = helper.generateTaskList(2);
 
@@ -282,7 +283,7 @@ public class LogicManagerTest {
         helper.addToModel(model, threeTasks);
 
         assertCommandBehavior("select 2",
-                String.format(SelectCommand.MESSAGE_SELECT_PERSON_SUCCESS, 2),
+                String.format(SelectCommand.MESSAGE_SELECT_EVENT_SUCCESS, 2),
                 expectedAB,
                 expectedAB.getActivityList());
         assertEquals(1, targetedJumpIndex);
@@ -307,12 +308,39 @@ public class LogicManagerTest {
         List<Task> threeTasks = helper.generateTaskList(3);
 
         TaskMan expectedAB = helper.generateTaskMan(threeTasks);
-        //Wrap Task in Activity to delete
+        // Wrap Task in Activity to delete
         expectedAB.removeActivity(new Activity(threeTasks.get(1)));
         helper.addToModel(model, threeTasks);
 
         assertCommandBehavior("delete 2",
-                String.format(DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS, threeTasks.get(1)),
+                String.format(DeleteCommand.MESSAGE_DELETE_EVENT_SUCCESS, threeTasks.get(1)),
+                expectedAB,
+                expectedAB.getActivityList());
+    }
+    
+    @Test
+    public void execute_completeInvalidArgsFormat_errorMessageShown() throws Exception {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, CompleteCommand.MESSAGE_USAGE);
+        assertIncorrectIndexFormatBehaviorForCommand("complete", expectedMessage);
+    }
+
+    @Test
+    public void execute_completeIndexNotFound_errorMessageShown() throws Exception {
+        assertIndexNotFoundBehaviorForCommand("complete");
+    }
+
+    @Test
+    public void execute_complete_completesCorrectTask() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        List<Task> threeTasks = helper.generateTaskList(3);
+
+        TaskMan expectedAB = helper.generateTaskMan(threeTasks);
+        // Wrap Task in Activity to complete
+        expectedAB.completeActivity(new Activity(threeTasks.get(1)));
+        helper.addToModel(model, threeTasks);
+
+        assertCommandBehavior("complete 2",
+                String.format(CompleteCommand.MESSAGE_SUCCESS, threeTasks.get(1).getTitle()),
                 expectedAB,
                 expectedAB.getActivityList());
     }
@@ -458,6 +486,7 @@ public class LogicManagerTest {
         List<Activity> expectedList = new ArrayList<>();
         expectedList.add(new Activity(helper.generateTask(1)));
         expectedList.add(new Activity(helper.generateTask(5)));
+        // TODO: This passes and fails randomly
         assertCommandBehavior("list 1 5 t/tag2 t/tag6",
                 Command.getMessageForTaskListShownSummary(expectedList.size()),
                 expectedAB,
@@ -470,11 +499,11 @@ public class LogicManagerTest {
      */
     class TestDataHelper{
 
-        Task adam() throws Exception {
-            Title title = new Title("Adam Brown");
-            Deadline privateDeadline = new Deadline("111111");
-            Frequency frequency = new Frequency("1d");
-            Schedule schedule = new Schedule("wed 10am, wed 11am");
+        Task food() throws Exception {
+            Title title = new Title("Procure dinner");
+            Deadline privateDeadline = new Deadline("7.00pm");
+            Frequency frequency = new Frequency("1 day");
+            Schedule schedule = new Schedule("6pm, 7pm");
             Tag tag1 = new Tag("tag1");
             Tag tag2 = new Tag("tag2");
             UniqueTagList tags = new UniqueTagList(tag1, tag2);
@@ -502,12 +531,24 @@ public class LogicManagerTest {
             StringBuffer cmd = new StringBuffer();
 
             cmd.append("add ");
-
             cmd.append(p.getTitle().toString());
-            cmd.append(" d/").append(p.getDeadline());
-            cmd.append(" c/").append(p.getStatus());
-            cmd.append(" r/").append(p.getFrequency());
-    		cmd.append(" s/").append(p.getSchedule());
+            cmd.append(" c/").append(p.getStatus().toString());
+
+            if (p.getDeadline().isPresent()) {
+                Instant instant = Instant.ofEpochSecond(p.getDeadline().get().epochSecond);
+                cmd.append(" d/").append(instant.toString());
+            }
+            if (p.getFrequency().isPresent()) {
+                cmd.append(" f/").append(p.getFrequency().get().seconds / 60 + " mins");
+            }
+            if (p.getSchedule().isPresent()) {
+                String start = DateTimeParser.epochSecondToShortDateTime(p.getSchedule().get().startEpochSecond);
+                String end = DateTimeParser.epochSecondToShortDateTime(p.getSchedule().get().endEpochSecond);
+                cmd.append(" s/").
+                        append(start).
+                        append(" to ").
+                        append(end);
+            }
 
             UniqueTagList tags = p.getTags();
             for(Tag t: tags){

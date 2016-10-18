@@ -6,7 +6,7 @@ import seedu.taskman.testutil.TestTask;
 import seedu.taskman.testutil.TestUtil;
 
 import static org.junit.Assert.assertTrue;
-import static seedu.taskman.logic.commands.DeleteCommand.MESSAGE_DELETE_PERSON_SUCCESS;
+import static seedu.taskman.logic.commands.DeleteCommand.MESSAGE_DELETE_EVENT_SUCCESS;
 
 import org.junit.Test;
 
@@ -16,7 +16,7 @@ public class DeleteCommandTest extends TaskManGuiTest {
     public void delete() {
 
         //delete the first in the list
-        TestTask[] currentList = td.getTypicalTasks();
+        TestTask[] currentList = testTasks.getTypicalTasks();
         int targetIndex = 1;
         assertDeleteSuccess(targetIndex, currentList);
 
@@ -54,7 +54,7 @@ public class DeleteCommandTest extends TaskManGuiTest {
         assertTrue(taskListPanel.isListMatching(expectedRemainderActivities));
 
         //confirm the result message is correct
-        assertResultMessage(String.format(MESSAGE_DELETE_PERSON_SUCCESS, taskToDelete));
+        assertResultMessage(String.format(MESSAGE_DELETE_EVENT_SUCCESS, taskToDelete));
     }
 
 }

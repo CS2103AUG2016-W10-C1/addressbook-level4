@@ -1,15 +1,24 @@
 package seedu.taskman.model;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import javafx.collections.ObservableList;
+import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.MutableTagsEvent;
-import seedu.taskman.model.tag.Tag;
-import seedu.taskman.model.tag.UniqueTagList;
+import seedu.taskman.model.event.Status;
 import seedu.taskman.model.event.Task;
 import seedu.taskman.model.event.UniqueActivityList;
-
-import java.util.*;
-import java.util.stream.Collectors;
+import seedu.taskman.model.tag.Tag;
+import seedu.taskman.model.tag.UniqueTagList;
 
 /**
  * Wraps all data at the task-man level
@@ -20,7 +29,7 @@ public class TaskMan implements ReadOnlyTaskMan {
     private final UniqueActivityList activities;
     private final UniqueTagList tags;
 
-    // todo: format looks pretty weird. can we do smth about it?
+    // TODO: format looks pretty weird. can we do something about it?
     {
         activities = new UniqueActivityList();
         tags = new UniqueTagList();
@@ -42,7 +51,7 @@ public class TaskMan implements ReadOnlyTaskMan {
         resetData(activities.getInternalList(), tags.getInternalList());
     }
 
-    // TODO: review, do we really need this
+    // TODO: Review - do we really need this?
     public static ReadOnlyTaskMan getEmptyTaskMan() {
         return new TaskMan();
     }
@@ -57,7 +66,7 @@ public class TaskMan implements ReadOnlyTaskMan {
         this.activities.getInternalList().setAll(activities);
     }
 
-    // TODO: create set event
+    // TODO: Create setEvent
 
     public void setTags(Collection<Tag> tags) {
         this.tags.getInternalList().setAll(tags);
@@ -75,7 +84,7 @@ public class TaskMan implements ReadOnlyTaskMan {
 //// task-level operations
 
     /**
-     * Adds a task to the task man.
+     * Adds a task to TaskMan.
      * Also checks the new task's tags and updates {@link #tags} with any new tags found,
      * and updates the Tag objects in the task to point to those in {@link #tags}.
      *
@@ -87,7 +96,7 @@ public class TaskMan implements ReadOnlyTaskMan {
     }
 
     /**
-     * Adds a activity to the task man.
+     * Adds an activity to TaskMan.
      * Also checks the new task's tags and updates {@link #tags} with any new tags found,
      * and updates the Tag objects in the task to point to those in {@link #tags}.
      *
@@ -125,6 +134,23 @@ public class TaskMan implements ReadOnlyTaskMan {
 
     public boolean removeActivity(Activity key) throws UniqueActivityList.ActivityNotFoundException {
         if (activities.remove(key)) {
+            return true;
+        } else {
+            throw new UniqueActivityList.ActivityNotFoundException();
+        }
+    }
+    
+    public boolean completeActivity(Activity key) throws UniqueActivityList.ActivityNotFoundException, IllegalValueException {
+        if (this.removeActivity(key)) {
+        	Task task = new Task(
+        		key.getTitle(),
+        		key.getTags(),
+        		key.getDeadline().get(),
+       			key.getSchedule().get(),
+       			key.getFrequency().get()
+       			);
+        	task.status = new Status("complete");
+			this.addActivity(new Activity(task));
             return true;
         } else {
             throw new UniqueActivityList.ActivityNotFoundException();

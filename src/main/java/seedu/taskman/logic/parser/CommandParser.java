@@ -15,7 +15,6 @@ import static seedu.taskman.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 
 /**
  * Parses user input.
- * // todo: rename to CommandParser when refactoring
  */
 public class CommandParser {
 
@@ -56,8 +55,7 @@ public class CommandParser {
         }
     }
     
-    private static final Pattern LIST_ARGS_FORMAT =
-            Pattern.compile("(?<filter>" + ListFlag.get_Pattern() + ")?" +
+    private static final Pattern LIST_ARGS_FORMAT = Pattern.compile("(?<filter>" + ListFlag.get_Pattern() + ")?" +
                     "(?<keywords>(?:\\s*[^/]+)*?)??(?<tagArguments>(?:\\s*t/[^/]+)*)?"); // one or more keywords separated by whitespace
 
     private enum Argument{
@@ -81,7 +79,6 @@ public class CommandParser {
         }
     }
     
-    // todo: all fields currently compulsory
     private static final Pattern TASK_ADD_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("" + Argument.TITLE
                     + Argument.DEADLINE
@@ -89,7 +86,7 @@ public class CommandParser {
                     + Argument.FREQUENCY
                     + Argument.TAG); // variable number of tags
 
-    // todo: all fields currently compulsory
+    // TODO: All fields currently compulsory
     private static final Pattern TASK_EDIT_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("" + Argument.TARGET_INDEX
                     + Argument.TITLE
@@ -122,6 +119,9 @@ public class CommandParser {
 
             case EditCommand.COMMAND_WORD:
                 return prepareEdit(arguments);
+                
+            case CompleteCommand.COMMAND_WORD:
+                return prepareComplete(arguments);
 
             case SelectCommand.COMMAND_WORD:
                 return prepareSelect(arguments);
@@ -208,6 +208,17 @@ public class CommandParser {
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
         }
+    }
+    
+    private Command prepareComplete(String args) {
+
+        Optional<Integer> index = parseIndex(args);
+        if(!index.isPresent()){
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, CompleteCommand.MESSAGE_USAGE));
+        }
+
+        return new CompleteCommand(index.get());
     }
 
     /**

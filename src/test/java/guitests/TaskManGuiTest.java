@@ -31,7 +31,7 @@ public abstract class TaskManGuiTest {
 
     TestApp testApp;
 
-    protected TypicalTestTasks td = new TypicalTestTasks();
+    protected TypicalTestTasks testTasks = new TypicalTestTasks();
 
     /*
      *   Handles to GUI elements present at the start up are created in advance
@@ -77,7 +77,7 @@ public abstract class TaskManGuiTest {
      */
     protected TaskMan getInitialData() {
         TaskMan ab = TestUtil.generateEmptyTaskMan();
-        TypicalTestTasks.loadTaskManWithSampleData(ab);
+        testTasks.loadTaskManWithSampleData(ab);
         return ab;
     }
 

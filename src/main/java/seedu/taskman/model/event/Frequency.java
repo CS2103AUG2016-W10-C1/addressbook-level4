@@ -1,19 +1,23 @@
 package seedu.taskman.model.event;
 
+import org.ocpsoft.prettytime.PrettyTime;
 import com.google.common.base.Objects;
-import org.apache.commons.lang.time.DurationFormatUtils;
+
 import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.logic.parser.DateTimeParser;
 
+import java.sql.Date;
 import java.time.Instant;
 
 public class Frequency {
-    // TODO: check for overflow because current validation allows years?
     public static final String MESSAGE_FREQUENCY_CONSTRAINTS =
             "Task frequency should only contain frequency and unit of time in the format: ";
+
     public static final String FREQUENCY_VALIDATION_REGEX = "^" + DateTimeParser.MULTIPLE_DURATION + "$";
+    public static final int MULTIPLIER_TIME_UNIX_TO_JAVA = 1000;
 
     public final Long seconds;
+    public final PrettyTime prettyTimeFormatter = new PrettyTime();
 
     public Frequency(String frequency) throws IllegalValueException {
         assert frequency != null;
@@ -35,33 +39,8 @@ public class Frequency {
 
     @Override
     public String toString() {
-        String[] temporalUnits = {"year", "month", "day", "hour", "min"};
-        String duration = DurationFormatUtils.formatDuration(seconds * 1000, "y:M:d:H:m");
-        String[] split = duration.split(":");
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < split.length; i++) {
-            String temporalUnit = temporalUnits[i];
-            long time = Long.valueOf(split[i]);
-            if (time >= 1) {
-                builder.append(time + " " + temporalUnit);
-
-                // for plurality
-                if (time > 1) {
-                    builder.append("s");
-                }
-
-                builder.append(", ");
-            }
-        }
-
-        String parsedDuration = builder.toString();
-        // drop the last ", "
-        if (!parsedDuration.isEmpty()) {
-            parsedDuration = parsedDuration.substring(0, parsedDuration.length() - 2);
-        }
-        return parsedDuration.isEmpty()
-                ? "0 mins"
-                : parsedDuration;
+    	// TODO: Verify if it is "exactly 1 year instead of 360 days"
+        return prettyTimeFormatter.format(new Date(seconds * MULTIPLIER_TIME_UNIX_TO_JAVA));
     }
 
     @Override
