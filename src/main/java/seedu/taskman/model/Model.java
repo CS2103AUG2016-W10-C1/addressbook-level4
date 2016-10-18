@@ -13,8 +13,8 @@ import java.util.Set;
 public interface Model {
 
     public enum FilterMode {
-        TASK_ONLY,
         SCHEDULE_ONLY,
+        DEADLINE_ONLY,
         ALL
     }
 

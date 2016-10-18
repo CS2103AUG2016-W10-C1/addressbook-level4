@@ -28,6 +28,8 @@ public class CommandParser {
 
     private enum ListFlag{
         LIST_SCHEDULE("s/", FilterMode.SCHEDULE_ONLY),
+        LIST_DEADLINE("d/", FilterMode.DEADLINE_ONLY),
+
         LIST_ALL("all/", FilterMode.ALL);
         
         public final String flag;
@@ -280,7 +282,7 @@ public class CommandParser {
         } else {
             //filter
             final String filter = matcher.group("filter");
-            Model.FilterMode filterMode = Model.FilterMode.TASK_ONLY;
+            Model.FilterMode filterMode = Model.FilterMode.DEADLINE_ONLY;
             for(ListFlag listFlag: ListFlag.values()){
                 if(listFlag.flag.equals(filter)){
                     filterMode = listFlag.filterMode;
