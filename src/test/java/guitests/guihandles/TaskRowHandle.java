@@ -20,7 +20,7 @@ public class TaskRowHandle extends GuiHandle {
         this.activity = activity;
     }
 
-    public String getFullTitle() {
+    public String getTitle() {
         return activity.getTitle().title;
     }
     
@@ -37,7 +37,7 @@ public class TaskRowHandle extends GuiHandle {
     }
 
     public boolean isSameTask(Activity task){
-        return getFullTitle().equals(task.getTitle().title) && getDeadline().equals(task.getDeadline())
+        return getTitle().equals(task.getTitle().title) && getDeadline().equals(task.getDeadline())
                 && getSchedule().equals(task.getSchedule()) && getFrequency().equals(task.getFrequency());
     }
 
@@ -45,7 +45,7 @@ public class TaskRowHandle extends GuiHandle {
     public boolean equals(Object obj) {
         if(obj instanceof TaskRowHandle) {
             TaskRowHandle handle = (TaskRowHandle) obj;
-            return getFullTitle().equals(handle.getFullTitle())
+            return getTitle().equals(handle.getTitle())
                     && getDeadline().equals(handle.getDeadline())
                     && getSchedule().equals(handle.getSchedule())
                     && getFrequency().equals(handle.getFrequency()); //TODO: compare the rest
@@ -55,6 +55,6 @@ public class TaskRowHandle extends GuiHandle {
 
     @Override
     public String toString() {
-        return getFullTitle() + " " + getDeadline() + " " + getSchedule() + " " + getFrequency();
+        return getTitle() + " " + getDeadline() + " " + getSchedule() + " " + getFrequency();
     }
 }

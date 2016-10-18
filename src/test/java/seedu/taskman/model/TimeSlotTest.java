@@ -13,7 +13,7 @@ import static junit.framework.TestCase.assertEquals;
 public class TimeSlotTest {
 
     @Test
-    public void create_DateTimeDateTime_Success() throws IllegalValueException {
+    public void create_dateTimeDateTime_success() throws IllegalValueException {
         String start = "05/07/2016 0001";
         String end = "07/07/2016 0002";
 
@@ -25,17 +25,25 @@ public class TimeSlotTest {
     }
 
     @Test
-    public void create_DateTimeDuration_Success() throws IllegalValueException {
+    public void create_dateTimeDuration_success() throws IllegalValueException {
         String start = "05/07/2016 0001";
         String duration = "2 hours";
 
         new TimeSlot(start + " for " + duration);
     }
 
+    @Test
+    public void create_relativeDateTimeForgotNext_success() throws IllegalValueException {
+        String start = "sun 2359";
+        String end = "mon 2359";
+
+        new Schedule(start + " to " + end);
+    }
+
     @Rule
     public final ExpectedException exception = ExpectedException.none();
     @Test
-    public void create_BadDivider_Exception() throws IllegalValueException {
+    public void create_dadDivider_exception() throws IllegalValueException {
         String start = "05/07/2016 0001";
         String end = "07/07/2016 0002";
 

@@ -40,6 +40,7 @@ public class Schedule {
         return timeSlots;
     }
 
+
     @Override
     public String toString() {
         return "Not yet implemented"; //todo: implement this
