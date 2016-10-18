@@ -11,15 +11,15 @@ import java.util.Set;
 /**
  * Adds a Task to the task man.
  */
-public class AddCommand extends Command {
+public class DoCommand extends Command {
 
-    public static final String COMMAND_WORD = "add";
+    public static final String COMMAND_WORD = "do";
 
     // todo, differed: let parameters be objects. we can easily generate the usage in that case
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a task to TaskMan. "
-            + "Parameters: TITLE d/DEADLINE s/startDateTime, endDateTime f/frequency [t/TAG]...\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a task to TaskMan.\n"
+            + "Parameters: TITLE d/DEADLINE s/SCHEDULE f/FREQUENCY [t/TAG]...\n"
             + "Example: " + COMMAND_WORD
-            + " Buy bday present for dad d/next fri 1800 s/tdy 1800, tdy 2000 f/1 year t/Family";
+            + " pay utility bills d/next fri 1800 s/tdy 1800, tdy 1830 f/1 month t/bills";
 
     public static final String MESSAGE_SUCCESS = "New task added: %1$s";
     public static final String MESSAGE_DUPLICATE_EVENT = "This task already exists in TaskMan";
@@ -31,7 +31,7 @@ public class AddCommand extends Command {
      *
      * @throws IllegalValueException if any of the raw values are invalid
      */
-    public AddCommand(String title, String deadline, String schedule, String frequency, Set<String> tags)
+    public DoCommand(String title, String deadline, String schedule, String frequency, Set<String> tags)
             throws IllegalValueException {
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagName : tags) {

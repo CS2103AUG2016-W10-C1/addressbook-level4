@@ -84,7 +84,7 @@ public class CommandParser {
     }
     
     // todo: all fields currently compulsory
-    private static final Pattern TASK_ADD_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
+    private static final Pattern TASK_DO_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("" + Argument.TITLE
                     + Argument.DEADLINE
                     + Argument.SCHEDULE
@@ -119,8 +119,8 @@ public class CommandParser {
         final String arguments = matcher.group("arguments");
         switch (commandWord) {
 
-            case AddCommand.COMMAND_WORD:
-                return prepareAdd(arguments);
+            case DoCommand.COMMAND_WORD:
+                return prepareDo(arguments);
 
             case EditCommand.COMMAND_WORD:
                 return prepareEdit(arguments);
@@ -154,14 +154,14 @@ public class CommandParser {
      * @param args full command args string
      * @return the prepared command
      */
-    private Command prepareAdd(String args){
-        final Matcher matcher = TASK_ADD_ARGS_FORMAT.matcher(args.trim());
+    private Command prepareDo(String args){
+        final Matcher matcher = TASK_DO_ARGS_FORMAT.matcher(args.trim());
         // Validate arg string format
         if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DoCommand.MESSAGE_USAGE));
         }
         try {
-            return new AddCommand(
+            return new DoCommand(
                     matcher.group("title"),
                     matcher.group("deadline"),
                     matcher.group("schedule"),
