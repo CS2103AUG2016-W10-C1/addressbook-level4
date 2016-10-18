@@ -5,9 +5,6 @@ import seedu.taskman.model.event.Task;
 import seedu.taskman.testutil.TestTask;
 
 import static org.junit.Assert.assertTrue;
-import static seedu.taskman.testutil.TypicalTestTasks.taskCS2102;
-
-import org.junit.Test;
 
 public class ClearCommandTest extends TaskManGuiTest {
 
@@ -15,7 +12,7 @@ public class ClearCommandTest extends TaskManGuiTest {
     public void clear() {
 
         //verify a non-empty list can be cleared
-        TestTask[] currentList= td.getTypicalTasks();
+        TestTask[] currentList= testTasks.getTypicalTasks();
         Activity[] expectedList = new Activity[currentList.length];
         for(int i = 0; i < expectedList.length; i++){
             expectedList[i] = new Activity(new Task(currentList[i]));
@@ -24,8 +21,8 @@ public class ClearCommandTest extends TaskManGuiTest {
         assertClearCommandSuccess();
 
         //verify other commands can work after a clear command
-        commandBox.runCommand(taskCS2102.getAddCommand());
-        assertTrue(taskListPanel.isListMatching(new Activity(new Task(taskCS2102))));
+        commandBox.runCommand(testTasks.taskCS2102.getAddCommand());
+        assertTrue(taskListPanel.isListMatching(new Activity(new Task(testTasks.taskCS2102))));
         commandBox.runCommand("delete 1");
         assertListSize(0);
 
