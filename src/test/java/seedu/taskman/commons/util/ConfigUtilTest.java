@@ -5,12 +5,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
-import seedu.taskman.commons.core.Config;
+import seedu.taskman.commons.core.config.Config;
+import seedu.taskman.commons.core.config.ConfigData;
 import seedu.taskman.commons.exceptions.DataConversionException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.logging.Level;
 
 import static org.junit.Assert.assertEquals;
@@ -34,7 +34,7 @@ public class ConfigUtilTest {
 
     @Test
     public void read_missingFile_emptyResult() throws DataConversionException {
-        assertFalse(read("NonExistentFile.json").isPresent());
+        assertFalse(read("NonExistentFile.json"));
     }
 
     @Test
@@ -51,76 +51,77 @@ public class ConfigUtilTest {
     @Test
     public void read_fileInOrder_successfullyRead() throws DataConversionException {
 
-        Config expected = getTypicalConfig();
+        ConfigData expectedData = getTypicalConfig().getDataClone();
 
-        Config actual = read("TypicalConfig.json").get();
-        assertEquals(expected, actual);
+        read("TypicalConfig.json");
+        assertEquals(expectedData, Config.getInstance().getDataClone());
     }
 
     @Test
     public void read_valuesMissingFromFile_defaultValuesUsed() throws DataConversionException {
-        Config actual = read("EmptyConfig.json").get();
-        assertEquals(new Config(), actual);
+        ConfigData expectedData = Config.getInstance().getDataClone();
+        read("EmptyConfig.json");
+        assertEquals(expectedData, Config.getInstance().getDataClone());
     }
 
     @Test
     public void read_extraValuesInFile_extraValuesIgnored() throws DataConversionException {
-        Config expected = getTypicalConfig();
-        Config actual = read("ExtraValuesConfig.json").get();
+        ConfigData expectedData = getTypicalConfig().getDataClone();
+        read("ExtraValuesConfig.json");
 
-        assertEquals(expected, actual);
+        assertEquals(expectedData, Config.getInstance().getDataClone());
     }
 
     private Config getTypicalConfig() {
-        Config config = new Config();
+        Config config = Config.getInstance();
         config.setAppTitle("Typical App Title");
         config.setLogLevel(Level.INFO);
         config.setUserPrefsFilePath("C:\\preferences.json");
         config.setTaskManFilePath("taskMan.xml");
         config.setTaskManName("TypicalTaskManName");
+        System.out.println(config.getAppTitle());
+        System.out.println(config.getLogLevel());
+        System.out.println(config.getTaskManFilePath());
+        System.out.println(config.getTaskManName());
+        System.out.println(config.getUserPrefsFilePath());
         return config;
     }
 
-    private Optional<Config> read(String configFileInTestDataFolder) throws DataConversionException {
+    private boolean read(String configFileInTestDataFolder) throws DataConversionException {
         String configFilePath = addToTestDataPathIfNotNull(configFileInTestDataFolder);
-        return new ConfigUtil().readConfig(configFilePath);
-    }
-
-    @Test
-    public void save_nullConfig_assertionFailure() throws IOException {
-        thrown.expect(AssertionError.class);
-        save(null, "SomeFile.json");
+        return Config.readConfig(configFilePath);
     }
 
     @Test
     public void save_nullFile_assertionFailure() throws IOException {
         thrown.expect(AssertionError.class);
-        save(new Config(), null);
+        save( null);
     }
 
     @Test
     public void saveConfig_allInOrder_success() throws DataConversionException, IOException {
-        Config original = getTypicalConfig();
+        Config config = getTypicalConfig();
 
         String configFilePath = testFolder.getRoot() + File.separator + "TempConfig.json";
-        ConfigUtil configStorage = new ConfigUtil();
 
         //Try writing when the file doesn't exist
-        configStorage.saveConfig(original, configFilePath);
-        Config readBack = configStorage.readConfig(configFilePath).get();
-        assertEquals(original, readBack);
+        ConfigData originalData = config.getDataClone();
+        config.saveConfig(configFilePath);
+        config.readConfig(configFilePath);
+        assertEquals(config.getDataClone(), originalData);
 
         //Try saving when the file exists
-        original.setAppTitle("Updated Title");
-        original.setLogLevel(Level.FINE);
-        configStorage.saveConfig(original, configFilePath);
-        readBack = configStorage.readConfig(configFilePath).get();
-        assertEquals(original, readBack);
+        config.setAppTitle("Updated Title");
+        config.setLogLevel(Level.FINE);
+        originalData = config.getDataClone();
+        config.saveConfig(configFilePath);
+        config.readConfig(configFilePath);
+        assertEquals(config, originalData);
     }
 
-    private void save(Config config, String configFileInTestDataFolder) throws IOException {
+    private void save(String configFileInTestDataFolder) throws IOException {
         String configFilePath = addToTestDataPathIfNotNull(configFileInTestDataFolder);
-        new ConfigUtil().saveConfig(config, configFilePath);
+        Config.saveConfig(configFilePath);
     }
 
     private String addToTestDataPathIfNotNull(String configFileInTestDataFolder) {

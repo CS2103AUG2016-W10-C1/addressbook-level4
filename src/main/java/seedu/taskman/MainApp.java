@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import seedu.taskman.commons.core.Config;
+import seedu.taskman.commons.core.config.Config;
 import seedu.taskman.commons.core.EventsCenter;
 import seedu.taskman.commons.core.LogsCenter;
 import seedu.taskman.commons.core.Version;
@@ -14,7 +14,6 @@ import seedu.taskman.commons.util.StringUtil;
 import seedu.taskman.logic.Logic;
 import seedu.taskman.logic.LogicManager;
 import seedu.taskman.model.*;
-import seedu.taskman.commons.util.ConfigUtil;
 import seedu.taskman.storage.Storage;
 import seedu.taskman.storage.StorageManager;
 import seedu.taskman.ui.Ui;
@@ -47,8 +46,10 @@ public class MainApp extends Application {
         logger.info("=============================[ Initializing TaskMan ]===========================");
         super.init();
 
-        config = initConfig(getApplicationParameter("config"));
-        storage = new StorageManager(config.getTaskManFilePath(), config.getUserPrefsFilePath());
+        config = Config.getInstance();
+
+        initConfig(getApplicationParameter("config"));
+        storage = new StorageManager(Config.getInstance().getTaskManFilePath(), config.getUserPrefsFilePath());
 
         userPrefs = initPrefs(config);
 
@@ -92,8 +93,7 @@ public class MainApp extends Application {
         LogsCenter.init(config);
     }
 
-    protected Config initConfig(String configFilePath) {
-        Config initializedConfig;
+    protected void initConfig(String configFilePath) {
         String configFilePathUsed;
 
         configFilePathUsed = Config.DEFAULT_CONFIG_FILE;
@@ -106,21 +106,18 @@ public class MainApp extends Application {
         logger.info("Using config file : " + configFilePathUsed);
 
         try {
-            Optional<Config> configOptional = ConfigUtil.readConfig(configFilePathUsed);
-            initializedConfig = configOptional.orElse(new Config());
+            Config.readConfig(configFilePathUsed);
         } catch (DataConversionException e) {
             logger.warning("Config file at " + configFilePathUsed + " is not in the correct format. " +
                     "Using default config properties");
-            initializedConfig = new Config();
         }
 
         //Update config file in case it was missing to begin with or there are new/unused fields
         try {
-            ConfigUtil.saveConfig(initializedConfig, configFilePathUsed);
+            Config.saveConfig(configFilePathUsed);
         } catch (IOException e) {
             logger.warning("Failed to save config file : " + StringUtil.getDetails(e));
         }
-        return initializedConfig;
     }
 
     protected UserPrefs initPrefs(Config config) {

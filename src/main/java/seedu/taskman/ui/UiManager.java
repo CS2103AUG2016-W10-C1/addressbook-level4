@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import seedu.taskman.Constants;
 import seedu.taskman.MainApp;
 import seedu.taskman.commons.core.ComponentManager;
-import seedu.taskman.commons.core.Config;
+import seedu.taskman.commons.core.config.Config;
 import seedu.taskman.commons.core.LogsCenter;
 import seedu.taskman.commons.events.storage.DataSavingExceptionEvent;
 import seedu.taskman.commons.events.ui.JumpToListRequestEvent;

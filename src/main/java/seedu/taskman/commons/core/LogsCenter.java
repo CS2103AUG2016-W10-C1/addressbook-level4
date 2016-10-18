@@ -1,5 +1,6 @@
 package seedu.taskman.commons.core;
 
+import seedu.taskman.commons.core.config.Config;
 import seedu.taskman.commons.events.BaseEvent;
 
 import java.io.IOException;

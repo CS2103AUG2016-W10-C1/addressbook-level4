@@ -1,25 +1,16 @@
-package seedu.taskman.commons.core;
+package seedu.taskman.commons.core.config;
 
 import java.util.Objects;
 import java.util.logging.Level;
 
-/**
- * Config values used by the app
- */
-public class Config {
-
-    public static final String DEFAULT_CONFIG_FILE = "config.json";
+public class ConfigData {
 
     // Config values customizable through config file
-    private String appTitle = "TaskMan";
-    private Level logLevel = Level.INFO;
-    private String userPrefsFilePath = "preferences.json";
-    private String taskManFilePath = "data/taskMan.xml";
-    private String taskManName = "MyTaskMan";
-
-
-    public Config() {
-    }
+    protected String appTitle = "TaskMan";
+    protected Level logLevel = Level.INFO;
+    protected String userPrefsFilePath = "preferences.json";
+    protected String taskManFilePath = "data/taskMan.xml";
+    protected String taskManName = "MyTaskMan";
 
     public String getAppTitle() {
         return appTitle;
@@ -61,39 +52,38 @@ public class Config {
         this.taskManName = taskManName;
     }
 
+    protected static void update(ConfigData toUpdate, ConfigData source){
+        toUpdate.appTitle = source.appTitle;
+        toUpdate.logLevel = source.logLevel;
+        toUpdate.userPrefsFilePath = source.userPrefsFilePath;
+        toUpdate.taskManFilePath = source.taskManFilePath;
+        toUpdate.taskManName = source.taskManName;
+    }
+
+    public ConfigData getDataClone() {
+        ConfigData clone = new ConfigData();
+        update(clone, this);
+        System.out.println("test equals in data clone");
+        System.out.println(clone.equals(this));
+        return clone;
+    }
 
     @Override
     public boolean equals(Object other) {
         if (other == this){
             return true;
         }
-        if (!(other instanceof Config)){ //this handles null as well.
+        if (!(other instanceof ConfigData)){ //this handles null as well.
             return false;
         }
 
-        Config o = (Config)other;
+        ConfigData o = (ConfigData)other;
 
         return Objects.equals(appTitle, o.appTitle)
                 && Objects.equals(logLevel, o.logLevel)
                 && Objects.equals(userPrefsFilePath, o.userPrefsFilePath)
                 && Objects.equals(taskManFilePath, o.taskManFilePath)
                 && Objects.equals(taskManName, o.taskManName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(appTitle, logLevel, userPrefsFilePath, taskManFilePath, taskManName);
-    }
-
-    @Override
-    public String toString(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("App title : " + appTitle);
-        sb.append("\nCurrent log level : " + logLevel);
-        sb.append("\nPreference file Location : " + userPrefsFilePath);
-        sb.append("\nLocal data file location : " + taskManFilePath);
-        sb.append("\nTaskMan name : " + taskManName);
-        return sb.toString();
     }
 
 }
