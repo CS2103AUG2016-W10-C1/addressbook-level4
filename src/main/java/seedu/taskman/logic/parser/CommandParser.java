@@ -29,7 +29,7 @@ public class CommandParser {
     private enum ListFlag{
         LIST_SCHEDULE("s/", FilterMode.SCHEDULE_ONLY),
         LIST_DEADLINE("d/", FilterMode.DEADLINE_ONLY),
-
+        LIST_FLOATING("f/", FilterMode.FLOATING_ONLY),
         LIST_ALL("all/", FilterMode.ALL);
         
         public final String flag;

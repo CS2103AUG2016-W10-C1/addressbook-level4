@@ -15,6 +15,7 @@ public interface Model {
     public enum FilterMode {
         SCHEDULE_ONLY,
         DEADLINE_ONLY,
+        FLOATING_ONLY,
         ALL
     }
 
