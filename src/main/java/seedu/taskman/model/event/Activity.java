@@ -37,11 +37,11 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent{
                 break;
             }
             case EVENT: {
-                this.activity = new Event((ReadOnlyTask) source.activity);
+                this.activity = new Event((ReadOnlyEvent) source.activity);
                 break;
             }
             default: {
-                this.activity = new Event((ReadOnlyTask) source.activity);
+                this.activity = new Event((ReadOnlyEvent) source.activity);
             }
         }
         type = source.getType();
