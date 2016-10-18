@@ -11,7 +11,7 @@ import seedu.taskman.testutil.TestUtil;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-//TODO Change to DoCommandTest
+//TODO Change to DoCommandTest and MarkCommandTest
 public class AddCommandTest extends TaskManGuiTest {
     
     //@Test
