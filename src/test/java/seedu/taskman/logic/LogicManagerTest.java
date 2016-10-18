@@ -11,6 +11,7 @@ import seedu.taskman.logic.commands.*;
 import seedu.taskman.commons.events.ui.JumpToListRequestEvent;
 import seedu.taskman.commons.events.ui.ShowHelpRequestEvent;
 import seedu.taskman.commons.events.model.TaskManChangedEvent;
+import seedu.taskman.logic.parser.DateTimeParser;
 import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.Model;
 import seedu.taskman.model.ModelManager;
@@ -179,15 +180,15 @@ public class LogicManagerTest {
     public void execute_add_successful() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
-        Task toBeAdded = helper.adam();
-        TaskMan expectedAB = new TaskMan();
-        expectedAB.addEvent(toBeAdded);
+        Task toBeAdded = helper.food();
+        TaskMan expectedTaskMan = new TaskMan();
+        expectedTaskMan.addTask(toBeAdded);
 
         // execute command and verify result
         assertCommandBehavior(helper.generateAddCommand(toBeAdded),
                 String.format(DoCommand.MESSAGE_SUCCESS, toBeAdded),
-                expectedAB,
-                expectedAB.getActivityList());
+                expectedTaskMan,
+                expectedTaskMan.getActivityList());
 
     }
 
@@ -195,7 +196,7 @@ public class LogicManagerTest {
     public void execute_addDuplicate_notAllowed() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
-        Task toBeAdded = helper.adam();
+        Task toBeAdded = helper.food();
         TaskMan expectedAB = new TaskMan();
         expectedAB.addEvent(toBeAdded);
 
@@ -470,11 +471,11 @@ public class LogicManagerTest {
      */
     class TestDataHelper{
 
-        Task adam() throws Exception {
-            Title title = new Title("Adam Brown");
-            Deadline privateDeadline = new Deadline("111111");
-            Frequency frequency = new Frequency("1d");
-            Schedule schedule = new Schedule("wed 10am, wed 11am");
+        Task food() throws Exception {
+            Title title = new Title("Procure dinner");
+            Deadline privateDeadline = new Deadline("7.00pm");
+            Frequency frequency = new Frequency("1 day");
+            Schedule schedule = new Schedule("6pm, 7pm");
             Tag tag1 = new Tag("tag1");
             Tag tag2 = new Tag("tag2");
             UniqueTagList tags = new UniqueTagList(tag1, tag2);
@@ -502,12 +503,24 @@ public class LogicManagerTest {
             StringBuffer cmd = new StringBuffer();
 
             cmd.append("add ");
-
             cmd.append(p.getTitle().toString());
-            cmd.append(" d/").append(p.getDeadline());
-            cmd.append(" c/").append(p.getStatus());
-            cmd.append(" r/").append(p.getFrequency());
-    		cmd.append(" s/").append(p.getSchedule());
+            cmd.append(" c/").append(p.getStatus().toString());
+
+            if (p.getDeadline().isPresent()) {
+                Instant instant = Instant.ofEpochSecond(p.getDeadline().get().epochSecond);
+                cmd.append(" d/").append(instant.toString());
+            }
+            if (p.getFrequency().isPresent()) {
+                cmd.append(" f/").append(p.getFrequency().get().seconds / 60 + " mins");
+            }
+            if (p.getSchedule().isPresent()) {
+                String start = DateTimeParser.epochSecondToShortDateTime(p.getSchedule().get().startEpochSecond);
+                String end = DateTimeParser.epochSecondToShortDateTime(p.getSchedule().get().endEpochSecond);
+                cmd.append(" s/").
+                        append(start).
+                        append(" to ").
+                        append(end);
+            }
 
             UniqueTagList tags = p.getTags();
             for(Tag t: tags){

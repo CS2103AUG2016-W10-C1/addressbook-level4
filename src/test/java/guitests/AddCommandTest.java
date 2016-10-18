@@ -17,18 +17,18 @@ public class AddCommandTest extends TaskManGuiTest {
     //@Test
     public void add() {
         //add one task
-        TestTask[] currentList = td.getTypicalTasks();
-        TestTask taskToAdd = td.taskCS2102;
+        TestTask[] currentList = testTasks.getTypicalTasks();
+        TestTask taskToAdd = testTasks.taskCS2102;
         assertAddSuccess(taskToAdd, currentList);
         currentList = TestUtil.addTasksToList(currentList, taskToAdd);
 
         //add another task
-        taskToAdd = td.taskCS2104;
+        taskToAdd = testTasks.taskCS2104;
         assertAddSuccess(taskToAdd, currentList);
         currentList = TestUtil.addTasksToList(currentList, taskToAdd);
 
         //add duplicate task
-        commandBox.runCommand(td.taskCS2102.getAddCommand());
+        commandBox.runCommand(testTasks.taskCS2102.getAddCommand());
         Activity[] expectedList = new Activity[currentList.length];
         for(int i = 0; i < expectedList.length; i++){
             expectedList[i] = new Activity(new Task(currentList[i]));
@@ -38,7 +38,7 @@ public class AddCommandTest extends TaskManGuiTest {
 
         //add to empty list
         commandBox.runCommand("clear");
-        assertAddSuccess(td.taskCS2101);
+        assertAddSuccess(testTasks.taskCS2101);
 
         //invalid command
         commandBox.runCommand("adds Johnny");

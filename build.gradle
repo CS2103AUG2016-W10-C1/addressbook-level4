@@ -59,7 +59,10 @@ allprojects {
 
         // for natural language datetime parsing
         compile group: 'com.joestelmach', name: 'natty', version: '0.12'
-
+        
+        // https://mvnrepository.com/artifact/org.ocpsoft.prettytime/prettytime
+        compile group: 'org.ocpsoft.prettytime', name: 'prettytime', version: '4.0.1.Final'
+		
         testCompile "junit:junit:$junitVersion"
         testCompile "org.testfx:testfx-core:$testFxVersion"
         testCompile "org.testfx:testfx-junit:$testFxVersion"
