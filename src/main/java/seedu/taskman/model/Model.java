@@ -29,6 +29,7 @@ public interface Model {
     /** Deletes the given activity. */
     void deleteActivity(Activity target) throws UniqueActivityList.ActivityNotFoundException;
 
+    //TODO Is this even needed?
     /** Adds the given event */
     void addEvent(Event task) throws UniqueActivityList.DuplicateActivityException;
 

@@ -91,7 +91,7 @@ public class CommandParser {
                     + Argument.FREQUENCY
                     + Argument.TAG); // variable number of tags
     
-    private static final Pattern TASK_MARK_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
+    private static final Pattern EVENT_MARK_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("" + Argument.TITLE
                     + Argument.SCHEDULE
                     + Argument.FREQUENCY
@@ -189,7 +189,7 @@ public class CommandParser {
      * @return the prepared command
      */
     private Command prepareMark(String args){
-        final Matcher matcher = TASK_MARK_ARGS_FORMAT.matcher(args.trim());
+        final Matcher matcher = EVENT_MARK_ARGS_FORMAT.matcher(args.trim());
         // Validate arg string format
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MarkCommand.MESSAGE_USAGE));
