@@ -63,7 +63,7 @@ public class EditCommand extends Command {
         } catch (UniqueActivityList.ActivityNotFoundException pnfe) {
 
             indicateAttemptToExecuteIncorrectCommand();
-            return new CommandResult(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            return new CommandResult(Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX);
 
         } catch (UniqueActivityList.DuplicateActivityException e) {
 
@@ -82,7 +82,7 @@ public class EditCommand extends Command {
 
         if (lastShownList.size() < argsContainer.targetIndex) {
             indicateAttemptToExecuteIncorrectCommand();
-            throw new IllegalValueException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            throw new IllegalValueException(Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX);
         }
 
         beforeEdit = lastShownList.get(argsContainer.targetIndex - 1);
