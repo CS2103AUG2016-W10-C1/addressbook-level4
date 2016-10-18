@@ -27,7 +27,7 @@ public class CommandParser {
     private static final Pattern TASK_INDEX_ARGS_FORMAT = Pattern.compile(Argument.TARGET_INDEX.pattern);
 
     private enum ListFlag{
-        LIST_EVENT("e/", FilterMode.EVENT_ONLY),
+        LIST_SCHEDULE("s/", FilterMode.SCHEDULE_ONLY),
         LIST_ALL("all/", FilterMode.ALL);
         
         public final String flag;

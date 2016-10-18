@@ -14,7 +14,7 @@ public interface Model {
 
     public enum FilterMode {
         TASK_ONLY,
-        EVENT_ONLY,
+        SCHEDULE_ONLY,
         ALL
     }
 
