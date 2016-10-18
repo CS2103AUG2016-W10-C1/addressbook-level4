@@ -12,8 +12,8 @@ import java.time.Instant;
 public class Frequency {
     public static final String MESSAGE_FREQUENCY_CONSTRAINTS =
             "Task frequency should only contain frequency and unit of time in the format: ";
-    // differed: swap to multiple duration format
-    public static final String FREQUENCY_VALIDATION_REGEX = "^" + DateTimeParser.SINGLE_DURATION + "$";
+
+    public static final String FREQUENCY_VALIDATION_REGEX = "^" + DateTimeParser.MULTIPLE_DURATION + "$";
     public static final int MULTIPLIER_TIME_UNIX_TO_JAVA = 1000;
 
     public final Long seconds;
