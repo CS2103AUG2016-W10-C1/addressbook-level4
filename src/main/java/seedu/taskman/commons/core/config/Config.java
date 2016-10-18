@@ -65,6 +65,10 @@ public class Config extends ConfigData {
         return sb.toString();
     }
 
+    public static void resetInstance(){
+        update(instance, new ConfigData());
+    }
+
     /**
      * A class for accessing the Config File.
      */
