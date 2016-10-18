@@ -18,9 +18,6 @@ public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
-    // KIV: Let parameters be objects. We can easily generate the usage in that case.
-    // TODO: Update message. I'm so confused about the order of the arguments urgh...
-    // UG/DG (what is this for?)
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits an existing task. "
             + "Parameters: INDEX [TITLE] [d/DEADLINE] [c/STATUS] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...\n"
             + "Example: " + COMMAND_WORD
@@ -115,9 +112,12 @@ public class EditCommand extends Command {
                         ? beforeEdit.getFrequency().orElse(null)
                         : new Frequency(argsContainer.frequency)
             	);
+            	// TODO: Do we need the code below for consistency? ArgumentContainer has status field too.
+            	/*
             	task.status = argsContainer.status == null
                         ? beforeEdit.getStatus().orElse(null)
                         : new Status(argsContainer.status);
+                */
                 afterEdit = new Activity(task);
             }
         }
