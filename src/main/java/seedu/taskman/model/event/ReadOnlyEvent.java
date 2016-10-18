@@ -12,7 +12,7 @@ public interface ReadOnlyEvent {
 
     Title getTitle();
     Optional<Frequency> getFrequency();
-    Optional<Schedule> getSchedule();
+    Schedule getSchedule();
 
     /**
      * The returned TagList is a deep copy of the internal TagList,
@@ -38,9 +38,9 @@ public interface ReadOnlyEvent {
     default String getAsText() {
         final StringBuilder builder = new StringBuilder();
         builder.append(getTitle())
-		        .append(" Recurring: ")
-			    .append(getFrequency())
 		        .append(" Frequency: ")
+			    .append(getFrequency())
+		        .append(" Schedule: ")
 		        .append(getSchedule())
 		        .append(" Tags: ");
         getTags().forEach(builder::append);

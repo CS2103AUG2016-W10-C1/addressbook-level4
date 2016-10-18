@@ -6,21 +6,22 @@ import org.junit.rules.ExpectedException;
 import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.model.event.Frequency;
 import seedu.taskman.model.event.Schedule;
+import seedu.taskman.model.event.TimeSlot;
 
 import static junit.framework.TestCase.assertEquals;
 
-public class ScheduleTest {
+public class TimeSlotTest {
 
     @Test
     public void create_DateTimeDateTime_Success() throws IllegalValueException {
         String start = "05/07/2016 0001";
         String end = "07/07/2016 0002";
 
-        Schedule schedule = new Schedule(start + ", " + end);
-        new Schedule(start + " to " + end);
+        TimeSlot timeslot = new TimeSlot(start + ", " + end);
+        new TimeSlot(start + " to " + end);
 
-        assertEquals(schedule.startEpochSecond, 1462579260);
-        assertEquals(schedule.endEpochSecond, 1467849720);
+        assertEquals(timeslot.startEpochSecond, 1462579260);
+        assertEquals(timeslot.endEpochSecond, 1467849720);
     }
 
     @Test
@@ -28,7 +29,7 @@ public class ScheduleTest {
         String start = "05/07/2016 0001";
         String duration = "2 hours";
 
-        new Schedule(start + " for " + duration);
+        new TimeSlot(start + " for " + duration);
     }
 
     @Rule
@@ -39,6 +40,6 @@ public class ScheduleTest {
         String end = "07/07/2016 0002";
 
         exception.expect(IllegalValueException.class);
-        new Schedule(start + " bad div " + end);
+        new TimeSlot(start + " bad div " + end);
     }
 }

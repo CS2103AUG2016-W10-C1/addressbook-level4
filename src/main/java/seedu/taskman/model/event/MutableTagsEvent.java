@@ -7,5 +7,6 @@ import seedu.taskman.model.tag.UniqueTagList;
  */
 public interface MutableTagsEvent extends ReadOnlyEvent{
 
+    // TODO: might need to add setSchedule
     void setTags(UniqueTagList replacement);
 }

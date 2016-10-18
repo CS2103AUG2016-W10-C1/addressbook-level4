@@ -89,7 +89,7 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent{
     }
 
     @Override
-    public Optional<Schedule> getSchedule() {
+    public Schedule getSchedule() {
         return activity.getSchedule();
     }
 
