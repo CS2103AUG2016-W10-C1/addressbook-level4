@@ -78,7 +78,7 @@ public class Config extends ConfigData {
     }
 
     public static void resetInstance(){
-        update(instance, new ConfigData());
+        update(getInstance(), new ConfigData());
     }
 
     /**
