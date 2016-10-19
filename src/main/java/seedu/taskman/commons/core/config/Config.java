@@ -19,7 +19,10 @@ public class Config extends ConfigData {
 
     private static Config instance;
 
+    private String configFile;
+
     private Config() {
+        configFile = DEFAULT_CONFIG_FILE;
     }
 
     public static Config getInstance(){
@@ -45,8 +48,17 @@ public class Config extends ConfigData {
         return false;
     }
 
-    public static void saveConfig(String configFilePath) throws IOException {
-        ConfigUtil.saveConfig(Config.getInstance(), configFilePath);
+    /**
+     * Set the file to save the configuration settings to
+     * @param configFile
+     */
+    public static void setConfigFile(String configFile){
+        assert configFile != null;
+        Config.getInstance().configFile = configFile;
+    }
+
+    public static void save() throws IOException {
+        ConfigUtil.saveConfigData(Config.getInstance().getDataClone(), Config.getInstance().configFile);
     }
 
     @Override
@@ -108,15 +120,15 @@ public class Config extends ConfigData {
         /**
          * Saves the Config object to the specified file.
          *   Overwrites existing file if it exists, creates a new file if it doesn't.
-         * @param config cannot be null
+         * @param configData cannot be null
          * @param configFilePath cannot be null
          * @throws IOException if there was an error during writing to the file
          */
-        public static void saveConfig(Config config, String configFilePath) throws IOException {
-            assert config != null;
+        public static void saveConfigData(ConfigData configData, String configFilePath) throws IOException {
+            assert configData != null;
             assert configFilePath != null;
 
-            FileUtil.serializeObjectToJsonFile(new File(configFilePath), config);
+            FileUtil.serializeObjectToJsonFile(new File(configFilePath), configData);
         }
 
     }

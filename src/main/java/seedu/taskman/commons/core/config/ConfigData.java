@@ -63,8 +63,6 @@ public class ConfigData {
     public ConfigData getDataClone() {
         ConfigData clone = new ConfigData();
         update(clone, this);
-        System.out.println("test equals in data clone");
-        System.out.println(clone.equals(this));
         return clone;
     }
 

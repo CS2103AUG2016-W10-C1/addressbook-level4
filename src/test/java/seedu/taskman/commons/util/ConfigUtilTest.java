@@ -106,7 +106,8 @@ public class ConfigUtilTest {
 
         //Try writing when the file doesn't exist
         ConfigData originalData = config.getDataClone();
-        config.saveConfig(configFilePath);
+        Config.setConfigFile(configFilePath);
+        Config.save();
         config.readConfig(configFilePath);
         assertEquals(config.getDataClone(), originalData);
 
@@ -114,14 +115,16 @@ public class ConfigUtilTest {
         config.setAppTitle("Updated Title");
         config.setLogLevel(Level.FINE);
         originalData = config.getDataClone();
-        config.saveConfig(configFilePath);
+        Config.setConfigFile(configFilePath);
+        Config.save();
         config.readConfig(configFilePath);
         assertEquals(config, originalData);
     }
 
     private void save(String configFileInTestDataFolder) throws IOException {
         String configFilePath = addToTestDataPathIfNotNull(configFileInTestDataFolder);
-        Config.saveConfig(configFilePath);
+        Config.setConfigFile(configFilePath);
+        Config.save();
     }
 
     private String addToTestDataPathIfNotNull(String configFileInTestDataFolder) {
