@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Adds a Task to the task man.
+ * Adds a Event to the task man.
  */
 public class MarkCommand extends Command {
 

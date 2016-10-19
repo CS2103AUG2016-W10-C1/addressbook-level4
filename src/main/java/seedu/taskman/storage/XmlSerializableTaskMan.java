@@ -45,8 +45,12 @@ public class XmlSerializableTaskMan implements ReadOnlyTaskMan {
     public XmlSerializableTaskMan(ReadOnlyTaskMan src) {
         //TODO: writing tasks and events
         //implemented XmlAdaptedTask(Activity activity) for now
-        events.addAll(src.getActivityList().stream().filter(activity -> activity.getType().equals(Activity.ActivityType.EVENT)).map(XmlAdaptedEvent::new).collect(Collectors.toList()));
-        tasks.addAll(src.getActivityList().stream().filter(activity -> activity.getType().equals(Activity.ActivityType.TASK)).map(XmlAdaptedTask::new).collect(Collectors.toList()));
+        events.addAll(src.getActivityList().stream().filter(activity ->
+                                                                activity.getType().equals(Activity.ActivityType.EVENT)
+                                                            ).map(XmlAdaptedEvent::new).collect(Collectors.toList()));
+        tasks.addAll(src.getActivityList().stream().filter(activity -> 
+                                                               activity.getType().equals(Activity.ActivityType.TASK)
+                                                           ).map(XmlAdaptedTask::new).collect(Collectors.toList()));
         tags = src.getTagList();
     }
 
@@ -64,16 +68,16 @@ public class XmlSerializableTaskMan implements ReadOnlyTaskMan {
     @Override
     public UniqueActivityList getUniqueActivityList() {
         UniqueActivityList lists = new UniqueActivityList();
-        for (XmlAdaptedTask p : tasks) {
+        for (XmlAdaptedTask task : tasks) {
             try {
-                lists.add(new Activity(p.toModelType()));
+                lists.add(new Activity(task.toModelType()));
             } catch (IllegalValueException e) {
                 //TODO: better error handling
             }
         }
-        for (XmlAdaptedEvent q : events) {
+        for (XmlAdaptedEvent event : events) {
             try {
-                lists.add(new Activity(q.toModelType()));
+                lists.add(new Activity(event.toModelType()));
             } catch (IllegalValueException e) {
                 //TODO: better error handling
             }
@@ -83,25 +87,26 @@ public class XmlSerializableTaskMan implements ReadOnlyTaskMan {
 
     @Override
     public List<Activity> getActivityList() {
-        return Stream.concat(tasks.stream().map(p -> {
-                                                         try {
-                                                             return new Activity(p.toModelType());
-                                                         } catch (IllegalValueException e) {
-                                                             e.printStackTrace();
-                                                             //TODO: better error handling
-                                                             return null;
-                                                         }
-                                                     }),
-                             events.stream().map(p -> {
-                                                          try {
-                                                              return new Activity(p.toModelType());
-                                                              } catch (IllegalValueException e) {
-                                                              e.printStackTrace();
-                                                              //TODO: better error handling
-                                                              return null;
-                                                          }
-                                                      })
-                             ).collect(Collectors.toCollection(ArrayList::new));
+        return Stream.concat(
+                tasks.stream().map(task -> {
+                    try {
+                        return new Activity(task.toModelType());
+                    } catch (IllegalValueException e) {
+                        e.printStackTrace();
+                        //TODO: better error handling
+                        return null;
+                    }
+                }),
+                events.stream().map(event -> {
+                    try {
+                        return new Activity(event.toModelType());
+                    } catch (IllegalValueException e) {
+                        e.printStackTrace();
+                        //TODO: better error handling
+                        return null;
+                    }
+                })
+                ).collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
