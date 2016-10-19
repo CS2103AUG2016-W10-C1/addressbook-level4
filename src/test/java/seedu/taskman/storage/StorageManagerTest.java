@@ -76,6 +76,13 @@ public class StorageManagerTest {
         assertTrue(eventCollector.get(0) instanceof DataSavingExceptionEvent);
     }
 
+    @Test
+    public void setTaskManFilePath(){
+        String filePath = "filepath";
+        storageManager.setTaskManFilePath(filePath);
+        assertEquals(filePath, storageManager.getTaskManFilePath());
+    }
+
 
     /**
      * A Stub class to throw an exception when the save method is called
