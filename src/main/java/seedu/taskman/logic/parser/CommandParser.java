@@ -1,5 +1,6 @@
 package seedu.taskman.logic.parser;
 
+import seedu.taskman.commons.core.config.ConfigData;
 import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.commons.util.StringUtil;
 import seedu.taskman.logic.commands.*;
@@ -24,7 +25,7 @@ public class CommandParser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
-    private static final Pattern TASK_INDEX_ARGS_FORMAT = Pattern.compile(Argument.TARGET_INDEX.pattern);
+    private static final Pattern TASK_INDEX_ARGS_FORMAT = Pattern.compile("" + ArgumentPattern.TARGET_INDEX);
 
     private enum ListFlag{
         LIST_EVENT("e/", FilterMode.EVENT_ONLY),
@@ -60,18 +61,19 @@ public class CommandParser {
             Pattern.compile("(?<filter>" + ListFlag.get_Pattern() + ")?" +
                     "(?<keywords>(?:\\s*[^/]+)*?)??(?<tagArguments>(?:\\s*t/[^/]+)*)?"); // one or more keywords separated by whitespace
 
-    private enum Argument{
+    private enum ArgumentPattern {
         TARGET_INDEX("(?<targetIndex>.+)"),
         TITLE("(?<title>[^/]+)"),
         DEADLINE("(?:\\s+d/(?<deadline>[^/]+))?"),
         SCHEDULE("(?:\\s+s/(?<schedule>[^/]+))?"),
         STATUS("(?:\\s+c/(?<status>[^/]+))?"),
         FREQUENCY("(?:\\s+f/(?<frequency>[^/]+))?"),
-        TAG("(?<tagArguments>(?:\\s*t/[^/]+)*)?");
+        TAG("(?<tagArguments>(?:\\s*t/[^/]+)*)?"),
+        FILE_PATH(".+");
         
         private final String pattern;
         
-        Argument(String pattern){
+        ArgumentPattern(String pattern){
             this.pattern = pattern;
         }
         
@@ -80,24 +82,27 @@ public class CommandParser {
             return pattern;
         }
     }
-    
-    // todo: all fields currently compulsory
-    private static final Pattern TASK_ADD_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
-            Pattern.compile("" + Argument.TITLE
-                    + Argument.DEADLINE
-                    + Argument.SCHEDULE
-                    + Argument.FREQUENCY
-                    + Argument.TAG); // variable number of tags
 
-    // todo: all fields currently compulsory
+    private static final Pattern TASK_ADD_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
+            Pattern.compile("" + ArgumentPattern.TITLE
+                    + ArgumentPattern.DEADLINE
+                    + ArgumentPattern.SCHEDULE
+                    + ArgumentPattern.FREQUENCY
+                    + ArgumentPattern.TAG); // variable number of tags
+
     private static final Pattern TASK_EDIT_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
-            Pattern.compile("" + Argument.TARGET_INDEX
-                    + Argument.TITLE
-                    + Argument.DEADLINE
-                    + Argument.STATUS
-                    + Argument.SCHEDULE
-                    + Argument.FREQUENCY
-                    + Argument.TAG); // variable number of tags
+            Pattern.compile("" + ArgumentPattern.TARGET_INDEX
+                    + ArgumentPattern.TITLE
+                    + ArgumentPattern.DEADLINE
+                    + ArgumentPattern.STATUS
+                    + ArgumentPattern.SCHEDULE
+                    + ArgumentPattern.FREQUENCY
+                    + ArgumentPattern.TAG); // variable number of tags
+
+    private static final String STORAGELOC_DEFAULT_KEYWORD = "default";
+
+    private static final Pattern STORAGELOC_ARGS_FORMAT = Pattern.compile("" + ArgumentPattern.FILE_PATH);
+
 
     public CommandParser() {}
 
@@ -128,6 +133,9 @@ public class CommandParser {
 
             case DeleteCommand.COMMAND_WORD:
                 return prepareDelete(arguments);
+
+            case StoragelocCommand.COMMAND_WORD:
+                return prepareStorageloc(arguments);
 
             case ClearCommand.COMMAND_WORD:
                 return new ClearCommand();
@@ -304,6 +312,29 @@ public class CommandParser {
                 return new IncorrectCommand(ive.getMessage());
             }
         }
+    }
+
+    /**
+     * Parses arguments in the context of the storageloc command.
+     *
+     * @param args full command args string
+     * @return the prepared command
+     */
+    private Command prepareStorageloc(String args){
+
+        String trimmedArgs = args.trim();
+
+        if (!STORAGELOC_ARGS_FORMAT.matcher(trimmedArgs).matches()) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    StoragelocCommand.MESSAGE_USAGE));
+        }
+
+        if (trimmedArgs.equals(STORAGELOC_DEFAULT_KEYWORD)) {
+            trimmedArgs = ConfigData.DEFAULT_TASK_MAN_FILE_PATH;
+        }
+
+        return new StoragelocCommand(trimmedArgs);
+
     }
 
 }
