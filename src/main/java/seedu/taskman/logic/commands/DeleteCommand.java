@@ -41,7 +41,7 @@ public class DeleteCommand extends Command {
         try {
             model.deleteActivity(activityToDelete);
         } catch (ActivityNotFoundException pnfe) {
-            assert false : "The target task cannot be missing";
+            assert false: "The target task cannot be missing";
         }
 
         return new CommandResult(String.format(MESSAGE_DELETE_EVENT_SUCCESS, activityToDelete));

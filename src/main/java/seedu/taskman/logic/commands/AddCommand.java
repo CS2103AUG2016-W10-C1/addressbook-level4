@@ -59,6 +59,8 @@ public class AddCommand extends Command {
             model.addTask(toAdd);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
         } catch (UniqueActivityList.DuplicateActivityException e) {
+        	// TODO: Need a better way to stalk failed commands
+        	super.getInputHistory().pop();
             return new CommandResult(MESSAGE_DUPLICATE_EVENT);
         }
 

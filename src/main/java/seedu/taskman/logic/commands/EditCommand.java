@@ -50,6 +50,8 @@ public class EditCommand extends Command {
         try {
             initMembers(argsContainer);
         } catch (IllegalValueException e) {
+        	// TODO: Need a better way to stalk failed commands
+        	super.getInputHistory().pop(); 
             return new CommandResult(e.getMessage());
         }
 
@@ -69,6 +71,8 @@ public class EditCommand extends Command {
             } catch (UniqueActivityList.DuplicateActivityException e1) {
                 assert false : "Deleted activity should be able to be added back.";
             }
+            // TODO: Need a better way to stalk failed commands
+            super.getInputHistory().pop();
             return new CommandResult(MESSAGE_DUPLICATE_TASK);
         }
 

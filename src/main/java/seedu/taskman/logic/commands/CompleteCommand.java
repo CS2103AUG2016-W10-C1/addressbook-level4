@@ -59,11 +59,11 @@ public class CompleteCommand extends Command {
 	                    activityToComplete.getSchedule().get(),
 	                    activityToComplete.getFrequency().get());
 	        	try {
-					task.status = new Status(STATUS_COMPLETE);
-				} catch (IllegalValueException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+	        		task.setStatus(new Status(STATUS_COMPLETE));
+	        	} catch (IllegalValueException e) {
+	        		// TODO Auto-generated catch block
+	        		e.printStackTrace();
+	        	}
 	            afterComplete = new Activity(task);
 	        }
         }
@@ -84,6 +84,8 @@ public class CompleteCommand extends Command {
             } catch (UniqueActivityList.DuplicateActivityException e1) {
                 assert false: "Deleted activity should be able to be added back.";
             }
+            // TODO: Need a better way to stalk failed commands
+            super.getInputHistory().pop();
             return new CommandResult(MESSAGE_DUPLICATE_TASK);
         }
 	}

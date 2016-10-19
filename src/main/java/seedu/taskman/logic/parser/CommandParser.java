@@ -152,6 +152,7 @@ public class CommandParser {
                 return new HelpCommand();
 
             default:
+            	// Command.getInputHistory().pop() is in Command.indicateAttemptToExecuteIncorrectCommand
                 return new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
         }
     }
