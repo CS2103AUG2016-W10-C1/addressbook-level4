@@ -5,12 +5,18 @@ import java.util.logging.Level;
 
 public class ConfigData {
 
+    public static final String DEFAULT_APP_TITLE = "TaskMan";
+    public static final Level DEFAULT_LOG_LEVEL = Level.INFO;
+    public static final String DEFAULT_USER_PREFS_FILE_PATH = "preferences.json";
+    public static final String DEFAULT_TASK_MAN_FILE_PATH = "data/taskMan.xml";
+    public static final String DEFAULT_TASK_MAN_NAME = "MyTaskMan";
+
     // Config values customizable through config file
-    protected String appTitle = "TaskMan";
-    protected Level logLevel = Level.INFO;
-    protected String userPrefsFilePath = "preferences.json";
-    protected String taskManFilePath = "data/taskMan.xml";
-    protected String taskManName = "MyTaskMan";
+    protected String appTitle = DEFAULT_APP_TITLE;
+    protected Level logLevel = DEFAULT_LOG_LEVEL;
+    protected String userPrefsFilePath = DEFAULT_USER_PREFS_FILE_PATH;
+    protected String taskManFilePath = DEFAULT_TASK_MAN_FILE_PATH;
+    protected String taskManName = DEFAULT_TASK_MAN_NAME;
 
     public String getAppTitle() {
         return appTitle;
