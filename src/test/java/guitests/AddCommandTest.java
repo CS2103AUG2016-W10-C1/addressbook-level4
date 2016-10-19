@@ -2,7 +2,7 @@ package guitests;
 
 import guitests.guihandles.TaskRowHandle;
 import seedu.taskman.commons.core.Messages;
-import seedu.taskman.logic.commands.AddCommand;
+import seedu.taskman.logic.commands.DoCommand;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Task;
 import seedu.taskman.testutil.TestTask;
@@ -10,8 +10,10 @@ import seedu.taskman.testutil.TestUtil;
 
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Test;
+//TODO Change to DoCommandTest and MarkCommandTest
 public class AddCommandTest extends TaskManGuiTest {
-
+    
     //@Test
     public void add() {
         //add one task
@@ -31,7 +33,7 @@ public class AddCommandTest extends TaskManGuiTest {
         for(int i = 0; i < expectedList.length; i++){
             expectedList[i] = new Activity(new Task(currentList[i]));
         }
-        assertResultMessage(AddCommand.MESSAGE_DUPLICATE_EVENT);
+        assertResultMessage(DoCommand.MESSAGE_DUPLICATE_EVENT);
         assertTrue(taskListPanel.isListMatching(expectedList));
 
         //add to empty list

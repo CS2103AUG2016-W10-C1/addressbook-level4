@@ -26,7 +26,9 @@ public class CommandParser {
     private static final Pattern TASK_INDEX_ARGS_FORMAT = Pattern.compile(Argument.TARGET_INDEX.pattern);
 
     private enum ListFlag{
-        LIST_EVENT("e/", FilterMode.EVENT_ONLY),
+        LIST_SCHEDULE("s/", FilterMode.SCHEDULE_ONLY),
+        LIST_DEADLINE("d/", FilterMode.DEADLINE_ONLY),
+        LIST_FLOATING("f/", FilterMode.FLOATING_ONLY),
         LIST_ALL("all/", FilterMode.ALL);
         
         public final String flag;
@@ -79,9 +81,15 @@ public class CommandParser {
         }
     }
     
-    private static final Pattern TASK_ADD_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
+    private static final Pattern TASK_DO_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("" + Argument.TITLE
                     + Argument.DEADLINE
+                    + Argument.SCHEDULE
+                    + Argument.FREQUENCY
+                    + Argument.TAG); // variable number of tags
+    
+    private static final Pattern EVENT_MARK_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
+            Pattern.compile("" + Argument.TITLE
                     + Argument.SCHEDULE
                     + Argument.FREQUENCY
                     + Argument.TAG); // variable number of tags
@@ -114,8 +122,11 @@ public class CommandParser {
         final String arguments = matcher.group("arguments");
         switch (commandWord) {
 
-            case AddCommand.COMMAND_WORD:
-                return prepareAdd(arguments);
+            case DoCommand.COMMAND_WORD:
+                return prepareDo(arguments);
+                
+            case MarkCommand.COMMAND_WORD:
+                return prepareMark(arguments);
 
             case EditCommand.COMMAND_WORD:
                 return prepareEdit(arguments);
@@ -152,16 +163,40 @@ public class CommandParser {
      * @param args full command args string
      * @return the prepared command
      */
-    private Command prepareAdd(String args){
-        final Matcher matcher = TASK_ADD_ARGS_FORMAT.matcher(args.trim());
+    private Command prepareDo(String args){
+        final Matcher matcher = TASK_DO_ARGS_FORMAT.matcher(args.trim());
         // Validate arg string format
         if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DoCommand.MESSAGE_USAGE));
         }
         try {
-            return new AddCommand(
+            return new DoCommand(
                     matcher.group("title"),
                     matcher.group("deadline"),
+                    matcher.group("schedule"),
+                    matcher.group("frequency"),
+                    getTagsFromArgs(matcher.group("tagArguments"))
+            );
+        } catch (IllegalValueException ive) {
+            return new IncorrectCommand(ive.getMessage());
+        }
+    }
+    
+    /**
+     * Parses arguments in the context of the mark event command.
+     *
+     * @param args full command args string
+     * @return the prepared command
+     */
+    private Command prepareMark(String args){
+        final Matcher matcher = EVENT_MARK_ARGS_FORMAT.matcher(args.trim());
+        // Validate arg string format
+        if (!matcher.matches()) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MarkCommand.MESSAGE_USAGE));
+        }
+        try {
+            return new MarkCommand(
+                    matcher.group("title"),
                     matcher.group("schedule"),
                     matcher.group("frequency"),
                     getTagsFromArgs(matcher.group("tagArguments"))
@@ -291,7 +326,7 @@ public class CommandParser {
         } else {
             //filter
             final String filter = matcher.group("filter");
-            Model.FilterMode filterMode = Model.FilterMode.TASK_ONLY;
+            Model.FilterMode filterMode = Model.FilterMode.DEADLINE_ONLY;
             for(ListFlag listFlag: ListFlag.values()){
                 if(listFlag.flag.equals(filter)){
                     filterMode = listFlag.filterMode;

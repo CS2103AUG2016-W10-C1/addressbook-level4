@@ -142,9 +142,9 @@ public class LogicManagerTest {
     //@Test
     public void execute_clear() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        model.addTask(helper.generateTask(1));
-        model.addTask(helper.generateTask(2));
-        model.addTask(helper.generateTask(3));
+        model.addEvent(helper.generateTask(1));
+        model.addEvent(helper.generateTask(2));
+        model.addEvent(helper.generateTask(3));
 
         assertCommandBehavior("clear", ClearCommand.MESSAGE_SUCCESS, new TaskMan(), Collections.emptyList());
     }
@@ -152,7 +152,7 @@ public class LogicManagerTest {
 
     //@Test
     public void execute_add_invalidArgsFormat() throws Exception {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, DoCommand.MESSAGE_USAGE);
         assertCommandBehavior(
                 "add wrong args wrong args", expectedMessage);
         assertCommandBehavior(
@@ -182,11 +182,11 @@ public class LogicManagerTest {
         TestDataHelper helper = new TestDataHelper();
         Task toBeAdded = helper.food();
         TaskMan expectedTaskMan = new TaskMan();
-        expectedTaskMan.addTask(toBeAdded);
+        expectedTaskMan.addEvent(toBeAdded);
 
         // execute command and verify result
         assertCommandBehavior(helper.generateAddCommand(toBeAdded),
-                String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded),
+                String.format(DoCommand.MESSAGE_SUCCESS, toBeAdded),
                 expectedTaskMan,
                 expectedTaskMan.getActivityList());
 
@@ -198,15 +198,15 @@ public class LogicManagerTest {
         TestDataHelper helper = new TestDataHelper();
         Task toBeAdded = helper.food();
         TaskMan expectedAB = new TaskMan();
-        expectedAB.addTask(toBeAdded);
+        expectedAB.addEvent(toBeAdded);
 
         // setup starting state
-        model.addTask(toBeAdded); // task already in internal task man
+        model.addEvent(toBeAdded); // task already in internal task man
 
         // execute command and verify result
         assertCommandBehavior(
                 helper.generateAddCommand(toBeAdded),
-                AddCommand.MESSAGE_DUPLICATE_EVENT,
+                DoCommand.MESSAGE_DUPLICATE_EVENT,
                 expectedAB,
                 expectedAB.getActivityList());
 
@@ -256,7 +256,7 @@ public class LogicManagerTest {
         // set AB state to 2 tasks
         model.resetData(new TaskMan());
         for (Task p : taskList) {
-            model.addTask(p);
+            model.addEvent(p);
         }
 
         List<Activity> expectedList = taskList.stream().map(Activity::new).collect(Collectors.toList());
@@ -589,7 +589,7 @@ public class LogicManagerTest {
          */
         void addToTaskMan(TaskMan taskMan, List<Task> tasksToAdd) throws Exception{
             for(Task p: tasksToAdd){
-                taskMan.addTask(p);
+                taskMan.addEvent(p);
             }
         }
 
@@ -606,7 +606,7 @@ public class LogicManagerTest {
          */
         void addToModel(Model model, List<Task> tasksToAdd) throws Exception{
             for(Task p: tasksToAdd){
-                model.addTask(p);
+                model.addEvent(p);
             }
         }
 

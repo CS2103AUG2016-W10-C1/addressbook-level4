@@ -16,8 +16,13 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent{
     private ActivityType type;
 
     public Activity(Event event){
-        activity = event;
-        type = ActivityType.EVENT;
+        if (event.getClass().getName().equals(Task.class.getName())) {
+            activity = event;
+            type = ActivityType.TASK;
+        } else {
+            activity = event;
+            type = ActivityType.EVENT;
+        }
     }
 
     public Activity(Task task){
@@ -31,9 +36,12 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent{
                 this.activity = new Task((ReadOnlyTask) source.activity);
                 break;
             }
-            case EVENT:
+            case EVENT: {
+                this.activity = new Event((ReadOnlyEvent) source.activity);
+                break;
+            }
             default: {
-                this.activity = new Event(source.getEvent());
+                this.activity = new Event((ReadOnlyEvent) source.activity);
             }
         }
         type = source.getType();
@@ -50,8 +58,11 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent{
         return Optional.of((ReadOnlyTask) activity);
     }
 
-    public ReadOnlyEvent getEvent(){
-        return activity;
+    public Optional<ReadOnlyEvent> getEvent(){
+        if(type != ActivityType.EVENT){
+            return Optional.empty();
+        }
+        return Optional.of((ReadOnlyEvent) activity);
     }
 
     public Optional<Status> getStatus() {
@@ -59,7 +70,9 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent{
             case TASK: {
                 return Optional.ofNullable(((ReadOnlyTask) activity).getStatus());
             }
-            case EVENT:
+            case EVENT: {
+                return Optional.empty();
+            }
             default: {
                 return Optional.empty();
             }
@@ -71,7 +84,9 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent{
             case TASK: {
                 return ((ReadOnlyTask) activity).getDeadline();
             }
-            case EVENT:
+            case EVENT: {
+                return Optional.empty();
+            }
             default: {
                 return Optional.empty();
             }
@@ -110,7 +125,9 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent{
             case TASK: {
                 return ((ReadOnlyTask) activity).isSameStateAs((ReadOnlyTask) other.activity);
             }
-            case EVENT:
+            case EVENT: {
+                return ((ReadOnlyEvent) activity).isSameStateAs((ReadOnlyEvent) other.activity);
+            }
             default: {
                 return activity.isSameStateAs(other.activity);
             }

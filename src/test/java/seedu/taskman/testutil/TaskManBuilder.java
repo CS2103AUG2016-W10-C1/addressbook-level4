@@ -20,7 +20,7 @@ public class TaskManBuilder {
     }
 
     public TaskManBuilder withTask(Task task) throws UniqueActivityList.DuplicateActivityException {
-        taskMan.addTask(task);
+        taskMan.addEvent(task);
         return this;
     }
 
