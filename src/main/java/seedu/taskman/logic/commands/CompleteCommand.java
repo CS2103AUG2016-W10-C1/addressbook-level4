@@ -41,7 +41,7 @@ public class CompleteCommand extends Command {
 		assert model != null;
 		
 		try {
-            initMembers(targetIndex);
+            initMembers();
         } catch (IllegalValueException e) {
             return new CommandResult(e.getMessage());
         }
@@ -51,12 +51,9 @@ public class CompleteCommand extends Command {
             model.addActivity(afterComplete);
             return new CommandResult(String.format(MESSAGE_SUCCESS, afterComplete.getTitle().title));
         } catch (UniqueActivityList.ActivityNotFoundException pnfe) {
-
             indicateAttemptToExecuteIncorrectCommand();
             return new CommandResult(Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX);
-
         } catch (UniqueActivityList.DuplicateActivityException e) {
-
             try {
                 model.addActivity(afterComplete);
             } catch (UniqueActivityList.DuplicateActivityException e1) {
@@ -66,7 +63,7 @@ public class CompleteCommand extends Command {
         }
 	}
 
-	private void initMembers(int targetIndex) throws IllegalValueException {
+	private void initMembers() throws IllegalValueException {
 	    UnmodifiableObservableList<Activity> lastShownList = model.getFilteredActivityList();
 
         if (lastShownList.size() < targetIndex) {
@@ -85,9 +82,9 @@ public class CompleteCommand extends Command {
                 Task task = new Task(
                         activityToComplete.getTitle(),
                         activityToComplete.getTags(),
-                        activityToComplete.getDeadline().get(),
-                        activityToComplete.getSchedule().get(),
-                        activityToComplete.getFrequency().get());
+                        activityToComplete.getDeadline().orElse(null),
+                        activityToComplete.getSchedule().orElse(null),
+                        activityToComplete.getFrequency().orElse(null));
                 try {
                     task.setStatus(new Status(STATUS_COMPLETE));
                 } catch (IllegalValueException e) {

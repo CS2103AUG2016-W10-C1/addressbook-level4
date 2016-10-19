@@ -338,7 +338,7 @@ public class LogicManagerTest {
         // Wrap Task in Activity to complete
         expectedAB.completeActivity(new Activity(threeTasks.get(1)));
         helper.addToModel(model, threeTasks);
-
+        // Fails sometimes when generated Activity is not a Task but Event
         assertCommandBehavior("complete 2",
                 String.format(CompleteCommand.MESSAGE_SUCCESS, threeTasks.get(1).getTitle()),
                 expectedAB,
