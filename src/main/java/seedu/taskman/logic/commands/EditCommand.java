@@ -12,13 +12,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Edits an existing task
+ * Edits an existing activity
  */
 public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits an existing task.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits an existing activity.\n"
             + "Parameters: INDEX [TITLE] [d/DEADLINE] [c/STATUS] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...\n"
             + "Example: " + COMMAND_WORD
             + " 1 CS2103T Tutorial d/fri 11.59pm c/complete s/mon 2200 to tue 0200 f/1 week t/friends t/owesMoney";
@@ -65,7 +65,7 @@ public class EditCommand extends Command {
                     return new CommandResult(String.format(MESSAGE_EDIT_TASK_SUCCESS, afterEdit));
                 }
                 default: {
-                    return new CommandResult(String.format(MESSAGE_EDIT_TASK_SUCCESS, afterEdit));
+                    throw new AssertionError("Activity is neither an event nor a task.", null); 
                 }
             }
         } catch (UniqueActivityList.ActivityNotFoundException pnfe) {
