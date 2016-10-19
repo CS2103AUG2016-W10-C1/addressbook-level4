@@ -7,6 +7,7 @@ import seedu.taskman.model.Model;
 import seedu.taskman.model.Model.FilterMode;
 
 import java.util.*;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -97,8 +98,8 @@ public class CommandParser {
                     + Argument.TAG); // variable number of tags
 
     public CommandParser() {
-    	Command.setInputHistory(new Stack<String>());
-    	Command.setCommandHistory(new Stack<Command>());
+    	Command.setInputHistory(new LinkedBlockingDeque<String>(Command.CAPACITY_HISTORY_COMMAND));
+    	Command.setCommandHistory(new LinkedBlockingDeque<Command>(Command.CAPACITY_HISTORY_COMMAND));
     }
 
     /**
@@ -108,7 +109,10 @@ public class CommandParser {
      * @return the command based on the user input
      */
     public Command parseCommand(String userInput) {
-    	Command.getInputHistory().push(userInput);
+    	if (!Command.getInputHistory().offerFirst(userInput)) {
+    		Command.getInputHistory().pollLast(); // poll 10th most recently executed command
+    		Command.getInputHistory().offerFirst(userInput);
+    	}
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));

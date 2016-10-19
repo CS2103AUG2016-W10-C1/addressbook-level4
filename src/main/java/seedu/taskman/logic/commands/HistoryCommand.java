@@ -1,5 +1,7 @@
 package seedu.taskman.logic.commands;
 
+import java.util.Iterator;
+
 public class HistoryCommand extends Command {
 
 	public static final String COMMAND_WORD = "history";
@@ -12,12 +14,13 @@ public class HistoryCommand extends Command {
 	@Override
 	public CommandResult execute() {
 		super.getInputHistory().pop(); // pop history itself
-		StringBuilder commandHistory = new StringBuilder();
-		for (String command : super.getInputHistory()) {
-			commandHistory.append("\n");
-			commandHistory.append(new StringBuffer(command).reverse());
+		StringBuilder builder = new StringBuilder();
+		Iterator<String> iterator = super.getInputHistory().iterator(); // most recently executed command is at the head
+		while (iterator.hasNext()) {
+			builder.append(iterator.next());
+			builder.append("\n");
 		}
-		return new CommandResult(commandHistory.reverse().toString());
+		return new CommandResult(builder.toString().trim());
 	}
 
 }
