@@ -59,7 +59,7 @@ public class CompleteCommand extends Command {
 	                    activityToComplete.getSchedule().get(),
 	                    activityToComplete.getFrequency().get());
 	        	try {
-					task.status = new Status(STATUS_COMPLETE);
+					task.setStatus(new Status(STATUS_COMPLETE));
 				} catch (IllegalValueException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
