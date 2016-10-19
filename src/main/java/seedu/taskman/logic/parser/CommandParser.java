@@ -99,7 +99,6 @@ public class CommandParser {
 
     public CommandParser() {
     	Command.setInputHistory(new LinkedBlockingDeque<String>(Command.CAPACITY_HISTORY_COMMAND));
-    	Command.setCommandHistory(new LinkedBlockingDeque<Command>(Command.CAPACITY_HISTORY_COMMAND));
     }
 
     /**

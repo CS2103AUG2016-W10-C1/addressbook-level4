@@ -19,7 +19,6 @@ import seedu.taskman.model.Model;
 public abstract class Command {
     protected Model model;
 	private static LinkedBlockingDeque<String> inputHistory;
-    private static LinkedBlockingDeque<Command> commandHistory;
     
     // TODO: May need to move this configuration away? Separation of concerns?
     public static final int CAPACITY_HISTORY_COMMAND = 11; // must be 11 because "history" is the 11th command
@@ -63,13 +62,5 @@ public abstract class Command {
 
 	public static void setInputHistory(LinkedBlockingDeque<String> inputHistory) {
 		Command.inputHistory = inputHistory;
-	}
-
-	public static LinkedBlockingDeque<Command> getCommandHistory() {
-		return commandHistory;
-	}
-
-	public static void setCommandHistory(LinkedBlockingDeque<Command> commandHistory) {
-		Command.commandHistory = commandHistory;
 	}
 }
