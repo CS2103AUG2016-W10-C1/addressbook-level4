@@ -6,7 +6,9 @@ public class HistoryCommand extends Command {
 
 	public static final String COMMAND_WORD = "history";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows command history (only commands which mutate data).\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows the "
+    		+ Command.CAPACITY_HISTORY_COMMAND
+    		+ " most recently executed commands.\n"
             + "Example: " + COMMAND_WORD;
 
     public HistoryCommand() {}

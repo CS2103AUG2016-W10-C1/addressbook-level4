@@ -21,6 +21,7 @@ public abstract class Command {
 	private static LinkedBlockingDeque<String> inputHistory;
     private static LinkedBlockingDeque<Command> commandHistory;
     
+    // TODO: May need to move this configuration away? Separation of concerns?
     public static final int CAPACITY_HISTORY_COMMAND = 11; // must be 11 because "history" is the 11th command
 
     /**
