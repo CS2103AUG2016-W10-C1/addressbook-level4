@@ -149,7 +149,7 @@ public class TaskMan implements ReadOnlyTaskMan {
        			key.getSchedule().get(),
        			key.getFrequency().get()
        			);
-        	task.status = new Status("complete");
+        	task.setStatus(new Status("complete"));
 			this.addActivity(new Activity(task));
             return true;
         } else {
