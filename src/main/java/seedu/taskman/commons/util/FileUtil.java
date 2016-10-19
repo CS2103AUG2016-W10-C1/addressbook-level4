@@ -92,4 +92,14 @@ public class FileUtil {
             throws IOException {
         return JsonUtil.fromJsonString(FileUtil.readFromFile(jsonFile), classOfObjectToDeserialize);
     }
+
+    /**
+     *
+     * @param path
+     * @return absolute path of given path
+     */
+    public static String getAbsolutePath(String path){
+        File file = new File(path);
+        return file.getAbsolutePath();
+    }
 }
