@@ -98,7 +98,6 @@ public class LogicManagerTest {
      */
     private CommandResult assertCommandStateChange(String inputCommand, ReadOnlyTaskMan expectedTaskMan,
                                                    List<? extends Activity> expectedShownList) throws Exception {
-
         //Execute the command
         CommandResult result = logic.execute(inputCommand);
 
@@ -153,8 +152,8 @@ public class LogicManagerTest {
         // no args
         assertCommandNoStateChange("do");
 
-        // random use of /
-        assertCommandNoStateChange("do d/e/x/");
+        // non-existent flag
+        assertCommandNoStateChange("do x/");
     }
 
     @Test
@@ -180,11 +179,9 @@ public class LogicManagerTest {
         TaskMan expectedTaskMan = new TaskMan();
         expectedTaskMan.addEvent(toBeAdded);
 
-        // execute command and verify result
         assertCommandStateChange(helper.generateDoCommand(toBeAdded),
                 expectedTaskMan,
                 expectedTaskMan.getActivityList());
-
     }
 
     //@Test
@@ -491,6 +488,7 @@ public class LogicManagerTest {
             return new Task(title, tags, privateDeadline, schedule, frequency);
         }
 
+        // TODO: A, might need revision
         /**
          * Generates a valid task using the given seed.
          * Running this function with the same parameter values guarantees the returned task will have the same state.
@@ -503,40 +501,42 @@ public class LogicManagerTest {
                     new Title("Task " + seed),
                     new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))), new Deadline(Math.abs(seed)),
                     new Schedule(Instant.ofEpochSecond(Math.abs(seed - 1)) + ", " + Instant.ofEpochSecond(Math.abs(seed))),
-                    new Frequency(seed+ " mins")
+                    new Frequency(seed+ " min")
             );
         }
 
-        /** Generates the correct do command based on the task given */
-        String generateDoCommand(Task p) {
-            StringBuffer cmd = new StringBuffer();
+        @SuppressWarnings("OptionalGetWithoutIsPresent")
+        String generateDoCommand(Task task) {
+            StringBuilder command = new StringBuilder();
 
-            cmd.append("add ");
-            cmd.append(p.getTitle().toString());
-            cmd.append(" c/").append(p.getStatus().toString());
+            command.append("do ");
+            command.append(task.getTitle().toString());
 
-            if (p.getDeadline().isPresent()) {
-                Instant instant = Instant.ofEpochSecond(p.getDeadline().get().epochSecond);
-                cmd.append(" d/").append(instant.toString());
+            if (task.getDeadline().isPresent()) {
+                Instant instant = Instant.ofEpochSecond(task.getDeadline().get().epochSecond);
+                command.append(" d/").
+                        append(instant.toString());
             }
-            if (p.getFrequency().isPresent()) {
-                cmd.append(" f/").append(p.getFrequency().get().seconds / 60 + " mins");
+            if (task.getFrequency().isPresent()) {
+                command.append(" f/").
+                        append(task.getFrequency().get().seconds / 60).
+                        append(" mins");
             }
-            if (p.getSchedule().isPresent()) {
-                String start = DateTimeParser.epochSecondToShortDateTime(p.getSchedule().get().startEpochSecond);
-                String end = DateTimeParser.epochSecondToShortDateTime(p.getSchedule().get().endEpochSecond);
-                cmd.append(" s/").
+            if (task.getSchedule().isPresent()) {
+                String start = DateTimeParser.epochSecondToShortDateTime(task.getSchedule().get().startEpochSecond);
+                String end = DateTimeParser.epochSecondToShortDateTime(task.getSchedule().get().endEpochSecond);
+                command.append(" s/").
                         append(start).
                         append(" to ").
                         append(end);
             }
 
-            UniqueTagList tags = p.getTags();
+            UniqueTagList tags = task.getTags();
             for(Tag t: tags){
-                cmd.append(" t/").append(t.tagName);
+                command.append(" t/").append(t.tagName);
             }
 
-            return cmd.toString();
+            return command.toString();
         }
 
         /**
