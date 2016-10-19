@@ -150,34 +150,34 @@ public class LogicManagerTest {
     }
 
 
-    //@Test
-    public void execute_add_invalidArgsFormat() throws Exception {
+    @Test
+    public void execute_do_invalidArgsFormat() throws Exception {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, DoCommand.MESSAGE_USAGE);
         assertCommandBehavior(
-                "add wrong args wrong args", expectedMessage);
+                "do wrong args wrong args", expectedMessage);
         assertCommandBehavior(
-                "add Valid Title 12345 e/valid@email.butNoDeadlinePrefix a/valid, address", expectedMessage);
+                "do Valid Title d/e/valid@email.butNoDeadlinePrefix a/valid, address", expectedMessage);
         assertCommandBehavior(
-                "add Valid Title d/12345 valid@email.butNoPrefix a/valid, address", expectedMessage);
+                "do Valid Title d/12345 valid@email.butNoPrefix a/valid, address", expectedMessage);
         assertCommandBehavior(
-                "add Valid Title d/12345 e/valid@email.butNoAddressPrefix valid, address", expectedMessage);
+                "do Valid Title d/12345 e/valid@email.butNoAddressPrefix valid, address", expectedMessage);
     }
 
     //@Test
-    public void execute_add_invalidTaskData() throws Exception {
+    public void execute_do_invalidTaskData() throws Exception {
         assertCommandBehavior(
-                "add []\\[;] d/12345 e/valid@e.mail a/valid, address", Title.MESSAGE_TITLE_CONSTRAINTS);
+                "do []\\[;] d/12345 e/valid@e.mail a/valid, address", Title.MESSAGE_TITLE_CONSTRAINTS);
         assertCommandBehavior(
-                "add Valid Title d/not_numbers e/valid@e.mail a/valid, address", Deadline.MESSAGE_DEADLINE_CONSTRAINTS);
+                "do Valid Title d/not_numbers e/valid@e.mail a/valid, address", Deadline.MESSAGE_DEADLINE_CONSTRAINTS);
         assertCommandBehavior(
-                "add Valid Title d/12345 e/notAnEmail a/valid, address", Email.MESSAGE_EMAIL_CONSTRAINTS);
+                "do Valid Title d/12345 e/notAnEmail a/valid, address", Email.MESSAGE_EMAIL_CONSTRAINTS);
         assertCommandBehavior(
-                "add Valid Title d/12345 e/valid@e.mail a/valid, address t/invalid_-[.tag", Tag.MESSAGE_TAG_CONSTRAINTS);
+                "do Valid Title d/12345 e/valid@e.mail a/valid, address t/invalid_-[.tag", Tag.MESSAGE_TAG_CONSTRAINTS);
 
     }
 
     //@Test
-    public void execute_add_successful() throws Exception {
+    public void execute_do_successful() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
         Task toBeAdded = helper.food();
@@ -185,7 +185,7 @@ public class LogicManagerTest {
         expectedTaskMan.addEvent(toBeAdded);
 
         // execute command and verify result
-        assertCommandBehavior(helper.generateAddCommand(toBeAdded),
+        assertCommandBehavior(helper.generateDoCommand(toBeAdded),
                 String.format(DoCommand.MESSAGE_SUCCESS, toBeAdded),
                 expectedTaskMan,
                 expectedTaskMan.getActivityList());
@@ -193,7 +193,7 @@ public class LogicManagerTest {
     }
 
     //@Test
-    public void execute_addDuplicate_notAllowed() throws Exception {
+    public void execute_doDuplicate_notAllowed() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
         Task toBeAdded = helper.food();
@@ -205,7 +205,7 @@ public class LogicManagerTest {
 
         // execute command and verify result
         assertCommandBehavior(
-                helper.generateAddCommand(toBeAdded),
+                helper.generateDoCommand(toBeAdded),
                 DoCommand.MESSAGE_DUPLICATE_EVENT,
                 expectedAB,
                 expectedAB.getActivityList());
@@ -526,8 +526,8 @@ public class LogicManagerTest {
             );
         }
 
-        /** Generates the correct add command based on the task given */
-        String generateAddCommand(Task p) {
+        /** Generates the correct do command based on the task given */
+        String generateDoCommand(Task p) {
             StringBuffer cmd = new StringBuffer();
 
             cmd.append("add ");
