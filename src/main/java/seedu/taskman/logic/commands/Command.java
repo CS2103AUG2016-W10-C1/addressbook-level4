@@ -1,5 +1,8 @@
 package seedu.taskman.logic.commands;
 
+import java.util.ArrayDeque;
+import java.util.Stack;
+
 import seedu.taskman.commons.core.EventsCenter;
 import seedu.taskman.commons.core.Messages;
 import seedu.taskman.commons.events.ui.IncorrectCommandAttemptedEvent;
@@ -10,6 +13,8 @@ import seedu.taskman.model.Model;
  */
 public abstract class Command {
     protected Model model;
+    private static Stack<String> inputHistory;
+    private static Stack<Command> commandHistory;
 
     /**
      * Constructs a feedback message to summarise an operation that displayed a listing of tasks.
@@ -43,4 +48,20 @@ public abstract class Command {
     protected void indicateAttemptToExecuteIncorrectCommand() {
         EventsCenter.getInstance().post(new IncorrectCommandAttemptedEvent(this));
     }
+
+	public static Stack<String> getInputHistory() {
+		return inputHistory;
+	}
+
+	public static void setInputHistory(Stack<String> inputHistory) {
+		Command.inputHistory = inputHistory;
+	}
+
+	public static Stack<Command> getCommandHistory() {
+		return commandHistory;
+	}
+
+	public static void setCommandHistory(Stack<Command> commandHistory) {
+		Command.commandHistory = commandHistory;
+	}
 }
