@@ -24,7 +24,7 @@ public class TaskListPanelHandle extends GuiHandle {
 
     public static final int NOT_FOUND = -1;
 
-    private static final String PERSON_LIST_VIEW_ID = "#taskListView";
+    private static final String EVENT_LIST_VIEW_ID = "#taskListView";
 
     public TaskListPanelHandle(GuiRobot guiRobot, Stage primaryStage) {
         super(guiRobot, primaryStage, TestApp.APP_TITLE);
@@ -38,7 +38,7 @@ public class TaskListPanelHandle extends GuiHandle {
     // TODO Resolve generic type issue.
     @SuppressWarnings("unchecked")
     public TableView<Activity> getTableView() {
-        return (TableView<Activity>) getNode(PERSON_LIST_VIEW_ID);
+        return (TableView<Activity>) getNode(EVENT_LIST_VIEW_ID);
     }
 
     /**
