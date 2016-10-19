@@ -59,7 +59,7 @@ public class CommandParser {
                     "(?<keywords>(?:\\s*[^/]+)*?)??(?<tagArguments>(?:\\s*t/[^/]+)*)?"); // one or more keywords separated by whitespace
 
     private enum Argument{
-        TARGET_INDEX("(?<targetIndex>.+)"),
+        TARGET_INDEX("(?<targetIndex>[0-9]+)"),
         TITLE("(?<title>[^/]+)"),
         DEADLINE("(?:\\s+d/(?<deadline>[^/]+))?"),
         SCHEDULE("(?:\\s+s/(?<schedule>[^/]+))?"),
@@ -89,7 +89,7 @@ public class CommandParser {
     // TODO: All fields currently compulsory
     private static final Pattern TASK_EDIT_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("" + Argument.TARGET_INDEX
-                    + Argument.TITLE
+                    + Argument.TITLE + "?"
                     + Argument.DEADLINE
                     + Argument.STATUS
                     + Argument.SCHEDULE
