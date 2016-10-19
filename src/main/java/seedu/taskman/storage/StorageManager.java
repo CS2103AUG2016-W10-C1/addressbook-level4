@@ -75,6 +75,11 @@ public class StorageManager extends ComponentManager implements Storage {
         taskManStorage.saveTaskMan(taskMan, filePath);
     }
 
+    @Override
+    public void setTaskManFilePath(String filePath){
+        taskManStorage.setTaskManFilePath(filePath);
+    }
+
 
     @Override
     @Subscribe
@@ -86,5 +91,6 @@ public class StorageManager extends ComponentManager implements Storage {
             raise(new DataSavingExceptionEvent(e));
         }
     }
+
 
 }

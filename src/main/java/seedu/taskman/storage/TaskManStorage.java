@@ -42,4 +42,6 @@ public interface TaskManStorage {
      */
     void saveTaskMan(ReadOnlyTaskMan taskMan, String filePath) throws IOException;
 
+    void setTaskManFilePath(String filePath);
+
 }

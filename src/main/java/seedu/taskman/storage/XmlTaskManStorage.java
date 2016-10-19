@@ -62,6 +62,11 @@ public class XmlTaskManStorage implements TaskManStorage {
     }
 
     @Override
+    public void setTaskManFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    @Override
     public Optional<ReadOnlyTaskMan> readTaskMan() throws DataConversionException, IOException {
         return readTaskMan(filePath);
     }
