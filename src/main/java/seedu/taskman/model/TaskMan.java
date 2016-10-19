@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import javafx.collections.ObservableList;
 import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.model.event.Activity;
+import seedu.taskman.model.event.Event;
 import seedu.taskman.model.event.MutableTagsEvent;
 import seedu.taskman.model.event.Status;
 import seedu.taskman.model.event.Task;
@@ -81,26 +82,26 @@ public class TaskMan implements ReadOnlyTaskMan {
         resetData(newData.getActivityList(), newData.getTagList());
     }
 
-//// task-level operations
+//// event-level operations
 
     /**
-     * Adds a task to TaskMan.
-     * Also checks the new task's tags and updates {@link #tags} with any new tags found,
-     * and updates the Tag objects in the task to point to those in {@link #tags}.
+     * Adds a event to TaskMan.
+     * Also checks the new event's tags and updates {@link #tags} with any new tags found,
+     * and updates the Tag objects in the event to point to those in {@link #tags}.
      *
-     * @throws UniqueActivityList.DuplicateActivityException if an equivalent task already exists.
+     * @throws UniqueActivityList.DuplicateActivityException if an equivalent event already exists.
      */
-    public void addTask(Task task) throws UniqueActivityList.DuplicateActivityException {
-        syncTagsWithMasterList(task);
-        activities.add(new Activity(task));
+    public void addEvent(Event event) throws UniqueActivityList.DuplicateActivityException {
+        syncTagsWithMasterList(event);
+        activities.add(new Activity(event));
     }
 
     /**
      * Adds an activity to TaskMan.
-     * Also checks the new task's tags and updates {@link #tags} with any new tags found,
-     * and updates the Tag objects in the task to point to those in {@link #tags}.
+     * Also checks the new activity's tags and updates {@link #tags} with any new tags found,
+     * and updates the Tag objects in the activity to point to those in {@link #tags}.
      *
-     * @throws UniqueActivityList.DuplicateActivityException if an equivalent task already exists.
+     * @throws UniqueActivityList.DuplicateActivityException if an equivalent activity already exists.
      */
     public void addActivity(Activity activity) throws UniqueActivityList.DuplicateActivityException {
         syncTagsWithMasterList(activity);

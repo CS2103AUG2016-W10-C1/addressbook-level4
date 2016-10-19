@@ -8,6 +8,7 @@ import seedu.taskman.commons.events.model.TaskManChangedEvent;
 import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.commons.util.StringUtil;
 import seedu.taskman.model.event.Activity;
+import seedu.taskman.model.event.Event;
 import seedu.taskman.model.event.Task;
 import seedu.taskman.model.event.UniqueActivityList;
 import seedu.taskman.model.event.UniqueActivityList.ActivityNotFoundException;
@@ -72,8 +73,8 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void addTask(Task task) throws UniqueActivityList.DuplicateActivityException {
-        taskMan.addTask(task);
+    public synchronized void addEvent(Event event) throws UniqueActivityList.DuplicateActivityException {
+        taskMan.addEvent(event);
         updateFilteredListToShowAll();
         indicateTaskManChanged();
     }
@@ -152,8 +153,11 @@ public class ModelManager extends ComponentManager implements Model {
         public boolean run(Activity activity) {
             // (fit task/event type && (no keyword || contain a keyword) && (no tag || contain a tag))
             return (filterMode == FilterMode.ALL
-                        || (filterMode == FilterMode.EVENT_ONLY && activity.getType()== Activity.ActivityType.EVENT)
-                        || (filterMode == FilterMode.TASK_ONLY && activity.getType() == Activity.ActivityType.TASK))
+                        || (filterMode == FilterMode.SCHEDULE_ONLY && activity.getSchedule().isPresent())
+                        || (filterMode == FilterMode.DEADLINE_ONLY && activity.getType() == Activity.ActivityType.TASK
+                            && activity.getDeadline().isPresent())
+                        || (filterMode == FilterMode.FLOATING_ONLY && activity.getType() == Activity.ActivityType.TASK
+                            && !activity.getDeadline().isPresent()))
                     && (titleKeyWords == null || titleKeyWords.isEmpty() || titleKeyWords.stream()
                             .filter(keyword -> StringUtil.containsIgnoreCase(activity.getTitle().title, keyword))
                             .findAny()

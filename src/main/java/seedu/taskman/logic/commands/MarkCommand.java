@@ -9,40 +9,37 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Adds a Task to the task man.
+ * Adds a Event to the task man.
  */
-public class AddCommand extends Command {
+public class MarkCommand extends Command {
 
-    public static final String COMMAND_WORD = "add";
+    public static final String COMMAND_WORD = "mark";
 
     // todo, differed: let parameters be objects. we can easily generate the usage in that case
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a task to TaskMan. "
-            + "Parameters: TITLE d/DEADLINE s/startDateTime, endDateTime f/frequency [t/TAG]...\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an event to TaskMan.\n"
+            + "Parameters: TITLE s/SCHEDULE f/FREQUENCY [t/TAG]...\n"
             + "Example: " + COMMAND_WORD
-            + " Buy bday present for dad d/next fri 1800 s/tdy 1800, tdy 2000 f/1 year t/Family";
+            + " star gazing s/tdy 2300, tdy 2359 f/1 week t/leisure";
 
-    public static final String MESSAGE_SUCCESS = "New task added: %1$s";
-    public static final String MESSAGE_DUPLICATE_EVENT = "This task already exists in TaskMan";
+    public static final String MESSAGE_SUCCESS = "New event added: %1$s";
+    public static final String MESSAGE_DUPLICATE_EVENT = "This event already exists in TaskMan";
 
-    private final Task toAdd;
+    private final Event toAdd;
 
     /**
      * Convenience constructor using raw values.
      *
      * @throws IllegalValueException if any of the raw values are invalid
      */
-    public AddCommand(String title, String deadline, String schedule, String frequency, Set<String> tags)
+    public MarkCommand(String title, String schedule, String frequency, Set<String> tags)
             throws IllegalValueException {
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagName : tags) {
             tagSet.add(new Tag(tagName));
         }
-        this.toAdd = new Task(
+        this.toAdd = new Event(
                 new Title(title),
                 new UniqueTagList(tagSet),
-                deadline == null
-                    ? null
-                    : new Deadline(deadline),
                 schedule == null
                     ? null
                     : new Schedule(schedule),
@@ -56,7 +53,7 @@ public class AddCommand extends Command {
     public CommandResult execute() {
         assert model != null;
         try {
-            model.addTask(toAdd);
+            model.addEvent(toAdd);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
         } catch (UniqueActivityList.DuplicateActivityException e) {
             return new CommandResult(MESSAGE_DUPLICATE_EVENT);
