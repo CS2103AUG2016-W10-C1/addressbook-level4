@@ -264,40 +264,40 @@ public class LogicManagerTest {
         TestDataHelper helper = new TestDataHelper();
         List<Task> threeTasks = helper.generateTaskList(3);
 
-        TaskMan expectedAB = helper.generateTaskMan(threeTasks);
+        TaskMan expectedTaskMan = helper.generateTaskMan(threeTasks);
         helper.addToModel(model, threeTasks);
 
         assertCommandStateChange("select 2",
-                expectedAB,
-                expectedAB.getActivityList());
+                expectedTaskMan,
+                expectedTaskMan.getActivityList());
         assertEquals(1, targetedJumpIndex);
         assertEquals(model.getFilteredActivityList().get(1), new Activity(threeTasks.get(1)));
     }
 
 
-    //@Test
+    @Test
     public void execute_deleteInvalidArgsFormat_errorMessageShown() throws Exception {
         assertIncorrectIndexFormatBehaviorForCommand("delete");
     }
 
-    //@Test
+    @Test
     public void execute_deleteIndexNotFound_errorMessageShown() throws Exception {
         assertIndexNotFoundBehaviorForCommand("delete");
     }
 
-    //@Test
+    @Test
     public void execute_delete_removesCorrectTask() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         List<Task> threeTasks = helper.generateTaskList(3);
 
-        TaskMan expectedAB = helper.generateTaskMan(threeTasks);
+        TaskMan expectedTaskMan = helper.generateTaskMan(threeTasks);
         // Wrap Task in Activity to delete
-        expectedAB.removeActivity(new Activity(threeTasks.get(1)));
+        expectedTaskMan.removeActivity(new Activity(threeTasks.get(1)));
         helper.addToModel(model, threeTasks);
 
         assertCommandStateChange("delete 2",
-                expectedAB,
-                expectedAB.getActivityList());
+                expectedTaskMan,
+                expectedTaskMan.getActivityList());
     }
     
     //@Test
@@ -315,14 +315,14 @@ public class LogicManagerTest {
         TestDataHelper helper = new TestDataHelper();
         List<Task> threeTasks = helper.generateTaskList(3);
 
-        TaskMan expectedAB = helper.generateTaskMan(threeTasks);
+        TaskMan expectedTaskMan = helper.generateTaskMan(threeTasks);
         // Wrap Task in Activity to complete
-        expectedAB.completeActivity(new Activity(threeTasks.get(1)));
+        expectedTaskMan.completeActivity(new Activity(threeTasks.get(1)));
         helper.addToModel(model, threeTasks);
 
         assertCommandStateChange("complete 2",
-                expectedAB,
-                expectedAB.getActivityList());
+                expectedTaskMan,
+                expectedTaskMan.getActivityList());
     }
 
 
@@ -341,13 +341,13 @@ public class LogicManagerTest {
         Task p2 = helper.generateTaskWithTitle("KEYKEYKEY sduauo");
 
         List<Task> fourTasks = helper.generateTaskList(p1, pTarget1, p2, pTarget2);
-        TaskMan expectedAB = helper.generateTaskMan(fourTasks);
+        TaskMan expectedTaskMan = helper.generateTaskMan(fourTasks);
         Activity[] list = {new Activity(pTarget1), new Activity(pTarget2)};
         List<Activity> expectedList = Arrays.asList(list);
         helper.addToModel(model, fourTasks);
 
         assertCommandStateChange("list KEY",
-                expectedAB,
+                expectedTaskMan,
                 expectedList);
     }
 
@@ -360,13 +360,13 @@ public class LogicManagerTest {
         Task p4 = helper.generateTaskWithTitle("KEy sduauo");
 
         List<Task> fourTasks = helper.generateTaskList(p3, p1, p4, p2);
-        TaskMan expectedAB = helper.generateTaskMan(fourTasks);
+        TaskMan expectedTaskMan = helper.generateTaskMan(fourTasks);
         Activity[] list = {new Activity(p3), new Activity(p1), new Activity(p4), new Activity(p2)};
         List<Activity> expectedList = Arrays.asList(list);
         helper.addToModel(model, fourTasks);
 
         assertCommandStateChange("list KEY",
-                expectedAB,
+                expectedTaskMan,
                 expectedList);
     }
 
@@ -379,13 +379,13 @@ public class LogicManagerTest {
         Task p1 = helper.generateTaskWithTitle("sduauo");
 
         List<Task> fourTasks = helper.generateTaskList(pTarget1, p1, pTarget2, pTarget3);
-        TaskMan expectedAB = helper.generateTaskMan(fourTasks);
+        TaskMan expectedTaskMan = helper.generateTaskMan(fourTasks);
         Activity[] list = {new Activity(pTarget1), new Activity(pTarget2), new Activity(pTarget3)};
         List<Activity> expectedList = Arrays.asList(list);
         helper.addToModel(model, fourTasks);
 
         assertCommandStateChange("list key rAnDoM",
-                expectedAB,
+                expectedTaskMan,
                 expectedList);
     }
 
@@ -394,14 +394,14 @@ public class LogicManagerTest {
         // setup expectations
         //TODO: update test when events are properly implemented
         TestDataHelper helper = new TestDataHelper();
-        TaskMan expectedAB = helper.generateTaskMan(2);
+        TaskMan expectedTaskMan = helper.generateTaskMan(2);
         List<Activity> expectedList = Collections.EMPTY_LIST;
 
         // setup task man state
         helper.addToModel(model, 2);
 
         assertCommandStateChange("list e/",
-                expectedAB,
+                expectedTaskMan,
                 expectedList);
     }
 
@@ -410,14 +410,14 @@ public class LogicManagerTest {
         // setup expectations
         //TODO: update test when events are properly implemented
         TestDataHelper helper = new TestDataHelper();
-        TaskMan expectedAB = helper.generateTaskMan(2);
-        List<? extends Activity> expectedList = expectedAB.getActivityList();
+        TaskMan expectedTaskMan = helper.generateTaskMan(2);
+        List<? extends Activity> expectedList = expectedTaskMan.getActivityList();
 
         // setup task man state
         helper.addToModel(model, 2);
 
         assertCommandStateChange("list all/",
-                expectedAB,
+                expectedTaskMan,
                 expectedList);
     }
 
@@ -429,20 +429,20 @@ public class LogicManagerTest {
         // setup task man state
         helper.addToModel(model, 4);
 
-        TaskMan expectedAB = helper.generateTaskMan(4);
-        List<Activity> expectedList = expectedAB.getActivityList().subList(0,2);
+        TaskMan expectedTaskMan = helper.generateTaskMan(4);
+        List<Activity> expectedList = expectedTaskMan.getActivityList().subList(0,2);
         assertCommandStateChange("list t/tag2",
-                expectedAB,
+                expectedTaskMan,
                 expectedList);
 
         assertCommandStateChange("list t/tag6",
-                expectedAB,
+                expectedTaskMan,
                 Collections.EMPTY_LIST);
 
-        expectedList = new ArrayList<>(expectedAB.getActivities());
+        expectedList = new ArrayList<>(expectedTaskMan.getActivities());
         expectedList.remove(1);
         assertCommandStateChange("list t/tag1 t/tag4",
-                expectedAB,
+                expectedTaskMan,
                 expectedList);
     }
 
@@ -450,7 +450,7 @@ public class LogicManagerTest {
     public void execute_list_filter_keywords_with_tags() throws Exception{
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
-        TaskMan expectedAB = helper.generateTaskMan(5);
+        TaskMan expectedTaskMan = helper.generateTaskMan(5);
 
         // setup task man state
         helper.addToModel(model, 5);
@@ -460,7 +460,7 @@ public class LogicManagerTest {
         expectedList.add(new Activity(helper.generateTask(5)));
         // TODO: This passes and fails randomly
         assertCommandStateChange("list 1 5 t/tag2 t/tag6",
-                expectedAB,
+                expectedTaskMan,
                 expectedList);
     }
 
