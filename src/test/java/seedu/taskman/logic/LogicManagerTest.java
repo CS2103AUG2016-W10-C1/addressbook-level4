@@ -314,7 +314,7 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_list_showsAllTasks() throws Exception {
+    public void execute_list_showsDeadlineTasks() throws Exception {
         // setup expected
         TestDataHelper helper = new TestDataHelper();
         TaskMan expectedTaskMan = helper.generateTaskMan(2);
@@ -327,6 +327,22 @@ public class LogicManagerTest {
                 expectedTaskMan,
                 expectedList);
     }
+
+    @Test
+    public void execute_list_filter_all() throws Exception{
+        // setup expectations
+        TestDataHelper helper = new TestDataHelper();
+        TaskMan expectedTaskMan = helper.generateTaskMan(2);
+        List<? extends Activity> expectedList = expectedTaskMan.getActivityList();
+
+        // setup task man state
+        helper.addToModel(model, 2);
+
+        assertCommandStateChange("list all/",
+                expectedTaskMan,
+                expectedList);
+    }
+
 
     @Test
     public void execute_list_onlyMatchesFullWordsInTitles() throws Exception {
@@ -342,7 +358,7 @@ public class LogicManagerTest {
         List<Activity> expectedList = Arrays.asList(toBeListed);
 
         helper.addToModel(model, fourTasks);
-        assertCommandStateChange("list KEY",
+        assertCommandStateChange("list all/ KEY",
                 expectedTaskMan,
                 expectedList);
     }
@@ -361,7 +377,7 @@ public class LogicManagerTest {
         List<Activity> expectedList = Arrays.asList(toBeListed);
 
         helper.addToModel(model, fourTasks);
-        assertCommandStateChange("list KEY",
+        assertCommandStateChange("list all/ KEY",
                 expectedTaskMan,
                 expectedList);
     }
@@ -380,44 +396,12 @@ public class LogicManagerTest {
         List<Activity> expectedList = Arrays.asList(toBeListed);
 
         helper.addToModel(model, fourTasks);
-        assertCommandStateChange("list key rAnDoM",
+        assertCommandStateChange("list all/ key rAnDoM",
                 expectedTaskMan,
                 expectedList);
     }
 
-    // TODO: LIST: write tests for deadline filter, event filter, floating filter
-
-    //@Test
-    public void execute_list_filter_events_only() throws Exception{
-        // setup expectations
-        //TODO: update test when events are properly implemented
-        TestDataHelper helper = new TestDataHelper();
-        TaskMan expectedTaskMan = helper.generateTaskMan(2);
-        List<Activity> expectedList = Collections.EMPTY_LIST;
-
-        // setup task man state
-        helper.addToModel(model, 2);
-
-        assertCommandStateChange("list e/",
-                expectedTaskMan,
-                expectedList);
-    }
-
-    //@Test
-    public void execute_list_filter_all() throws Exception{
-        // setup expectations
-        //TODO: update test when events are properly implemented
-        TestDataHelper helper = new TestDataHelper();
-        TaskMan expectedTaskMan = helper.generateTaskMan(2);
-        List<? extends Activity> expectedList = expectedTaskMan.getActivityList();
-
-        // setup task man state
-        helper.addToModel(model, 2);
-
-        assertCommandStateChange("list all/",
-                expectedTaskMan,
-                expectedList);
-    }
+    // TODO: LIST: write tests for deadline filter, schedule filter, floating filter
 
     //@Test
     public void execute_list_filter_tags() throws Exception{
