@@ -59,7 +59,7 @@ public class CompleteCommand extends Command {
             } catch (UniqueActivityList.DuplicateActivityException e1) {
                 assert false: "Deleted activity should be able to be added back.";
             }
-            return new CommandResult(MESSAGE_DUPLICATE_TASK);
+            throw new AssertionError("Activities with duplicate titles exists in data!", null);
         }
 	}
 
