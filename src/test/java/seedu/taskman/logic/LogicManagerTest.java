@@ -201,22 +201,6 @@ public class LogicManagerTest {
 
     }
 
-
-    @Test
-    public void execute_list_showsAllTasks() throws Exception {
-        // setup expected
-        TestDataHelper helper = new TestDataHelper();
-        TaskMan expectedTaskMan = helper.generateTaskMan(2);
-        List<? extends Activity> expectedList = expectedTaskMan.getActivityList();
-
-        // setup actual
-        helper.addToModel(model, 2);
-
-        assertCommandStateChange("list",
-                expectedTaskMan,
-                expectedList);
-    }
-
     /**
      * Confirms the 'invalid argument index number behaviour' for the given command
      * targeting a single task in the shown list, using visible index.
@@ -326,68 +310,84 @@ public class LogicManagerTest {
     }
 
 
-    //@Test
+    @Test
     public void execute_list_emptyArgsFormat() throws Exception {
-        String expectedMessage = ListCommand.MESSAGE_SUCCESS;
         assertCommandNoStateChange("list ");
     }
 
-    //@Test
+    @Test
+    public void execute_list_showsAllTasks() throws Exception {
+        // setup expected
+        TestDataHelper helper = new TestDataHelper();
+        TaskMan expectedTaskMan = helper.generateTaskMan(2);
+        List<? extends Activity> expectedList = expectedTaskMan.getActivityList();
+
+        // setup actual
+        helper.addToModel(model, 2);
+
+        assertCommandStateChange("list",
+                expectedTaskMan,
+                expectedList);
+    }
+
+    @Test
     public void execute_list_onlyMatchesFullWordsInTitles() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Task pTarget1 = helper.generateTaskWithTitle("bla bla KEY bla");
-        Task pTarget2 = helper.generateTaskWithTitle("bla KEY bla bceofeia");
-        Task p1 = helper.generateTaskWithTitle("KE Y");
-        Task p2 = helper.generateTaskWithTitle("KEYKEYKEY sduauo");
+        Task taskTarget1 = helper.generateTaskWithTitle("bla bla KEY bla");
+        Task taskTarget2 = helper.generateTaskWithTitle("bla KEY bla bceofeia");
+        Task other1 = helper.generateTaskWithTitle("KE Y");
+        Task other2 = helper.generateTaskWithTitle("KEYKEYKEY sduauo");
 
-        List<Task> fourTasks = helper.generateTaskList(p1, pTarget1, p2, pTarget2);
+        List<Task> fourTasks = helper.generateTaskList(other1, taskTarget1, other2, taskTarget2);
         TaskMan expectedTaskMan = helper.generateTaskMan(fourTasks);
-        Activity[] list = {new Activity(pTarget1), new Activity(pTarget2)};
-        List<Activity> expectedList = Arrays.asList(list);
-        helper.addToModel(model, fourTasks);
+        Activity[] toBeListed = {new Activity(taskTarget1), new Activity(taskTarget2)};
+        List<Activity> expectedList = Arrays.asList(toBeListed);
 
+        helper.addToModel(model, fourTasks);
         assertCommandStateChange("list KEY",
                 expectedTaskMan,
                 expectedList);
     }
 
-    //@Test
+    @Test
     public void execute_list_isNotCaseSensitive() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Task p1 = helper.generateTaskWithTitle("bla bla KEY bla");
-        Task p2 = helper.generateTaskWithTitle("bla KEY bla bceofeia");
-        Task p3 = helper.generateTaskWithTitle("key key");
-        Task p4 = helper.generateTaskWithTitle("KEy sduauo");
+        Task target1 = helper.generateTaskWithTitle("bla bla KEY bla");
+        Task target2 = helper.generateTaskWithTitle("bla KEY bla bceofeia");
+        Task target3 = helper.generateTaskWithTitle("key key");
+        Task target4 = helper.generateTaskWithTitle("KEy sduauo");
 
-        List<Task> fourTasks = helper.generateTaskList(p3, p1, p4, p2);
+        List<Task> fourTasks = helper.generateTaskList(target3, target1, target4, target2);
         TaskMan expectedTaskMan = helper.generateTaskMan(fourTasks);
-        Activity[] list = {new Activity(p3), new Activity(p1), new Activity(p4), new Activity(p2)};
-        List<Activity> expectedList = Arrays.asList(list);
-        helper.addToModel(model, fourTasks);
+        Activity[] toBeListed = {new Activity(target3), new Activity(target1), new Activity(target4), new Activity(target2)};
+        List<Activity> expectedList = Arrays.asList(toBeListed);
 
+        helper.addToModel(model, fourTasks);
         assertCommandStateChange("list KEY",
                 expectedTaskMan,
                 expectedList);
     }
 
-    //@Test
+    @Test
     public void execute_list_matchesIfAnyKeywordPresent() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Task pTarget1 = helper.generateTaskWithTitle("bla bla KEY bla");
-        Task pTarget2 = helper.generateTaskWithTitle("bla rAnDoM bla bceofeia");
-        Task pTarget3 = helper.generateTaskWithTitle("key key");
-        Task p1 = helper.generateTaskWithTitle("sduauo");
+        Task taskTarget1 = helper.generateTaskWithTitle("bla bla KEY bla");
+        Task taskTarget2 = helper.generateTaskWithTitle("bla rAnDoM bla bceofeia");
+        Task taskTarget3 = helper.generateTaskWithTitle("key key");
+        Task other1 = helper.generateTaskWithTitle("sduauo");
 
-        List<Task> fourTasks = helper.generateTaskList(pTarget1, p1, pTarget2, pTarget3);
+        List<Task> fourTasks = helper.generateTaskList(taskTarget1, other1, taskTarget2, taskTarget3);
         TaskMan expectedTaskMan = helper.generateTaskMan(fourTasks);
-        Activity[] list = {new Activity(pTarget1), new Activity(pTarget2), new Activity(pTarget3)};
-        List<Activity> expectedList = Arrays.asList(list);
-        helper.addToModel(model, fourTasks);
+        Activity[] toBeListed = {new Activity(taskTarget1), new Activity(taskTarget2), new Activity(taskTarget3)};
+        List<Activity> expectedList = Arrays.asList(toBeListed);
 
+        helper.addToModel(model, fourTasks);
         assertCommandStateChange("list key rAnDoM",
                 expectedTaskMan,
                 expectedList);
     }
+
+    // TODO: LIST: write tests for deadline filter, event filter, floating filter
 
     //@Test
     public void execute_list_filter_events_only() throws Exception{
