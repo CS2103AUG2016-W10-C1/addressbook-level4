@@ -48,7 +48,8 @@ public class XmlAdaptedTask {
         title = source.getTitle().title;
 
         if (source.getStatus().isPresent()) {
-            status = source.getStatus().get().toString();
+            status = source.getStatus().get().completed ?
+                    "complete" : "incomplete";
         }
 
         if (source.getDeadline().isPresent()) {
