@@ -7,21 +7,28 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import seedu.taskman.commons.core.EventsCenter;
-import seedu.taskman.logic.commands.*;
+import seedu.taskman.commons.core.Messages;
+import seedu.taskman.commons.core.config.Config;
+import seedu.taskman.commons.core.config.ConfigData;
+import seedu.taskman.commons.events.model.TaskManChangedEvent;
 import seedu.taskman.commons.events.ui.JumpToListRequestEvent;
 import seedu.taskman.commons.events.ui.ShowHelpRequestEvent;
-import seedu.taskman.commons.events.model.TaskManChangedEvent;
+import seedu.taskman.commons.exceptions.DataConversionException;
+import seedu.taskman.commons.util.FileUtil;
+import seedu.taskman.logic.commands.*;
 import seedu.taskman.logic.parser.DateTimeParser;
-import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.Model;
 import seedu.taskman.model.ModelManager;
 import seedu.taskman.model.ReadOnlyTaskMan;
-import seedu.taskman.model.tag.Tag;
-import seedu.taskman.model.tag.UniqueTagList;
+import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.event.*;
 import seedu.taskman.model.event.legacy.Email;
+import seedu.taskman.model.tag.Tag;
+import seedu.taskman.model.tag.UniqueTagList;
+import seedu.taskman.storage.Storage;
 import seedu.taskman.storage.StorageManager;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +49,9 @@ public class LogicManagerTest {
     public TemporaryFolder saveFolder = new TemporaryFolder();
 
     private Model model;
+    private Storage storage;
     private Logic logic;
+    private Config config;
 
     //These are for checking the correctness of the events raised
     private ReadOnlyTaskMan latestSavedTaskMan;
@@ -69,12 +78,15 @@ public class LogicManagerTest {
         model = new ModelManager();
         String tempTaskManFile = saveFolder.getRoot().getPath() + "TempTaskMan.xml";
         String tempPreferencesFile = saveFolder.getRoot().getPath() + "TempPreferences.json";
-        logic = new LogicManager(model, new StorageManager(tempTaskManFile, tempPreferencesFile));
+        storage = new StorageManager(tempTaskManFile, tempPreferencesFile);
+        logic = new LogicManager(model, storage);
         EventsCenter.getInstance().registerHandler(this);
 
         latestSavedTaskMan = new TaskMan(model.getTaskMan()); // last saved assumed to be up to date before.
         helpShown = false;
         targetedJumpIndex = -1; // non yet
+
+        config = Config.getInstance();
     }
 
     @After
@@ -466,6 +478,72 @@ public class LogicManagerTest {
     }
 
 
+    private void assert_storage_location(String inputCommand, String expectedFeedback, String expectedPath, boolean success) throws IOException, DataConversionException {
+        Config.resetInstance();
+        CommandResult result = logic.execute(inputCommand);
+        assertEquals(result.feedbackToUser, expectedFeedback);
+        if (success) {
+            assertEquals(model.getTaskMan(), new TaskMan(storage.readTaskMan().get()));
+            assertEquals(storage.getTaskManFilePath(), expectedPath);
+        }
+        assertEquals(Config.getInstance().getTaskManFilePath(), expectedPath);
+    }
+
+    private String getStoragelocFeedback(String path, boolean success){
+        String message = success
+                ? StoragelocCommand.MESSAGE_SUCCESS
+                : StoragelocCommand.MESSAGE_FAILURE;
+        return String.format(message, path);
+    }
+
+    private void execute_storageloc_general(int generatedTasks,
+                                            String commandArgs,
+                                            String expectedPath,
+                                            boolean isExpectedSuccess) throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        helper.addToModel(model, generatedTasks);
+        assert_storage_location(StoragelocCommand.COMMAND_WORD + " " + commandArgs,
+                getStoragelocFeedback(expectedPath, isExpectedSuccess), expectedPath, isExpectedSuccess);
+    }
+
+    @Test
+    public void execute_storageloc_default() throws Exception {
+        execute_storageloc_general(3, "default",
+                FileUtil.getAbsolutePath(ConfigData.DEFAULT_TASK_MAN_FILE_PATH),
+                true);
+    }
+
+    @Test
+    public void execute_storageloc_absolutePath() throws Exception {
+        String givenPath = FileUtil.getAbsolutePath(saveFolder.getRoot().getPath()+"/absolute.xml");
+        execute_storageloc_general(4, givenPath, givenPath, true);
+    }
+
+    @Test
+    public void execute_storageloc_relativePath() throws Exception {
+        String givenPath = saveFolder.getRoot().getPath()+"/relative.xml";
+        execute_storageloc_general(4, givenPath, FileUtil.getAbsolutePath(givenPath), true);
+    }
+
+    @Test
+    public void execute_storageloc_invalidFileName() throws Exception {
+        String invalidFile = "<3invalidFileName.txt";
+        execute_storageloc_general(2, invalidFile, ConfigData.DEFAULT_TASK_MAN_FILE_PATH, false);
+    }
+
+    @Test
+    public void execute_storageloc_whitespace() throws Exception {
+        assert_storage_location(StoragelocCommand.COMMAND_WORD + "     ",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, StoragelocCommand.MESSAGE_USAGE), ConfigData.DEFAULT_TASK_MAN_FILE_PATH, false);
+    }
+
+    @Test
+    public void execute_storageloc_empty() throws Exception {
+        assert_storage_location(StoragelocCommand.COMMAND_WORD + "",
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, StoragelocCommand.MESSAGE_USAGE), ConfigData.DEFAULT_TASK_MAN_FILE_PATH, false);
+    }
+
+
     /**
      * A utility class to generate test data.
      */
@@ -493,7 +571,7 @@ public class LogicManagerTest {
             return new Task(
                     new Title("Task " + seed),
                     new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))), new Deadline(Math.abs(seed)),
-                    new Schedule(Instant.ofEpochSecond(Math.abs(seed - 1)) + ", " + Instant.ofEpochSecond(Math.abs(seed))),
+                    new Schedule(Instant.ofEpochSecond(Math.abs(seed*seed*10000000 - 1)) + ", " + Instant.ofEpochSecond(Math.abs(seed*seed*100000000))),
                     new Frequency(seed+ " mins")
             );
         }
