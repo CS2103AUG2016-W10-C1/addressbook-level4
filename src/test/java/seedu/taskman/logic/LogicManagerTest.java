@@ -47,15 +47,16 @@ public class LogicManagerTest {
     private boolean helpShown;
     private int targetedJumpIndex;
 
-    // google event bus magic
     @Subscribe
     private void handleLocalModelChangedEvent(TaskManChangedEvent abce) {
         latestSavedTaskMan = new TaskMan(abce.data);
     }
+
     @Subscribe
     private void handleShowHelpRequestEvent(ShowHelpRequestEvent she) {
         helpShown = true;
     }
+
     @Subscribe
     private void handleJumpToListRequestEvent(JumpToListRequestEvent je) {
         targetedJumpIndex = je.targetIndex;
@@ -304,6 +305,7 @@ public class LogicManagerTest {
         expectedTaskMan.completeActivity(new Activity(threeTasks.get(1)));
         helper.addToModel(model, threeTasks);
 
+        // Fails sometimes when generated Activity is not a Task but Event
         assertCommandStateChange("complete 2",
                 expectedTaskMan,
                 expectedTaskMan.getActivityList());
