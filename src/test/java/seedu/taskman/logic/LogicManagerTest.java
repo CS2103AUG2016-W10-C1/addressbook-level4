@@ -291,7 +291,7 @@ public class LogicManagerTest {
         List<Task> threeTasks = helper.generateTaskList(3);
 
         TaskMan expectedTaskMan = helper.generateTaskMan(threeTasks);
-        // Wrap Task in Activity to delete
+        // TODO: overload method to accept tasks?
         expectedTaskMan.removeActivity(new Activity(threeTasks.get(1)));
         helper.addToModel(model, threeTasks);
 
