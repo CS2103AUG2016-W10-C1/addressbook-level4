@@ -480,7 +480,9 @@ public class LogicManagerTest {
     }
 
 
-    private void assert_storage_location(String inputCommand, String expectedFeedback, String expectedPath, boolean success) throws IOException, DataConversionException {
+    private void assert_storage_location(String inputCommand, String expectedFeedback,
+                                         String expectedPath, boolean success)
+            throws IOException, DataConversionException {
         Config.resetInstance();
         CommandResult result = logic.execute(inputCommand);
         assertEquals(result.feedbackToUser, expectedFeedback);
