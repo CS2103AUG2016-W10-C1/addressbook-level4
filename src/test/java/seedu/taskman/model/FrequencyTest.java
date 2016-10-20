@@ -12,14 +12,14 @@ import static junit.framework.TestCase.assertEquals;
 public class FrequencyTest {
 
     // only tests for successful creation
-    @Test
+    //@Test
     public void create_singleDuration_success() throws IllegalValueException {
         String duration = "4 years";
         new Frequency(duration);
     }
 
     // only tests for successful creation
-    @Test
+    //@Test
     public void create_multipleDuration_success() throws IllegalValueException {
         String duration = "4 years, 3 months";
         new Frequency(duration);

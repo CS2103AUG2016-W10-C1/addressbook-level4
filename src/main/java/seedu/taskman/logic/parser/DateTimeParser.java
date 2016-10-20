@@ -81,7 +81,16 @@ public class DateTimeParser {
     /**
      * Converts a natural duration to an end time in unix time (seconds)
      */
-    public static long durationToUnixTime(long startUnixTime, String naturalDuration) throws IllegalDateTimeException {
+    public static long naturalDurationToUnixTime(long startUnixTime, String naturalDuration) throws IllegalDateTimeException {
+        long endUnixTime = startUnixTime + naturalDurationToSeconds(naturalDuration);
+        if (endUnixTime < startUnixTime) {
+            throw new IllegalDateTimeException(GENERIC_ERROR_DURATION);
+        } else {
+            return endUnixTime;
+        }
+    }
+
+    public static long naturalDurationToSeconds(String naturalDuration) throws IllegalDateTimeException {
         if (!naturalDuration.matches(MULTIPLE_DURATION)) {
             throw new IllegalDateTimeException("failed to match regex");
         } else {
@@ -94,12 +103,7 @@ public class DateTimeParser {
                 actualDurationSeconds += getUnixTime(matcher.group()) - unixTimeNow;
             }
 
-            long endUnixTime = startUnixTime + actualDurationSeconds;
-            if (endUnixTime < startUnixTime) {
-                throw new IllegalDateTimeException(GENERIC_ERROR_DURATION);
-            } else {
-                return endUnixTime;
-            }
+            return actualDurationSeconds;
         }
     }
 

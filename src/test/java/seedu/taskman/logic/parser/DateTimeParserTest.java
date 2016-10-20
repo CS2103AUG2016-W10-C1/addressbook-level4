@@ -70,7 +70,7 @@ public class DateTimeParserTest {
 
         long timeNow = Instant.now().getEpochSecond();
         long expectedEndTime = timeNow + testDurationSeconds;
-        long parsedTime = DateTimeParser.durationToUnixTime(timeNow, testDurationNatural);
+        long parsedTime = DateTimeParser.naturalDurationToUnixTime(timeNow, testDurationNatural);
         assertTrue(Math.abs(expectedEndTime - parsedTime) < timeDifferenceThreshold);
     }
 
@@ -83,10 +83,10 @@ public class DateTimeParserTest {
         long timeNow = Instant.now().getEpochSecond();
         long expectedEndTime = timeNow + testDurationSeconds;
 
-        long parsedTime = DateTimeParser.durationToUnixTime(timeNow, testDurationNatural);
+        long parsedTime = DateTimeParser.naturalDurationToUnixTime(timeNow, testDurationNatural);
         assertTrue(Math.abs(expectedEndTime - parsedTime) < timeDifferenceThreshold);
 
-        long parsedTimeComma = DateTimeParser.durationToUnixTime(timeNow, testDurationNaturalComma);
+        long parsedTimeComma = DateTimeParser.naturalDurationToUnixTime(timeNow, testDurationNaturalComma);
         assertTrue(Math.abs(expectedEndTime - parsedTimeComma) < timeDifferenceThreshold);
     }
 
