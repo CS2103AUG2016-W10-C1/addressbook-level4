@@ -28,7 +28,7 @@ public class SelectCommandTest extends TaskManGuiTest {
     }
 
     @Test
-    public void selectTask_emptyList(){
+    public void selectTask_emptyList() {
         commandBox.runCommand("clear");
         assertListSize(0);
         assertSelectionInvalid(1); //invalid index
@@ -41,14 +41,14 @@ public class SelectCommandTest extends TaskManGuiTest {
 
     private void assertSelectionSuccess(int index) {
         commandBox.runCommand("select " + index);
-        assertResultMessage("Selected Task: "+index);
+        assertResultMessage("Selected Task: " + index);
         assertTaskSelected(index);
     }
 
     private void assertTaskSelected(int index) {
         assertEquals(taskListPanel.getSelectedTasks().size(), 1);
         Activity selectedTask = taskListPanel.getSelectedTasks().get(0);
-        assertEquals(taskListPanel.getTask(index-1), selectedTask);
+        assertEquals(taskListPanel.getTask(index - 1), selectedTask);
         //TODO: confirm the correct page is loaded in the Browser Panel
     }
 

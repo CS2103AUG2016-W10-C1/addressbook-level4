@@ -28,7 +28,7 @@ public class AddCommandTest extends TaskManGuiTest {
         //add duplicate task
         commandBox.runCommand(testTasks.taskCS2102.getAddCommand());
         Activity[] expectedList = new Activity[currentList.length];
-        for(int i = 0; i < expectedList.length; i++){
+        for (int i = 0; i < expectedList.length; i++) {
             expectedList[i] = new Activity(new Task(currentList[i]));
         }
         assertResultMessage(AddCommand.MESSAGE_DUPLICATE_EVENT);
@@ -53,7 +53,7 @@ public class AddCommandTest extends TaskManGuiTest {
         //confirm the list now contains all previous tasks plus the new task
         TestTask[] expectedList = TestUtil.addTasksToList(currentList, taskToAdd);
         Activity[] expectedActivityList = new Activity[currentList.length];
-        for(int i = 0; i < expectedActivityList.length; i++){
+        for (int i = 0; i < expectedActivityList.length; i++) {
             expectedActivityList[i] = new Activity(new Task(expectedList[i]));
         }
         assertTrue(taskListPanel.isListMatching(expectedActivityList));

@@ -39,7 +39,8 @@ public class MainApp extends Application {
     protected Config config;
     protected UserPrefs userPrefs;
 
-    public MainApp() {}
+    public MainApp() {
+    }
 
     @Override
     public void init() throws Exception {
@@ -64,7 +65,7 @@ public class MainApp extends Application {
         initEventsCenter();
     }
 
-    private String getApplicationParameter(String parameterName){
+    private String getApplicationParameter(String parameterName) {
         Map<String, String> applicationParameters = getParameters().getNamed();
         return applicationParameters.get(parameterName);
     }
@@ -74,7 +75,7 @@ public class MainApp extends Application {
         ReadOnlyTaskMan initialData;
         try {
             taskManOptional = storage.readTaskMan();
-            if(!taskManOptional.isPresent()){
+            if (!taskManOptional.isPresent()) {
                 logger.info("Data file not found. Will be starting with an empty TaskMan");
             }
             initialData = taskManOptional.orElse(new TaskMan());
@@ -98,7 +99,7 @@ public class MainApp extends Application {
 
         configFilePathUsed = Config.DEFAULT_CONFIG_FILE;
 
-        if(configFilePath != null) {
+        if (configFilePath != null) {
             logger.info("Custom Config file specified " + configFilePath);
             configFilePathUsed = configFilePath;
         }

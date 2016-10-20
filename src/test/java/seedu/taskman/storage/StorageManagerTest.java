@@ -63,7 +63,7 @@ public class StorageManagerTest {
     }
 
     @Test
-    public void getTaskManFilePath(){
+    public void getTaskManFilePath() {
         assertNotNull(storageManager.getTaskManFilePath());
     }
 
@@ -77,7 +77,7 @@ public class StorageManagerTest {
     }
 
     @Test
-    public void setTaskManFilePath(){
+    public void setTaskManFilePath() {
         String filePath = "filepath";
         storageManager.setTaskManFilePath(filePath);
         assertEquals(filePath, storageManager.getTaskManFilePath());

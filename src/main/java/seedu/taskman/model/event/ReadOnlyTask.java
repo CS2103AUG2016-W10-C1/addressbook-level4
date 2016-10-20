@@ -4,6 +4,7 @@ import java.util.Optional;
 
 public interface ReadOnlyTask extends ReadOnlyEvent {
     Status getStatus();
+
     Optional<Deadline> getDeadline();
 
     /**

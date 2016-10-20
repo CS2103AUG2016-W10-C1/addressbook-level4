@@ -9,13 +9,13 @@ import seedu.taskman.model.tag.Tag;
 /**
  * A utility class to help with building TaskMan objects.
  * Example usage: <br>
- *     {@code TaskMan ab = new TaskManBuilder().withTask("John", "Doe").withTag("Friend").build();}
+ * {@code TaskMan ab = new TaskManBuilder().withTask("John", "Doe").withTag("Friend").build();}
  */
 public class TaskManBuilder {
 
     private TaskMan taskMan;
 
-    public TaskManBuilder(TaskMan taskMan){
+    public TaskManBuilder(TaskMan taskMan) {
         this.taskMan = taskMan;
     }
 
@@ -29,7 +29,7 @@ public class TaskManBuilder {
         return this;
     }
 
-    public TaskMan build(){
+    public TaskMan build() {
         return taskMan;
     }
 }

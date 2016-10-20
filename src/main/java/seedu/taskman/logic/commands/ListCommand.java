@@ -17,7 +17,7 @@ public class ListCommand extends Command {
             + "the specified keywords (case-sensitive) and displays them as a list with index numbers.\n"
             + "Parameters: [{e/,all/}] [KEYWORDS]... [t/TAG]...\n"
             + "Example: " + COMMAND_WORD + " all/ homework t/CS2103T";
-    
+
     public static final String MESSAGE_SUCCESS = "Listed all tasks";
 
     private final Model.FilterMode filterMode;
@@ -28,7 +28,7 @@ public class ListCommand extends Command {
         this(Model.FilterMode.TASK_ONLY, keywords, new HashSet<>());
     }
 
-    public ListCommand(Model.FilterMode filterMode, Set<String> keywords, Set<String> tags){
+    public ListCommand(Model.FilterMode filterMode, Set<String> keywords, Set<String> tags) {
         this.filterMode = filterMode;
         this.keywords = keywords;
         this.tagNames = tags;

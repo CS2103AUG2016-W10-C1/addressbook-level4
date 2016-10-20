@@ -75,6 +75,7 @@ public class FileUtil {
 
     /**
      * Converts a string to a platform-specific file path
+     *
      * @param pathWithForwardSlash A String representing a file path but using '/' as the separator
      * @return {@code pathWithForwardSlash} but '/' replaced with {@code File.separator}
      */
@@ -94,11 +95,10 @@ public class FileUtil {
     }
 
     /**
-     *
      * @param path
      * @return absolute path of given path
      */
-    public static String getAbsolutePath(String path){
+    public static String getAbsolutePath(String path) {
         File file = new File(path);
         return file.getAbsolutePath();
     }

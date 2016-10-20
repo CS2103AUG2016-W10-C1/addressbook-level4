@@ -15,7 +15,7 @@ import seedu.taskman.model.event.Schedule;
 public class TaskRowHandle extends GuiHandle {
     private Activity task;
 
-    public TaskRowHandle(GuiRobot guiRobot, Stage primaryStage, Activity task){
+    public TaskRowHandle(GuiRobot guiRobot, Stage primaryStage, Activity task) {
         super(guiRobot, primaryStage, null);
         this.task = task;
     }
@@ -23,27 +23,27 @@ public class TaskRowHandle extends GuiHandle {
     public String getTitle() {
         return task.getTitle().title;
     }
-    
+
     public Optional<Deadline> getDeadline() {
         return task.getDeadline();
     }
-    
+
     public Optional<Schedule> getSchedule() {
         return task.getSchedule();
     }
-    
+
     public Optional<Frequency> getFrequency() {
         return task.getFrequency();
     }
 
-    public boolean isSameTask(Activity task){
+    public boolean isSameTask(Activity task) {
         return getTitle().equals(task.getTitle().title) && getDeadline().equals(task.getDeadline())
                 && getSchedule().equals(task.getSchedule()) && getFrequency().equals(task.getFrequency());
     }
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof TaskRowHandle) {
+        if (obj instanceof TaskRowHandle) {
             TaskRowHandle handle = (TaskRowHandle) obj;
             return getTitle().equals(handle.getTitle())
                     && getDeadline().equals(handle.getDeadline())

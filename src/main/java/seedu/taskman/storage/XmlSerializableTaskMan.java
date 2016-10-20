@@ -33,7 +33,8 @@ public class XmlSerializableTaskMan implements ReadOnlyTaskMan {
     /**
      * Empty constructor required for marshalling
      */
-    public XmlSerializableTaskMan() {}
+    public XmlSerializableTaskMan() {
+    }
 
     /**
      * Conversion

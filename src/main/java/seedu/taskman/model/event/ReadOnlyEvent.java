@@ -11,7 +11,9 @@ import java.util.Optional;
 public interface ReadOnlyEvent {
 
     Title getTitle();
+
     Optional<Frequency> getFrequency();
+
     Optional<Schedule> getSchedule();
 
     /**
@@ -27,9 +29,9 @@ public interface ReadOnlyEvent {
         return other == this // short circuit if same object
                 || (other != null // this is first to avoid NPE below
                 && other.getTitle().equals(this.getTitle()) // state checks here onwards
-				&& other.getFrequency().equals(this.getFrequency())
-        		&& other.getSchedule().equals(this.getSchedule())
-                );
+                && other.getFrequency().equals(this.getFrequency())
+                && other.getSchedule().equals(this.getSchedule())
+        );
     }
 
     /**
@@ -38,11 +40,11 @@ public interface ReadOnlyEvent {
     default String getAsText() {
         final StringBuilder builder = new StringBuilder();
         builder.append(getTitle())
-		        .append(" Recurring: ")
-			    .append(getFrequency())
-		        .append(" Frequency: ")
-		        .append(getSchedule())
-		        .append(" Tags: ");
+                .append(" Recurring: ")
+                .append(getFrequency())
+                .append(" Frequency: ")
+                .append(getSchedule())
+                .append(" Tags: ");
         getTags().forEach(builder::append);
         return builder.toString();
     }

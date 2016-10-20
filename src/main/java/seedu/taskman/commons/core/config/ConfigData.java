@@ -58,7 +58,7 @@ public class ConfigData {
         this.taskManName = taskManName;
     }
 
-    protected static void update(ConfigData toUpdate, ConfigData source){
+    protected static void update(ConfigData toUpdate, ConfigData source) {
         toUpdate.appTitle = source.appTitle;
         toUpdate.logLevel = source.logLevel;
         toUpdate.userPrefsFilePath = source.userPrefsFilePath;
@@ -74,14 +74,14 @@ public class ConfigData {
 
     @Override
     public boolean equals(Object other) {
-        if (other == this){
+        if (other == this) {
             return true;
         }
-        if (!(other instanceof ConfigData)){ //this handles null as well.
+        if (!(other instanceof ConfigData)) { //this handles null as well.
             return false;
         }
 
-        ConfigData o = (ConfigData)other;
+        ConfigData o = (ConfigData) other;
 
         return Objects.equals(appTitle, o.appTitle)
                 && Objects.equals(logLevel, o.logLevel)

@@ -19,9 +19,10 @@ public interface TaskManStorage {
 
     /**
      * Returns TaskMan data as a {@link ReadOnlyTaskMan}.
-     *   Returns {@code Optional.empty()} if storage file is not found.
+     * Returns {@code Optional.empty()} if storage file is not found.
+     *
      * @throws DataConversionException if the data in storage is not in the expected format.
-     * @throws IOException if there was any problem when reading from the storage.
+     * @throws IOException             if there was any problem when reading from the storage.
      */
     Optional<ReadOnlyTaskMan> readTaskMan() throws DataConversionException, IOException;
 
@@ -32,6 +33,7 @@ public interface TaskManStorage {
 
     /**
      * Saves the given {@link ReadOnlyTaskMan} to the storage.
+     *
      * @param taskMan cannot be null.
      * @throws IOException if there was any problem writing to the file.
      */

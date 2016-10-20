@@ -24,7 +24,7 @@ public class StoragelocCommand extends Command {
 
     private final String filePath;
 
-    public StoragelocCommand(String filePath){
+    public StoragelocCommand(String filePath) {
         this.filePath = FileUtil.getAbsolutePath(filePath);
     }
 
@@ -37,7 +37,7 @@ public class StoragelocCommand extends Command {
         ConfigData initialConfigData = Config.getInstance().getDataClone();
 
         try {
-            storage.saveTaskMan(model.getTaskMan(),filePath);
+            storage.saveTaskMan(model.getTaskMan(), filePath);
             Config.getInstance().setTaskManFilePath(filePath);
             Config.save();
             storage.setTaskManFilePath(filePath);

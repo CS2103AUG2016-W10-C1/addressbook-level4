@@ -18,27 +18,41 @@ public interface Model {
         ALL
     }
 
-    /** Clears existing backing model and replaces with the provided new data. */
+    /**
+     * Clears existing backing model and replaces with the provided new data.
+     */
     void resetData(ReadOnlyTaskMan newData);
 
-    /** Returns the TaskMan */
+    /**
+     * Returns the TaskMan
+     */
     ReadOnlyTaskMan getTaskMan();
 
-    /** Deletes the given activity. */
+    /**
+     * Deletes the given activity.
+     */
     void deleteActivity(Activity target) throws UniqueActivityList.ActivityNotFoundException;
 
-    /** Adds the given task */
+    /**
+     * Adds the given task
+     */
     void addTask(Task task) throws UniqueActivityList.DuplicateActivityException;
 
-    void addActivity(Activity activity) throws  UniqueActivityList.DuplicateActivityException;
+    void addActivity(Activity activity) throws UniqueActivityList.DuplicateActivityException;
 
-    /** Returns the filtered task list as an {@code UnmodifiableObservableList<Activity>} */
+    /**
+     * Returns the filtered task list as an {@code UnmodifiableObservableList<Activity>}
+     */
     UnmodifiableObservableList<Activity> getFilteredActivityList();
 
-    /** Updates the filter of the filtered activity list to show all activities */
+    /**
+     * Updates the filter of the filtered activity list to show all activities
+     */
     void updateFilteredListToShowAll();
 
-    /** Updates the filter of the filtered activity list to filter by the given mode, the given keywords and the given tag names*/
+    /**
+     * Updates the filter of the filtered activity list to filter by the given mode, the given keywords and the given tag names
+     */
     void updateFilteredActivityList(FilterMode filterMode, Set<String> keywords, Set<String> tagNames);
 
 }

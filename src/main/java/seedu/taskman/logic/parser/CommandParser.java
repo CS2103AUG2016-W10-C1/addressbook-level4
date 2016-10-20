@@ -27,26 +27,26 @@ public class CommandParser {
 
     private static final Pattern TASK_INDEX_ARGS_FORMAT = Pattern.compile("" + ArgumentPattern.TARGET_INDEX);
 
-    private enum ListFlag{
+    private enum ListFlag {
         LIST_EVENT("e/", FilterMode.EVENT_ONLY),
         LIST_ALL("all/", FilterMode.ALL);
-        
+
         public final String flag;
         public final FilterMode filterMode;
-        
-        ListFlag(String flag, FilterMode filterMode){
+
+        ListFlag(String flag, FilterMode filterMode) {
             this.flag = flag;
             this.filterMode = filterMode;
         }
-        
-        public static String get_Pattern(){
+
+        public static String get_Pattern() {
             ListFlag[] values = ListFlag.values();
-            if(values.length == 0){
+            if (values.length == 0) {
                 return "";
             }
             StringBuilder builder = new StringBuilder();
-            for(int i = 0; i< values.length; i++){
-                if(i != 0){
+            for (int i = 0; i < values.length; i++) {
+                if (i != 0) {
                     builder.append('|');
                 }
                 builder.append("(?:");
@@ -56,7 +56,7 @@ public class CommandParser {
             return builder.toString();
         }
     }
-    
+
     private static final Pattern LIST_ARGS_FORMAT =
             Pattern.compile("(?<filter>" + ListFlag.get_Pattern() + ")?" +
                     "(?<keywords>(?:\\s*[^/]+)*?)??(?<tagArguments>(?:\\s*t/[^/]+)*)?"); // one or more keywords separated by whitespace
@@ -70,15 +70,15 @@ public class CommandParser {
         FREQUENCY("(?:\\s+f/(?<frequency>[^/]+))?"),
         TAG("(?<tagArguments>(?:\\s*t/[^/]+)*)?"),
         FILE_PATH(".+");
-        
+
         private final String pattern;
-        
-        ArgumentPattern(String pattern){
+
+        ArgumentPattern(String pattern) {
             this.pattern = pattern;
         }
-        
+
         @Override
-        public String toString(){
+        public String toString() {
             return pattern;
         }
     }
@@ -104,7 +104,8 @@ public class CommandParser {
     private static final Pattern STORAGELOC_ARGS_FORMAT = Pattern.compile("" + ArgumentPattern.FILE_PATH);
 
 
-    public CommandParser() {}
+    public CommandParser() {
+    }
 
     /**
      * Parses user input into command for execution.
@@ -160,7 +161,7 @@ public class CommandParser {
      * @param args full command args string
      * @return the prepared command
      */
-    private Command prepareAdd(String args){
+    private Command prepareAdd(String args) {
         final Matcher matcher = TASK_ADD_ARGS_FORMAT.matcher(args.trim());
         // Validate arg string format
         if (!matcher.matches()) {
@@ -227,7 +228,7 @@ public class CommandParser {
     private Command prepareDelete(String args) {
 
         Optional<Integer> index = parseIndex(args);
-        if(!index.isPresent()){
+        if (!index.isPresent()) {
             return new IncorrectCommand(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         }
@@ -243,7 +244,7 @@ public class CommandParser {
      */
     private Command prepareSelect(String args) {
         Optional<Integer> index = parseIndex(args);
-        if(!index.isPresent()){
+        if (!index.isPresent()) {
             return new IncorrectCommand(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE));
         }
@@ -253,7 +254,7 @@ public class CommandParser {
 
     /**
      * Returns the specified index in the {@code command} IF a positive unsigned integer is given as the index.
-     *   Returns an {@code Optional.empty()} otherwise.
+     * Returns an {@code Optional.empty()} otherwise.
      */
     private Optional<Integer> parseIndex(String command) {
         final Matcher matcher = TASK_INDEX_ARGS_FORMAT.matcher(command.trim());
@@ -262,7 +263,7 @@ public class CommandParser {
         }
 
         String index = matcher.group("targetIndex");
-        if(!StringUtil.isUnsignedInteger(index)){
+        if (!StringUtil.isUnsignedInteger(index)) {
             return Optional.empty();
         }
         return Optional.of(Integer.parseInt(index));
@@ -278,7 +279,7 @@ public class CommandParser {
     private Command prepareList(String args) {
         final String trimmedArgs = args.trim();
         final Matcher matcher = LIST_ARGS_FORMAT.matcher(trimmedArgs);
-        
+
         if (trimmedArgs.isEmpty()) {
             final Set<String> keywordSet = new HashSet<>();
             return new ListCommand(keywordSet);
@@ -289,22 +290,22 @@ public class CommandParser {
             //filter
             final String filter = matcher.group("filter");
             Model.FilterMode filterMode = Model.FilterMode.TASK_ONLY;
-            for(ListFlag listFlag: ListFlag.values()){
-                if(listFlag.flag.equals(filter)){
+            for (ListFlag listFlag : ListFlag.values()) {
+                if (listFlag.flag.equals(filter)) {
                     filterMode = listFlag.filterMode;
                 }
             }
 
             // keywords delimited by whitespace
             Set<String> keywordSet = Collections.EMPTY_SET;
-            if(matcher.group("keywords") != null){
+            if (matcher.group("keywords") != null) {
                 String[] keywords = matcher.group("keywords").split("\\s+");
                 keywordSet = new HashSet<>(Arrays.asList(keywords));
             }
 
             Set<String> tagSet = Collections.EMPTY_SET;
             try {
-                if(matcher.group("tagArguments") != null){
+                if (matcher.group("tagArguments") != null) {
                     tagSet = getTagsFromArgs(matcher.group("tagArguments"));
                 }
                 return new ListCommand(filterMode, keywordSet, tagSet);
@@ -320,7 +321,7 @@ public class CommandParser {
      * @param args full command args string
      * @return the prepared command
      */
-    private Command prepareStorageloc(String args){
+    private Command prepareStorageloc(String args) {
 
         String trimmedArgs = args.trim();
 

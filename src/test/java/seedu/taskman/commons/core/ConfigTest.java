@@ -26,7 +26,7 @@ public class ConfigTest {
     public TemporaryFolder testFolder = new TemporaryFolder();
 
     @Test
-    public void resetInstance(){
+    public void resetInstance() {
         Config.resetInstance();
         assertTrue(Config.getInstance().equals(new ConfigData()));
     }
@@ -43,7 +43,7 @@ public class ConfigTest {
     }
 
     @Test
-    public void equalsMethod(){
+    public void equalsMethod() {
         Config defaultConfig = Config.getInstance();
         assertFalse(defaultConfig.equals(null));
         assertTrue(defaultConfig.equals(defaultConfig));
@@ -118,7 +118,7 @@ public class ConfigTest {
     @Test
     public void save_nullFile_assertionFailure() throws IOException {
         thrown.expect(AssertionError.class);
-        save( null);
+        save(null);
     }
 
     @Test
@@ -145,13 +145,13 @@ public class ConfigTest {
     }
 
     @Test
-    public void getInstance(){
+    public void getInstance() {
         assertNotNull(Config.getInstance());
         assertTrue(Config.getInstance() == Config.getInstance());
     }
 
     @Test
-    public void getInstance_afterReset(){
+    public void getInstance_afterReset() {
         assertNotNull(Config.getInstance());
         Config.resetInstance();
         assertTrue(Config.getInstance() == Config.getInstance());

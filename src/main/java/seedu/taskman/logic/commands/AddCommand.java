@@ -41,14 +41,14 @@ public class AddCommand extends Command {
                 new Title(title),
                 new UniqueTagList(tagSet),
                 deadline == null
-                    ? null
-                    : new Deadline(deadline),
+                        ? null
+                        : new Deadline(deadline),
                 schedule == null
-                    ? null
-                    : new Schedule(schedule),
+                        ? null
+                        : new Schedule(schedule),
                 frequency == null
-                    ? null
-                    : new Frequency(frequency)
+                        ? null
+                        : new Frequency(frequency)
         );
     }
 

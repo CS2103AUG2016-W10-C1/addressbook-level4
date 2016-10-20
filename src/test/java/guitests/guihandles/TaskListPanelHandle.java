@@ -43,17 +43,18 @@ public class TaskListPanelHandle extends GuiHandle {
 
     /**
      * Returns true if the list is showing the task details correctly and in correct order.
+     *
      * @param tasks A list of task in the correct order.
      */
     public boolean isListMatching(Activity... tasks) {
         return this.isListMatching(0, tasks);
     }
-    
+
     /**
      * Clicks on the TableView.
      */
     public void clickOnTableView() {
-        Point2D point= TestUtil.getScreenMidPoint(getTableView());
+        Point2D point = TestUtil.getScreenMidPoint(getTableView());
         guiRobot.clickOn(point.getX(), point.getY());
     }
 
@@ -64,13 +65,13 @@ public class TaskListPanelHandle extends GuiHandle {
         List<Activity> tasksInList = getTableView().getItems();
 
         // Return false if the list in panel is too short to contain the given list
-        if (startPosition + tasks.length > tasksInList.size()){
+        if (startPosition + tasks.length > tasksInList.size()) {
             return false;
         }
 
         // Return false if any of the tasks doesn't match
         for (int i = 0; i < tasks.length; i++) {
-            if (!tasksInList.get(startPosition + i).getTitle().title.equals(tasks[i].getTitle().title)){
+            if (!tasksInList.get(startPosition + i).getTitle().title.equals(tasks[i].getTitle().title)) {
                 return false;
             }
         }
@@ -80,8 +81,9 @@ public class TaskListPanelHandle extends GuiHandle {
 
     /**
      * Returns true if the list is showing the task details correctly and in correct order.
+     *
      * @param startPosition The starting position of the sub list.
-     * @param tasks A list of task in the correct order.
+     * @param tasks         A list of task in the correct order.
      */
     public boolean isListMatching(int startPosition, Activity... tasks) throws IllegalArgumentException {
         if (tasks.length + startPosition != getTableView().getItems().size()) {
@@ -133,7 +135,7 @@ public class TaskListPanelHandle extends GuiHandle {
     public int getTaskIndex(Activity targetTask) {
         List<Activity> tasksInList = getTableView().getItems();
         for (int i = 0; i < tasksInList.size(); i++) {
-            if(tasksInList.get(i).getTitle().equals(targetTask.getTitle())){
+            if (tasksInList.get(i).getTitle().equals(targetTask.getTitle())) {
                 return i;
             }
         }

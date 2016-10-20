@@ -25,8 +25,8 @@ public class Config extends ConfigData {
         configFile = DEFAULT_CONFIG_FILE;
     }
 
-    public static Config getInstance(){
-        if (instance == null){
+    public static Config getInstance() {
+        if (instance == null) {
             instance = new Config();
         }
         return instance;
@@ -41,7 +41,7 @@ public class Config extends ConfigData {
      */
     public static boolean readConfig(String configFilePath) throws DataConversionException {
         Optional<ConfigData> readData = ConfigUtil.readConfig(configFilePath);
-        if (readData.isPresent()){
+        if (readData.isPresent()) {
             update(Config.getInstance(), readData.get());
             return true;
         }
@@ -50,9 +50,10 @@ public class Config extends ConfigData {
 
     /**
      * Set the file to save the configuration settings to
+     *
      * @param configFile
      */
-    public static void setConfigFile(String configFile){
+    public static void setConfigFile(String configFile) {
         assert configFile != null;
         Config.getInstance().configFile = configFile;
     }
@@ -67,7 +68,7 @@ public class Config extends ConfigData {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("App title : " + appTitle);
         sb.append("\nCurrent log level : " + logLevel);
@@ -77,7 +78,7 @@ public class Config extends ConfigData {
         return sb.toString();
     }
 
-    public static void resetInstance(){
+    public static void resetInstance() {
         update(getInstance(), new ConfigData());
     }
 
@@ -90,7 +91,8 @@ public class Config extends ConfigData {
 
         /**
          * Returns the Config object from the given file or {@code Optional.empty()} object if the file is not found.
-         *   If any values are missing from the file, default values will be used, as long as the file is a valid json file.
+         * If any values are missing from the file, default values will be used, as long as the file is a valid json file.
+         *
          * @param configFilePath cannot be null.
          * @throws DataConversionException if the file format is not as expected.
          */
@@ -101,7 +103,7 @@ public class Config extends ConfigData {
             File configFile = new File(configFilePath);
 
             if (!configFile.exists()) {
-                logger.info("Config file "  + configFile + " not found");
+                logger.info("Config file " + configFile + " not found");
                 return Optional.empty();
             }
 
@@ -119,8 +121,9 @@ public class Config extends ConfigData {
 
         /**
          * Saves the Config object to the specified file.
-         *   Overwrites existing file if it exists, creates a new file if it doesn't.
-         * @param configData cannot be null
+         * Overwrites existing file if it exists, creates a new file if it doesn't.
+         *
+         * @param configData     cannot be null
          * @param configFilePath cannot be null
          * @throws IOException if there was an error during writing to the file
          */

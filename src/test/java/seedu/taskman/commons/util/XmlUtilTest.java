@@ -80,7 +80,7 @@ public class XmlUtilTest {
         XmlSerializableTaskMan dataToWrite = new XmlSerializableTaskMan(new TaskMan());
         XmlUtil.saveDataToFile(TEMP_FILE, dataToWrite);
         XmlSerializableTaskMan dataFromFile = XmlUtil.getDataFromFile(TEMP_FILE, XmlSerializableTaskMan.class);
-        assertEquals((new TaskMan(dataToWrite)).toString(),(new TaskMan(dataFromFile)).toString());
+        assertEquals((new TaskMan(dataToWrite)).toString(), (new TaskMan(dataFromFile)).toString());
         //TODO: use equality instead of string comparisons
 
         TaskManBuilder builder = new TaskManBuilder(new TaskMan());
@@ -88,6 +88,6 @@ public class XmlUtilTest {
 
         XmlUtil.saveDataToFile(TEMP_FILE, dataToWrite);
         dataFromFile = XmlUtil.getDataFromFile(TEMP_FILE, XmlSerializableTaskMan.class);
-        assertEquals((new TaskMan(dataToWrite)).toString(),(new TaskMan(dataFromFile)).toString());
+        assertEquals((new TaskMan(dataToWrite)).toString(), (new TaskMan(dataFromFile)).toString());
     }
 }

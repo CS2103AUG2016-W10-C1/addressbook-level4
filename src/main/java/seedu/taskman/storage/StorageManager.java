@@ -76,7 +76,7 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     @Override
-    public void setTaskManFilePath(String filePath){
+    public void setTaskManFilePath(String filePath) {
         taskManStorage.setTaskManFilePath(filePath);
     }
 

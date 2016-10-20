@@ -42,7 +42,7 @@ public abstract class Command {
     /**
      * Set the storage object required for any execution of a command
      */
-    public void setStorage(Storage storage){
+    public void setStorage(Storage storage) {
         this.storage = storage;
     }
 

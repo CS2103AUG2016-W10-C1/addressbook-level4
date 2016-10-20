@@ -89,13 +89,13 @@ public class EditCommand extends Command {
         activityType = beforeEdit.getType();
 
         Set<Tag> tagSet = new HashSet<>();
-        if(argsContainer.tags != null){
+        if (argsContainer.tags != null) {
             for (String tagName : argsContainer.tags) {
                 tagSet.add(new Tag(tagName));
             }
         }
 
-        switch (activityType){
+        switch (activityType) {
             case TASK:
             default: {
                 afterEdit = new Activity(new Task(
@@ -110,7 +110,7 @@ public class EditCommand extends Command {
                                 : new Deadline(argsContainer.deadline),
                         argsContainer.schedule == null
                                 ? beforeEdit.getSchedule().orElse(null)
-                                : new Schedule (argsContainer.schedule),
+                                : new Schedule(argsContainer.schedule),
                         argsContainer.frequency == null
                                 ? beforeEdit.getFrequency().orElse(null)
                                 : new Frequency(argsContainer.frequency)

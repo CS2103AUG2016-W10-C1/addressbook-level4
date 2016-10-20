@@ -16,7 +16,7 @@ public class Event implements ReadOnlyEvent, MutableTagsEvent {
 
     private Title title;
     private Frequency frequency;
-	private Schedule schedule;
+    private Schedule schedule;
 
     private UniqueTagList tags;
 
@@ -45,14 +45,14 @@ public class Event implements ReadOnlyEvent, MutableTagsEvent {
     }
 
     @Override
-	public Optional<Schedule> getSchedule() {
-		return Optional.ofNullable(schedule);
-	}
+    public Optional<Schedule> getSchedule() {
+        return Optional.ofNullable(schedule);
+    }
 
-	public Optional<Frequency> getFrequency() {
-		return Optional.ofNullable(frequency);
-	}
-    
+    public Optional<Frequency> getFrequency() {
+        return Optional.ofNullable(frequency);
+    }
+
     @Override
     public UniqueTagList getTags() {
         return new UniqueTagList(tags);

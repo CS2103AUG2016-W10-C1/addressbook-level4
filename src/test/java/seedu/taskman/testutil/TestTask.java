@@ -66,7 +66,7 @@ public class TestTask implements ReadOnlyTask {
     public Optional<Frequency> getFrequency() {
         return Optional.ofNullable(frequency);
     }
-    
+
     @Override
     public Optional<Schedule> getSchedule() {
         return Optional.ofNullable(schedule);

@@ -20,8 +20,8 @@ public class TaskBuilder {
         return this;
     }
 
-    public TaskBuilder withTags(String ... tags) throws IllegalValueException {
-        for (String tag: tags) {
+    public TaskBuilder withTags(String... tags) throws IllegalValueException {
+        for (String tag : tags) {
             task.getTags().add(new Tag(tag));
         }
         return this;
@@ -31,7 +31,7 @@ public class TaskBuilder {
         this.task.setDeadline(new Deadline(deadline));
         return this;
     }
-    
+
     public TaskBuilder withFrequency(String frequency) throws IllegalValueException {
         this.task.setFrequency(new Frequency(frequency));
         return this;

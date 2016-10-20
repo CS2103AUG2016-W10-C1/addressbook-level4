@@ -20,16 +20,17 @@ public class XmlTaskManStorage implements TaskManStorage {
 
     private String filePath;
 
-    public XmlTaskManStorage(String filePath){
+    public XmlTaskManStorage(String filePath) {
         this.filePath = filePath;
     }
 
-    public String getTaskManFilePath(){
+    public String getTaskManFilePath() {
         return filePath;
     }
 
     /**
      * Similar to {@link #readTaskMan()}
+     *
      * @param filePath location of the data. Cannot be null
      * @throws DataConversionException if the file is not in the correct format.
      */
@@ -39,7 +40,7 @@ public class XmlTaskManStorage implements TaskManStorage {
         File taskManFile = new File(filePath);
 
         if (!taskManFile.exists()) {
-            logger.info("TaskMan file "  + taskManFile + " not found");
+            logger.info("TaskMan file " + taskManFile + " not found");
             return Optional.empty();
         }
 
@@ -50,6 +51,7 @@ public class XmlTaskManStorage implements TaskManStorage {
 
     /**
      * Similar to {@link #saveTaskMan(ReadOnlyTaskMan)}
+     *
      * @param filePath location of the data. Cannot be null
      */
     public void saveTaskMan(ReadOnlyTaskMan taskMan, String filePath) throws IOException {
