@@ -12,7 +12,7 @@ import seedu.taskman.model.event.UniqueActivityList;
  * Completes an existing task
  * 
  * Note: Deeply resembles DeleteCommand (in order to get the Activity reference from the index)
- * 		 and EditCommand (make a new Activity with the correct status and then deleting the old one)
+ *       and EditCommand (make a new Activity with the correct status and then deleting the old one)
  */
 public class CompleteCommand extends Command {
 
