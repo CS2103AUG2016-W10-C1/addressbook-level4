@@ -231,6 +231,7 @@ public class CommandParser {
         int index = Integer.parseInt(indexString);
 
         try {
+            String tags = matcher.group("tagArguments");
             return new EditCommand(
                     index,
                     matcher.group("title"),
@@ -238,8 +239,7 @@ public class CommandParser {
                     matcher.group("status"),
                     matcher.group("schedule"),
                     matcher.group("frequency"),
-                    getTagsFromArgs(matcher.group("tagArguments"))
-            );
+                    tags.isEmpty() ? null : getTagsFromArgs(tags));
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
         }
