@@ -39,12 +39,27 @@ public class UniqueActivityList implements Iterable<Activity> {
      */
     public UniqueActivityList() {}
 
+    //TODO Do we need this? Or is simply checking for equivalence of title sufficient?
     /**
-     * Returns true if the list contains an equivalent task as the given argument.
+     * Returns true if the list contains an equivalent activity as the given argument.
+     * Here, equivalence refers to equivalence of all fields in activity.
      */
     public boolean contains(Activity toCheck) {
         assert toCheck != null;
         return internalList.contains(toCheck);
+    }
+    
+    /**
+     * Returns true if the list contains an activity with the given title.
+     */
+    public boolean contains(Title toCheck) {
+        assert toCheck != null;
+        for(Activity a : internalList.toArray(new Activity[0])) {
+            if (a.getTitle().equals(toCheck)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -54,7 +69,7 @@ public class UniqueActivityList implements Iterable<Activity> {
      */
     public void add(Activity toAdd) throws DuplicateActivityException {
         assert toAdd != null;
-        if (contains(toAdd)) {
+        if (contains(toAdd.getTitle()) || contains(toAdd)) {
             throw new DuplicateActivityException();
         }
         internalList.add(toAdd);
