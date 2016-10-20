@@ -7,6 +7,10 @@ import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.model.event.Frequency;
 import seedu.taskman.model.event.Schedule;
 
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import static junit.framework.TestCase.assertEquals;
 
 public class ScheduleTest {
@@ -19,8 +23,12 @@ public class ScheduleTest {
         Schedule schedule = new Schedule(start + ", " + end);
         new Schedule(start + " to " + end);
 
-        assertEquals(schedule.startEpochSecond, 1462579260);
-        assertEquals(schedule.endEpochSecond, 1467849720);
+        // note that month value is zero based
+        Calendar startCal = new GregorianCalendar(2016, 4, 7, 0, 1);
+        Calendar endCal = new GregorianCalendar(2016, 6, 7, 0, 2);
+
+        assertEquals("Bad start time", startCal.toInstant().getEpochSecond(), schedule.startEpochSecond);
+        assertEquals("Bad end time", endCal.toInstant().getEpochSecond(), schedule.endEpochSecond);
     }
 
     @Test

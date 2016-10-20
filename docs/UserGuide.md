@@ -10,6 +10,7 @@
 
 
 ## About
+
 TaskMan is a task management application that aims to ease the way you record and search through your tasks and events. It is a desktop application which stores data locally. TaskMan is specifically designed for users who favour working entirely from the keyboard. Instead of navigating through the application with mouse clicks, you simply need to type the right keywords to invoke the necessary commands.
 
 This guide will get you started in just a few steps. It also has detailed 'how to' instructions on each feature of the application and a command summary which can be referred to anytime.
@@ -51,7 +52,7 @@ Command Format: `help`
 
 > Help is also shown if you enter an incorrect command e.g. `abcd`
  
-#### Adding a task: `add t`
+#### Adding a task: `add`
 Adds a task to TaskMan<br>
 Command Format: `add TITLE [d/DEADLINE] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
 
@@ -74,9 +75,9 @@ Examples:
 * `add eat vitamins s/fri 1400 for 5 minutes f/2 days t/ribena`
 * `add backup server s/mon 0800 for 2 hours f/3 months`
 
-#### Adding an event: `add e`
+#### Adding an event: `add e/`
 Adds an event to TaskMan<br>
-Command Format: `add e TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
+Command Format: `add e/ TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
 
 Parameter | Format
 -------- | :-------- 
@@ -89,8 +90,8 @@ The `SCHEDULE` represents the period of time which the event is occurring.
 > Similarly like tasks, events can have any number of tags. Tags may contain spaces and are case-insensitive (i.e. tags "school", "School", and "SCHOOL" are the same tags).
 
 Examples:
-* `add CS2103T Lecture s/fri 1400 to fri 1600 f/1wk t/CS2103T`
-* `add Project Meeting s/mon 1400 to mon 1400 t/CS2101 t/Lunch Time`
+* `add e/ CS2103T Lecture s/fri 1400 to fri 1600 f/1wk t/CS2103T`
+* `add e/ Project Meeting s/mon 1400 to mon 1400 t/CS2101 t/Lunch Time`
 
 #### Changing the View: `view`
 Shows a different view based on the parameters entered.<br>
@@ -141,7 +142,7 @@ Parameter | Format
 `DEADLINE` and `DATETIME` | `[this/next] ddd [hhmm]`
 `DURATION` | `<number> <unit of time>`
 `FREQUENCY` | See `DURATION`
-`STATUS` | `y/n` where y denotes complete and n denotes incomplete
+`STATUS` | `complete/incomplete` or `y/n` where y denotes complete and n denotes incomplete
 
 Fields which are not present are assumed to stay unchanged. By adding tags, previous tags are removed and the new tags are added to the task/event.
 
@@ -166,24 +167,6 @@ Examples:
 * `list CS2101`<br>
   `delete list`<br>
   Deletes all of the tasks in the result(s) of the `list` command.
-
-<!--
-#### Select a task: `select`
-Selects the task identified by the index number used in the last task listing.<br>
-Command Format: `select INDEX`
-
-> Selects the task and loads the Google search page the task at the specified `INDEX`.
-  The index refers to the index number shown in the most recent listing.<br>
-  The index **must be a positive integer** 1, 2, 3, ...
-
-Examples:
-* `list`<br>
-  `select 2`<br>
-  Selects the second task in TaskMan.
-* `list CS2101`<br>
-  `select 1`<br>
-  Selects the first task in the results of the `list` command.
--->
 
 #### Showing all tags: `tag`
 Shows all tags used by the user<br>
@@ -343,9 +326,9 @@ Example:
 Command | Format
 -------- | :--------
 Add | `add TITLE [d/DEADLINE] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...    `
-Add Event | `add e TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...    `
+Add Event | `add e/ TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...    `
 Clear | `clear`
-Complete | `complete`
+Complete | `complete INDEX` or `complete list`
 Delete | `delete INDEX` or `delete list`
 Edit | `edit INDEX TITLE [d/DEADLINE] [s/SCHEDULE] [c/STATUS] [f/FREQUENCY] [t/TAG]...`
 Exit | `exit`
@@ -353,11 +336,10 @@ Help | `help`
 History | `history`
 List | `list [{e/, all/}] [KEYWORD]... [t/TAG]...`
 Retag | `retag t/ORIGINAL t/DESIRED`
-Select | `select INDEX`
 Sort | `sort ATTRIBUTE [desc]`
 Storageloc | `storageloc [LOCATION]` or `storageloc default`
 Tag List | `tag list`
 Tag | `tag INDEX [t/TAG]...`
-Undo | `undo`
+Undo | `undo [NUMBER]`
 Untag | `untag INDEX [t/TAG]...` or `untag all`
 View | `view` or `view PARAM`

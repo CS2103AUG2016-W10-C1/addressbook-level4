@@ -3,12 +3,19 @@ package seedu.taskman.logic.commands;
 import seedu.taskman.commons.core.EventsCenter;
 import seedu.taskman.commons.core.Messages;
 import seedu.taskman.commons.events.ui.IncorrectCommandAttemptedEvent;
+import seedu.taskman.commons.util.StringUtil;
+import seedu.taskman.logic.parser.CommandParser;
 import seedu.taskman.model.Model;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Represents a command with hidden internal logic and the ability to be executed.
  */
 public abstract class Command {
+    private static final Pattern TASK_INDEX_ARGS_FORMAT = Pattern.compile(CommandParser.Argument.TARGET_INDEX.pattern);
     protected Model model;
 
     /**
@@ -20,6 +27,39 @@ public abstract class Command {
     public static String getMessageForTaskListShownSummary(int displaySize) {
         return String.format(Messages.MESSAGE_EVENTS_LISTED_OVERVIEW, displaySize);
     }
+
+    /**
+     * Extracts the new task's tags from the add command's tag arguments string.
+     * Merges duplicate tag strings.
+     */
+    public static Set<String> getTagsFromArgs(String tagArguments) {
+        // no tags
+        if (tagArguments.isEmpty()) {
+            return Collections.emptySet();
+        }
+        // replace first delimiter prefix, then split
+        final Collection<String> tagStrings = Arrays.asList(tagArguments.replaceFirst("t/", "").split(" t/"));
+        return new HashSet<>(tagStrings);
+    }
+
+    /**
+     * Returns the specified index in the {@code command} IF a positive unsigned integer is given as the index.
+     *   Returns an {@code Optional.empty()} otherwise.
+     */
+    protected static Optional<Integer> parseIndex(String command) {
+        final Matcher matcher = TASK_INDEX_ARGS_FORMAT.matcher(command.trim());
+        if (!matcher.matches()) {
+            return Optional.empty();
+        }
+
+        String index = matcher.group("targetIndex");
+        if(!StringUtil.isUnsignedInteger(index)){
+            return Optional.empty();
+        }
+        return Optional.of(Integer.parseInt(index));
+
+    }
+
 
     /**
      * Executes the command and returns the result message.

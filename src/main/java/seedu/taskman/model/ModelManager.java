@@ -7,9 +7,9 @@ import seedu.taskman.commons.core.UnmodifiableObservableList;
 import seedu.taskman.commons.events.model.TaskManChangedEvent;
 import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.commons.util.StringUtil;
+import seedu.taskman.logic.commands.ListCommand;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Event;
-import seedu.taskman.model.event.Task;
 import seedu.taskman.model.event.UniqueActivityList;
 import seedu.taskman.model.event.UniqueActivityList.ActivityNotFoundException;
 import seedu.taskman.model.tag.Tag;
@@ -73,8 +73,8 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void addEvent(Event event) throws UniqueActivityList.DuplicateActivityException {
-        taskMan.addEvent(event);
+    public synchronized void addActivity(Event event) throws UniqueActivityList.DuplicateActivityException {
+        taskMan.addActivity(event);
         updateFilteredListToShowAll();
         indicateTaskManChanged();
     }
@@ -99,7 +99,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void updateFilteredActivityList(FilterMode filterMode, Set<String> keywords, Set<String> tagNames) {
+    public void updateFilteredActivityList(ListCommand.FilterMode filterMode, Set<String> keywords, Set<String> tagNames) {
         updateFilteredActivityList(new PredicateExpression(new ActivityQualifier(filterMode, keywords, tagNames)));
     }
 
@@ -141,22 +141,23 @@ public class ModelManager extends ComponentManager implements Model {
     private class ActivityQualifier implements Qualifier {
         private Set<String> titleKeyWords;
         private Set<String> tagNames;
-        private FilterMode filterMode = FilterMode.ALL;
+        private ListCommand.FilterMode filterMode = ListCommand.FilterMode.ALL;
 
-        ActivityQualifier(FilterMode filterMode, Set<String> titleKeyWords, Set<String> tagNames) {
+        ActivityQualifier(ListCommand.FilterMode filterMode, Set<String> titleKeyWords, Set<String> tagNames) {
             this.filterMode = filterMode;
             this.titleKeyWords = titleKeyWords;
             this.tagNames = tagNames;
         }
 
+        // TODO: refactor, improve readability of this method...
         @Override
         public boolean run(Activity activity) {
             // (fit task/event type && (no keyword || contain a keyword) && (no tag || contain a tag))
-            return (filterMode == FilterMode.ALL
-                        || (filterMode == FilterMode.SCHEDULE_ONLY && activity.getSchedule().isPresent())
-                        || (filterMode == FilterMode.DEADLINE_ONLY && activity.getType() == Activity.ActivityType.TASK
+            return (filterMode == ListCommand.FilterMode.ALL
+                        || (filterMode == ListCommand.FilterMode.SCHEDULE_ONLY && activity.getSchedule().isPresent())
+                        || (filterMode == ListCommand.FilterMode.DEADLINE_ONLY && activity.getType() == Activity.ActivityType.TASK
                             && activity.getDeadline().isPresent())
-                        || (filterMode == FilterMode.FLOATING_ONLY && activity.getType() == Activity.ActivityType.TASK
+                        || (filterMode == ListCommand.FilterMode.FLOATING_ONLY && activity.getType() == Activity.ActivityType.TASK
                             && !activity.getDeadline().isPresent()))
                     && (titleKeyWords == null || titleKeyWords.isEmpty() || titleKeyWords.stream()
                             .filter(keyword -> StringUtil.containsIgnoreCase(activity.getTitle().title, keyword))
