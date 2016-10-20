@@ -19,8 +19,8 @@ public class ScheduleTest {
         Schedule schedule = new Schedule(start + ", " + end);
         new Schedule(start + " to " + end);
 
-        assertEquals(schedule.startEpochSecond, 1462579260);
-        assertEquals(schedule.endEpochSecond, 1467849720);
+        assertEquals(schedule.startEpochSecond, 1462550460L);
+        assertEquals(schedule.endEpochSecond, 1467820920L);
     }
 
     @Test
