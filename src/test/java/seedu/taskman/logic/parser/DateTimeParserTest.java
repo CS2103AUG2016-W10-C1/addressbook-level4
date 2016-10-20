@@ -16,7 +16,7 @@ public class DateTimeParserTest {
     @Test
     public void parse_formalDateTime_success() throws Exception {
         String testDateTimeFormal = "07/05/16 2359";
-        long testDateTimeUnix = 1467763140L;
+        long testDateTimeUnix = 1467734340L;
 
         long unixDateTime = DateTimeParser.getUnixTime(testDateTimeFormal);
         assertEquals(testDateTimeUnix ,unixDateTime);
@@ -53,7 +53,7 @@ public class DateTimeParserTest {
     public void parse_relativeDateTime_success() throws Exception {
         long parsedUnixTime = DateTimeParser.getUnixTime("wed 10am");
 
-        ZonedDateTime input = OffsetDateTime.now().atZoneSameInstant(ZoneOffset.UTC);
+        ZonedDateTime input = OffsetDateTime.now().atZoneSameInstant(ZoneOffset.systemDefault());
         ZonedDateTime nextWed = input.with(next(DayOfWeek.WEDNESDAY))
                 .withHour(10)
                 .withMinute(0)
