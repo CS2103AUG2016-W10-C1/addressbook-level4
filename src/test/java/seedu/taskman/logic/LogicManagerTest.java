@@ -140,9 +140,9 @@ public class LogicManagerTest {
     //@Test
     public void execute_clear() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        model.addEvent(helper.generateTask(1));
-        model.addEvent(helper.generateTask(2));
-        model.addEvent(helper.generateTask(3));
+        model.addActivity(helper.generateTask(1));
+        model.addActivity(helper.generateTask(2));
+        model.addActivity(helper.generateTask(3));
 
         assertCommandStateChange("clear", new TaskMan(), Collections.emptyList());
     }
@@ -177,7 +177,7 @@ public class LogicManagerTest {
         TestDataHelper helper = new TestDataHelper();
         Task toBeAdded = helper.food();
         TaskMan expectedTaskMan = new TaskMan();
-        expectedTaskMan.addEvent(toBeAdded);
+        expectedTaskMan.addActivity(toBeAdded);
 
         assertCommandStateChange(helper.generateDoCommand(toBeAdded),
                 expectedTaskMan,
@@ -190,10 +190,10 @@ public class LogicManagerTest {
         TestDataHelper helper = new TestDataHelper();
         Task toBeAdded = helper.food();
         TaskMan expectedAB = new TaskMan();
-        expectedAB.addEvent(toBeAdded);
+        expectedAB.addActivity(toBeAdded);
 
         // setup starting state
-        model.addEvent(toBeAdded); // task already in internal task man
+        model.addActivity(toBeAdded); // task already in internal task man
 
         // execute command and verify result
         assertCommandStateChange(
@@ -246,7 +246,7 @@ public class LogicManagerTest {
         // set AB state to 2 tasks
         model.resetData(new TaskMan());
         for (Task p : taskList) {
-            model.addEvent(p);
+            model.addActivity(p);
         }
 
         List<Activity> expectedList = taskList.stream().map(Activity::new).collect(Collectors.toList());
@@ -568,7 +568,7 @@ public class LogicManagerTest {
          */
         void addToTaskMan(TaskMan taskMan, List<Task> tasksToAdd) throws Exception{
             for(Task p: tasksToAdd){
-                taskMan.addEvent(p);
+                taskMan.addActivity(p);
             }
         }
 
@@ -585,7 +585,7 @@ public class LogicManagerTest {
          */
         void addToModel(Model model, List<Task> tasksToAdd) throws Exception{
             for(Task p: tasksToAdd){
-                model.addEvent(p);
+                model.addActivity(p);
             }
         }
 

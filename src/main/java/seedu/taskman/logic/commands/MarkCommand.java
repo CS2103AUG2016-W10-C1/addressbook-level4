@@ -53,7 +53,7 @@ public class MarkCommand extends Command {
     public CommandResult execute() {
         assert model != null;
         try {
-            model.addEvent(toAdd);
+            model.addActivity(toAdd);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
         } catch (UniqueActivityList.DuplicateActivityException e) {
             return new CommandResult(MESSAGE_DUPLICATE_EVENT);
