@@ -162,9 +162,6 @@ public class LogicManagerTest {
         // bad schedule
         assertCommandNoStateChange("do Valid Title s/invalid Schedule");
 
-        // bad frequency
-        assertCommandNoStateChange("do Valid Title f/invalid Frequency");
-
         // bad title
         assertCommandNoStateChange("do []\\[;]");
     }
