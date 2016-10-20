@@ -5,6 +5,12 @@ import seedu.taskman.commons.core.UnmodifiableObservableList;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.UniqueActivityList.ActivityNotFoundException;
 
+import javax.swing.text.html.Option;
+
+import java.util.Optional;
+
+import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
 /**
  * Deletes a task identified using it's last displayed index from the task man.
  */
@@ -25,6 +31,15 @@ public class DeleteCommand extends Command {
         this.targetIndex = targetIndex;
     }
 
+    public static Command prepareDelete(String arguments) {
+        Optional<Integer> index = parseIndex(arguments);
+        if(!index.isPresent()){
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
+        }
+
+        return new DeleteCommand(index.get());
+    }
 
     @Override
     public CommandResult execute() {
