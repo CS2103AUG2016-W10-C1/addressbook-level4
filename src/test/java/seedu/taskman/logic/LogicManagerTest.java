@@ -109,7 +109,6 @@ public class LogicManagerTest {
         return result;
     }
 
-    // TODO: A, what's the diff between execute invalid & execute unknown command
     @Test
     public void execute_invalid() throws Exception {
         String invalidCommand = "       ";
