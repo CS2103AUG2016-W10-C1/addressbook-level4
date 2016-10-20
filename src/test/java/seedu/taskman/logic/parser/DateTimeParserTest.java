@@ -4,6 +4,8 @@ import org.junit.Test;
 import seedu.taskman.commons.exceptions.IllegalValueException;
 
 import java.time.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import static java.time.temporal.TemporalAdjusters.next;
 import static org.hamcrest.core.Is.is;
@@ -16,10 +18,10 @@ public class DateTimeParserTest {
     @Test
     public void parse_formalDateTime_success() throws Exception {
         String testDateTimeFormal = "07/05/16 2359";
-        long testDateTimeUnix = 1467734340L;
 
+        Calendar cal = new GregorianCalendar(2016, 6, 5, 23, 59);
         long unixDateTime = DateTimeParser.getUnixTime(testDateTimeFormal);
-        assertEquals(testDateTimeUnix ,unixDateTime);
+        assertEquals(cal.toInstant().getEpochSecond() ,unixDateTime);
     }
 
     @Test
