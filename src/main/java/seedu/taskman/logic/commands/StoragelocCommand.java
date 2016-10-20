@@ -39,7 +39,6 @@ public class StoragelocCommand extends Command {
         try {
             storage.saveTaskMan(model.getTaskMan(),filePath);
             Config.getInstance().setTaskManFilePath(filePath);
-            System.out.println(Config.getInstance().getTaskManFilePath());
             Config.save();
             storage.setTaskManFilePath(filePath);
             saveChanged = true;

@@ -19,7 +19,7 @@ public class Config extends ConfigData {
 
     private static Config instance;
 
-    private String configFile;
+    private String configFile = DEFAULT_CONFIG_FILE;
 
     private Config() {
         configFile = DEFAULT_CONFIG_FILE;

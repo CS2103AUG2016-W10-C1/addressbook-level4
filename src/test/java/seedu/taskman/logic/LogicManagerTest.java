@@ -51,7 +51,6 @@ public class LogicManagerTest {
     private Model model;
     private Storage storage;
     private Logic logic;
-    private Config config;
 
     //These are for checking the correctness of the events raised
     private ReadOnlyTaskMan latestSavedTaskMan;
@@ -86,7 +85,7 @@ public class LogicManagerTest {
         helpShown = false;
         targetedJumpIndex = -1; // non yet
 
-        config = Config.getInstance();
+        Config.setConfigFile(Config.DEFAULT_CONFIG_FILE);
     }
 
     @After
@@ -515,13 +514,13 @@ public class LogicManagerTest {
 
     @Test
     public void execute_storageloc_absolutePath() throws Exception {
-        String givenPath = FileUtil.getAbsolutePath(saveFolder.getRoot().getPath()+"/absolute.xml");
+        String givenPath = FileUtil.getAbsolutePath("./src/test/data/LogicManagerTest/absolute.xml");
         execute_storageloc_general(4, givenPath, givenPath, true);
     }
 
     @Test
     public void execute_storageloc_relativePath() throws Exception {
-        String givenPath = saveFolder.getRoot().getPath()+"/relative.xml";
+        String givenPath = "./src/test/data/LogicManagerTest/relative.xml";
         execute_storageloc_general(4, givenPath, FileUtil.getAbsolutePath(givenPath), true);
     }
 
