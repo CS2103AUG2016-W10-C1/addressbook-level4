@@ -7,6 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import seedu.taskman.commons.core.EventsCenter;
+import seedu.taskman.commons.core.LogsCenter;
 import seedu.taskman.commons.core.Messages;
 import seedu.taskman.commons.core.config.Config;
 import seedu.taskman.commons.core.config.ConfigData;
@@ -506,6 +507,11 @@ public class LogicManagerTest {
                                             boolean isExpectedSuccess) throws Exception {
         TestDataHelper helper = new TestDataHelper();
         helper.addToModel(model, generatedTasks);
+        //debug
+        LogsCenter.getLogger(LogicManager.class).info("------[storageloc] " + expectedPath);
+        LogsCenter.getLogger(LogicManager.class).info("------[storageloc] " +isExpectedSuccess+"");
+        LogsCenter.getLogger(LogicManager.class).info("------[storageloc] " +getStoragelocFeedback(expectedPath, isExpectedSuccess));
+
         assert_storage_location(StoragelocCommand.COMMAND_WORD + " " + commandArgs,
                 getStoragelocFeedback(expectedPath, isExpectedSuccess), expectedPath, isExpectedSuccess);
     }
