@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static seedu.taskman.commons.core.Messages.*;
 
 public class LogicManagerTest {
 
@@ -48,16 +47,15 @@ public class LogicManagerTest {
     private boolean helpShown;
     private int targetedJumpIndex;
 
+    // google event bus magic
     @Subscribe
     private void handleLocalModelChangedEvent(TaskManChangedEvent abce) {
         latestSavedTaskMan = new TaskMan(abce.data);
     }
-
     @Subscribe
     private void handleShowHelpRequestEvent(ShowHelpRequestEvent she) {
         helpShown = true;
     }
-
     @Subscribe
     private void handleJumpToListRequestEvent(JumpToListRequestEvent je) {
         targetedJumpIndex = je.targetIndex;
@@ -186,13 +184,13 @@ public class LogicManagerTest {
 
     @Test
     public void execute_doDuplicate_notAllowed() throws Exception {
-        // setup expectations
+        // setup expected
         TestDataHelper helper = new TestDataHelper();
         Task toBeAdded = helper.food();
         TaskMan expectedTaskMan = new TaskMan();
         expectedTaskMan.addActivity(toBeAdded);
 
-        // setup starting state with task in internal task man
+        // setup actual
         model.addActivity(toBeAdded);
 
         // execute command and verify result
@@ -204,28 +202,27 @@ public class LogicManagerTest {
     }
 
 
-    //@Test
+    @Test
     public void execute_list_showsAllTasks() throws Exception {
-        // prepare expectations
+        // setup expected
         TestDataHelper helper = new TestDataHelper();
-        TaskMan expectedAB = helper.generateTaskMan(2);
-        List<? extends Activity> expectedList = expectedAB.getActivityList();
+        TaskMan expectedTaskMan = helper.generateTaskMan(2);
+        List<? extends Activity> expectedList = expectedTaskMan.getActivityList();
 
-        // prepare task man state
+        // setup actual
         helper.addToModel(model, 2);
 
         assertCommandStateChange("list",
-                expectedAB,
+                expectedTaskMan,
                 expectedList);
     }
-
 
     /**
      * Confirms the 'invalid argument index number behaviour' for the given command
      * targeting a single task in the shown list, using visible index.
      * @param commandWord to test assuming it targets a single task in the last shown list based on visible index.
      */
-    private void assertIncorrectIndexFormatBehaviorForCommand(String commandWord, String expectedMessage) throws Exception {
+    private void assertIncorrectIndexFormatBehaviorForCommand(String commandWord) throws Exception {
         assertCommandNoStateChange(commandWord); //index missing
         assertCommandNoStateChange(commandWord + " +1"); //index should be unsigned
         assertCommandNoStateChange(commandWord + " -1"); //index should be unsigned
@@ -239,11 +236,10 @@ public class LogicManagerTest {
      * @param commandWord to test assuming it targets a single task in the last shown list based on visible index.
      */
     private void assertIndexNotFoundBehaviorForCommand(String commandWord) throws Exception {
-        String expectedMessage = MESSAGE_INVALID_EVENT_DISPLAYED_INDEX;
         TestDataHelper helper = new TestDataHelper();
         List<Task> taskList = helper.generateTaskList(2);
 
-        // set AB state to 2 tasks
+        // set TaskMan state to 2 tasks
         model.resetData(new TaskMan());
         for (Task p : taskList) {
             model.addActivity(p);
@@ -255,8 +251,7 @@ public class LogicManagerTest {
 
     //@Test
     public void execute_selectInvalidArgsFormat_errorMessageShown() throws Exception {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE);
-        assertIncorrectIndexFormatBehaviorForCommand("select", expectedMessage);
+        assertIncorrectIndexFormatBehaviorForCommand("select");
     }
 
     //@Test
@@ -282,8 +277,7 @@ public class LogicManagerTest {
 
     //@Test
     public void execute_deleteInvalidArgsFormat_errorMessageShown() throws Exception {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE);
-        assertIncorrectIndexFormatBehaviorForCommand("delete", expectedMessage);
+        assertIncorrectIndexFormatBehaviorForCommand("delete");
     }
 
     //@Test
@@ -308,8 +302,7 @@ public class LogicManagerTest {
     
     //@Test
     public void execute_completeInvalidArgsFormat_errorMessageShown() throws Exception {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, CompleteCommand.MESSAGE_USAGE);
-        assertIncorrectIndexFormatBehaviorForCommand("complete", expectedMessage);
+        assertIncorrectIndexFormatBehaviorForCommand("complete");
     }
 
     //@Test
@@ -398,13 +391,13 @@ public class LogicManagerTest {
 
     //@Test
     public void execute_list_filter_events_only() throws Exception{
-        // prepare expectations
+        // setup expectations
         //TODO: update test when events are properly implemented
         TestDataHelper helper = new TestDataHelper();
         TaskMan expectedAB = helper.generateTaskMan(2);
         List<Activity> expectedList = Collections.EMPTY_LIST;
 
-        // prepare task man state
+        // setup task man state
         helper.addToModel(model, 2);
 
         assertCommandStateChange("list e/",
@@ -414,13 +407,13 @@ public class LogicManagerTest {
 
     //@Test
     public void execute_list_filter_all() throws Exception{
-        // prepare expectations
+        // setup expectations
         //TODO: update test when events are properly implemented
         TestDataHelper helper = new TestDataHelper();
         TaskMan expectedAB = helper.generateTaskMan(2);
         List<? extends Activity> expectedList = expectedAB.getActivityList();
 
-        // prepare task man state
+        // setup task man state
         helper.addToModel(model, 2);
 
         assertCommandStateChange("list all/",
@@ -430,10 +423,10 @@ public class LogicManagerTest {
 
     //@Test
     public void execute_list_filter_tags() throws Exception{
-        // prepare expectations
+        // setup expectations
         TestDataHelper helper = new TestDataHelper();
 
-        // prepare task man state
+        // setup task man state
         helper.addToModel(model, 4);
 
         TaskMan expectedAB = helper.generateTaskMan(4);
@@ -455,11 +448,11 @@ public class LogicManagerTest {
 
     //@Test
     public void execute_list_filter_keywords_with_tags() throws Exception{
-        // prepare expectations
+        // setup expectations
         TestDataHelper helper = new TestDataHelper();
         TaskMan expectedAB = helper.generateTaskMan(5);
 
-        // prepare task man state
+        // setup task man state
         helper.addToModel(model, 5);
 
         List<Activity> expectedList = new ArrayList<>();
@@ -472,6 +465,7 @@ public class LogicManagerTest {
     }
 
 
+    // TODO: change util class to static, if it makes sense
     /**
      * A utility class to generate test data.
      */
@@ -488,7 +482,6 @@ public class LogicManagerTest {
             return new Task(title, tags, privateDeadline, schedule, frequency);
         }
 
-        // TODO: A, might need revision
         /**
          * Generates a valid task using the given seed.
          * Running this function with the same parameter values guarantees the returned task will have the same state.
@@ -499,7 +492,8 @@ public class LogicManagerTest {
         Task generateTask(int seed) throws Exception {
             return new Task(
                     new Title("Task " + seed),
-                    new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))), new Deadline(Math.abs(seed)),
+                    new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))),
+                    new Deadline(Math.abs(seed)),
                     new Schedule(Instant.ofEpochSecond(Math.abs(seed - 1)) + ", " + Instant.ofEpochSecond(Math.abs(seed))),
                     null // todo: freq doesn't work yet
             );
