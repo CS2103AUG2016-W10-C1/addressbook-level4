@@ -7,7 +7,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import seedu.taskman.commons.core.EventsCenter;
-import seedu.taskman.commons.core.LogsCenter;
 import seedu.taskman.commons.core.Messages;
 import seedu.taskman.commons.core.config.Config;
 import seedu.taskman.commons.core.config.ConfigData;
@@ -507,11 +506,6 @@ public class LogicManagerTest {
                                             boolean isExpectedSuccess) throws Exception {
         TestDataHelper helper = new TestDataHelper();
         helper.addToModel(model, generatedTasks);
-        //debug
-        LogsCenter.getLogger(LogicManager.class).info("------[storageloc] " + expectedPath);
-        LogsCenter.getLogger(LogicManager.class).info("------[storageloc] " +isExpectedSuccess+"");
-        LogsCenter.getLogger(LogicManager.class).info("------[storageloc] " +getStoragelocFeedback(expectedPath, isExpectedSuccess));
-
         assert_storage_location(StoragelocCommand.COMMAND_WORD + " " + commandArgs,
                 getStoragelocFeedback(expectedPath, isExpectedSuccess), expectedPath, isExpectedSuccess);
     }
@@ -537,7 +531,7 @@ public class LogicManagerTest {
 
     @Test
     public void execute_storageloc_invalidFileName() throws Exception {
-        String invalidFile = "<3invalidFileName.txt";
+        String invalidFile = "/<3invalidFileName.txt";
         execute_storageloc_general(2, invalidFile, ConfigData.DEFAULT_TASK_MAN_FILE_PATH, false);
     }
 
