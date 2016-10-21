@@ -27,7 +27,8 @@ public class SerializableTestClass {
     private List<LocalDateTime> listOfLocalDateTimes;
     private HashMap<Integer, String> mapOfIntegerToString;
 
-    public SerializableTestClass() {}
+    public SerializableTestClass() {
+    }
 
     public static String getTitleTestValue() {
         return TITLE_TEST_VALUE;

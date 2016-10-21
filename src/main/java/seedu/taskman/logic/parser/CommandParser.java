@@ -1,5 +1,6 @@
 package seedu.taskman.logic.parser;
 
+import seedu.taskman.commons.core.config.ConfigData;
 import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.commons.util.StringUtil;
 import seedu.taskman.logic.commands.*;
@@ -23,30 +24,30 @@ public class CommandParser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
-    private static final Pattern TASK_INDEX_ARGS_FORMAT = Pattern.compile(Argument.TARGET_INDEX.pattern);
+    private static final Pattern TASK_INDEX_ARGS_FORMAT = Pattern.compile("" + ArgumentPattern.TARGET_INDEX);
 
     private enum ListFlag{
         LIST_SCHEDULE("s/", FilterMode.SCHEDULE_ONLY),
         LIST_DEADLINE("d/", FilterMode.DEADLINE_ONLY),
         LIST_FLOATING("f/", FilterMode.FLOATING_ONLY),
         LIST_ALL("all/", FilterMode.ALL);
-        
+
         public final String flag;
         public final FilterMode filterMode;
-        
-        ListFlag(String flag, FilterMode filterMode){
+
+        ListFlag(String flag, FilterMode filterMode) {
             this.flag = flag;
             this.filterMode = filterMode;
         }
-        
-        public static String get_Pattern(){
+
+        public static String get_Pattern() {
             ListFlag[] values = ListFlag.values();
-            if(values.length == 0){
+            if (values.length == 0) {
                 return "";
             }
             StringBuilder builder = new StringBuilder();
-            for(int i = 0; i< values.length; i++){
-                if(i != 0){
+            for (int i = 0; i < values.length; i++) {
+                if (i != 0) {
                     builder.append('|');
                 }
                 builder.append("(?:");
@@ -56,55 +57,63 @@ public class CommandParser {
             return builder.toString();
         }
     }
-    
-    private static final Pattern LIST_ARGS_FORMAT = Pattern.compile("(?<filter>" + ListFlag.get_Pattern() + ")?" +
+
+    private static final Pattern LIST_ARGS_FORMAT =
+            Pattern.compile("(?<filter>" + ListFlag.get_Pattern() + ")?" +
                     "(?<keywords>(?:\\s*[^/]+)*?)??(?<tagArguments>(?:\\s*t/[^/]+)*)?"); // one or more keywords separated by whitespace
 
-    private enum Argument{
+    private enum ArgumentPattern {
         TARGET_INDEX("(?<targetIndex>[0-9]+)"),
         TITLE("(?<title>[^/]+)"),
         DEADLINE("(?:\\s+d/(?<deadline>[^/]+))?"),
         SCHEDULE("(?:\\s+s/(?<schedule>[^/]+))?"),
         STATUS("(?:\\s+c/(?<status>[^/]+))?"),
         FREQUENCY("(?:\\s+f/(?<frequency>[^/]+))?"),
-        TAG("(?<tagArguments>(?:\\s*t/[^/]+)*)?");
-        
+        TAG("(?<tagArguments>(?:\\s*t/[^/]+)*)?"),
+        FILE_PATH(".+");
+
         private final String pattern;
-        
-        Argument(String pattern){
+
+        ArgumentPattern(String pattern) {
             this.pattern = pattern;
         }
-        
+
         @Override
-        public String toString(){
+        public String toString() {
             return pattern;
         }
     }
     
     private static final Pattern TASK_DO_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
-            Pattern.compile("" + Argument.TITLE
-                    + Argument.DEADLINE
-                    + Argument.SCHEDULE
-                    + Argument.FREQUENCY
-                    + Argument.TAG); // variable number of tags
+            Pattern.compile("" + ArgumentPattern.TITLE
+                    + ArgumentPattern.DEADLINE
+                    + ArgumentPattern.SCHEDULE
+                    + ArgumentPattern.FREQUENCY
+                    + ArgumentPattern.TAG); // variable number of tags
     
     private static final Pattern EVENT_MARK_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
-            Pattern.compile("" + Argument.TITLE
-                    + Argument.SCHEDULE
-                    + Argument.FREQUENCY
-                    + Argument.TAG); // variable number of tags
+            Pattern.compile("" + ArgumentPattern.TITLE
+                    + ArgumentPattern.SCHEDULE
+                    + ArgumentPattern.FREQUENCY
+                    + ArgumentPattern.TAG); // variable number of tags
 
     // TODO: All fields currently compulsory
     private static final Pattern TASK_EDIT_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
-            Pattern.compile("" + Argument.TARGET_INDEX
-                    + Argument.TITLE + "?"
-                    + Argument.DEADLINE
-                    + Argument.STATUS
-                    + Argument.SCHEDULE
-                    + Argument.FREQUENCY
-                    + Argument.TAG); // variable number of tags
+            Pattern.compile("" + ArgumentPattern.TARGET_INDEX
+                    + ArgumentPattern.TITLE + "?"
+                    + ArgumentPattern.DEADLINE
+                    + ArgumentPattern.STATUS
+                    + ArgumentPattern.SCHEDULE
+                    + ArgumentPattern.FREQUENCY
+                    + ArgumentPattern.TAG); // variable number of tags
 
-    public CommandParser() {}
+    private static final String STORAGELOC_DEFAULT_KEYWORD = "default";
+
+    private static final Pattern STORAGELOC_ARGS_FORMAT = Pattern.compile("" + ArgumentPattern.FILE_PATH);
+
+
+    public CommandParser() {
+    }
 
     /**
      * Parses user input into command for execution.
@@ -139,6 +148,9 @@ public class CommandParser {
 
             case DeleteCommand.COMMAND_WORD:
                 return prepareDelete(arguments);
+
+            case StoragelocCommand.COMMAND_WORD:
+                return prepareStorageloc(arguments);
 
             case ClearCommand.COMMAND_WORD:
                 return new ClearCommand();
@@ -265,7 +277,7 @@ public class CommandParser {
     private Command prepareDelete(String args) {
 
         Optional<Integer> index = parseIndex(args);
-        if(!index.isPresent()){
+        if (!index.isPresent()) {
             return new IncorrectCommand(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         }
@@ -281,7 +293,7 @@ public class CommandParser {
      */
     private Command prepareSelect(String args) {
         Optional<Integer> index = parseIndex(args);
-        if(!index.isPresent()){
+        if (!index.isPresent()) {
             return new IncorrectCommand(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE));
         }
@@ -291,7 +303,7 @@ public class CommandParser {
 
     /**
      * Returns the specified index in the {@code command} IF a positive unsigned integer is given as the index.
-     *   Returns an {@code Optional.empty()} otherwise.
+     * Returns an {@code Optional.empty()} otherwise.
      */
     private Optional<Integer> parseIndex(String command) {
         final Matcher matcher = TASK_INDEX_ARGS_FORMAT.matcher(command.trim());
@@ -300,7 +312,7 @@ public class CommandParser {
         }
 
         String index = matcher.group("targetIndex");
-        if(!StringUtil.isUnsignedInteger(index)){
+        if (!StringUtil.isUnsignedInteger(index)) {
             return Optional.empty();
         }
         return Optional.of(Integer.parseInt(index));
@@ -316,7 +328,7 @@ public class CommandParser {
     private Command prepareList(String args) {
         final String trimmedArgs = args.trim();
         final Matcher matcher = LIST_ARGS_FORMAT.matcher(trimmedArgs);
-        
+
         if (trimmedArgs.isEmpty()) {
             final Set<String> keywordSet = new HashSet<>();
             return new ListCommand(keywordSet);
@@ -335,14 +347,14 @@ public class CommandParser {
 
             // keywords delimited by whitespace
             Set<String> keywordSet = Collections.EMPTY_SET;
-            if(matcher.group("keywords") != null){
+            if (matcher.group("keywords") != null) {
                 String[] keywords = matcher.group("keywords").split("\\s+");
                 keywordSet = new HashSet<>(Arrays.asList(keywords));
             }
 
             Set<String> tagSet = Collections.EMPTY_SET;
             try {
-                if(matcher.group("tagArguments") != null){
+                if (matcher.group("tagArguments") != null) {
                     tagSet = getTagsFromArgs(matcher.group("tagArguments"));
                 }
                 return new ListCommand(filterMode, keywordSet, tagSet);
@@ -350,6 +362,29 @@ public class CommandParser {
                 return new IncorrectCommand(ive.getMessage());
             }
         }
+    }
+
+    /**
+     * Parses arguments in the context of the storageloc command.
+     *
+     * @param args full command args string
+     * @return the prepared command
+     */
+    private Command prepareStorageloc(String args) {
+
+        String trimmedArgs = args.trim();
+
+        if (!STORAGELOC_ARGS_FORMAT.matcher(trimmedArgs).matches()) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    StoragelocCommand.MESSAGE_USAGE));
+        }
+
+        if (trimmedArgs.equals(STORAGELOC_DEFAULT_KEYWORD)) {
+            trimmedArgs = ConfigData.DEFAULT_TASK_MAN_FILE_PATH;
+        }
+
+        return new StoragelocCommand(trimmedArgs);
+
     }
 
 }

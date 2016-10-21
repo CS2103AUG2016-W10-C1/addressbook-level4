@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Wrapper for both Event and Task
  */
-public class Activity implements ReadOnlyEvent, MutableTagsEvent{
+public class Activity implements ReadOnlyEvent, MutableTagsEvent {
 
     public enum ActivityType {EVENT, TASK}
 
@@ -25,13 +25,13 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent{
         }
     }
 
-    public Activity(Task task){
+    public Activity(Task task) {
         activity = task;
         type = ActivityType.TASK;
     }
 
-    public Activity(Activity source){
-        switch (source.getType()){
+    public Activity(Activity source) {
+        switch (source.getType()) {
             case TASK: {
                 this.activity = new Task((ReadOnlyTask) source.activity);
                 break;
@@ -47,12 +47,12 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent{
         type = source.getType();
     }
 
-    public ActivityType getType(){
+    public ActivityType getType() {
         return type;
     }
 
-    public Optional<ReadOnlyTask> getTask(){
-        if(type != ActivityType.TASK){
+    public Optional<ReadOnlyTask> getTask() {
+        if (type != ActivityType.TASK) {
             return Optional.empty();
         }
         return Optional.of((ReadOnlyTask) activity);
@@ -66,7 +66,7 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent{
     }
 
     public Optional<Status> getStatus() {
-        switch(type){
+        switch (type) {
             case TASK: {
                 return Optional.ofNullable(((ReadOnlyTask) activity).getStatus());
             }
@@ -80,7 +80,7 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent{
     }
 
     public Optional<Deadline> getDeadline() {
-        switch(type){
+        switch (type) {
             case TASK: {
                 return ((ReadOnlyTask) activity).getDeadline();
             }
@@ -118,10 +118,10 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent{
         return activity.getTags();
     }
 
-    public boolean isSameStateAs(Activity other){
-        if(type != other.type) return false;
+    public boolean isSameStateAs(Activity other) {
+        if (type != other.type) return false;
 
-        switch(type){
+        switch (type) {
             case TASK: {
                 return ((ReadOnlyTask) activity).isSameStateAs((ReadOnlyTask) other.activity);
             }
@@ -135,7 +135,7 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent{
     }
 
     @Override
-    public boolean equals(Object other){
+    public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof Activity // instanceof handles nulls
                 && this.isSameStateAs((Activity) other));
@@ -160,7 +160,7 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent{
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return activity.toString();
     }
 

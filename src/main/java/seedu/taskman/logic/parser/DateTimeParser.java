@@ -42,7 +42,7 @@ public class DateTimeParser {
      */
     public static long getUnixTime(String naturalDateTime, String errorMessage) throws IllegalDateTimeException {
         // assume 4 digits at tail of string == time at end
-        boolean timeIsBeforeDate = naturalDateTime.matches(".* \\d{4}.*")  &&
+        boolean timeIsBeforeDate = naturalDateTime.matches(".* \\d{4}.*") &&
                 !naturalDateTime.matches(".* \\d{4}$");
 
         if (timeIsBeforeDate) {
@@ -106,15 +106,15 @@ public class DateTimeParser {
     public static String epochSecondToDetailedDateTime(long epochSecond) {
         Instant instant = Instant.ofEpochSecond(epochSecond);
         return ZonedDateTime
-        		.ofInstant(instant, ZoneId.systemDefault())
-        		.format(formatter);
+                .ofInstant(instant, ZoneId.systemDefault())
+                .format(formatter);
     }
 
     public static String epochSecondToShortDateTime(long epochSecond) {
         Instant instant = Instant.ofEpochSecond(epochSecond);
         return LocalDateTime
-        		.ofInstant(instant, ZoneId.systemDefault())
-        		.format(formatter);
+                .ofInstant(instant, ZoneId.systemDefault())
+                .format(formatter);
     }
 
     public static class IllegalDateTimeException extends IllegalValueException {

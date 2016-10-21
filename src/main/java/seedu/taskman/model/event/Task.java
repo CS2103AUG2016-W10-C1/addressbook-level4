@@ -46,19 +46,19 @@ public class Task extends Event implements ReadOnlyTask, MutableTagsEvent {
     }
 
     @Override
-	public Optional<Schedule> getSchedule() {
+    public Optional<Schedule> getSchedule() {
         return super.getSchedule();
-	}
+    }
 
-	@Override
-	public Optional<Frequency> getFrequency() {
+    @Override
+    public Optional<Frequency> getFrequency() {
         return super.getFrequency();
-	}
+    }
 
-	@Override
-	public Status getStatus() {
-		return status;
-	}
+    @Override
+    public Status getStatus() {
+        return status;
+    }
 
     @Override
     public UniqueTagList getTags() {

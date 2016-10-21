@@ -9,7 +9,7 @@ import java.util.*;
 
 /**
  * A list of activities that enforces uniqueness between its elements and does not allow nulls.
- *
+ * <p>
  * Supports a minimal set of list operations.
  *
  * @see Activity#equals(Object)
@@ -30,14 +30,16 @@ public class UniqueActivityList implements Iterable<Activity> {
      * Signals that an operation targeting a specified task in the list would fail because
      * there is no such matching task in the list.
      */
-    public static class ActivityNotFoundException extends Exception {}
+    public static class ActivityNotFoundException extends Exception {
+    }
 
     private final ObservableList<Activity> internalList = FXCollections.observableArrayList();
 
     /**
      * Constructs empty TaskList.
      */
-    public UniqueActivityList() {}
+    public UniqueActivityList() {
+    }
 
     //TODO Do we need this? Or is simply checking for equivalence of title sufficient?
     /**

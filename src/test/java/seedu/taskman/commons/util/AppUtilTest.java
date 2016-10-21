@@ -14,15 +14,14 @@ public class AppUtilTest {
     public ExpectedException thrown = ExpectedException.none();
 
 
-
     @Test
-    public void getImage_exitingImage(){
+    public void getImage_exitingImage() {
         assertNotNull(AppUtil.getImage(Constants.APP_ICON_FILE_PATH));
     }
 
 
     @Test
-    public void getImage_nullGiven_assertionError(){
+    public void getImage_nullGiven_assertionError() {
         thrown.expect(AssertionError.class);
         AppUtil.getImage(null);
     }

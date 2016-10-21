@@ -22,7 +22,7 @@ public class ListCommandTest extends TaskManGuiTest {
     }
 
     @Test
-    public void list_emptyList(){
+    public void list_emptyList() {
         commandBox.runCommand("clear");
         assertListResult("list IS1103"); //no results
     }
@@ -33,10 +33,10 @@ public class ListCommandTest extends TaskManGuiTest {
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
 
-    private void assertListResult(String command, TestTask... expectedHits ) {
+    private void assertListResult(String command, TestTask... expectedHits) {
         commandBox.runCommand(command);
         Activity[] expectedActivities = new Activity[expectedHits.length];
-        for(int i = 0; i < expectedHits.length; i++){
+        for (int i = 0; i < expectedHits.length; i++) {
             expectedActivities[i] = new Activity(new Task(expectedHits[i]));
         }
         assertListSize(expectedActivities.length);

@@ -63,7 +63,7 @@ public class StorageManagerTest {
     }
 
     @Test
-    public void getTaskManFilePath(){
+    public void getTaskManFilePath() {
         assertNotNull(storageManager.getTaskManFilePath());
     }
 
@@ -74,6 +74,13 @@ public class StorageManagerTest {
         EventsCollector eventCollector = new EventsCollector();
         storage.handleTaskManChangedEvent(new TaskManChangedEvent(new TaskMan()));
         assertTrue(eventCollector.get(0) instanceof DataSavingExceptionEvent);
+    }
+
+    @Test
+    public void setTaskManFilePath() {
+        String filePath = "filepath";
+        storageManager.setTaskManFilePath(filePath);
+        assertEquals(filePath, storageManager.getTaskManFilePath());
     }
 
 

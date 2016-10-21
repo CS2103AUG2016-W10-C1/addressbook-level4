@@ -12,9 +12,9 @@ public class ClearCommandTest extends TaskManGuiTest {
     public void clear() {
 
         //verify a non-empty list can be cleared
-        TestTask[] currentList= testTasks.getTypicalTasks();
+        TestTask[] currentList = testTasks.getTypicalTasks();
         Activity[] expectedList = new Activity[currentList.length];
-        for(int i = 0; i < expectedList.length; i++){
+        for (int i = 0; i < expectedList.length; i++) {
             expectedList[i] = new Activity(new Task(currentList[i]));
         }
         assertTrue(taskListPanel.isListMatching(expectedList));

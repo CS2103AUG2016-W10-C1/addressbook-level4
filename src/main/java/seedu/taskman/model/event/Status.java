@@ -5,13 +5,13 @@ import seedu.taskman.commons.exceptions.IllegalValueException;
 
 public class Status {
 
-	public final Boolean completed;
+    public final Boolean completed;
 
-	public Status() {
+    public Status() {
         completed = false;
-	}
+    }
 
-	public Status(String booleanString) throws IllegalValueException {
+    public Status(String booleanString) throws IllegalValueException {
         booleanString = booleanString.trim().toLowerCase();
         if (!booleanString.matches("(complete)|(incomplete)")) {
             throw new IllegalValueException("Status should be 'complete' or 'incomplete'");
@@ -19,10 +19,10 @@ public class Status {
         completed = booleanString.equals("complete");
     }
 
-	@Override
-	public String toString() {
-		return completed ? "Completed" : "Incomplete";
-	}
+    @Override
+    public String toString() {
+        return completed ? "Completed" : "Incomplete";
+    }
 
     @Override
     public boolean equals(Object o) {

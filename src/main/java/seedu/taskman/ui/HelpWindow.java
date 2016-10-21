@@ -20,7 +20,7 @@ public class HelpWindow extends UiPart {
     private static final String FXML = "HelpWindow.fxml";
     private static final String TITLE = "Help";
     private static final String USERGUIDE_URL =
-            "https://github.com/se-edu/taskMan-level4/blob/master/docs/UserGuide.md";
+            "https://github.com/CS2103AUG2016-W10-C1/main/blob/master/docs/UserGuide.md";
 
     private AnchorPane mainPane;
 
@@ -43,7 +43,7 @@ public class HelpWindow extends UiPart {
         return FXML;
     }
 
-    private void configure(){
+    private void configure() {
         Scene scene = new Scene(mainPane);
         //Null passed as the parent stage to make it non-modal.
         dialogStage = createDialogStage(TITLE, null, scene);

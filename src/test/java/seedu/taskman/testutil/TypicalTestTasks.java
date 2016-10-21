@@ -13,7 +13,7 @@ public class TypicalTestTasks {
 
     public TypicalTestTasks() {
         try {
-            taskCS2101 =  new TaskBuilder().withTitle("CS2101").withDeadline("mon 1200").withFrequency("3 days").withSchedule("fri 0000 to fri 0300").build();
+            taskCS2101 = new TaskBuilder().withTitle("CS2101").withDeadline("mon 1200").withFrequency("3 days").withSchedule("fri 0000 to fri 0300").build();
             taskCS2103T = new TaskBuilder().withTitle("CS2103T Project").withDeadline("wed 1000").withFrequency("1 week").withSchedule("fri 0000 to fri 0300").withTags("SuperShag", "V02").build();
             taskCS2309 = new TaskBuilder().withTitle("CS2309").withDeadline("fri 0900").withFrequency("1 week").withSchedule("fri 0000 to fri 0300").build();
             taskCS3244 = new TaskBuilder().withTitle("CS3244 Project").withDeadline("wed 1400").withFrequency("1 week").withSchedule("thu 1400 to thu 1500").build();
@@ -47,7 +47,7 @@ public class TypicalTestTasks {
         return new TestTask[]{taskCS2101, taskCS2103T, taskCS2309, taskCS3244, taskCS2105, taskCS2106, taskCS2107};
     }
 
-    public TaskMan getTypicalTaskMan(){
+    public TaskMan getTypicalTaskMan() {
         TaskMan ab = new TaskMan();
         loadTaskManWithSampleData(ab);
         return ab;

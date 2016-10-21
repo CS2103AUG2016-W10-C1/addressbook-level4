@@ -37,10 +37,10 @@ public class TaskListPanel extends UiPart {
     private static final String FXML = "TaskListPanel.fxml";
     private AnchorPane panel;
     private AnchorPane placeHolderPane;
-    
+
     @FXML
     private TableView<Activity> taskListView;
-    
+
     public TaskListPanel() {
         super();
     }
@@ -61,7 +61,7 @@ public class TaskListPanel extends UiPart {
     }
 
     public static TaskListPanel load(Stage primaryStage, AnchorPane taskListPlaceholder,
-                                       ObservableList<Activity> taskList) {
+                                     ObservableList<Activity> taskList) {
         TaskListPanel taskListPanel =
                 UiPartLoader.loadUiPart(primaryStage, taskListPlaceholder, new TaskListPanel());
         taskListPanel.configure(taskList);
@@ -72,55 +72,55 @@ public class TaskListPanel extends UiPart {
         setConnections(taskList);
         addToPlaceholder();
     }
-    
+
     // TODO Resolve generic type issue.
     private void setConnections(ObservableList<Activity> taskList) {
         taskListView.setItems(taskList);
-        
-        TableColumn<Activity, String> titleColumn = new TableColumn<Activity,String>("Title");
+
+        TableColumn<Activity, String> titleColumn = new TableColumn<Activity, String>("Title");
         titleColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
                 return new ReadOnlyObjectWrapper<String>(p.getValue().getTitle().title);
             }
-         });
+        });
         taskListView.getColumns().add(titleColumn);
-        
-        TableColumn<Activity, String> statusColumn = new TableColumn<Activity,String>("Status");
+
+        TableColumn<Activity, String> statusColumn = new TableColumn<Activity, String>("Status");
         statusColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
                 return new ReadOnlyObjectWrapper<String>(p.getValue().getStatus()
                         .map(Status::toString).orElse(""));
             }
-         });
+        });
         taskListView.getColumns().add(statusColumn);
-        
-        TableColumn<Activity, String> deadlineColumn = new TableColumn<Activity,String>("Deadline");
+
+        TableColumn<Activity, String> deadlineColumn = new TableColumn<Activity, String>("Deadline");
         deadlineColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
                 return new ReadOnlyObjectWrapper<String>(p.getValue().getDeadline()
                         .map(Deadline::toString).orElse(""));
             }
-         });
+        });
         taskListView.getColumns().add(deadlineColumn);
-        
-        TableColumn<Activity, String> scheduleColumn = new TableColumn<Activity,String>("Schedule");
+
+        TableColumn<Activity, String> scheduleColumn = new TableColumn<Activity, String>("Schedule");
         scheduleColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
                 return new ReadOnlyObjectWrapper<String>(p.getValue().getSchedule()
                         .map(Schedule::toString).orElse(""));
             }
-         });
+        });
         taskListView.getColumns().add(scheduleColumn);
-        
-        TableColumn<Activity, String> frequencyColumn = new TableColumn<Activity,String>("Frequency");
+
+        TableColumn<Activity, String> frequencyColumn = new TableColumn<Activity, String>("Frequency");
         frequencyColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
                 return new ReadOnlyObjectWrapper<String>(p.getValue().getFrequency()
                         .map(Frequency::toString).orElse(""));
             }
-         });
+        });
         taskListView.getColumns().add(frequencyColumn);
-        
+
         setEventHandlerForSelectionChangeEvent();
     }
 
@@ -129,6 +129,7 @@ public class TaskListPanel extends UiPart {
         FxViewUtil.applyAnchorBoundaryParameters(panel, 0.0, 0.0, 0.0, 0.0);
         FxViewUtil.applyAnchorBoundaryParameters(taskListView, 0.0, 0.0, 0.0, 0.0);
     }
+
     // TODO Edit
     private void setEventHandlerForSelectionChangeEvent() {
         taskListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -138,6 +139,7 @@ public class TaskListPanel extends UiPart {
             }
         });
     }
+
     // TODO Edit
     public void scrollTo(int index) {
         Platform.runLater(() -> {

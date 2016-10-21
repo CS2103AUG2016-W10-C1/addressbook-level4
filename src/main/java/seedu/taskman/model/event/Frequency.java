@@ -39,7 +39,7 @@ public class Frequency {
 
     @Override
     public String toString() {
-    	// TODO: Verify if it is "exactly 1 year instead of 360 days"
+        // TODO: Verify if it is "exactly 1 year instead of 360 days"
         return prettyTimeFormatter.format(new Date(seconds * MULTIPLIER_TIME_UNIX_TO_JAVA));
     }
 

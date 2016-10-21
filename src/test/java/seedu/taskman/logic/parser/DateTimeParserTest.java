@@ -19,7 +19,7 @@ public class DateTimeParserTest {
         long testDateTimeUnix = 1467763140L;
 
         long unixDateTime = DateTimeParser.getUnixTime(testDateTimeFormal);
-        assertEquals(testDateTimeUnix ,unixDateTime);
+        assertEquals(testDateTimeUnix, unixDateTime);
     }
 
     @Test
@@ -45,8 +45,8 @@ public class DateTimeParserTest {
         long timeNow = Instant.now().getEpochSecond();
         long durationInSeconds = 2 * 7 * 24 * 60 * 60;
 
-        assertEquals(timeNow + durationInSeconds ,unixDateTime1);
-        assertEquals(timeNow + durationInSeconds ,unixDateTime2);
+        assertEquals(timeNow + durationInSeconds, unixDateTime1);
+        assertEquals(timeNow + durationInSeconds, unixDateTime2);
     }
 
     @Test

@@ -20,10 +20,12 @@ public class LogicManager extends ComponentManager implements Logic {
 
     private final Model model;
     private final CommandParser commandParser;
+    private final Storage storage;
 
     public LogicManager(Model model, Storage storage) {
         this.model = model;
         this.commandParser = new CommandParser();
+        this.storage = storage;
     }
 
     @Override
@@ -31,6 +33,7 @@ public class LogicManager extends ComponentManager implements Logic {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         Command command = commandParser.parseCommand(commandText);
         command.setData(model);
+        command.setStorage(storage);
         return command.execute();
     }
 
