@@ -59,6 +59,7 @@ public class CommandParser {
     private static final Pattern LIST_ARGS_FORMAT = Pattern.compile("(?<filter>" + ListFlag.get_Pattern() + ")?" +
                     "(?<keywords>(?:\\s*[^/]+)*?)??(?<tagArguments>(?:\\s*t/[^/]+)*)?"); // one or more keywords separated by whitespace
 
+    // TODO: Deal with bad numbers (float, negative)
     private enum Argument{
         TARGET_INDEX("(?<targetIndex>.+)"),
         TITLE("(?<title>[^/]+)"),
@@ -98,7 +99,7 @@ public class CommandParser {
                     + Argument.TAG); // variable number of tags
 
     public CommandParser() {
-    	Command.setInputHistory(new LinkedBlockingDeque<String>(Command.CAPACITY_HISTORY_COMMAND));
+        Command.setInputHistory(new LinkedBlockingDeque<String>(Command.CAPACITY_UPP_BOUND_HISTORY_COMMAND));
     }
 
     /**
@@ -144,6 +145,9 @@ public class CommandParser {
                 
             case HistoryCommand.COMMAND_WORD:
                 return new HistoryCommand();
+
+            case UndoCommand.COMMAND_WORD:
+                return prepareUndo(arguments);
 
             case ExitCommand.COMMAND_WORD:
                 return new ExitCommand();
@@ -326,6 +330,18 @@ public class CommandParser {
                 return new IncorrectCommand(ive.getMessage());
             }
         }
+    }
+    
+    /**
+     * Parses arguments in the context of the undo task command.
+     *
+     * @param args full command args string
+     * @return the prepared command
+     */
+    private Command prepareUndo(String args) {
+
+        Optional<Integer> index = parseIndex(args);
+        return new UndoCommand(index.get());
     }
 
 }

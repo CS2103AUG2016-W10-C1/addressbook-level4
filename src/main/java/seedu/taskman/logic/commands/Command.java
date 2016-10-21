@@ -21,7 +21,8 @@ public abstract class Command {
 	private static LinkedBlockingDeque<String> inputHistory;
     
     // TODO: May need to move this configuration away? Separation of concerns?
-    public static final int CAPACITY_HISTORY_COMMAND = 11; // must be 11 because "history" is the 11th command
+	public static final int CAPACITY_LOW_BOUND_HISTORY_COMMAND = 0; // cannot be negative
+    public static final int CAPACITY_UPP_BOUND_HISTORY_COMMAND = 11; // must be 11 because "history" is the 11th command
 
     /**
      * Constructs a feedback message to summarise an operation that displayed a listing of tasks.
