@@ -344,6 +344,73 @@ public class LogicManagerTest {
                 expectedAB,
                 expectedAB.getActivityList());
     }
+    
+    @Test
+    public void execute_history_getEmpty() throws Exception {
+        assertCommandBehavior("history",
+                HistoryCommand.HISTORY_STRING_HEADER + HistoryCommand.HISTORY_STRING_EMPTY_PLACEHOLDER);
+    }
+    
+    @Test
+    public void execute_history_invalidCommandExcludedFromHistory() throws Exception {
+        String invalidCommand = "edit";
+        assertCommandBehavior(invalidCommand,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+        assertCommandBehavior("history",
+                HistoryCommand.HISTORY_STRING_HEADER + HistoryCommand.HISTORY_STRING_EMPTY_PLACEHOLDER);
+        invalidCommand = "complete";
+        assertCommandBehavior(invalidCommand,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, CompleteCommand.MESSAGE_USAGE));
+        assertCommandBehavior("history",
+                HistoryCommand.HISTORY_STRING_HEADER + HistoryCommand.HISTORY_STRING_EMPTY_PLACEHOLDER);
+        invalidCommand = "delete";
+        assertCommandBehavior(invalidCommand,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+        assertCommandBehavior("history",
+                HistoryCommand.HISTORY_STRING_HEADER + HistoryCommand.HISTORY_STRING_EMPTY_PLACEHOLDER);
+    }
+    
+    @Test
+    public void execute_history_unknownCommandExcludedFromHistory() throws Exception {
+        String unknownCommand = "unknown command";
+        assertCommandBehavior(unknownCommand, MESSAGE_UNKNOWN_COMMAND);
+        assertCommandBehavior("history",
+                HistoryCommand.HISTORY_STRING_HEADER + HistoryCommand.HISTORY_STRING_EMPTY_PLACEHOLDER);
+        unknownCommand = "another unknown command";
+        assertCommandBehavior(unknownCommand, MESSAGE_UNKNOWN_COMMAND);
+        assertCommandBehavior("history",
+                HistoryCommand.HISTORY_STRING_HEADER + HistoryCommand.HISTORY_STRING_EMPTY_PLACEHOLDER);
+    }
+    
+    @Test
+    public void execute_history_executedCommandIncludedInHistory() throws Exception {
+        assertCommandBehavior("list", Command.getMessageForTaskListShownSummary(0));
+        assertCommandBehavior("history",
+                HistoryCommand.HISTORY_STRING_HEADER +
+                String.format(HistoryCommand.HISTORY_STRING_BULLET_POINT,
+                        HistoryCommand.HISTORY_NUMBER_BULLET_POINT) +
+                "list");
+    }
+    
+    @Test
+    public void execute_history_onlyExecutedCommandsIncludedInHistory() throws Exception {
+        String invalidCommand = "edit", validCommand = "list";
+        assertCommandBehavior(validCommand, Command.getMessageForTaskListShownSummary(0));
+        assertCommandBehavior(invalidCommand,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+        assertCommandBehavior(validCommand, Command.getMessageForTaskListShownSummary(0));
+        assertCommandBehavior("history",
+                HistoryCommand.HISTORY_STRING_HEADER +
+                
+                String.format(HistoryCommand.HISTORY_STRING_BULLET_POINT,
+                        HistoryCommand.HISTORY_NUMBER_BULLET_POINT) +
+                validCommand +
+                HistoryCommand.HISTORY_STRING_BULLET_POINT_BREAK +
+                
+                String.format(HistoryCommand.HISTORY_STRING_BULLET_POINT,
+                        HistoryCommand.HISTORY_NUMBER_BULLET_POINT + 1) +
+                validCommand);
+    }
 
 
     @Test
@@ -474,7 +541,7 @@ public class LogicManagerTest {
                 expectedList);
     }
 
-    @Test
+    //@Test
     public void execute_list_filter_keywords_with_tags() throws Exception{
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();

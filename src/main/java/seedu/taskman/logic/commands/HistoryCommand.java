@@ -9,24 +9,27 @@ public class HistoryCommand extends Command {
     		+ " most recently executed commands.\n"
             + "Example: " + COMMAND_WORD;
     
-    private static final int HISTORY_BULLET_FIRST = 1;
-    private static final String HISTORY_EMPTY_PLACEHOLDER = "\tNIL";
+    public static final int HISTORY_NUMBER_BULLET_POINT = 1;
+    public static final String HISTORY_STRING_HEADER = "Command History:\n";
+    public static final String HISTORY_STRING_EMPTY_PLACEHOLDER = "\tNIL";
+    public static final String HISTORY_STRING_BULLET_POINT = "\t%d. ";
+    public static final String HISTORY_STRING_BULLET_POINT_BREAK = "\n";
 
     public HistoryCommand() {}
 	
 	@Override
 	public CommandResult execute() {
 		super.getInputHistory().pop(); // pop history itself
-		StringBuilder builder = new StringBuilder("Command History:\n");
-		int commandCount = HISTORY_BULLET_FIRST;
+		StringBuilder builder = new StringBuilder(HISTORY_STRING_HEADER);
+		int commandCount = HISTORY_NUMBER_BULLET_POINT;
 		for (String command : super.getInputHistory()) { // most recently executed command is at the head
-		    builder.append(String.format("\t%d. ", commandCount++));
+		    builder.append(String.format(HISTORY_STRING_BULLET_POINT, commandCount++));
 			builder.append(command);
-			builder.append("\n");
+			builder.append(HISTORY_STRING_BULLET_POINT_BREAK);
 		}
-		if (commandCount == HISTORY_BULLET_FIRST) {
-		    builder.append(HISTORY_EMPTY_PLACEHOLDER);
-		} 
+		if (commandCount == HISTORY_NUMBER_BULLET_POINT) {
+		    builder.append(HISTORY_STRING_EMPTY_PLACEHOLDER);
+		}
 		return new CommandResult(builder.toString().trim());
 	}
 
