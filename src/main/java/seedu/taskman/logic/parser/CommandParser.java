@@ -100,7 +100,7 @@ public class CommandParser {
     // TODO: All fields currently compulsory
     private static final Pattern TASK_EDIT_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("" + ArgumentPattern.TARGET_INDEX
-                    + ArgumentPattern.TITLE + "?"
+                    + ArgumentPattern.TITLE + "??"
                     + ArgumentPattern.DEADLINE
                     + ArgumentPattern.STATUS
                     + ArgumentPattern.SCHEDULE
