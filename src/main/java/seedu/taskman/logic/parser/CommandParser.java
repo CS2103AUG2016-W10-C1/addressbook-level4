@@ -59,7 +59,7 @@ public class CommandParser {
     private static final Pattern LIST_ARGS_FORMAT = Pattern.compile("(?<filter>" + ListFlag.get_Pattern() + ")?" +
                     "(?<keywords>(?:\\s*[^/]+)*?)??(?<tagArguments>(?:\\s*t/[^/]+)*)?"); // one or more keywords separated by whitespace
 
-    // TODO: Deal with bad numbers (float, negative)
+    // TODO: Deal with bad numbers (float, negative), see parseIndex (math.abs) for temporary solution
     private enum Argument{
         TARGET_INDEX("(?<targetIndex>.+)"),
         TITLE("(?<title>[^/]+)"),
@@ -100,6 +100,7 @@ public class CommandParser {
 
     public CommandParser() {
         Command.setInputHistory(new LinkedBlockingDeque<String>(Command.CAPACITY_UPP_BOUND_HISTORY_COMMAND));
+        Command.setModelHistory(new LinkedBlockingDeque<Model>(Command.CAPACITY_UPP_BOUND_HISTORY_COMMAND));
     }
 
     /**
@@ -111,7 +112,8 @@ public class CommandParser {
     public Command parseCommand(String userInput) {
     	if (!Command.getInputHistory().offerFirst(userInput)) {
     		Command.getInputHistory().pollLast(); // poll 10th most recently executed command
-    		Command.getInputHistory().offerFirst(userInput);
+    		Command.getModelHistory().pollLast(); // do the same for model
+    		Command.getInputHistory().offerFirst(userInput); // push model after changes (i.e. at CommandResult)
     	}
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
         if (!matcher.matches()) {
@@ -280,10 +282,12 @@ public class CommandParser {
         }
 
         String index = matcher.group("targetIndex");
+        /*
         if(!StringUtil.isUnsignedInteger(index)){
             return Optional.empty();
         }
-        return Optional.of(Integer.parseInt(index));
+        */
+        return Optional.of(Math.abs(Integer.parseInt(index)));
 
     }
 
