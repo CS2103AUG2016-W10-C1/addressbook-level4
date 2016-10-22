@@ -23,11 +23,18 @@ public class UndoCommand extends Command {
     
     @Override
     public CommandResult execute() {
+        assert model != null;
         if (numCommands < Command.CAPACITY_LOW_BOUND_HISTORY_COMMAND ||
+                numCommands > getTaskManHistory().size() ||
                 numCommands >= Command.CAPACITY_UPP_BOUND_HISTORY_COMMAND) {
             indicateAttemptToExecuteIncorrectCommand();
             return new CommandResult(String.format(MESSAGE_NUMBER_OUT_OF_RANGE, MESSAGE_USAGE));
         }
+        for (int commandCount = 0; commandCount < numCommands; ++commandCount) {
+            popHistory();
+        }
+        getInputHistory().pop();
+        model.resetData(getTaskManHistory().pop());
         return new CommandResult(String.format(MESSAGE_SUCCESS, numCommands));
     }
 

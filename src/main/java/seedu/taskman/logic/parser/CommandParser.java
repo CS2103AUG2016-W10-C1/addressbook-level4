@@ -1,7 +1,6 @@
 package seedu.taskman.logic.parser;
 
 import seedu.taskman.commons.exceptions.IllegalValueException;
-import seedu.taskman.commons.util.StringUtil;
 import seedu.taskman.logic.commands.*;
 import seedu.taskman.model.Model;
 import seedu.taskman.model.Model.FilterMode;
@@ -99,8 +98,7 @@ public class CommandParser {
                     + Argument.TAG); // variable number of tags
 
     public CommandParser() {
-        Command.setInputHistory(new LinkedBlockingDeque<String>(Command.CAPACITY_UPP_BOUND_HISTORY_COMMAND));
-        Command.setModelHistory(new LinkedBlockingDeque<Model>(Command.CAPACITY_UPP_BOUND_HISTORY_COMMAND));
+        Command.initHistory();
     }
 
     /**
@@ -110,10 +108,11 @@ public class CommandParser {
      * @return the command based on the user input
      */
     public Command parseCommand(String userInput) {
+        // TODO: Messy
     	if (!Command.getInputHistory().offerFirst(userInput)) {
-    		Command.getInputHistory().pollLast(); // poll 10th most recently executed command
-    		Command.getModelHistory().pollLast(); // do the same for model
-    		Command.getInputHistory().offerFirst(userInput); // push model after changes (i.e. at CommandResult)
+    		Command.getInputHistory().pollLast();   // poll 10th most recently executed command
+    		Command.getTaskManHistory().pollLast(); // do the same for model
+    		Command.getInputHistory().offerFirst(userInput); // push model after changes (i.e. at LogicManager)
     	}
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
         if (!matcher.matches()) {
@@ -158,7 +157,6 @@ public class CommandParser {
                 return new HelpCommand();
 
             default:
-            	// Command.getInputHistory().pop() is in Command.indicateAttemptToExecuteIncorrectCommand
                 return new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
         }
     }

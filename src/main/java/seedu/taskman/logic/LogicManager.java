@@ -31,7 +31,15 @@ public class LogicManager extends ComponentManager implements Logic {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         Command command = commandParser.parseCommand(commandText);
         command.setData(model);
-        return command.execute();
+        try {
+            Command.getTaskManHistory().offerFirst(model.getTaskMan().getClone());
+            // System.out.println("Bef command: " + Command.getTaskManHistory().size());
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        CommandResult executed = command.execute();
+        // System.out.println("Aft command: " + Command.getTaskManHistory().size());
+        return executed;
     }
 
     @Override

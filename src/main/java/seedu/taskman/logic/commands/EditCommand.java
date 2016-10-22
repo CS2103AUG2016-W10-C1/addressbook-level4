@@ -51,7 +51,7 @@ public class EditCommand extends Command {
             initMembers(argsContainer);
         } catch (IllegalValueException e) {
             // TODO: Need a better way to stalk failed commands
-            super.popHistory();
+            popHistory();
             return new CommandResult(e.getMessage());
         }
 
@@ -72,7 +72,7 @@ public class EditCommand extends Command {
                 assert false : "Deleted activity should be able to be added back.";
             }
             // TODO: Need a better way to stalk failed commands
-            super.popHistory();
+            popHistory();
             return new CommandResult(MESSAGE_DUPLICATE_TASK);
         }
 

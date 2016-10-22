@@ -6,6 +6,7 @@ import seedu.taskman.commons.core.EventsCenter;
 import seedu.taskman.commons.core.Messages;
 import seedu.taskman.commons.events.ui.IncorrectCommandAttemptedEvent;
 import seedu.taskman.model.Model;
+import seedu.taskman.model.ReadOnlyTaskMan;
 
 /**
  * Represents a command with hidden internal logic and the ability to be executed.
@@ -18,12 +19,12 @@ import seedu.taskman.model.Model;
  */
 public abstract class Command {
     protected Model model;
-	private static LinkedBlockingDeque<String> inputHistory;
-	private static LinkedBlockingDeque<Model> modelHistory;
+    private static LinkedBlockingDeque<String> inputHistory;
+    private static LinkedBlockingDeque<ReadOnlyTaskMan> taskManHistory;
 
-	// TODO: May need to move this configuration away? Separation of concerns?
-	public static final int CAPACITY_LOW_BOUND_HISTORY_COMMAND = 0; // cannot be negative
-	public static final int CAPACITY_UPP_BOUND_HISTORY_COMMAND = 11; // must be 11 because "history" is the 11th command
+    // TODO: May need to move this configuration away? Separation of concerns?
+    public static final int CAPACITY_LOW_BOUND_HISTORY_COMMAND = 0; // cannot be negative
+    public static final int CAPACITY_UPP_BOUND_HISTORY_COMMAND = 11; // must be 11 because "history" is the 11th command
 
     /**
      * Constructs a feedback message to summarise an operation that displayed a listing of tasks.
@@ -60,9 +61,14 @@ public abstract class Command {
         EventsCenter.getInstance().post(new IncorrectCommandAttemptedEvent(this));
     }
 
+    public static void initHistory() {
+        setInputHistory(new LinkedBlockingDeque<String>(CAPACITY_UPP_BOUND_HISTORY_COMMAND));
+        setTaskManHistory(new LinkedBlockingDeque<ReadOnlyTaskMan>(CAPACITY_UPP_BOUND_HISTORY_COMMAND));
+    }
+
     public static void popHistory() {
         getInputHistory().pop();
-        getModelHistory().pop();
+        getTaskManHistory().pop();
     }
 
     public static LinkedBlockingDeque<String> getInputHistory() {
@@ -73,11 +79,11 @@ public abstract class Command {
         Command.inputHistory = inputHistory;
     }
 
-    public static LinkedBlockingDeque<Model> getModelHistory() {
-        return modelHistory;
+    public static LinkedBlockingDeque<ReadOnlyTaskMan> getTaskManHistory() {
+        return taskManHistory;
     }
 
-    public static void setModelHistory(LinkedBlockingDeque<Model> modelHistory) {
-        Command.modelHistory = modelHistory;
+    public static void setTaskManHistory(LinkedBlockingDeque<ReadOnlyTaskMan> taskManHistory) {
+        Command.taskManHistory = taskManHistory;
     }
 }

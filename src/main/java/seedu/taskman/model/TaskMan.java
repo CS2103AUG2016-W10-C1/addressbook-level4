@@ -181,6 +181,11 @@ public class TaskMan implements ReadOnlyTaskMan {
     }
 
     @Override
+    public ReadOnlyTaskMan getClone() throws CloneNotSupportedException {
+        return (ReadOnlyTaskMan) this.clone();
+    }
+
+    @Override
     public UniqueActivityList getUniqueActivityList() {
         return this.activities;
     }

@@ -87,4 +87,9 @@ public class XmlSerializableTaskMan implements ReadOnlyTaskMan {
         return Collections.unmodifiableList(tags);
     }
 
+    @Override
+    public ReadOnlyTaskMan getClone() throws CloneNotSupportedException {
+        return (ReadOnlyTaskMan) this.clone();
+    }
+
 }

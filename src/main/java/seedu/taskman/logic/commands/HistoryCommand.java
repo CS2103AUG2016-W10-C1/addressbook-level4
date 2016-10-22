@@ -19,7 +19,7 @@ public class HistoryCommand extends Command {
 	
 	@Override
 	public CommandResult execute() {
-	    super.popHistory(); // pop history itself
+	    popHistory(); // pop history itself
 		StringBuilder builder = new StringBuilder(HISTORY_STRING_HEADER);
 		int commandCount = HISTORY_NUMBER_BULLET_POINT;
 		for (String command : super.getInputHistory()) { // most recently executed command is at the head

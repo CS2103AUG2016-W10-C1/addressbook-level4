@@ -60,7 +60,7 @@ public class AddCommand extends Command {
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
         } catch (UniqueActivityList.DuplicateActivityException e) {
             // TODO: Need a better way to stalk failed commands
-            super.popHistory();
+            popHistory();
             return new CommandResult(MESSAGE_DUPLICATE_EVENT);
         }
 

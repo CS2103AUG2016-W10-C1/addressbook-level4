@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Unmodifiable view of an task man
  */
-public interface ReadOnlyTaskMan {
+public interface ReadOnlyTaskMan extends Cloneable {
 
     UniqueTagList getUniqueTagList();
 
@@ -26,5 +26,7 @@ public interface ReadOnlyTaskMan {
      * Returns an unmodifiable view of tags list
      */
     List<Tag> getTagList();
+
+    ReadOnlyTaskMan getClone() throws CloneNotSupportedException;
 
 }
