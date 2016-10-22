@@ -37,9 +37,7 @@ public class LogicManager extends ComponentManager implements Logic {
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
-        CommandResult executed = command.execute();
-        // System.out.println("Aft command: " + Command.getTaskManHistory().size());
-        return executed;
+        return command.execute();
     }
 
     @Override

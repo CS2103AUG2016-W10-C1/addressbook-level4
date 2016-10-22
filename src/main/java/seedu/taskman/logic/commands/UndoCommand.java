@@ -30,7 +30,7 @@ public class UndoCommand extends Command {
             indicateAttemptToExecuteIncorrectCommand();
             return new CommandResult(String.format(MESSAGE_NUMBER_OUT_OF_RANGE, MESSAGE_USAGE));
         }
-        for (int commandCount = 0; commandCount < numCommands; ++commandCount) {
+        for (int commandCount = 0; commandCount < numCommands; commandCount++) {
             popHistory();
         }
         getInputHistory().pop();
