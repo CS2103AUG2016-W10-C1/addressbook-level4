@@ -64,15 +64,15 @@ public class TestUtil {
     private static Task[] getSampleTaskData() {
         try {
             return new Task[]{
-                    new Task(new Title("Ali Muster"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), new Frequency("1 week")),
-                    new Task(new Title("Boris Mueller"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), new Frequency("1 week")),
-                    new Task(new Title("Carl Kurz"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), new Frequency("1 week")),
-                    new Task(new Title("Daniel Meier"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), new Frequency("1 week")),
-                    new Task(new Title("Elle Meyer"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), new Frequency("1 week")),
-                    new Task(new Title("Fiona Kunz"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), new Frequency("1 week")),
-                    new Task(new Title("George Best"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), new Frequency("1 week")),
-                    new Task(new Title("Hoon Meier"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), new Frequency("1 week")),
-                    new Task(new Title("Ida Mueller"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), new Frequency("1 week"))
+                    new Task(new Title("Ali Muster"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), null), //new Frequency("1 week")),
+                    new Task(new Title("Boris Mueller"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), null), //new Frequency("1 week")),
+                    new Task(new Title("Carl Kurz"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), null), //new Frequency("1 week")),
+                    new Task(new Title("Daniel Meier"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), null), //new Frequency("1 week")),
+                    new Task(new Title("Elle Meyer"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), null), //new Frequency("1 week")),
+                    new Task(new Title("Fiona Kunz"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), null), //new Frequency("1 week")),
+                    new Task(new Title("George Best"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), null), //new Frequency("1 week")),
+                    new Task(new Title("Hoon Meier"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), null), //new Frequency("1 week")),
+                    new Task(new Title("Ida Mueller"), new UniqueTagList(), new Deadline("next tues"), new Schedule("wed 10am, wed 11am"), null), //new Frequency("1 week"))
             };
         } catch (IllegalValueException e) {
             assert false;

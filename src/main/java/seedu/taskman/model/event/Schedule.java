@@ -63,7 +63,7 @@ public class Schedule {
 
             if (endingIsDuration) {
                 String duration = matcher.group(3).trim();
-                endEpochSecond = DateTimeParser.durationToUnixTime(startEpochSecond, duration);
+                endEpochSecond = DateTimeParser.naturalDurationToUnixTime(startEpochSecond, duration);
             } else {
                 String endString = matcher.group(3).trim();
                 long endEpochCandidate = DateTimeParser.getUnixTime(endString, ERROR_BAD_END_DATETIME);

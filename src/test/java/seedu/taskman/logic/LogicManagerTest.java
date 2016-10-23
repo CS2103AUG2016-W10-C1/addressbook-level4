@@ -15,14 +15,19 @@ import seedu.taskman.commons.events.ui.JumpToListRequestEvent;
 import seedu.taskman.commons.events.ui.ShowHelpRequestEvent;
 import seedu.taskman.commons.exceptions.DataConversionException;
 import seedu.taskman.commons.util.FileUtil;
-import seedu.taskman.logic.commands.*;
+import seedu.taskman.logic.commands.CommandResult;
+import seedu.taskman.logic.commands.StoragelocCommand;
 import seedu.taskman.logic.parser.DateTimeParser;
 import seedu.taskman.model.Model;
 import seedu.taskman.model.ModelManager;
 import seedu.taskman.model.ReadOnlyTaskMan;
 import seedu.taskman.model.TaskMan;
-import seedu.taskman.model.event.*;
-import seedu.taskman.model.event.legacy.Email;
+import seedu.taskman.model.event.Activity;
+import seedu.taskman.model.event.Deadline;
+import seedu.taskman.model.event.Frequency;
+import seedu.taskman.model.event.Schedule;
+import seedu.taskman.model.event.Task;
+import seedu.taskman.model.event.Title;
 import seedu.taskman.model.tag.Tag;
 import seedu.taskman.model.tag.UniqueTagList;
 import seedu.taskman.storage.Storage;
@@ -38,7 +43,6 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static seedu.taskman.commons.core.Messages.*;
 
 public class LogicManagerTest {
 
@@ -93,154 +97,123 @@ public class LogicManagerTest {
         EventsCenter.clearSubscribers();
     }
 
-    @Test
-    public void execute_invalid() throws Exception {
-        String invalidCommand = "       ";
-        assertCommandBehavior(invalidCommand,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
+    /**
+     * Executes the command and confirms that no state has changed in TaskMan
+     */
+    private CommandResult assertCommandNoStateChange(String inputCommand) throws Exception {
+        return assertCommandStateChange(inputCommand, new TaskMan(), Collections.emptyList());
     }
 
     /**
-     * Executes the command and confirms that the result message is correct.
-     * Both the 'task man' and the 'last shown list' are expected to be empty.
+     * Executes the command and confirms the following three parts of the LogicManager object's state are as expected:<br>
+     *      - the internal task man data are same as those in the {@code expectedTaskMan} <br>
+     *      - the backing list shown by UI matches the {@code shownList} <br>
+     *      - {@code expectedTaskMan} was saved to the storage file. <br>
      *
-     * @see #assertCommandBehavior(String, String, ReadOnlyTaskMan, List)
+     * @return Result of executed command
      */
-    private void assertCommandBehavior(String inputCommand, String expectedMessage) throws Exception {
-        assertCommandBehavior(inputCommand, expectedMessage, new TaskMan(), Collections.emptyList());
-    }
-
-    /**
-     * Executes the command and confirms that the result message is correct and
-     * also confirms that the following three parts of the LogicManager object's state are as expected:<br>
-     * - the internal task man data are same as those in the {@code expectedTaskMan} <br>
-     * - the backing list shown by UI matches the {@code shownList} <br>
-     * - {@code expectedTaskMan} was saved to the storage file. <br>
-     */
-    private void assertCommandBehavior(String inputCommand, String expectedMessage,
-                                       ReadOnlyTaskMan expectedTaskMan,
-                                       List<? extends Activity> expectedShownList) throws Exception {
-
+    private CommandResult assertCommandStateChange(String inputCommand, ReadOnlyTaskMan expectedTaskMan,
+                                                   List<? extends Activity> expectedShownList) throws Exception {
         //Execute the command
         CommandResult result = logic.execute(inputCommand);
 
-        //Confirm the ui display elements should contain the right data
-        assertEquals(expectedMessage, result.feedbackToUser);
         assertEquals(expectedShownList, model.getFilteredActivityList());
 
         //Confirm the state of data (saved and in-memory) is as expected
         assertEquals(expectedTaskMan, model.getTaskMan());
         assertEquals(expectedTaskMan, latestSavedTaskMan);
+
+        return result;
     }
 
+    @Test
+    public void execute_invalid() throws Exception {
+        String invalidCommand = "       ";
+        assertCommandNoStateChange(invalidCommand);
+    }
 
     @Test
     public void execute_unknownCommandWord() throws Exception {
         String unknownCommand = "uicfhmowqewca";
-        assertCommandBehavior(unknownCommand, MESSAGE_UNKNOWN_COMMAND);
+        assertCommandNoStateChange(unknownCommand);
     }
 
+    // todo: decide
     //@Test
     public void execute_help() throws Exception {
-        assertCommandBehavior("help", HelpCommand.SHOWING_HELP_MESSAGE);
+        assertCommandNoStateChange("help");
         assertTrue(helpShown);
     }
 
+    // todo: decide
     //@Test
     public void execute_exit() throws Exception {
-        assertCommandBehavior("exit", ExitCommand.MESSAGE_EXIT_ACKNOWLEDGEMENT);
+        assertCommandNoStateChange("exit");
     }
 
+    // todo: decide
     //@Test
     public void execute_clear() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        model.addEvent(helper.generateTask(1));
-        model.addEvent(helper.generateTask(2));
-        model.addEvent(helper.generateTask(3));
+        model.addActivity(helper.generateTask(1));
+        model.addActivity(helper.generateTask(2));
+        model.addActivity(helper.generateTask(3));
 
-        assertCommandBehavior("clear", ClearCommand.MESSAGE_SUCCESS, new TaskMan(), Collections.emptyList());
+        assertCommandStateChange("clear", new TaskMan(), Collections.emptyList());
     }
 
+    @Test
+    public void execute_do_invalidArgsFormat() throws Exception {
+        // no args
+        assertCommandNoStateChange("do");
 
-    //@Test
-    public void execute_add_invalidArgsFormat() throws Exception {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, DoCommand.MESSAGE_USAGE);
-        assertCommandBehavior(
-                "add wrong args wrong args", expectedMessage);
-        assertCommandBehavior(
-                "add Valid Title 12345 e/valid@email.butNoDeadlinePrefix a/valid, address", expectedMessage);
-        assertCommandBehavior(
-                "add Valid Title d/12345 valid@email.butNoPrefix a/valid, address", expectedMessage);
-        assertCommandBehavior(
-                "add Valid Title d/12345 e/valid@email.butNoAddressPrefix valid, address", expectedMessage);
+        // non-existent flag
+        assertCommandNoStateChange("do x/");
     }
 
-    //@Test
-    public void execute_add_invalidTaskData() throws Exception {
-        assertCommandBehavior(
-                "add []\\[;] d/12345 e/valid@e.mail a/valid, address", Title.MESSAGE_TITLE_CONSTRAINTS);
-        assertCommandBehavior(
-                "add Valid Title d/not_numbers e/valid@e.mail a/valid, address", Deadline.MESSAGE_DEADLINE_CONSTRAINTS);
-        assertCommandBehavior(
-                "add Valid Title d/12345 e/notAnEmail a/valid, address", Email.MESSAGE_EMAIL_CONSTRAINTS);
-        assertCommandBehavior(
-                "add Valid Title d/12345 e/valid@e.mail a/valid, address t/invalid_-[.tag", Tag.MESSAGE_TAG_CONSTRAINTS);
+    @Test
+    public void execute_do_invalidTaskData() throws Exception {
+        // bad deadline
+        assertCommandNoStateChange("do Valid Title d/invalid Deadline");
 
+        // bad schedule
+        assertCommandNoStateChange("do Valid Title s/invalid Schedule");
+
+        // bad title
+        assertCommandNoStateChange("do []\\[;]");
     }
 
-    //@Test
-    public void execute_add_successful() throws Exception {
+    @Test
+    public void execute_do_successful() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
         Task toBeAdded = helper.food();
         TaskMan expectedTaskMan = new TaskMan();
-        expectedTaskMan.addEvent(toBeAdded);
+        expectedTaskMan.addActivity(toBeAdded);
+
+        assertCommandStateChange(helper.generateDoCommand(toBeAdded),
+                expectedTaskMan,
+                expectedTaskMan.getActivityList());
+    }
+
+    @Test
+    public void execute_doDuplicate_notAllowed() throws Exception {
+        // setup expected
+        TestDataHelper helper = new TestDataHelper();
+        Task toBeAdded = helper.food();
+        TaskMan expectedTaskMan = new TaskMan();
+        expectedTaskMan.addActivity(toBeAdded);
+
+        // setup actual
+        model.addActivity(toBeAdded);
 
         // execute command and verify result
-        assertCommandBehavior(helper.generateAddCommand(toBeAdded),
-                String.format(DoCommand.MESSAGE_SUCCESS, toBeAdded),
+        assertCommandStateChange(
+                helper.generateDoCommand(toBeAdded),
                 expectedTaskMan,
                 expectedTaskMan.getActivityList());
 
     }
-
-    //@Test
-    public void execute_addDuplicate_notAllowed() throws Exception {
-        // setup expectations
-        TestDataHelper helper = new TestDataHelper();
-        Task toBeAdded = helper.food();
-        TaskMan expectedAB = new TaskMan();
-        expectedAB.addEvent(toBeAdded);
-
-        // setup starting state
-        model.addEvent(toBeAdded); // task already in internal task man
-
-        // execute command and verify result
-        assertCommandBehavior(
-                helper.generateAddCommand(toBeAdded),
-                DoCommand.MESSAGE_DUPLICATE_EVENT,
-                expectedAB,
-                expectedAB.getActivityList());
-
-    }
-
-
-    @Test
-    public void execute_list_showsAllTasks() throws Exception {
-        // prepare expectations
-        TestDataHelper helper = new TestDataHelper();
-        TaskMan expectedAB = helper.generateTaskMan(2);
-        List<? extends Activity> expectedList = expectedAB.getActivityList();
-
-        // prepare task man state
-        helper.addToModel(model, 2);
-
-        assertCommandBehavior("list",
-                Command.getMessageForTaskListShownSummary(expectedList.size()),
-                expectedAB,
-                expectedList);
-    }
-
 
     /**
      * Confirms the 'invalid argument index number behaviour' for the given command
@@ -248,12 +221,12 @@ public class LogicManagerTest {
      *
      * @param commandWord to test assuming it targets a single task in the last shown list based on visible index.
      */
-    private void assertIncorrectIndexFormatBehaviorForCommand(String commandWord, String expectedMessage) throws Exception {
-        assertCommandBehavior(commandWord, expectedMessage); //index missing
-        assertCommandBehavior(commandWord + " +1", expectedMessage); //index should be unsigned
-        assertCommandBehavior(commandWord + " -1", expectedMessage); //index should be unsigned
-        assertCommandBehavior(commandWord + " 0", expectedMessage); //index cannot be 0
-        assertCommandBehavior(commandWord + " not_a_number", expectedMessage);
+    private void assertIncorrectIndexFormatBehaviorForCommand(String commandWord) throws Exception {
+        assertCommandNoStateChange(commandWord); //index missing
+        assertCommandNoStateChange(commandWord + " +1"); //index should be unsigned
+        assertCommandNoStateChange(commandWord + " -1"); //index should be unsigned
+        assertCommandNoStateChange(commandWord + " 0"); //index cannot be 0
+        assertCommandNoStateChange(commandWord + " not_a_number");
     }
 
     /**
@@ -263,52 +236,47 @@ public class LogicManagerTest {
      * @param commandWord to test assuming it targets a single task in the last shown list based on visible index.
      */
     private void assertIndexNotFoundBehaviorForCommand(String commandWord) throws Exception {
-        String expectedMessage = MESSAGE_INVALID_EVENT_DISPLAYED_INDEX;
         TestDataHelper helper = new TestDataHelper();
         List<Task> taskList = helper.generateTaskList(2);
 
-        // set AB state to 2 tasks
+        // set TaskMan state to 2 tasks
         model.resetData(new TaskMan());
         for (Task p : taskList) {
-            model.addEvent(p);
+            model.addActivity(p);
         }
 
         List<Activity> expectedList = taskList.stream().map(Activity::new).collect(Collectors.toList());
-        assertCommandBehavior(commandWord + " 3", expectedMessage, model.getTaskMan(), expectedList);
+        assertCommandStateChange(commandWord + " 3", model.getTaskMan(), expectedList);
     }
 
-    @Test
+    //@Test
     public void execute_selectInvalidArgsFormat_errorMessageShown() throws Exception {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE);
-        assertIncorrectIndexFormatBehaviorForCommand("select", expectedMessage);
+        assertIncorrectIndexFormatBehaviorForCommand("select");
     }
 
-    @Test
+    //@Test
     public void execute_selectIndexNotFound_errorMessageShown() throws Exception {
         assertIndexNotFoundBehaviorForCommand("select");
     }
 
-    @Test
+    //@Test
     public void execute_select_jumpsToCorrectTask() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         List<Task> threeTasks = helper.generateTaskList(3);
 
-        TaskMan expectedAB = helper.generateTaskMan(threeTasks);
+        TaskMan expectedTaskMan = helper.generateTaskMan(threeTasks);
         helper.addToModel(model, threeTasks);
 
-        assertCommandBehavior("select 2",
-                String.format(SelectCommand.MESSAGE_SELECT_EVENT_SUCCESS, 2),
-                expectedAB,
-                expectedAB.getActivityList());
+        assertCommandStateChange("select 2",
+                expectedTaskMan,
+                expectedTaskMan.getActivityList());
         assertEquals(1, targetedJumpIndex);
         assertEquals(model.getFilteredActivityList().get(1), new Activity(threeTasks.get(1)));
     }
 
-
     @Test
     public void execute_deleteInvalidArgsFormat_errorMessageShown() throws Exception {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE);
-        assertIncorrectIndexFormatBehaviorForCommand("delete", expectedMessage);
+        assertIncorrectIndexFormatBehaviorForCommand("delete");
     }
 
     @Test
@@ -321,24 +289,22 @@ public class LogicManagerTest {
         TestDataHelper helper = new TestDataHelper();
         List<Task> threeTasks = helper.generateTaskList(3);
 
-        TaskMan expectedAB = helper.generateTaskMan(threeTasks);
-        // Wrap Task in Activity to delete
-        expectedAB.removeActivity(new Activity(threeTasks.get(1)));
+        TaskMan expectedTaskMan = helper.generateTaskMan(threeTasks);
+        // TODO: overload method to accept tasks?
+        expectedTaskMan.removeActivity(new Activity(threeTasks.get(1)));
         helper.addToModel(model, threeTasks);
 
-        assertCommandBehavior("delete 2",
-                String.format(DeleteCommand.MESSAGE_DELETE_EVENT_SUCCESS, threeTasks.get(1)),
-                expectedAB,
-                expectedAB.getActivityList());
+        assertCommandStateChange("delete 2",
+                expectedTaskMan,
+                expectedTaskMan.getActivityList());
     }
     
-    @Test
+    //@Test
     public void execute_completeInvalidArgsFormat_errorMessageShown() throws Exception {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, CompleteCommand.MESSAGE_USAGE);
-        assertIncorrectIndexFormatBehaviorForCommand("complete", expectedMessage);
+        assertIncorrectIndexFormatBehaviorForCommand("complete");
     }
 
-    @Test
+    //@Test
     public void execute_completeIndexNotFound_errorMessageShown() throws Exception {
         assertIndexNotFoundBehaviorForCommand("complete");
     }
@@ -348,162 +314,151 @@ public class LogicManagerTest {
         TestDataHelper helper = new TestDataHelper();
         List<Task> threeTasks = helper.generateTaskList(3);
 
-        TaskMan expectedAB = helper.generateTaskMan(threeTasks);
+        TaskMan expectedTaskMan = helper.generateTaskMan(threeTasks);
         // Wrap Task in Activity to complete
-        expectedAB.completeActivity(new Activity(threeTasks.get(1)));
+        expectedTaskMan.completeActivity(new Activity(threeTasks.get(1)));
         helper.addToModel(model, threeTasks);
-        // Fails sometimes when generated Activity is not a Task but Event
-        assertCommandBehavior("complete 2",
-                String.format(CompleteCommand.MESSAGE_SUCCESS, threeTasks.get(1).getTitle()),
-                expectedAB,
-                expectedAB.getActivityList());
-    }
 
+        // Fails sometimes when generated Activity is not a Task but Event
+        assertCommandStateChange("complete 2",
+                expectedTaskMan,
+                expectedTaskMan.getActivityList());
+    }
 
     @Test
     public void execute_list_emptyArgsFormat() throws Exception {
-        String expectedMessage = ListCommand.MESSAGE_SUCCESS;
-        assertCommandBehavior("list ", Command.getMessageForTaskListShownSummary(0));
+        assertCommandNoStateChange("list ");
+    }
+
+    @Test
+    public void execute_list_showsDeadlineTasks() throws Exception {
+        // setup expected
+        TestDataHelper helper = new TestDataHelper();
+        TaskMan expectedTaskMan = helper.generateTaskMan(2);
+        List<? extends Activity> expectedList = expectedTaskMan.getActivityList();
+
+        // setup actual
+        helper.addToModel(model, 2);
+
+        assertCommandStateChange("list",
+                expectedTaskMan,
+                expectedList);
+    }
+
+    @Test
+    public void execute_list_filter_all() throws Exception{
+        // setup expectations
+        TestDataHelper helper = new TestDataHelper();
+        TaskMan expectedTaskMan = helper.generateTaskMan(2);
+        List<? extends Activity> expectedList = expectedTaskMan.getActivityList();
+
+        // setup task man state
+        helper.addToModel(model, 2);
+
+        assertCommandStateChange("list all/",
+                expectedTaskMan,
+                expectedList);
     }
 
     @Test
     public void execute_list_onlyMatchesFullWordsInTitles() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Task pTarget1 = helper.generateTaskWithTitle("bla bla KEY bla");
-        Task pTarget2 = helper.generateTaskWithTitle("bla KEY bla bceofeia");
-        Task p1 = helper.generateTaskWithTitle("KE Y");
-        Task p2 = helper.generateTaskWithTitle("KEYKEYKEY sduauo");
+        Task taskTarget1 = helper.generateTaskWithTitle("bla bla KEY bla");
+        Task taskTarget2 = helper.generateTaskWithTitle("bla KEY bla bceofeia");
+        Task other1 = helper.generateTaskWithTitle("KE Y");
+        Task other2 = helper.generateTaskWithTitle("KEYKEYKEY sduauo");
 
-        List<Task> fourTasks = helper.generateTaskList(p1, pTarget1, p2, pTarget2);
-        TaskMan expectedAB = helper.generateTaskMan(fourTasks);
-        Activity[] list = {new Activity(pTarget1), new Activity(pTarget2)};
-        List<Activity> expectedList = Arrays.asList(list);
+        List<Task> fourTasks = helper.generateTaskList(other1, taskTarget1, other2, taskTarget2);
+        TaskMan expectedTaskMan = helper.generateTaskMan(fourTasks);
+        Activity[] toBeListed = {new Activity(taskTarget1), new Activity(taskTarget2)};
+        List<Activity> expectedList = Arrays.asList(toBeListed);
+
         helper.addToModel(model, fourTasks);
-
-        assertCommandBehavior("list KEY",
-                Command.getMessageForTaskListShownSummary(expectedList.size()),
-                expectedAB,
+        assertCommandStateChange("list all/ KEY",
+                expectedTaskMan,
                 expectedList);
     }
 
     @Test
     public void execute_list_isNotCaseSensitive() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Task p1 = helper.generateTaskWithTitle("bla bla KEY bla");
-        Task p2 = helper.generateTaskWithTitle("bla KEY bla bceofeia");
-        Task p3 = helper.generateTaskWithTitle("key key");
-        Task p4 = helper.generateTaskWithTitle("KEy sduauo");
+        Task target1 = helper.generateTaskWithTitle("bla bla KEY bla");
+        Task target2 = helper.generateTaskWithTitle("bla KEY bla bceofeia");
+        Task target3 = helper.generateTaskWithTitle("key key");
+        Task target4 = helper.generateTaskWithTitle("KEy sduauo");
 
-        List<Task> fourTasks = helper.generateTaskList(p3, p1, p4, p2);
-        TaskMan expectedAB = helper.generateTaskMan(fourTasks);
-        Activity[] list = {new Activity(p3), new Activity(p1), new Activity(p4), new Activity(p2)};
-        List<Activity> expectedList = Arrays.asList(list);
+        List<Task> fourTasks = helper.generateTaskList(target3, target1, target4, target2);
+        TaskMan expectedTaskMan = helper.generateTaskMan(fourTasks);
+        Activity[] toBeListed = {new Activity(target3), new Activity(target1), new Activity(target4), new Activity(target2)};
+        List<Activity> expectedList = Arrays.asList(toBeListed);
+
         helper.addToModel(model, fourTasks);
-
-        assertCommandBehavior("list KEY",
-                Command.getMessageForTaskListShownSummary(expectedList.size()),
-                expectedAB,
+        assertCommandStateChange("list all/ KEY",
+                expectedTaskMan,
                 expectedList);
     }
 
     @Test
     public void execute_list_matchesIfAnyKeywordPresent() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Task pTarget1 = helper.generateTaskWithTitle("bla bla KEY bla");
-        Task pTarget2 = helper.generateTaskWithTitle("bla rAnDoM bla bceofeia");
-        Task pTarget3 = helper.generateTaskWithTitle("key key");
-        Task p1 = helper.generateTaskWithTitle("sduauo");
+        Task taskTarget1 = helper.generateTaskWithTitle("bla bla KEY bla");
+        Task taskTarget2 = helper.generateTaskWithTitle("bla rAnDoM bla bceofeia");
+        Task taskTarget3 = helper.generateTaskWithTitle("key key");
+        Task other1 = helper.generateTaskWithTitle("sduauo");
 
-        List<Task> fourTasks = helper.generateTaskList(pTarget1, p1, pTarget2, pTarget3);
-        TaskMan expectedAB = helper.generateTaskMan(fourTasks);
-        Activity[] list = {new Activity(pTarget1), new Activity(pTarget2), new Activity(pTarget3)};
-        List<Activity> expectedList = Arrays.asList(list);
+        List<Task> fourTasks = helper.generateTaskList(taskTarget1, other1, taskTarget2, taskTarget3);
+        TaskMan expectedTaskMan = helper.generateTaskMan(fourTasks);
+        Activity[] toBeListed = {new Activity(taskTarget1), new Activity(taskTarget2), new Activity(taskTarget3)};
+        List<Activity> expectedList = Arrays.asList(toBeListed);
+
         helper.addToModel(model, fourTasks);
-
-        assertCommandBehavior("list key rAnDoM",
-                Command.getMessageForTaskListShownSummary(expectedList.size()),
-                expectedAB,
+        assertCommandStateChange("list all/ key rAnDoM",
+                expectedTaskMan,
                 expectedList);
     }
+
+    // TODO: LIST: write tests for deadline filter, schedule filter, floating filter
 
     //@Test
-    public void execute_list_filter_events_only() throws Exception {
-        // prepare expectations
-        //TODO: update test when events are properly implemented
-        TestDataHelper helper = new TestDataHelper();
-        TaskMan expectedAB = helper.generateTaskMan(2);
-        List<Activity> expectedList = Collections.EMPTY_LIST;
-
-        // prepare task man state
-        helper.addToModel(model, 2);
-
-        assertCommandBehavior("list e/",
-                Command.getMessageForTaskListShownSummary(expectedList.size()),
-                expectedAB,
-                expectedList);
-    }
-
-    //@Test
-    public void execute_list_filter_all() throws Exception {
-        // prepare expectations
-        //TODO: update test when events are properly implemented
-        TestDataHelper helper = new TestDataHelper();
-        TaskMan expectedAB = helper.generateTaskMan(2);
-        List<? extends Activity> expectedList = expectedAB.getActivityList();
-
-        // prepare task man state
-        helper.addToModel(model, 2);
-
-        assertCommandBehavior("list all/",
-                Command.getMessageForTaskListShownSummary(expectedList.size()),
-                expectedAB,
-                expectedList);
-    }
-
-    @Test
     public void execute_list_filter_tags() throws Exception {
-        // prepare expectations
+        // setup expectations
         TestDataHelper helper = new TestDataHelper();
 
-        // prepare task man state
+        // setup task man state
         helper.addToModel(model, 4);
 
-        TaskMan expectedAB = helper.generateTaskMan(4);
-        List<Activity> expectedList = expectedAB.getActivityList().subList(0, 2);
-        assertCommandBehavior("list t/tag2",
-                Command.getMessageForTaskListShownSummary(expectedList.size()),
-                expectedAB,
+        TaskMan expectedTaskMan = helper.generateTaskMan(4);
+        List<Activity> expectedList = expectedTaskMan.getActivityList().subList(0, 2);
+        assertCommandStateChange("list t/tag2",
+                expectedTaskMan,
                 expectedList);
 
-        assertCommandBehavior("list t/tag6",
-                Command.getMessageForTaskListShownSummary(0),
-                expectedAB,
+        assertCommandStateChange("list t/tag6",
+                expectedTaskMan,
                 Collections.EMPTY_LIST);
 
-        expectedList = new ArrayList<>(expectedAB.getActivities());
+        expectedList = new ArrayList<>(expectedTaskMan.getActivities());
         expectedList.remove(1);
-        assertCommandBehavior("list t/tag1 t/tag4",
-                Command.getMessageForTaskListShownSummary(expectedList.size()),
-                expectedAB,
+        assertCommandStateChange("list t/tag1 t/tag4",
+                expectedTaskMan,
                 expectedList);
     }
 
-    @Test
+    //@Test
     public void execute_list_filter_keywords_with_tags() throws Exception {
-        // prepare expectations
+        // setup expectations
         TestDataHelper helper = new TestDataHelper();
-        TaskMan expectedAB = helper.generateTaskMan(5);
+        TaskMan expectedTaskMan = helper.generateTaskMan(5);
 
-        // prepare task man state
+        // setup task man state
         helper.addToModel(model, 5);
 
         List<Activity> expectedList = new ArrayList<>();
         expectedList.add(new Activity(helper.generateTask(1)));
         expectedList.add(new Activity(helper.generateTask(5)));
         // TODO: This passes and fails randomly
-        assertCommandBehavior("list 1 5 t/tag2 t/tag6",
-                Command.getMessageForTaskListShownSummary(expectedList.size()),
-                expectedAB,
+        assertCommandStateChange("list 1 5 t/tag2 t/tag6",
+                expectedTaskMan,
                 expectedList);
     }
 
@@ -515,7 +470,8 @@ public class LogicManagerTest {
         CommandResult result = logic.execute(inputCommand);
         assertEquals(result.feedbackToUser, expectedFeedback);
         if (success) {
-            assertEquals(model.getTaskMan(), new TaskMan(storage.readTaskMan().get()));
+            TaskMan storageTaskMan = new TaskMan(storage.readTaskMan().get());
+            assertEquals(model.getTaskMan(), storageTaskMan);
             assertEquals(storage.getTaskManFilePath(), expectedPath);
         }
         assertEquals(Config.getInstance().getTaskManFilePath(), expectedPath);
@@ -547,13 +503,13 @@ public class LogicManagerTest {
 
     @Test
     public void execute_storageloc_absolutePath() throws Exception {
-        String givenPath = FileUtil.getAbsolutePath("./src/test/data/LogicManagerTest/absolute.xml");
+        String givenPath = FileUtil.getAbsolutePath("./src/test/data/sandbox/LogicManagerTest/absolute.xml");
         execute_storageloc_general(4, givenPath, givenPath, true);
     }
 
     @Test
     public void execute_storageloc_relativePath() throws Exception {
-        String givenPath = "./src/test/data/LogicManagerTest/relative.xml";
+        String givenPath = "./src/test/data/sandbox/LogicManagerTest/relative.xml";
         execute_storageloc_general(4, givenPath, FileUtil.getAbsolutePath(givenPath), true);
     }
 
@@ -576,6 +532,7 @@ public class LogicManagerTest {
     }
 
 
+    // TODO: change util class to static, if it makes sense
     /**
      * A utility class to generate test data.
      */
@@ -584,7 +541,7 @@ public class LogicManagerTest {
         Task food() throws Exception {
             Title title = new Title("Procure dinner");
             Deadline privateDeadline = new Deadline("7.00pm");
-            Frequency frequency = new Frequency("1 day");
+            Frequency frequency = null;// new Frequency("1 day");
             Schedule schedule = new Schedule("6pm, 7pm");
             Tag tag1 = new Tag("tag1");
             Tag tag2 = new Tag("tag2");
@@ -602,44 +559,44 @@ public class LogicManagerTest {
         Task generateTask(int seed) throws Exception {
             return new Task(
                     new Title("Task " + seed),
-                    new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))), new Deadline(Math.abs(seed)),
-                    new Schedule(Instant.ofEpochSecond(Math.abs(seed * seed * 10000000 - 1)) + ", " + Instant.ofEpochSecond(Math.abs(seed * seed * 100000000))),
-                    new Frequency(seed + " mins")
+                    new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))),
+                    new Deadline(Math.abs(seed)),
+                    new Schedule(Instant.ofEpochSecond(Math.abs(seed * seed * 10000000 - 1)) +
+                            ", " + Instant.ofEpochSecond(Math.abs(seed * seed * 100000000))),
+                    null //new Frequency(seed + " mins")
             );
         }
 
-        /**
-         * Generates the correct add command based on the task given
-         */
-        String generateAddCommand(Task p) {
-            StringBuffer cmd = new StringBuffer();
+        @SuppressWarnings("OptionalGetWithoutIsPresent")
+        String generateDoCommand(Task task) {
+            StringBuilder command = new StringBuilder();
 
-            cmd.append("add ");
-            cmd.append(p.getTitle().toString());
-            cmd.append(" c/").append(p.getStatus().toString());
+            command.append("do ");
+            command.append(task.getTitle().toString());
 
-            if (p.getDeadline().isPresent()) {
-                Instant instant = Instant.ofEpochSecond(p.getDeadline().get().epochSecond);
-                cmd.append(" d/").append(instant.toString());
+            if (task.getDeadline().isPresent()) {
+                Instant instant = Instant.ofEpochSecond(task.getDeadline().get().epochSecond);
+                command.append(" d/").
+                        append(instant.toString());
             }
-            if (p.getFrequency().isPresent()) {
-                cmd.append(" f/").append(p.getFrequency().get().seconds / 60 + " mins");
+            if (task.getFrequency().isPresent()) {
+                throw new AssertionError("Frequency is not supported yet");
             }
-            if (p.getSchedule().isPresent()) {
-                String start = DateTimeParser.epochSecondToShortDateTime(p.getSchedule().get().startEpochSecond);
-                String end = DateTimeParser.epochSecondToShortDateTime(p.getSchedule().get().endEpochSecond);
-                cmd.append(" s/").
+            if (task.getSchedule().isPresent()) {
+                String start = DateTimeParser.epochSecondToShortDateTime(task.getSchedule().get().startEpochSecond);
+                String end = DateTimeParser.epochSecondToShortDateTime(task.getSchedule().get().endEpochSecond);
+                command.append(" s/").
                         append(start).
                         append(" to ").
                         append(end);
             }
 
-            UniqueTagList tags = p.getTags();
-            for (Tag t : tags) {
-                cmd.append(" t/").append(t.tagName);
+            UniqueTagList tags = task.getTags();
+            for(Tag t: tags) {
+                command.append(" t/").append(t.tagName);
             }
 
-            return cmd.toString();
+            return command.toString();
         }
 
         /**
@@ -672,9 +629,9 @@ public class LogicManagerTest {
         /**
          * Adds the given list of Tasks to the given TaskMan
          */
-        void addToTaskMan(TaskMan taskMan, List<Task> tasksToAdd) throws Exception {
-            for (Task p : tasksToAdd) {
-                taskMan.addEvent(p);
+        void addToTaskMan(TaskMan taskMan, List<Task> tasksToAdd) throws Exception{
+            for (Task p: tasksToAdd) {
+                taskMan.addActivity(p);
             }
         }
 
@@ -690,9 +647,9 @@ public class LogicManagerTest {
         /**
          * Adds the given list of Tasks to the given model
          */
-        void addToModel(Model model, List<Task> tasksToAdd) throws Exception {
-            for(Task p: tasksToAdd) {
-                model.addEvent(p); 
+        void addToModel(Model model, List<Task> tasksToAdd) throws Exception{
+            for(Task p: tasksToAdd){
+                model.addActivity(p);
             }
         }
 
@@ -720,7 +677,7 @@ public class LogicManagerTest {
                     new UniqueTagList(new Tag("t1"), new Tag("t2")),
                     new Deadline("in 4 days"),
                     new Schedule("02/05/2016 5pm, 05/05/2016 5pm"),
-                    new Frequency("7 days")
+                    null // new Frequency("7 days")
             );
         }
     }

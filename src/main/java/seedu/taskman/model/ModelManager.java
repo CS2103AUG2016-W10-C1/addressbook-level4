@@ -9,7 +9,6 @@ import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.commons.util.StringUtil;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Event;
-import seedu.taskman.model.event.Task;
 import seedu.taskman.model.event.UniqueActivityList;
 import seedu.taskman.model.event.UniqueActivityList.ActivityNotFoundException;
 import seedu.taskman.model.tag.Tag;
@@ -75,8 +74,8 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void addEvent(Event event) throws UniqueActivityList.DuplicateActivityException {
-        taskMan.addEvent(event);
+    public synchronized void addActivity(Event event) throws UniqueActivityList.DuplicateActivityException {
+        taskMan.addActivity(event);
         updateFilteredListToShowAll();
         indicateTaskManChanged();
     }

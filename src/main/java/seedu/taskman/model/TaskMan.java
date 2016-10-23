@@ -85,16 +85,8 @@ public class TaskMan implements ReadOnlyTaskMan {
 
 //// event-level operations
 
-    /**
-     * Adds a event to TaskMan.
-     * Also checks the new event's tags and updates {@link #tags} with any new tags found,
-     * and updates the Tag objects in the event to point to those in {@link #tags}.
-     *
-     * @throws UniqueActivityList.DuplicateActivityException if an equivalent event already exists.
-     */
-    public void addEvent(Event event) throws UniqueActivityList.DuplicateActivityException {
-        syncTagsWithMasterList(event);
-        activities.add(new Activity(event));
+    public void addActivity(Event event) throws UniqueActivityList.DuplicateActivityException {
+        addActivity(new Activity(event));
     }
 
     /**

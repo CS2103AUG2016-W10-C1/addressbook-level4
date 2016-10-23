@@ -17,9 +17,9 @@ public class MarkCommand extends Command {
 
     // todo, differed: let parameters be objects. we can easily generate the usage in that case
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an event to TaskMan.\n"
-            + "Parameters: TITLE s/SCHEDULE f/FREQUENCY [t/TAG]...\n"
+            + "Parameters: TITLE s/SCHEDULE [t/TAG]...\n"
             + "Example: " + COMMAND_WORD
-            + " star gazing s/tdy 2300, tdy 2359 f/1 week t/leisure";
+            + " star gazing s/tdy 2300, tdy 2359 t/leisure";
 
     public static final String MESSAGE_SUCCESS = "New event added: %1$s";
     public static final String MESSAGE_DUPLICATE_EVENT = "This event already exists in TaskMan";
@@ -53,7 +53,7 @@ public class MarkCommand extends Command {
     public CommandResult execute() {
         assert model != null;
         try {
-            model.addEvent(toAdd);
+            model.addActivity(toAdd);
             return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
         } catch (UniqueActivityList.DuplicateActivityException e) {
             return new CommandResult(MESSAGE_DUPLICATE_EVENT);
