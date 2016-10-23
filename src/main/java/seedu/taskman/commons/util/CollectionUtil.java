@@ -22,7 +22,6 @@ public class CollectionUtil {
     }
 
 
-
     /**
      * Throws an assertion error if the collection or any item in it is null.
      */

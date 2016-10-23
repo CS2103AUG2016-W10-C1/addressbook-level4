@@ -36,7 +36,8 @@ public class TaskMan implements ReadOnlyTaskMan {
         tags = new UniqueTagList();
     }
 
-    public TaskMan() {}
+    public TaskMan() {
+    }
 
     /**
      * Tasks and Tags are copied into this taskMan
@@ -102,10 +103,10 @@ public class TaskMan implements ReadOnlyTaskMan {
 
     /**
      * Ensures that every tag in this event:
-     *  - exists in the master list {@link #tags}
-     *  - points to a Tag object in the master list
-     *  TODO: feels like a pretty complex way to do this...
-     *  // can't we just store tags from eventTags into tagsList? Objects are passed by reference
+     * - exists in the master list {@link #tags}
+     * - points to a Tag object in the master list
+     * TODO: feels like a pretty complex way to do this...
+     * // can't we just store tags from eventTags into tagsList? Objects are passed by reference
      */
     private void syncTagsWithMasterList(MutableTagsEvent event) {
         final UniqueTagList eventTags = event.getTags();
@@ -160,7 +161,7 @@ public class TaskMan implements ReadOnlyTaskMan {
 
     @Override
     public String toString() {
-        return activities.getInternalList().size() + " activities, " + tags.getInternalList().size() +  " tags";
+        return activities.getInternalList().size() + " activities, " + tags.getInternalList().size() + " tags";
     }
 
     @Override

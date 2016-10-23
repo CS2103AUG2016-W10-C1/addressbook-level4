@@ -9,12 +9,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.taskman.Constants;
-import seedu.taskman.commons.core.Config;
+import seedu.taskman.commons.core.config.Config;
 import seedu.taskman.commons.core.GuiSettings;
 import seedu.taskman.commons.events.ui.ExitAppRequestEvent;
 import seedu.taskman.logic.Logic;
 import seedu.taskman.model.UserPrefs;
-import seedu.taskman.model.event.Activity;
 
 /**
  * The Main Window. Provides the basic application layout containing

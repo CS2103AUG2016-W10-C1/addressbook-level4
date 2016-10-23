@@ -103,7 +103,7 @@ public class EditCommand extends Command {
         }
 
         Set<Tag> tagSet = new HashSet<>();
-        if(argsContainer.tags != null){
+        if (argsContainer.tags != null) {
             for (String tagName : argsContainer.tags) {
                 tagSet.add(new Tag(tagName));
             }

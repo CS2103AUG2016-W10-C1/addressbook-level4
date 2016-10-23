@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class Schedule {
     // UG/DG: specify new datetime format
     // todo: indicate in example that format: "month-date-year time". there MUST be a space before time, not colon
-	public static final String MESSAGE_SCHEDULE_CONSTRAINTS =
+    public static final String MESSAGE_SCHEDULE_CONSTRAINTS =
             "Task schedule should only contain dates and times in the format: " +
                     // DATETIME to DATETIME
                     DateTimeParser.DESCRIPTION_DATE_TIME_SHORT + " (a \",\" or \"to\") " +
@@ -26,7 +26,7 @@ public class Schedule {
     public static final String ERROR_BAD_END_DATETIME = "Bad end datetime";
 
     public static final String SCHEDULE_DIVIDER_GROUP = "((?:, )|(?: to )|(?: for ))";
-	public static final String SCHEDULE_VALIDATION_REGEX =
+    public static final String SCHEDULE_VALIDATION_REGEX =
             "(.*)" + SCHEDULE_DIVIDER_GROUP + "(.*)";
 
     public final long startEpochSecond;
@@ -58,7 +58,7 @@ public class Schedule {
             } catch (DateTimeParser.IllegalDateTimeException e) {
                 throw new IllegalValueException(
                         MESSAGE_SCHEDULE_CONSTRAINTS + "\n" +
-                        ERROR_BAD_START_DATETIME + ", '" + start + "'");
+                                ERROR_BAD_START_DATETIME + ", '" + start + "'");
             }
 
             if (endingIsDuration) {
@@ -82,8 +82,8 @@ public class Schedule {
     }
 
     private long addNextToRelativeDateTime(String dateTime) throws IllegalValueException {
-        dateTime = "next " + dateTime ;
-        return DateTimeParser.getUnixTime(dateTime , ERROR_BAD_END_DATETIME);
+        dateTime = "next " + dateTime;
+        return DateTimeParser.getUnixTime(dateTime, ERROR_BAD_END_DATETIME);
     }
 
     public static boolean isValidSchedule(String test) {

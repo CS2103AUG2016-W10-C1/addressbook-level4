@@ -35,7 +35,8 @@ public class XmlAdaptedTask {
     /**
      * No-arg constructor for JAXB use.
      */
-    public XmlAdaptedTask() {}
+    public XmlAdaptedTask() {
+    }
 
 
     /**

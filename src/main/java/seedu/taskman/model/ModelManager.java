@@ -60,7 +60,9 @@ public class ModelManager extends ComponentManager implements Model {
         return taskMan;
     }
 
-    /** Raises an event to indicate the model has changed */
+    /**
+     * Raises an event to indicate the model has changed
+     */
     private void indicateTaskManChanged() {
         raise(new TaskManChangedEvent(taskMan));
     }
@@ -110,6 +112,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     interface Expression {
         boolean satisfies(Activity task);
+
         String toString();
     }
 
@@ -134,6 +137,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     interface Qualifier {
         boolean run(Activity activity);
+
         String toString();
     }
 
@@ -158,20 +162,20 @@ public class ModelManager extends ComponentManager implements Model {
                         || (filterMode == FilterMode.FLOATING_ONLY && activity.getType() == Activity.ActivityType.TASK
                             && !activity.getDeadline().isPresent()))
                     && (titleKeyWords == null || titleKeyWords.isEmpty() || titleKeyWords.stream()
-                            .filter(keyword -> StringUtil.containsIgnoreCase(activity.getTitle().title, keyword))
-                            .findAny()
-                            .isPresent())
+                    .filter(keyword -> StringUtil.containsIgnoreCase(activity.getTitle().title, keyword))
+                    .findAny()
+                    .isPresent())
                     && (tagNames == null || tagNames.isEmpty() || tagNames.stream()
-                            .filter(tagName -> {
-                                try {
-                                    return activity.getTags().contains(new Tag(tagName));
-                                } catch (IllegalValueException e) {
-                                    //ignore incorrect tag name format
-                                    return false;
-                                }
-                            })
-                            .findAny()
-                            .isPresent());
+                    .filter(tagName -> {
+                        try {
+                            return activity.getTags().contains(new Tag(tagName));
+                        } catch (IllegalValueException e) {
+                            //ignore incorrect tag name format
+                            return false;
+                        }
+                    })
+                    .findAny()
+                    .isPresent());
         }
 
         @Override

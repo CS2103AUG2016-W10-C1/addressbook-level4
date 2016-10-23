@@ -67,7 +67,7 @@ public abstract class TaskManGuiTest {
         EventsCenter.clearSubscribers();
         testApp = (TestApp) FxToolkit.setupApplication(() -> new TestApp(this::getInitialData, getDataFileLocation()));
         FxToolkit.showStage();
-        while (!stage.isShowing());
+        while (!stage.isShowing()) ;
         mainGui.focusOnMainApp();
     }
 

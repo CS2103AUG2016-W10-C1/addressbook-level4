@@ -10,7 +10,8 @@ public class ClearCommand extends Command {
     public static final String COMMAND_WORD = "clear";
     public static final String MESSAGE_SUCCESS = "Task man has been cleared!";
 
-    public ClearCommand() {}
+    public ClearCommand() {
+    }
 
 
     @Override

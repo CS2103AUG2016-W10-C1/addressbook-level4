@@ -9,7 +9,7 @@ import java.util.*;
 
 /**
  * A list of tags that enforces no nulls and uniqueness between its elements.
- *
+ * <p>
  * Supports minimal set of list operations for the app's features.
  *
  * @see Tag#equals(Object)
@@ -31,7 +31,8 @@ public class UniqueTagList implements Iterable<Tag> {
     /**
      * Constructs empty TagList.
      */
-    public UniqueTagList() {}
+    public UniqueTagList() {
+    }
 
     /**
      * Varargs/array constructor, enforces no nulls or duplicates.

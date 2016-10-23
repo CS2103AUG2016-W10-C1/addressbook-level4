@@ -49,6 +49,7 @@ public class ScheduleTest {
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
+
     @Test
     public void create_dadDivider_exception() throws IllegalValueException {
         String start = "05/07/2016 0001";

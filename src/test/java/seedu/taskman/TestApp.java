@@ -2,7 +2,7 @@ package seedu.taskman;
 
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import seedu.taskman.commons.core.Config;
+import seedu.taskman.commons.core.config.Config;
 import seedu.taskman.commons.core.GuiSettings;
 import seedu.taskman.model.ReadOnlyTaskMan;
 import seedu.taskman.model.UserPrefs;
@@ -41,13 +41,12 @@ public class TestApp extends MainApp {
     }
 
     @Override
-    protected Config initConfig(String configFilePath) {
-        Config config = super.initConfig(configFilePath);
+    protected void initConfig(String configFilePath) {
+        super.initConfig(configFilePath);
         config.setAppTitle(APP_TITLE);
         config.setTaskManFilePath(saveFileLocation);
         config.setUserPrefsFilePath(DEFAULT_PREF_FILE_LOCATION_FOR_TESTING);
         config.setTaskManName(TASK_MAN_NAME);
-        return config;
     }
 
     @Override

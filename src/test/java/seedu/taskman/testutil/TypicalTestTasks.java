@@ -47,7 +47,7 @@ public class TypicalTestTasks {
         return new TestTask[]{taskCS2101, taskCS2103T, taskCS2309, taskCS3244, taskCS2105, taskCS2106, taskCS2107};
     }
 
-    public TaskMan getTypicalTaskMan(){
+    public TaskMan getTypicalTaskMan() {
         TaskMan ab = new TaskMan();
         loadTaskManWithSampleData(ab);
         return ab;

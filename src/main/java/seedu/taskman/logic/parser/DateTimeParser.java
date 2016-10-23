@@ -143,15 +143,15 @@ public class DateTimeParser {
     public static String epochSecondToDetailedDateTime(long epochSecond) {
         Instant instant = Instant.ofEpochSecond(epochSecond);
         return ZonedDateTime
-        		.ofInstant(instant, ZoneId.systemDefault())
-        		.format(formatter);
+                .ofInstant(instant, ZoneId.systemDefault())
+                .format(formatter);
     }
 
     public static String epochSecondToShortDateTime(long epochSecond) {
         Instant instant = Instant.ofEpochSecond(epochSecond);
         return LocalDateTime
-        		.ofInstant(instant, ZoneId.systemDefault())
-        		.format(formatter);
+                .ofInstant(instant, ZoneId.systemDefault())
+                .format(formatter);
     }
 
     public static class IllegalDateTimeException extends IllegalValueException {

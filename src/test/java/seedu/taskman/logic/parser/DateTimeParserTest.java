@@ -3,13 +3,19 @@ package seedu.taskman.logic.parser;
 import org.junit.Test;
 import seedu.taskman.commons.exceptions.IllegalValueException;
 
-import java.time.*;
+import java.time.DayOfWeek;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import static java.time.temporal.TemporalAdjusters.next;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class DateTimeParserTest {
     private static final long timeDifferenceThreshold = 30L; // 30 seconds
@@ -47,8 +53,8 @@ public class DateTimeParserTest {
         long timeNow = Instant.now().getEpochSecond();
         long durationInSeconds = 2 * 7 * 24 * 60 * 60;
 
-        assertEquals(timeNow + durationInSeconds ,unixDateTime1);
-        assertEquals(timeNow + durationInSeconds ,unixDateTime2);
+        assertEquals(timeNow + durationInSeconds, unixDateTime1);
+        assertEquals(timeNow + durationInSeconds, unixDateTime2);
     }
 
     @Test

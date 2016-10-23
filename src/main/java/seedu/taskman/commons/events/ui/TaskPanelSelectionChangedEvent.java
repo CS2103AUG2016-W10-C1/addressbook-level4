@@ -11,7 +11,7 @@ public class TaskPanelSelectionChangedEvent extends BaseEvent {
 
     private final Activity newSelection;
 
-    public TaskPanelSelectionChangedEvent(Activity newSelection){
+    public TaskPanelSelectionChangedEvent(Activity newSelection) {
         this.newSelection = newSelection;
     }
 
