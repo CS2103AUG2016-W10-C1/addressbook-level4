@@ -1,9 +1,9 @@
 package seedu.taskman.model;
 
 import seedu.taskman.commons.core.UnmodifiableObservableList;
+import seedu.taskman.logic.commands.ListCommand;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Event;
-import seedu.taskman.model.event.Task;
 import seedu.taskman.model.event.UniqueActivityList;
 
 import java.util.Set;
@@ -13,26 +13,11 @@ import java.util.Set;
  */
 public interface Model {
 
-    public enum FilterMode {
-        SCHEDULE_ONLY,
-        DEADLINE_ONLY,
-        FLOATING_ONLY,
-        ALL
-    }
-
-    /**
-     * Clears existing backing model and replaces with the provided new data.
-     */
+    /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyTaskMan newData);
 
-    /**
-     * Returns the TaskMan
-     */
     ReadOnlyTaskMan getTaskMan();
 
-    /**
-     * Deletes the given activity.
-     */
     void deleteActivity(Activity target) throws UniqueActivityList.ActivityNotFoundException;
 
     void addActivity(Event task) throws UniqueActivityList.DuplicateActivityException;
@@ -49,9 +34,7 @@ public interface Model {
      */
     void updateFilteredListToShowAll();
 
-    /**
-     * Updates the filter of the filtered activity list to filter by the given mode, the given keywords and the given tag names
-     */
-    void updateFilteredActivityList(FilterMode filterMode, Set<String> keywords, Set<String> tagNames);
+    /** Updates the filter of the filtered activity list to filter by the given mode, the given keywords and the given tag names*/
+    void updateFilteredActivityList(ListCommand.FilterMode filterMode, Set<String> keywords, Set<String> tagNames);
 
 }

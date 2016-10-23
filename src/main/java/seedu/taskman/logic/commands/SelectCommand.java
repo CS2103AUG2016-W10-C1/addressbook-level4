@@ -6,6 +6,10 @@ import seedu.taskman.commons.events.ui.JumpToListRequestEvent;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.commons.core.UnmodifiableObservableList;
 
+import java.util.Optional;
+
+import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
 /**
  * Selects a task identified using it's last displayed index from the task man.
  */
@@ -22,7 +26,17 @@ public class SelectCommand extends Command {
 
     public static final String MESSAGE_SELECT_EVENT_SUCCESS = "Selected Task: %1$s";
 
-    public SelectCommand(int targetIndex) {
+    public static Command prepareSelect(String arguments) {
+        Optional<Integer> index = parseIndex(arguments);
+        if(!index.isPresent()){
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
+        }
+
+        return new SelectCommand(index.get());
+    }
+
+    private SelectCommand(int targetIndex) {
         this.targetIndex = targetIndex;
     }
 
