@@ -331,6 +331,32 @@ public class LogicManagerTest {
                 expectedAB,
                 expectedAB.getActivityList());
     }
+
+    //@Test
+    public void execute_deleteAll_removesAllTasks() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        List<Task> threeTasks = helper.generateTaskList(3);
+
+        TaskMan expectedAB = helper.generateTaskMan(threeTasks);
+        StringBuilder builder = new StringBuilder(DeleteCommand.MESSAGE_DELETE_ALL_EVENT_SUCCESS);
+        // Wrap Task in Activity to delete
+        for (Task task : threeTasks) {
+            Activity activityToDelete = new Activity(task);
+            builder.append(DeleteCommand.MESSAGE_DELETE_ALL_EVENT_SUCCESS_SEPARATOR);
+            builder.append(activityToDelete.getTitle().title);
+            expectedAB.removeActivity(activityToDelete);
+        }
+        helper.addToModel(model, threeTasks);
+
+        assertCommandBehavior("delete all",
+                builder.toString());
+
+        /*
+        java.lang.AssertionError:
+        Expected :0 activities, 0 tags
+        Actual   :0 activities, 4 tags
+        */
+    }
     
     @Test
     public void execute_completeInvalidArgsFormat_errorMessageShown() throws Exception {
