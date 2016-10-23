@@ -8,6 +8,10 @@ import seedu.taskman.model.event.Status;
 import seedu.taskman.model.event.Task;
 import seedu.taskman.model.event.UniqueActivityList;
 
+import java.util.Optional;
+
+import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
 /**
  * Completes an existing task
  * 
@@ -32,8 +36,18 @@ public class CompleteCommand extends Command {
     private Activity afterComplete;
     private int targetIndex;
 
-    public CompleteCommand(int targetIndex) {
+    private CompleteCommand(int targetIndex) {
         this.targetIndex = targetIndex;
+    }
+
+    public static Command prepareComplete(String arguments) {
+        Optional<Integer> index = parseIndex(arguments);
+        if(!index.isPresent()){
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
+        }
+
+        return new CompleteCommand(index.get());
     }
 
     @Override

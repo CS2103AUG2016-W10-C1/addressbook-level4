@@ -3,6 +3,7 @@ package seedu.taskman.logic.commands;
 import seedu.taskman.commons.core.Messages;
 import seedu.taskman.commons.core.UnmodifiableObservableList;
 import seedu.taskman.commons.exceptions.IllegalValueException;
+import seedu.taskman.logic.parser.CommandParser;
 import seedu.taskman.model.event.*;
 import seedu.taskman.model.tag.Tag;
 import seedu.taskman.model.tag.UniqueTagList;
@@ -10,6 +11,10 @@ import seedu.taskman.model.tag.UniqueTagList;
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 /**
  * Edits an existing activity
@@ -26,6 +31,14 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_EVENT_SUCCESS = "Event updated: %1$s";
     public static final String MESSAGE_EDIT_TASK_SUCCESS = "Task updated: %1$s";
     public static final String MESSAGE_DUPLICATE_ACTIVITY = "An event or a task with the same name already exists";
+    private static final Pattern TASK_EDIT_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
+            Pattern.compile("" + CommandParser.ArgumentPattern.TARGET_INDEX
+                    + CommandParser.ArgumentPattern.TITLE + "?"
+                    + CommandParser.ArgumentPattern.DEADLINE
+                    + CommandParser.ArgumentPattern.STATUS
+                    + CommandParser.ArgumentPattern.SCHEDULE
+                    + CommandParser.ArgumentPattern.FREQUENCY
+                    + CommandParser.ArgumentPattern.TAG); // variable number of tags
 
     private final ArgumentContainer argsContainer;
     private Activity beforeEdit;
@@ -38,10 +51,31 @@ public class EditCommand extends Command {
      *
      * @throws IllegalValueException if any of the raw values are invalid
      */
-    public EditCommand(int targetIndex,
+    private EditCommand(int targetIndex,
                        @Nullable String title, @Nullable String deadline, @Nullable String status,
                        @Nullable String schedule, @Nullable String frequency, @Nullable Set<String> tags) {
         argsContainer = new ArgumentContainer(targetIndex, title, deadline, status, schedule, frequency, tags);
+    }
+
+    public static Command prepareEdit(String args) {
+        final Matcher matcher = TASK_EDIT_ARGS_FORMAT.matcher(args.trim());
+
+        if (!matcher.matches()) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
+        }
+
+        String indexString = matcher.group("targetIndex").trim();
+        int index = Integer.parseInt(indexString);
+
+            String tags = matcher.group("tagArguments");
+            return new EditCommand(
+                    index,
+                    matcher.group("title"),
+                    matcher.group("deadline"),
+                    matcher.group("status"),
+                    matcher.group("schedule"),
+                    matcher.group("frequency"),
+                    tags.isEmpty() ? null : getTagsFromArgs(tags));
     }
 
     @Override
