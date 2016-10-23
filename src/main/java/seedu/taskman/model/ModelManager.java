@@ -14,6 +14,7 @@ import seedu.taskman.model.event.UniqueActivityList;
 import seedu.taskman.model.event.UniqueActivityList.ActivityNotFoundException;
 import seedu.taskman.model.tag.Tag;
 
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -71,6 +72,14 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public synchronized void deleteActivity(Activity target) throws ActivityNotFoundException {
         taskMan.removeActivity(target);
+        indicateTaskManChanged();
+    }
+
+    @Override
+    public synchronized void deleteActivities(List<Activity> targets) throws ActivityNotFoundException {
+        for (Activity target : targets) {
+            taskMan.removeActivity(target);
+        }
         indicateTaskManChanged();
     }
 

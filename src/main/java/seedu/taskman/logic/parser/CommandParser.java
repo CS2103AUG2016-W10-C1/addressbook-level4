@@ -276,6 +276,11 @@ public class CommandParser {
      */
     private Command prepareDelete(String args) {
 
+        // TODO: Fix parsing
+        if (args.trim().equals("all")) {
+            return new DeleteCommand(0);
+        }
+
         Optional<Integer> index = parseIndex(args);
         if (!index.isPresent()) {
             return new IncorrectCommand(

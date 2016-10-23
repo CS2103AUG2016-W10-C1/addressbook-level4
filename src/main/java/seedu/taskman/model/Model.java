@@ -6,12 +6,15 @@ import seedu.taskman.model.event.Event;
 import seedu.taskman.model.event.Task;
 import seedu.taskman.model.event.UniqueActivityList;
 
+import java.util.List;
 import java.util.Set;
 
 /**
  * The API of the Model component.
  */
 public interface Model {
+
+
 
     public enum FilterMode {
         SCHEDULE_ONLY,
@@ -35,7 +38,12 @@ public interface Model {
      */
     void deleteActivity(Activity target) throws UniqueActivityList.ActivityNotFoundException;
 
-    //TODO Is this even needed?
+    /**
+     * Deletes the given activities.
+     */
+    void deleteActivities(List<Activity> targets) throws UniqueActivityList.ActivityNotFoundException;
+
+    // TODO Is this even needed?
     /** Adds the given event */
     void addEvent(Event task) throws UniqueActivityList.DuplicateActivityException;
 
