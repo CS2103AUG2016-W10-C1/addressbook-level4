@@ -219,7 +219,7 @@ We have two types of tests:
       e.g. `seedu.taskman.storage.StorageManagerTest`
    3. Hybrids of unit and integration tests. These test are checking multiple code units as well as 
       how the are connected together.<br>
-      e.g. `seedu.taskman.logic.LogicManagerTest`
+      e.g. `seedu.taskman.logic.logicmanager.LogicManagerTestBase`
   
 **Headless GUI Testing** :
 Thanks to the [TestFX](https://github.com/TestFX/TestFX) library we use,
