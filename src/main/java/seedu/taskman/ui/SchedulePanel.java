@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -75,7 +76,9 @@ public class SchedulePanel extends UiPart {
 
     // TODO Resolve generic type issue.
     private void setConnections(ObservableList<Activity> taskList) {
-        scheduleTableView.setItems(taskList);
+        SortedList<Activity> sortedData = new SortedList<>(taskList);
+        sortedData.comparatorProperty().bind(scheduleTableView.comparatorProperty());       
+        scheduleTableView.setItems(sortedData);
         
         TableColumn<Activity, String> numberColumn = new TableColumn<Activity, String>("#");
         numberColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
@@ -83,7 +86,7 @@ public class SchedulePanel extends UiPart {
             return new ReadOnlyObjectWrapper<String>(scheduleTableView.getItems().indexOf(p.getValue()) + 1 + "");
           }
         });   
-        numberColumn.setSortable(false);
+        //numberColumn.setSortable(false);
         numberColumn.setMaxWidth(32);
         numberColumn.setMinWidth(32);
         numberColumn.setResizable(false);
@@ -107,7 +110,10 @@ public class SchedulePanel extends UiPart {
         scheduleColumn.setMaxWidth(150);
         scheduleColumn.setMinWidth(150);
         scheduleColumn.setResizable(false);
-        scheduleTableView.getColumns().add(scheduleColumn);
+        scheduleTableView.getColumns().add(scheduleColumn);       
+        
+        scheduleTableView.getSortOrder().add(scheduleColumn);
+        //scheduleColumn.setSortType(TableColumn.SortType.DESCENDING);
 
         setEventHandlerForSelectionChangeEvent();
     }

@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -75,7 +76,9 @@ public class FloatingPanel extends UiPart {
 
     // TODO Resolve generic type issue.
     private void setConnections(ObservableList<Activity> taskList) {
-        floatingTableView.setItems(taskList);
+        SortedList<Activity> sortedData = new SortedList<>(taskList);
+        sortedData.comparatorProperty().bind(floatingTableView.comparatorProperty());       
+        floatingTableView.setItems(sortedData);
         
         TableColumn<Activity, String> numberColumn = new TableColumn<Activity, String>("#");
         numberColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
@@ -83,7 +86,7 @@ public class FloatingPanel extends UiPart {
             return new ReadOnlyObjectWrapper<String>(floatingTableView.getItems().indexOf(p.getValue()) + 1 + "");
           }
         });   
-        numberColumn.setSortable(false);
+        //numberColumn.setSortable(false);
         numberColumn.setMaxWidth(32);
         numberColumn.setMinWidth(32);
         numberColumn.setResizable(false);

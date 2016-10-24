@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -75,7 +76,9 @@ public class DeadlinePanel extends UiPart {
 
     // TODO Resolve generic type issue.
     private void setConnections(ObservableList<Activity> taskList) {
-        deadlineTableView.setItems(taskList);
+        SortedList<Activity> sortedData = new SortedList<>(taskList);
+        sortedData.comparatorProperty().bind(deadlineTableView.comparatorProperty());        
+        deadlineTableView.setItems(sortedData);
 
         TableColumn<Activity, String> numberColumn = new TableColumn<Activity, String>("#");
         numberColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
@@ -83,7 +86,7 @@ public class DeadlinePanel extends UiPart {
             return new ReadOnlyObjectWrapper<String>(deadlineTableView.getItems().indexOf(p.getValue()) + 1 + "");
           }
         });   
-        numberColumn.setSortable(false);
+        //numberColumn.setSortable(false);
         numberColumn.setMaxWidth(32);
         numberColumn.setMinWidth(32);
         numberColumn.setResizable(false);
@@ -120,6 +123,9 @@ public class DeadlinePanel extends UiPart {
         deadlineColumn.setMinWidth(135);
         deadlineColumn.setResizable(false);
         deadlineTableView.getColumns().add(deadlineColumn);
+        
+        deadlineTableView.getSortOrder().add(deadlineColumn);
+        //deadlineColumn.setSortType(TableColumn.SortType.DESCENDING);
 
         setEventHandlerForSelectionChangeEvent();
     }

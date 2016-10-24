@@ -2,6 +2,7 @@ package seedu.taskman.model;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import seedu.taskman.commons.core.ComponentManager;
 import seedu.taskman.commons.core.LogsCenter;
 import seedu.taskman.commons.core.UnmodifiableObservableList;
@@ -10,11 +11,15 @@ import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.commons.util.StringUtil;
 import seedu.taskman.logic.commands.ListCommand;
 import seedu.taskman.model.event.Activity;
+import seedu.taskman.model.event.Deadline;
 import seedu.taskman.model.event.Event;
+import seedu.taskman.model.event.Schedule;
 import seedu.taskman.model.event.UniqueActivityList;
 import seedu.taskman.model.event.UniqueActivityList.ActivityNotFoundException;
 import seedu.taskman.model.tag.Tag;
 
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -46,9 +51,9 @@ public class ModelManager extends ComponentManager implements Model {
         taskMan = new TaskMan(src);
         ObservableList<Activity> activities = taskMan.getActivities();
         filteredActivities = new FilteredList<>(activities);
-        filteredSchedules = new FilteredList<>(activities.filtered(new SchedulePredicate()));
-        filteredDeadlines = new FilteredList<>(activities.filtered(new DeadlinePredicate()));
-        filteredFloatings = new FilteredList<>(activities.filtered(new FloatingPredicate()));
+        filteredSchedules = activities.filtered(new SchedulePredicate());
+        filteredDeadlines = activities.filtered(new DeadlinePredicate());
+        filteredFloatings = activities.filtered(new FloatingPredicate());
     }
 
     public ModelManager() {
@@ -59,9 +64,9 @@ public class ModelManager extends ComponentManager implements Model {
         taskMan = new TaskMan(initialData);
         ObservableList<Activity> activities = taskMan.getActivities();
         filteredActivities = new FilteredList<>(activities);
-        filteredSchedules = new FilteredList<>(activities.filtered(new SchedulePredicate()));
-        filteredDeadlines = new FilteredList<>(activities.filtered(new DeadlinePredicate()));
-        filteredFloatings = new FilteredList<>(activities.filtered(new FloatingPredicate()));
+        filteredSchedules = activities.filtered(new SchedulePredicate());
+        filteredDeadlines = activities.filtered(new DeadlinePredicate());
+        filteredFloatings = activities.filtered(new FloatingPredicate());
     }
 
     @Override
@@ -215,32 +220,26 @@ public class ModelManager extends ComponentManager implements Model {
     }
     
     private class SchedulePredicate implements Predicate<Activity> {
-
         @Override
         public boolean test(Activity t) {
             return t.getSchedule().isPresent();
-        }
-        
+        }     
     }
     
     private class DeadlinePredicate implements Predicate<Activity> {
-
         @Override
         public boolean test(Activity t) {
             return t.getType() == Activity.ActivityType.TASK
                    && t.getDeadline().isPresent();
-        }
-        
+        } 
     }
     
     private class FloatingPredicate implements Predicate<Activity> {
-
         @Override
         public boolean test(Activity t) {
             return t.getType() == Activity.ActivityType.TASK
                    && !t.getDeadline().isPresent();
-        }
-        
+        }   
     }
 
 }
