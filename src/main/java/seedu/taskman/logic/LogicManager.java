@@ -20,6 +20,7 @@ import java.util.logging.Logger;
  * The main LogicManager of the app.
  */
 public class LogicManager extends ComponentManager implements Logic {
+    public static final int HISTORY_SIZE = 10;
     private final Logger logger = LogsCenter.getLogger(LogicManager.class);
 
     private final Model model;
@@ -31,9 +32,20 @@ public class LogicManager extends ComponentManager implements Logic {
         this.model = model;
         this.commandParser = new CommandParser();
         this.storage = storage;
-        // todo: clean up magic
-        this.historyDeque = new ArrayDeque<>(10);
+        this.historyDeque = new ArrayDeque<>(HISTORY_SIZE);
     }
+
+    public static LogicManager generateForTest(Model model, Storage storage, Deque<CommandHistory> historyDeque) {
+        return new LogicManager(model, storage, historyDeque);
+    }
+
+    public LogicManager(Model model, Storage storage, Deque<CommandHistory> historyDeque) {
+        this.model = model;
+        this.commandParser = new CommandParser();
+        this.storage = storage;
+        this.historyDeque = historyDeque;
+    }
+
 
     @Override
     public CommandResult execute(String commandText) {
