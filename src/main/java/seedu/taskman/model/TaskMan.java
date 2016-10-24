@@ -1,5 +1,13 @@
 package seedu.taskman.model;
 
+import javafx.collections.ObservableList;
+import seedu.taskman.model.event.Activity;
+import seedu.taskman.model.event.Event;
+import seedu.taskman.model.event.MutableTagsEvent;
+import seedu.taskman.model.event.UniqueActivityList;
+import seedu.taskman.model.tag.Tag;
+import seedu.taskman.model.tag.UniqueTagList;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,17 +17,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import javafx.collections.ObservableList;
-import seedu.taskman.commons.exceptions.IllegalValueException;
-import seedu.taskman.model.event.Activity;
-import seedu.taskman.model.event.Event;
-import seedu.taskman.model.event.MutableTagsEvent;
-import seedu.taskman.model.event.Status;
-import seedu.taskman.model.event.Task;
-import seedu.taskman.model.event.UniqueActivityList;
-import seedu.taskman.model.tag.Tag;
-import seedu.taskman.model.tag.UniqueTagList;
 
 /**
  * Wraps all data at the task-man level
@@ -134,23 +131,6 @@ public class TaskMan implements ReadOnlyTaskMan {
         }
     }
     
-    public boolean completeActivity(Activity key) throws UniqueActivityList.ActivityNotFoundException, IllegalValueException {
-        if (this.removeActivity(key)) {
-        	Task task = new Task(
-        		key.getTitle(),
-        		key.getTags(),
-        		key.getDeadline().get(),
-       			key.getSchedule().get(),
-       			key.getFrequency().get()
-       			);
-        	task.setStatus(new Status("complete"));
-			this.addActivity(new Activity(task));
-            return true;
-        } else {
-            throw new UniqueActivityList.ActivityNotFoundException();
-        }
-    }
-
 //// tag-level operations
 
     public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {

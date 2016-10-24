@@ -1,37 +1,42 @@
 package seedu.taskman.logic.logicmanager;
 
+import org.junit.Test;
 import seedu.taskman.model.TaskMan;
-import seedu.taskman.model.event.Activity;
+import seedu.taskman.model.event.Status;
 import seedu.taskman.model.event.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CompleteTests extends LogicManagerTestBase {
 
-    //@Test
+    @Test
     public void execute_completeInvalidArgsFormat_errorMessageShown() throws Exception {
         assertIncorrectIndexFormatBehaviorForCommand("complete");
     }
 
-    //@Test
+    @Test
     public void execute_completeIndexNotFound_errorMessageShown() throws Exception {
         assertIndexNotFoundBehaviorForCommand("complete");
     }
 
-    //@Test
+    @Test
     public void execute_complete_completesCorrectTask() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         List<Task> threeTasks = helper.generateTaskList(3);
 
-        TaskMan expectedTaskMan = helper.generateTaskMan(threeTasks);
-        // Wrap Task in Activity to complete
-        expectedTaskMan.completeActivity(new Activity(threeTasks.get(1)));
         helper.addToModel(model, threeTasks);
 
-        // Fails sometimes when generated Activity is not a Task but Event
-        assertCommandStateChange("complete 2",
-                expectedTaskMan,
-                expectedTaskMan.getActivityList());
+        // need to reposition task due to how "complete" works. (remove & add new task)
+        int completeIndex = 2;
+        List<Task> expectedList = new ArrayList<>(threeTasks);
+        Task toComplete = expectedList.remove(completeIndex - 1);
+        toComplete.setStatus(new Status(Status.COMPLETE));
+        expectedList.add(toComplete);
+        TaskMan expectedTaskMan = helper.generateTaskMan(expectedList);
+
+        assertCommandStateChange("complete " + completeIndex,
+                expectedTaskMan, expectedTaskMan.getActivityList());
     }
 
 }

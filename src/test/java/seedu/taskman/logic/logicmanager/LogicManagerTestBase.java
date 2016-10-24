@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import seedu.taskman.commons.core.EventsCenter;
+import seedu.taskman.commons.core.UnmodifiableObservableList;
 import seedu.taskman.commons.core.config.Config;
 import seedu.taskman.commons.events.model.TaskManChangedEvent;
 import seedu.taskman.commons.events.ui.JumpToListRequestEvent;
@@ -110,11 +111,12 @@ public abstract class LogicManagerTestBase {
                                                    List<? extends Activity> expectedShownList) throws Exception {
         //Execute the command
         CommandResult result = logic.execute(inputCommand);
-
-        assertEquals(expectedShownList, model.getFilteredActivityList());
+        UnmodifiableObservableList<Activity> actualShownList = model.getFilteredActivityList();
+        assertEquals(expectedShownList, actualShownList);
 
         //Confirm the state of data (saved and in-memory) is as expected
-        assertEquals(expectedTaskMan, model.getTaskMan());
+        ReadOnlyTaskMan actualTaskMan = model.getTaskMan();
+        assertEquals(expectedTaskMan, actualTaskMan);
         assertEquals(expectedTaskMan, latestSavedTaskMan);
 
         return result;

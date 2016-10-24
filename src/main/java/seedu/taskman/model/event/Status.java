@@ -4,6 +4,8 @@ import com.google.common.base.Objects;
 import seedu.taskman.commons.exceptions.IllegalValueException;
 
 public class Status {
+    public static final String COMPLETE = "complete";
+    public static final String INCOMPLETE = "incomplete";
 
     public final Boolean completed;
 
@@ -13,10 +15,10 @@ public class Status {
 
     public Status(String booleanString) throws IllegalValueException {
         booleanString = booleanString.trim().toLowerCase();
-        if (!booleanString.matches("(complete)|(incomplete)")) {
+        if (!booleanString.matches("("+ COMPLETE +")|("+ INCOMPLETE +")")) {
             throw new IllegalValueException("Status should be 'complete' or 'incomplete'");
         }
-        completed = booleanString.equals("complete");
+        completed = booleanString.equals(COMPLETE);
     }
 
     @Override
