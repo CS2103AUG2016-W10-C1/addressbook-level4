@@ -1,5 +1,6 @@
 package seedu.taskman.logic.logicmanager;
 
+import org.junit.Test;
 import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Task;
@@ -10,17 +11,17 @@ import static org.junit.Assert.assertEquals;
 
 public class SelectTests extends LogicManagerTestBase {
 
-    //@Test
+    @Test
     public void execute_selectInvalidArgsFormat_errorMessageShown() throws Exception {
         assertIncorrectIndexFormatBehaviorForCommand("select");
     }
 
-    //@Test
+    @Test
     public void execute_selectIndexNotFound_errorMessageShown() throws Exception {
         assertIndexNotFoundBehaviorForCommand("select");
     }
 
-    //@Test
+    @Test
     public void execute_select_jumpsToCorrectTask() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         List<Task> threeTasks = helper.generateTaskList(3);
