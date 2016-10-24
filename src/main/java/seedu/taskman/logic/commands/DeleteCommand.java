@@ -27,6 +27,7 @@ public class DeleteCommand extends Command {
     public final int targetIndex;
 
     public DeleteCommand(int targetIndex) {
+        super(true);
         this.targetIndex = targetIndex;
     }
 
@@ -47,7 +48,7 @@ public class DeleteCommand extends Command {
 
         if (lastShownList.size() < targetIndex) {
             indicateAttemptToExecuteIncorrectCommand();
-            return new CommandResult(Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX);
+            return new CommandResult(Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX, false);
         }
 
         Activity activityToDelete = lastShownList.get(targetIndex - 1);
@@ -58,7 +59,7 @@ public class DeleteCommand extends Command {
             assert false : "The target task cannot be missing";
         }
 
-        return new CommandResult(String.format(MESSAGE_DELETE_EVENT_SUCCESS, activityToDelete));
+        return new CommandResult(String.format(MESSAGE_DELETE_EVENT_SUCCESS, activityToDelete), true);
     }
 
 }

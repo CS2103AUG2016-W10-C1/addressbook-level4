@@ -105,6 +105,7 @@ public class ListCommand extends Command {
     }
 
     private ListCommand(FilterMode filterMode, Set<String> keywords, Set<String> tags) {
+        super(false);
         this.filterMode = filterMode;
         this.keywords = keywords;
         this.tagNames = tags;
@@ -117,7 +118,7 @@ public class ListCommand extends Command {
     @Override
     public CommandResult execute() {
         model.updateFilteredActivityList(filterMode, keywords, tagNames);
-        return new CommandResult(getMessageForTaskListShownSummary(model.getFilteredActivityList().size()));
+        return new CommandResult(getMessageForTaskListShownSummary(model.getFilteredActivityList().size()), true);
     }
 
 }

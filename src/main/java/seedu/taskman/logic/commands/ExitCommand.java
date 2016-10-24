@@ -13,12 +13,13 @@ public class ExitCommand extends Command {
     public static final String MESSAGE_EXIT_ACKNOWLEDGEMENT = "Exiting TaskMan as requested ...";
 
     public ExitCommand() {
+        super(false);
     }
 
     @Override
     public CommandResult execute() {
         EventsCenter.getInstance().post(new ExitAppRequestEvent());
-        return new CommandResult(MESSAGE_EXIT_ACKNOWLEDGEMENT);
+        return new CommandResult(MESSAGE_EXIT_ACKNOWLEDGEMENT, true);
     }
 
 }

@@ -44,6 +44,7 @@ public class DoCommand extends Command {
      */
     private DoCommand(String title, String deadline, String schedule, String frequency, Set<String> tags)
             throws IllegalValueException {
+        super(true);
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagName : tags) {
             tagSet.add(new Tag(tagName));
@@ -86,9 +87,9 @@ public class DoCommand extends Command {
         assert model != null;
         try {
             model.addActivity(toAdd);
-            return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
+            return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd), true);
         } catch (UniqueActivityList.DuplicateActivityException e) {
-            return new CommandResult(MESSAGE_DUPLICATE_EVENT);
+            return new CommandResult(MESSAGE_DUPLICATE_EVENT, false);
         }
 
     }

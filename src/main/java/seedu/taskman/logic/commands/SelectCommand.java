@@ -37,6 +37,7 @@ public class SelectCommand extends Command {
     }
 
     private SelectCommand(int targetIndex) {
+        super(false);
         this.targetIndex = targetIndex;
     }
 
@@ -47,11 +48,11 @@ public class SelectCommand extends Command {
 
         if (lastShownList.size() < targetIndex) {
             indicateAttemptToExecuteIncorrectCommand();
-            return new CommandResult(Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX);
+            return new CommandResult(Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX, false);
         }
 
         EventsCenter.getInstance().post(new JumpToListRequestEvent(targetIndex - 1));
-        return new CommandResult(String.format(MESSAGE_SELECT_EVENT_SUCCESS, targetIndex));
+        return new CommandResult(String.format(MESSAGE_SELECT_EVENT_SUCCESS, targetIndex), true);
 
     }
 
