@@ -179,7 +179,8 @@ public class ListTests extends LogicManagerTestBase {
     }
 
 
-    //@Test
+    @Ignore
+    @Test
     public void execute_list_filter_tags() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
@@ -204,7 +205,8 @@ public class ListTests extends LogicManagerTestBase {
                 expectedList);
     }
 
-    //@Test
+    @Ignore
+    @Test
     public void execute_list_filter_keywords_with_tags() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
