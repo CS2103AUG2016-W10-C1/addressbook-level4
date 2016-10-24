@@ -74,6 +74,6 @@ public class StoragelocCommand extends Command {
                 ? MESSAGE_SUCCESS
                 : MESSAGE_FAILURE;
 
-        return new CommandResult(String.format(message, Config.getInstance().getTaskManFilePath()));
+        return new CommandResult(String.format(message, Config.getInstance().getTaskManFilePath()), saveChanged);
     }
 }

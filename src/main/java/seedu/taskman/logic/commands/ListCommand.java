@@ -117,7 +117,7 @@ public class ListCommand extends Command {
     @Override
     public CommandResult execute() {
         model.updateFilteredActivityList(filterMode, keywords, tagNames);
-        return new CommandResult(getMessageForTaskListShownSummary(model.getFilteredActivityList().size()));
+        return new CommandResult(getMessageForTaskListShownSummary(model.getFilteredActivityList().size()), true);
     }
 
 }

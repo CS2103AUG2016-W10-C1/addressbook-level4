@@ -86,9 +86,9 @@ public class DoCommand extends Command {
         assert model != null;
         try {
             model.addActivity(toAdd);
-            return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
+            return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd), true);
         } catch (UniqueActivityList.DuplicateActivityException e) {
-            return new CommandResult(MESSAGE_DUPLICATE_EVENT);
+            return new CommandResult(MESSAGE_DUPLICATE_EVENT, false);
         }
 
     }

@@ -85,7 +85,7 @@ public class EditCommand extends Command {
         try {
             initMembers(argsContainer);
         } catch (IllegalValueException e) {
-            return new CommandResult(e.getMessage());
+            return new CommandResult(e.getMessage(), false);
         }
 
         try {
@@ -93,10 +93,10 @@ public class EditCommand extends Command {
             model.addActivity(afterEdit);
             switch(activityType) {
                 case EVENT: {
-                    return new CommandResult(String.format(MESSAGE_EDIT_EVENT_SUCCESS, afterEdit));
+                    return new CommandResult(String.format(MESSAGE_EDIT_EVENT_SUCCESS, afterEdit), true);
                 }
                 case TASK: {
-                    return new CommandResult(String.format(MESSAGE_EDIT_TASK_SUCCESS, afterEdit));
+                    return new CommandResult(String.format(MESSAGE_EDIT_TASK_SUCCESS, afterEdit), true);
                 }
                 default: {
                     throw new AssertionError("Activity is neither an event nor a task.", null); 
@@ -104,14 +104,14 @@ public class EditCommand extends Command {
             }
         } catch (UniqueActivityList.ActivityNotFoundException pnfe) {
             indicateAttemptToExecuteIncorrectCommand();
-            return new CommandResult(Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX);
+            return new CommandResult(Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX, false);
         } catch (UniqueActivityList.DuplicateActivityException e) {
             try {
                 model.addActivity(beforeEdit);
             } catch (UniqueActivityList.DuplicateActivityException e1) {
                 assert false : "Deleted activity should be able to be added back.";
             }
-            return new CommandResult(MESSAGE_DUPLICATE_ACTIVITY);
+            return new CommandResult(MESSAGE_DUPLICATE_ACTIVITY, false);
         }
 
     }

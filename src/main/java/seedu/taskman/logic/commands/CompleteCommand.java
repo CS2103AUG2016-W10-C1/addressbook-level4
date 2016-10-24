@@ -57,16 +57,16 @@ public class CompleteCommand extends Command {
         try {
             initMembers();
         } catch (IllegalValueException e) {
-            return new CommandResult(e.getMessage());
+            return new CommandResult(e.getMessage(), false);
         }
 
         try {
             model.deleteActivity(activityToComplete);
             model.addActivity(afterComplete);
-            return new CommandResult(String.format(MESSAGE_SUCCESS, afterComplete.getTitle().title));
+            return new CommandResult(String.format(MESSAGE_SUCCESS, afterComplete.getTitle().title), true);
         } catch (UniqueActivityList.ActivityNotFoundException notFound) {
             indicateAttemptToExecuteIncorrectCommand();
-            return new CommandResult(Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX);
+            return new CommandResult(Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX, false);
         } catch (UniqueActivityList.DuplicateActivityException e) {
             throw new AssertionError("Duplicate activity present, could not add activity back after deleting", null);
         }

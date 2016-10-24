@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<taskMan>
+    <events>
+        <title>today</title>
+    </events>
+    <tasks>
+        <title>pear</title>
+        <status>incomplete</status>
+    </tasks>
+    <tasks>
+        <title>orange</title>
+        <status>incomplete</status>
+    </tasks>
+</taskMan>
