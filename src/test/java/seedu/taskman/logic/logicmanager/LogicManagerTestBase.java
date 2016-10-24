@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import seedu.taskman.commons.core.EventsCenter;
+import seedu.taskman.commons.core.UnmodifiableObservableList;
 import seedu.taskman.commons.core.config.Config;
 import seedu.taskman.commons.events.model.TaskManChangedEvent;
 import seedu.taskman.commons.events.ui.JumpToListRequestEvent;
@@ -110,11 +111,12 @@ public abstract class LogicManagerTestBase {
                                                    List<? extends Activity> expectedShownList) throws Exception {
         //Execute the command
         CommandResult result = logic.execute(inputCommand);
-
-        assertEquals(expectedShownList, model.getFilteredActivityList());
+        UnmodifiableObservableList<Activity> actualShownList = model.getFilteredActivityList();
+        assertEquals(expectedShownList, actualShownList);
 
         //Confirm the state of data (saved and in-memory) is as expected
-        assertEquals(expectedTaskMan, model.getTaskMan());
+        ReadOnlyTaskMan actualTaskMan = model.getTaskMan();
+        assertEquals(expectedTaskMan, actualTaskMan);
         assertEquals(expectedTaskMan, latestSavedTaskMan);
 
         return result;
@@ -168,6 +170,14 @@ public abstract class LogicManagerTestBase {
             Tag tag2 = new Tag("tag2");
             UniqueTagList tags = new UniqueTagList(tag1, tag2);
             return new Task(title, tags, privateDeadline, schedule, frequency);
+        }
+
+        List<Activity> tasksToActivity(List<Task> tasks) {
+            ArrayList<Activity> activities = new ArrayList<>();
+            for(Task task : tasks) {
+                activities.add(new Activity(task));
+            }
+            return activities;
         }
 
         /**
@@ -285,20 +295,40 @@ public abstract class LogicManagerTestBase {
             return tasks;
         }
 
-        List<Task> generateTaskList(Task... tasks) {
-            return Arrays.asList(tasks);
+        ArrayList<Task> generateTaskList(Task... tasks) {
+            return new ArrayList<>(Arrays.asList(tasks));
         }
 
         /**
          * Generates a Task object with given title. Other fields will have some dummy values.
          */
-        Task generateTaskWithTitle(String title) throws Exception {
+        Task generateTaskWithAllFields(String title) throws Exception {
             return new Task(
                     new Title(title),
                     new UniqueTagList(new Tag("t1"), new Tag("t2")),
                     new Deadline("in 4 days"),
                     new Schedule("02/05/2016 5pm, 05/05/2016 5pm"),
                     null // new Frequency("7 days")
+            );
+        }
+
+        Task generateTaskWithOnlyDeadline(String title) throws Exception {
+            return new Task(
+                    new Title(title),
+                    new UniqueTagList(),
+                    new Deadline("in 4 days"),
+                    null,
+                    null
+            );
+        }
+
+        Task generateTaskWithOnlySchedule(String title) throws Exception {
+            return new Task(
+                    new Title(title),
+                    new UniqueTagList(),
+                    null,
+                    new Schedule("02/05/2016 5pm, 05/05/2016 5pm"),
+                    null
             );
         }
     }

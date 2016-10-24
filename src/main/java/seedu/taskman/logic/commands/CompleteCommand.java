@@ -68,12 +68,7 @@ public class CompleteCommand extends Command {
             indicateAttemptToExecuteIncorrectCommand();
             return new CommandResult(Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX);
         } catch (UniqueActivityList.DuplicateActivityException e) {
-            try {
-                model.addActivity(afterComplete);
-            } catch (UniqueActivityList.DuplicateActivityException e1) {
-                assert false: "Deleted activity should be able to be added back.";
-            }
-            throw new AssertionError("Activities with duplicate titles exists in data!", null);
+            throw new AssertionError("Duplicate activity present, could not add activity back after deleting", null);
         }
     }
 
@@ -89,27 +84,23 @@ public class CompleteCommand extends Command {
         activityType = activityToComplete.getType();
 
         switch (activityType){
-        case EVENT: {
-            throw new IllegalValueException(Messages.MESSAGE_INVALID_COMMAND_FOR_EVENT);
-        }
-        case TASK: {
-            Task task = new Task(
-                    activityToComplete.getTitle(),
-                    activityToComplete.getTags(),
-                    activityToComplete.getDeadline().orElse(null),
-                    activityToComplete.getSchedule().orElse(null),
-                    activityToComplete.getFrequency().orElse(null));
-            try {
-                task.setStatus(new Status(STATUS_COMPLETE));
-            } catch (IllegalValueException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            case EVENT: {
+                throw new IllegalValueException(Messages.MESSAGE_INVALID_COMMAND_FOR_EVENT);
             }
-            afterComplete = new Activity(task);
-        }
-        default: {
-            assert false : "Activity is neither an event nor a task.";
-        }
+            case TASK: {
+                Task task = new Task(
+                        activityToComplete.getTitle(),
+                        activityToComplete.getTags(),
+                        activityToComplete.getDeadline().orElse(null),
+                        activityToComplete.getSchedule().orElse(null),
+                        activityToComplete.getFrequency().orElse(null));
+                task.setStatus(new Status(STATUS_COMPLETE));
+                afterComplete = new Activity(task);
+                break;
+            }
+            default: {
+                assert false : "Activity is neither an event nor a task.";
+            }
         }
     }
 }
