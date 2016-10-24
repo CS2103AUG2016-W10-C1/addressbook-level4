@@ -18,13 +18,13 @@ public class MiscCommandTests extends LogicManagerTestBase {
         assertCommandNoStateChange(unknownCommand);
     }
 
-    //@Test
+    @Test
     public void execute_help() throws Exception {
         assertCommandNoStateChange("help");
         assertTrue(helpShown);
     }
 
-    //@Test
+    @Test
     public void execute_exit() throws Exception {
         assertCommandNoStateChange("exit");
     }
