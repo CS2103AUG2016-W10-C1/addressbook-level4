@@ -15,4 +15,16 @@
         <title>miss class</title>
         <status>incomplete</status>
     </tasks>
+    <tasks>
+        <title>tomorrow</title>
+        <status>incomplete</status>
+    </tasks>
+    <tasks>
+        <title>quit</title>
+        <status>incomplete</status>
+    </tasks>
+    <tasks>
+        <title>stop</title>
+        <status>incomplete</status>
+    </tasks>
 </taskMan>

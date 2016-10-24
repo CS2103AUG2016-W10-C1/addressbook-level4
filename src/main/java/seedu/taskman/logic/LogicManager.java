@@ -8,6 +8,7 @@ import seedu.taskman.logic.commands.CommandHistory;
 import seedu.taskman.logic.commands.CommandResult;
 import seedu.taskman.logic.parser.CommandParser;
 import seedu.taskman.model.Model;
+import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.storage.Storage;
 
@@ -23,27 +24,27 @@ public class LogicManager extends ComponentManager implements Logic {
     private final Model model;
     private final CommandParser commandParser;
     private final Storage storage;
-    private final Stack<CommandHistory> history;
+    private final Stack<CommandHistory> historyStack;
 
     public LogicManager(Model model, Storage storage) {
         this.model = model;
         this.commandParser = new CommandParser();
         this.storage = storage;
-        this.history = new Stack<>();
+        this.historyStack = new Stack<>();
     }
 
     @Override
     public CommandResult execute(String commandText) {
-        // todo: clone model & storage here
+        TaskMan oldTaskMan = new TaskMan(model.getTaskMan());
 
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         Command command = commandParser.parseCommand(commandText);
-        command.setData(model, storage, history);
+        command.setData(model, storage, historyStack);
         CommandResult result = command.execute();
 
         if (result.succeeded && command.storeHistory) {
-            // todo: save cloned model & storage below
-            history.push(new CommandHistory(commandText, result.feedbackToUser));
+            CommandHistory history = new CommandHistory(commandText, result.feedbackToUser, oldTaskMan);
+            historyStack.push(history);
         }
 
         return result;
