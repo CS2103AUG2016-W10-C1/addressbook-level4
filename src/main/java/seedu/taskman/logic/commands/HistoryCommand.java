@@ -34,7 +34,7 @@ public class HistoryCommand extends Command {
 
         // stack is also a list, with most recent command at the tail
         // extract & reverse for display
-        List<CommandHistory> historyForExtraction = new ArrayList<>(historyStack);
+        List<CommandHistory> historyForExtraction = new ArrayList<>(historyDeque);
         Collections.reverse(historyForExtraction);
 
         for (CommandHistory history : historyForExtraction) {

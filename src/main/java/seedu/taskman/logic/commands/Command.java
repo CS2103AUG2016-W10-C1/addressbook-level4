@@ -20,7 +20,7 @@ public abstract class Command {
     public final boolean storeHistory;
     protected Model model;
     protected Storage storage;
-    protected Stack<CommandHistory> historyStack;
+    protected Deque<CommandHistory> historyDeque;
 
     protected Command(boolean storeHistory) {
         this.storeHistory = storeHistory;
@@ -81,10 +81,10 @@ public abstract class Command {
      * Commands making use of any of these should override this method to gain
      * access to the dependencies.
      */
-    public void setData(Model model, Storage storage, Stack<CommandHistory> historyStack) {
+    public void setData(Model model, Storage storage, Deque<CommandHistory> historyDeque) {
         this.model = model;
         this.storage = storage;
-        this.historyStack = historyStack;
+        this.historyDeque = historyDeque;
     }
 
     /**

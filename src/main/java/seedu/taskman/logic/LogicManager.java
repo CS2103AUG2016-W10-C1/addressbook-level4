@@ -12,7 +12,8 @@ import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.storage.Storage;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.logging.Logger;
 
 /**
@@ -24,13 +25,14 @@ public class LogicManager extends ComponentManager implements Logic {
     private final Model model;
     private final CommandParser commandParser;
     private final Storage storage;
-    private final Stack<CommandHistory> historyStack;
+    private final Deque<CommandHistory> historyDeque;
 
     public LogicManager(Model model, Storage storage) {
         this.model = model;
         this.commandParser = new CommandParser();
         this.storage = storage;
-        this.historyStack = new Stack<>();
+        // todo: clean up magic
+        this.historyDeque = new ArrayDeque<>(10);
     }
 
     @Override
@@ -39,12 +41,12 @@ public class LogicManager extends ComponentManager implements Logic {
 
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         Command command = commandParser.parseCommand(commandText);
-        command.setData(model, storage, historyStack);
+        command.setData(model, storage, historyDeque);
         CommandResult result = command.execute();
 
         if (result.succeeded && command.storeHistory) {
             CommandHistory history = new CommandHistory(commandText, result.feedbackToUser, oldTaskMan);
-            historyStack.push(history);
+            historyDeque.push(history);
         }
 
         return result;

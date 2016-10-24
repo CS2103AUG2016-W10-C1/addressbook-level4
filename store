@@ -3,28 +3,22 @@
     <events>
         <title>today</title>
     </events>
-    <tasks>
-        <title>homework</title>
-        <status>incomplete</status>
-    </tasks>
-    <tasks>
-        <title>nothing</title>
-        <status>incomplete</status>
-    </tasks>
+    <events>
+        <title>f</title>
+    </events>
+    <events>
+        <title>z</title>
+    </events>
     <tasks>
         <title>miss class</title>
         <status>incomplete</status>
     </tasks>
     <tasks>
-        <title>tomorrow</title>
-        <status>incomplete</status>
-    </tasks>
-    <tasks>
-        <title>quit</title>
-        <status>incomplete</status>
-    </tasks>
-    <tasks>
         <title>stop</title>
         <status>incomplete</status>
+    </tasks>
+    <tasks>
+        <title>fosj</title>
+        <status>complete</status>
     </tasks>
 </taskMan>
