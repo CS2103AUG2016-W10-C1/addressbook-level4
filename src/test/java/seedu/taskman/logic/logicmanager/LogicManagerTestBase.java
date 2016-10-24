@@ -170,6 +170,14 @@ public abstract class LogicManagerTestBase {
             return new Task(title, tags, privateDeadline, schedule, frequency);
         }
 
+        List<Activity> tasksToActivity(List<Task> tasks) {
+            ArrayList<Activity> activities = new ArrayList<>();
+            for(Task task : tasks) {
+                activities.add(new Activity(task));
+            }
+            return activities;
+        }
+
         /**
          * Generates a valid task using the given seed.
          * Running this function with the same parameter values guarantees the returned task will have the same state.
@@ -285,20 +293,40 @@ public abstract class LogicManagerTestBase {
             return tasks;
         }
 
-        List<Task> generateTaskList(Task... tasks) {
-            return Arrays.asList(tasks);
+        ArrayList<Task> generateTaskList(Task... tasks) {
+            return new ArrayList<>(Arrays.asList(tasks));
         }
 
         /**
          * Generates a Task object with given title. Other fields will have some dummy values.
          */
-        Task generateTaskWithTitle(String title) throws Exception {
+        Task generateTaskWithAllFields(String title) throws Exception {
             return new Task(
                     new Title(title),
                     new UniqueTagList(new Tag("t1"), new Tag("t2")),
                     new Deadline("in 4 days"),
                     new Schedule("02/05/2016 5pm, 05/05/2016 5pm"),
                     null // new Frequency("7 days")
+            );
+        }
+
+        Task generateTaskWithOnlyDeadline(String title) throws Exception {
+            return new Task(
+                    new Title(title),
+                    new UniqueTagList(),
+                    new Deadline("in 4 days"),
+                    null,
+                    null
+            );
+        }
+
+        Task generateTaskWithOnlySchedule(String title) throws Exception {
+            return new Task(
+                    new Title(title),
+                    new UniqueTagList(),
+                    null,
+                    new Schedule("02/05/2016 5pm, 05/05/2016 5pm"),
+                    null
             );
         }
     }

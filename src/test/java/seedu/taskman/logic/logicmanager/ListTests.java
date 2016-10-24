@@ -1,5 +1,6 @@
 package seedu.taskman.logic.logicmanager;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.event.Activity;
@@ -48,12 +49,85 @@ public class ListTests extends LogicManagerTestBase {
     }
 
     @Test
+    public void execute_listDeadline_showsDeadlineTasks() throws Exception {
+        // setup expected
+        LogicManagerTestBase.TestDataHelper helper = new TestDataHelper();
+        ArrayList<Task> targetList = helper.generateTaskList(
+                helper.generateTaskWithOnlyDeadline("show1"),
+                helper.generateTaskWithOnlyDeadline("show2"),
+                helper.generateTaskWithAllFields("all")
+        );
+        ArrayList<Task> fullList = helper.generateTaskList(
+                helper.generateTaskWithOnlySchedule("other1"),
+                helper.generateTaskWithOnlySchedule("other2")
+        );
+        fullList.addAll(targetList);
+
+        TaskMan expectedTaskMan = helper.generateTaskMan(fullList);
+        List<Activity> expectedList = helper.tasksToActivity(targetList);
+
+        helper.addToModel(model, fullList);
+        assertCommandStateChange("list d/",
+                expectedTaskMan,
+                expectedList);
+    }
+
+    @Test
+    public void execute_listSchedule_showsScheduledTasks() throws Exception {
+        // setup expected
+        LogicManagerTestBase.TestDataHelper helper = new TestDataHelper();
+        ArrayList<Task> targetList = helper.generateTaskList(
+                helper.generateTaskWithOnlySchedule("show1"),
+                helper.generateTaskWithOnlySchedule("show2"),
+                helper.generateTaskWithAllFields("all")
+        );
+        ArrayList<Task> fullList = helper.generateTaskList(
+                helper.generateTaskWithOnlyDeadline("other1"),
+                helper.generateTaskWithOnlyDeadline("other2")
+        );
+        fullList.addAll(targetList);
+
+        TaskMan expectedTaskMan = helper.generateTaskMan(fullList);
+        List<Activity> expectedList = helper.tasksToActivity(targetList);
+
+        helper.addToModel(model, fullList);
+        assertCommandStateChange("list s/",
+                expectedTaskMan,
+                expectedList);
+    }
+
+    @Ignore
+    @Test
+    public void execute_listFloating_showsScheduledTasks() throws Exception {
+        // setup expected
+        LogicManagerTestBase.TestDataHelper helper = new TestDataHelper();
+        ArrayList<Task> targetList = helper.generateTaskList(
+                helper.generateTaskWithOnlyDeadline("floating1"),
+                helper.generateTaskWithOnlyDeadline("floating2")
+        );
+        ArrayList<Task> fullList = helper.generateTaskList(
+                helper.generateTaskWithOnlySchedule("other1"),
+                helper.generateTaskWithOnlySchedule("other2"),
+                helper.generateTaskWithAllFields("other3")
+        );
+        fullList.addAll(targetList);
+
+        TaskMan expectedTaskMan = helper.generateTaskMan(fullList);
+        List<Activity> expectedList = helper.tasksToActivity(targetList);
+
+        helper.addToModel(model, fullList);
+        assertCommandStateChange("list f/",
+                expectedTaskMan,
+                expectedList);
+    }
+
+    @Test
     public void execute_list_onlyMatchesFullWordsInTitles() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Task taskTarget1 = helper.generateTaskWithTitle("bla bla KEY bla");
-        Task taskTarget2 = helper.generateTaskWithTitle("bla KEY bla bceofeia");
-        Task other1 = helper.generateTaskWithTitle("KE Y");
-        Task other2 = helper.generateTaskWithTitle("KEYKEYKEY sduauo");
+        Task taskTarget1 = helper.generateTaskWithAllFields("bla bla KEY bla");
+        Task taskTarget2 = helper.generateTaskWithAllFields("bla KEY bla bceofeia");
+        Task other1 = helper.generateTaskWithAllFields("KE Y");
+        Task other2 = helper.generateTaskWithAllFields("KEYKEYKEY sduauo");
 
         List<Task> fourTasks = helper.generateTaskList(other1, taskTarget1, other2, taskTarget2);
         TaskMan expectedTaskMan = helper.generateTaskMan(fourTasks);
@@ -69,10 +143,10 @@ public class ListTests extends LogicManagerTestBase {
     @Test
     public void execute_list_isNotCaseSensitive() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Task target1 = helper.generateTaskWithTitle("bla bla KEY bla");
-        Task target2 = helper.generateTaskWithTitle("bla KEY bla bceofeia");
-        Task target3 = helper.generateTaskWithTitle("key key");
-        Task target4 = helper.generateTaskWithTitle("KEy sduauo");
+        Task target1 = helper.generateTaskWithAllFields("bla bla KEY bla");
+        Task target2 = helper.generateTaskWithAllFields("bla KEY bla bceofeia");
+        Task target3 = helper.generateTaskWithAllFields("key key");
+        Task target4 = helper.generateTaskWithAllFields("KEy sduauo");
 
         List<Task> fourTasks = helper.generateTaskList(target3, target1, target4, target2);
         TaskMan expectedTaskMan = helper.generateTaskMan(fourTasks);
@@ -88,10 +162,10 @@ public class ListTests extends LogicManagerTestBase {
     @Test
     public void execute_list_matchesIfAnyKeywordPresent() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Task taskTarget1 = helper.generateTaskWithTitle("bla bla KEY bla");
-        Task taskTarget2 = helper.generateTaskWithTitle("bla rAnDoM bla bceofeia");
-        Task taskTarget3 = helper.generateTaskWithTitle("key key");
-        Task other1 = helper.generateTaskWithTitle("sduauo");
+        Task taskTarget1 = helper.generateTaskWithAllFields("bla bla KEY bla");
+        Task taskTarget2 = helper.generateTaskWithAllFields("bla rAnDoM bla bceofeia");
+        Task taskTarget3 = helper.generateTaskWithAllFields("key key");
+        Task other1 = helper.generateTaskWithAllFields("sduauo");
 
         List<Task> fourTasks = helper.generateTaskList(taskTarget1, other1, taskTarget2, taskTarget3);
         TaskMan expectedTaskMan = helper.generateTaskMan(fourTasks);
@@ -104,7 +178,6 @@ public class ListTests extends LogicManagerTestBase {
                 expectedList);
     }
 
-    // TODO: LIST: write tests for deadline filter, schedule filter, floating filter
 
     //@Test
     public void execute_list_filter_tags() throws Exception {
