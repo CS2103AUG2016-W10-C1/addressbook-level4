@@ -84,6 +84,9 @@ public class DeadlinePanel extends UiPart {
           }
         });   
         numberColumn.setSortable(false);
+        numberColumn.setMaxWidth(32);
+        numberColumn.setMinWidth(32);
+        numberColumn.setResizable(false);
         deadlineTableView.getColumns().add(numberColumn);
         
         TableColumn<Activity, String> titleColumn = new TableColumn<Activity, String>("Deadline");
@@ -101,6 +104,9 @@ public class DeadlinePanel extends UiPart {
                         .map(Status::toString).orElse(""));
             }
         });
+        statusColumn.setMaxWidth(90);
+        statusColumn.setMinWidth(90);
+        statusColumn.setResizable(false);
         deadlineTableView.getColumns().add(statusColumn);
 
         TableColumn<Activity, String> deadlineColumn = new TableColumn<Activity, String>("Due");
@@ -110,6 +116,9 @@ public class DeadlinePanel extends UiPart {
                         .map(Deadline::toString).orElse(""));
             }
         });
+        deadlineColumn.setMaxWidth(135);
+        deadlineColumn.setMinWidth(135);
+        deadlineColumn.setResizable(false);
         deadlineTableView.getColumns().add(deadlineColumn);
 
         setEventHandlerForSelectionChangeEvent();

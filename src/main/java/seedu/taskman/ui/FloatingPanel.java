@@ -84,6 +84,9 @@ public class FloatingPanel extends UiPart {
           }
         });   
         numberColumn.setSortable(false);
+        numberColumn.setMaxWidth(32);
+        numberColumn.setMinWidth(32);
+        numberColumn.setResizable(false);
         floatingTableView.getColumns().add(numberColumn);
 
         TableColumn<Activity, String> titleColumn = new TableColumn<Activity, String>("Floating");
@@ -101,6 +104,9 @@ public class FloatingPanel extends UiPart {
                         .map(Status::toString).orElse(""));
             }
         });
+        statusColumn.setMaxWidth(90);
+        statusColumn.setMinWidth(90);
+        statusColumn.setResizable(false);
         floatingTableView.getColumns().add(statusColumn);
 
         setEventHandlerForSelectionChangeEvent();

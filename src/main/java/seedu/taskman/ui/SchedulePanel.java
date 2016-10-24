@@ -84,6 +84,9 @@ public class SchedulePanel extends UiPart {
           }
         });   
         numberColumn.setSortable(false);
+        numberColumn.setMaxWidth(32);
+        numberColumn.setMinWidth(32);
+        numberColumn.setResizable(false);
         scheduleTableView.getColumns().add(numberColumn);
 
         TableColumn<Activity, String> titleColumn = new TableColumn<Activity, String>("Activity");
@@ -101,6 +104,9 @@ public class SchedulePanel extends UiPart {
                         .map(Schedule::toString).orElse(""));
             }
         });
+        scheduleColumn.setMaxWidth(150);
+        scheduleColumn.setMinWidth(150);
+        scheduleColumn.setResizable(false);
         scheduleTableView.getColumns().add(scheduleColumn);
 
         setEventHandlerForSelectionChangeEvent();
