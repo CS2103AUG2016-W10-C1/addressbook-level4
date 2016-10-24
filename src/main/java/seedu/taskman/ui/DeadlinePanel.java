@@ -77,7 +77,7 @@ public class DeadlinePanel extends UiPart {
     private void setConnections(ObservableList<Activity> taskList) {
         deadlineTableView.setItems(taskList);
 
-        TableColumn<Activity, String> titleColumn = new TableColumn<Activity, String>("Title");
+        TableColumn<Activity, String> titleColumn = new TableColumn<Activity, String>("Deadline");
         titleColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
                 return new ReadOnlyObjectWrapper<String>(p.getValue().getTitle().title);
@@ -94,7 +94,7 @@ public class DeadlinePanel extends UiPart {
         });
         deadlineTableView.getColumns().add(statusColumn);
 
-        TableColumn<Activity, String> deadlineColumn = new TableColumn<Activity, String>("Deadline");
+        TableColumn<Activity, String> deadlineColumn = new TableColumn<Activity, String>("Due");
         deadlineColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
                 return new ReadOnlyObjectWrapper<String>(p.getValue().getDeadline()
@@ -102,24 +102,6 @@ public class DeadlinePanel extends UiPart {
             }
         });
         deadlineTableView.getColumns().add(deadlineColumn);
-
-        TableColumn<Activity, String> scheduleColumn = new TableColumn<Activity, String>("Schedule");
-        scheduleColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
-                return new ReadOnlyObjectWrapper<String>(p.getValue().getSchedule()
-                        .map(Schedule::toString).orElse(""));
-            }
-        });
-        deadlineTableView.getColumns().add(scheduleColumn);
-
-        TableColumn<Activity, String> frequencyColumn = new TableColumn<Activity, String>("Frequency");
-        frequencyColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
-                return new ReadOnlyObjectWrapper<String>(p.getValue().getFrequency()
-                        .map(Frequency::toString).orElse(""));
-            }
-        });
-        deadlineTableView.getColumns().add(frequencyColumn);
 
         setEventHandlerForSelectionChangeEvent();
     }

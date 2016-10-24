@@ -25,9 +25,24 @@ public interface Model {
     void addActivity(Activity activity) throws UniqueActivityList.DuplicateActivityException;
 
     /**
-     * Returns the filtered task list as an {@code UnmodifiableObservableList<Activity>}
+     * Returns the filtered list of activity as an {@code UnmodifiableObservableList<Activity>}
      */
     UnmodifiableObservableList<Activity> getFilteredActivityList();
+    
+    /**
+     * Returns the filtered list of activities with schedules as an {@code UnmodifiableObservableList<Activity>}
+     */
+    UnmodifiableObservableList<Activity> getFilteredScheduleList();
+    
+    /**
+     * Returns the filtered task list of tasks with deadlines as an {@code UnmodifiableObservableList<Activity>}
+     */
+    UnmodifiableObservableList<Activity> getFilteredDeadlineList();
+    
+    /**
+     * Returns the filtered list of tasks without deadlines as an {@code UnmodifiableObservableList<Activity>}
+     */
+    UnmodifiableObservableList<Activity> getFilteredFloatingList();
 
     /**
      * Updates the filter of the filtered activity list to show all activities

@@ -77,31 +77,13 @@ public class SchedulePanel extends UiPart {
     private void setConnections(ObservableList<Activity> taskList) {
         scheduleTableView.setItems(taskList);
 
-        TableColumn<Activity, String> titleColumn = new TableColumn<Activity, String>("Title");
+        TableColumn<Activity, String> titleColumn = new TableColumn<Activity, String>("Activity");
         titleColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
                 return new ReadOnlyObjectWrapper<String>(p.getValue().getTitle().title);
             }
         });
         scheduleTableView.getColumns().add(titleColumn);
-
-        TableColumn<Activity, String> statusColumn = new TableColumn<Activity, String>("Status");
-        statusColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
-                return new ReadOnlyObjectWrapper<String>(p.getValue().getStatus()
-                        .map(Status::toString).orElse(""));
-            }
-        });
-        scheduleTableView.getColumns().add(statusColumn);
-
-        TableColumn<Activity, String> deadlineColumn = new TableColumn<Activity, String>("Deadline");
-        deadlineColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
-                return new ReadOnlyObjectWrapper<String>(p.getValue().getDeadline()
-                        .map(Deadline::toString).orElse(""));
-            }
-        });
-        scheduleTableView.getColumns().add(deadlineColumn);
 
         TableColumn<Activity, String> scheduleColumn = new TableColumn<Activity, String>("Schedule");
         scheduleColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
@@ -111,15 +93,6 @@ public class SchedulePanel extends UiPart {
             }
         });
         scheduleTableView.getColumns().add(scheduleColumn);
-
-        TableColumn<Activity, String> frequencyColumn = new TableColumn<Activity, String>("Frequency");
-        frequencyColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
-                return new ReadOnlyObjectWrapper<String>(p.getValue().getFrequency()
-                        .map(Frequency::toString).orElse(""));
-            }
-        });
-        scheduleTableView.getColumns().add(frequencyColumn);
 
         setEventHandlerForSelectionChangeEvent();
     }

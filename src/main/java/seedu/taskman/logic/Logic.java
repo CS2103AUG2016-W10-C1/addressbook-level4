@@ -17,8 +17,23 @@ public interface Logic {
     CommandResult execute(String commandText);
 
     /**
-     * Returns the filtered list of tasks
+     * Returns the filtered list of activities
      */
     ObservableList<Activity> getFilteredActivityList();
+    
+    /**
+     * Returns the filtered list of activities with schedules
+     */
+    ObservableList<Activity> getFilteredScheduleList();
+    
+    /**
+     * Returns the filtered list of tasks with deadlines
+     */
+    ObservableList<Activity> getFilteredDeadlineList();
+    
+    /**
+     * Returns the filtered list of tasks without deadlines
+     */
+    ObservableList<Activity> getFilteredFloatingList();
 
 }

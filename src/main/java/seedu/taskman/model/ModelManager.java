@@ -1,5 +1,6 @@
 package seedu.taskman.model;
 
+import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.taskman.commons.core.ComponentManager;
 import seedu.taskman.commons.core.LogsCenter;
@@ -15,6 +16,7 @@ import seedu.taskman.model.event.UniqueActivityList.ActivityNotFoundException;
 import seedu.taskman.model.tag.Tag;
 
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 /**
@@ -26,6 +28,9 @@ public class ModelManager extends ComponentManager implements Model {
 
     private final TaskMan taskMan;
     private final FilteredList<Activity> filteredActivities;
+    private final FilteredList<Activity> filteredSchedules;
+    private final FilteredList<Activity> filteredDeadlines;
+    private final FilteredList<Activity> filteredFloatings;
 
     /**
      * Initializes a ModelManager with the given TaskMan
@@ -39,7 +44,11 @@ public class ModelManager extends ComponentManager implements Model {
         logger.fine("Initializing with Task Man: " + src + " and user prefs " + userPrefs);
 
         taskMan = new TaskMan(src);
-        filteredActivities = new FilteredList<>(taskMan.getActivities());
+        ObservableList<Activity> activities = taskMan.getActivities();
+        filteredActivities = new FilteredList<>(activities);
+        filteredSchedules = new FilteredList<>(activities.filtered(new SchedulePredicate()));
+        filteredDeadlines = new FilteredList<>(activities.filtered(new DeadlinePredicate()));
+        filteredFloatings = new FilteredList<>(activities.filtered(new FloatingPredicate()));
     }
 
     public ModelManager() {
@@ -48,7 +57,11 @@ public class ModelManager extends ComponentManager implements Model {
 
     public ModelManager(ReadOnlyTaskMan initialData, UserPrefs userPrefs) {
         taskMan = new TaskMan(initialData);
-        filteredActivities = new FilteredList<>(taskMan.getActivities());
+        ObservableList<Activity> activities = taskMan.getActivities();
+        filteredActivities = new FilteredList<>(activities);
+        filteredSchedules = new FilteredList<>(activities.filtered(new SchedulePredicate()));
+        filteredDeadlines = new FilteredList<>(activities.filtered(new DeadlinePredicate()));
+        filteredFloatings = new FilteredList<>(activities.filtered(new FloatingPredicate()));
     }
 
     @Override
@@ -93,6 +106,21 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public UnmodifiableObservableList<Activity> getFilteredActivityList() {
         return new UnmodifiableObservableList<>(filteredActivities);
+    }
+    
+    @Override
+    public UnmodifiableObservableList<Activity> getFilteredScheduleList() {
+        return new UnmodifiableObservableList<>(filteredSchedules);
+    }
+
+    @Override
+    public UnmodifiableObservableList<Activity> getFilteredDeadlineList() {
+        return new UnmodifiableObservableList<>(filteredDeadlines);
+    }
+
+    @Override
+    public UnmodifiableObservableList<Activity> getFilteredFloatingList() {
+        return new UnmodifiableObservableList<>(filteredFloatings);
     }
 
     @Override
@@ -184,6 +212,35 @@ public class ModelManager extends ComponentManager implements Model {
         public String toString() {
             return "title=" + String.join(", ", titleKeyWords);
         }
+    }
+    
+    private class SchedulePredicate implements Predicate<Activity> {
+
+        @Override
+        public boolean test(Activity t) {
+            return t.getSchedule().isPresent();
+        }
+        
+    }
+    
+    private class DeadlinePredicate implements Predicate<Activity> {
+
+        @Override
+        public boolean test(Activity t) {
+            return t.getType() == Activity.ActivityType.TASK
+                   && t.getDeadline().isPresent();
+        }
+        
+    }
+    
+    private class FloatingPredicate implements Predicate<Activity> {
+
+        @Override
+        public boolean test(Activity t) {
+            return t.getType() == Activity.ActivityType.TASK
+                   && !t.getDeadline().isPresent();
+        }
+        
     }
 
 }

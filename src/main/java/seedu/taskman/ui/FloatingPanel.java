@@ -77,7 +77,7 @@ public class FloatingPanel extends UiPart {
     private void setConnections(ObservableList<Activity> taskList) {
         floatingTableView.setItems(taskList);
 
-        TableColumn<Activity, String> titleColumn = new TableColumn<Activity, String>("Title");
+        TableColumn<Activity, String> titleColumn = new TableColumn<Activity, String>("Floating");
         titleColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
                 return new ReadOnlyObjectWrapper<String>(p.getValue().getTitle().title);
@@ -93,33 +93,6 @@ public class FloatingPanel extends UiPart {
             }
         });
         floatingTableView.getColumns().add(statusColumn);
-
-        TableColumn<Activity, String> deadlineColumn = new TableColumn<Activity, String>("Deadline");
-        deadlineColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
-                return new ReadOnlyObjectWrapper<String>(p.getValue().getDeadline()
-                        .map(Deadline::toString).orElse(""));
-            }
-        });
-        floatingTableView.getColumns().add(deadlineColumn);
-
-        TableColumn<Activity, String> scheduleColumn = new TableColumn<Activity, String>("Schedule");
-        scheduleColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
-                return new ReadOnlyObjectWrapper<String>(p.getValue().getSchedule()
-                        .map(Schedule::toString).orElse(""));
-            }
-        });
-        floatingTableView.getColumns().add(scheduleColumn);
-
-        TableColumn<Activity, String> frequencyColumn = new TableColumn<Activity, String>("Frequency");
-        frequencyColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
-                return new ReadOnlyObjectWrapper<String>(p.getValue().getFrequency()
-                        .map(Frequency::toString).orElse(""));
-            }
-        });
-        floatingTableView.getColumns().add(frequencyColumn);
 
         setEventHandlerForSelectionChangeEvent();
     }
