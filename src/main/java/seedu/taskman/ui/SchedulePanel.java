@@ -76,6 +76,15 @@ public class SchedulePanel extends UiPart {
     // TODO Resolve generic type issue.
     private void setConnections(ObservableList<Activity> taskList) {
         scheduleTableView.setItems(taskList);
+        
+        TableColumn<Activity, String> numberColumn = new TableColumn<Activity, String>("#");
+        numberColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
+          @Override public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
+            return new ReadOnlyObjectWrapper<String>(scheduleTableView.getItems().indexOf(p.getValue()) + 1 + "");
+          }
+        });   
+        numberColumn.setSortable(false);
+        scheduleTableView.getColumns().add(numberColumn);
 
         TableColumn<Activity, String> titleColumn = new TableColumn<Activity, String>("Activity");
         titleColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {

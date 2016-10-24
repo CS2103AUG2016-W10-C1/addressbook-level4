@@ -77,6 +77,15 @@ public class DeadlinePanel extends UiPart {
     private void setConnections(ObservableList<Activity> taskList) {
         deadlineTableView.setItems(taskList);
 
+        TableColumn<Activity, String> numberColumn = new TableColumn<Activity, String>("#");
+        numberColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
+          @Override public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
+            return new ReadOnlyObjectWrapper<String>(deadlineTableView.getItems().indexOf(p.getValue()) + 1 + "");
+          }
+        });   
+        numberColumn.setSortable(false);
+        deadlineTableView.getColumns().add(numberColumn);
+        
         TableColumn<Activity, String> titleColumn = new TableColumn<Activity, String>("Deadline");
         titleColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
