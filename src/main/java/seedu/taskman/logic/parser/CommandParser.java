@@ -8,11 +8,13 @@ import seedu.taskman.logic.commands.DoCommand;
 import seedu.taskman.logic.commands.EditCommand;
 import seedu.taskman.logic.commands.ExitCommand;
 import seedu.taskman.logic.commands.HelpCommand;
+import seedu.taskman.logic.commands.HistoryCommand;
 import seedu.taskman.logic.commands.IncorrectCommand;
 import seedu.taskman.logic.commands.ListCommand;
 import seedu.taskman.logic.commands.MarkCommand;
 import seedu.taskman.logic.commands.SelectCommand;
 import seedu.taskman.logic.commands.StoragelocCommand;
+import seedu.taskman.logic.commands.UndoCommand;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -89,6 +91,12 @@ public class CommandParser {
 
             case SelectCommand.COMMAND_WORD:
                 return SelectCommand.prepareSelect(arguments);
+
+            case UndoCommand.COMMAND_WORD:
+                return UndoCommand.prepareUndo(arguments);
+
+            case HistoryCommand.COMMAND_WORD:
+                return new HistoryCommand();
 
             case DeleteCommand.COMMAND_WORD:
                 return DeleteCommand.prepareDelete(arguments);

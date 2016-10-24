@@ -48,6 +48,7 @@ public class StoragelocCommand extends Command {
     }
 
     private StoragelocCommand(String filePath) {
+        super(false);
         this.filePath = FileUtil.getAbsolutePath(filePath);
     }
 
@@ -74,6 +75,6 @@ public class StoragelocCommand extends Command {
                 ? MESSAGE_SUCCESS
                 : MESSAGE_FAILURE;
 
-        return new CommandResult(String.format(message, Config.getInstance().getTaskManFilePath()));
+        return new CommandResult(String.format(message, Config.getInstance().getTaskManFilePath()), saveChanged);
     }
 }

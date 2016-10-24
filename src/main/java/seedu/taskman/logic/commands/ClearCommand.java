@@ -11,6 +11,7 @@ public class ClearCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Task man has been cleared!";
 
     public ClearCommand() {
+        super(true);
     }
 
 
@@ -18,6 +19,6 @@ public class ClearCommand extends Command {
     public CommandResult execute() {
         assert model != null;
         model.resetData(TaskMan.getEmptyTaskMan());
-        return new CommandResult(MESSAGE_SUCCESS);
+        return new CommandResult(MESSAGE_SUCCESS, true);
     }
 }

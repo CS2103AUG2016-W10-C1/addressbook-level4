@@ -9,13 +9,14 @@ public class IncorrectCommand extends Command {
     public final String feedbackToUser;
 
     public IncorrectCommand(String feedbackToUser) {
+        super(false);
         this.feedbackToUser = feedbackToUser;
     }
 
     @Override
     public CommandResult execute() {
         indicateAttemptToExecuteIncorrectCommand();
-        return new CommandResult(feedbackToUser);
+        return new CommandResult(feedbackToUser, false);
     }
 
 }

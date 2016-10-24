@@ -13,6 +13,7 @@ import seedu.taskman.commons.events.ui.JumpToListRequestEvent;
 import seedu.taskman.commons.events.ui.ShowHelpRequestEvent;
 import seedu.taskman.logic.Logic;
 import seedu.taskman.logic.LogicManager;
+import seedu.taskman.logic.commands.CommandHistory;
 import seedu.taskman.logic.commands.CommandResult;
 import seedu.taskman.logic.parser.DateTimeParser;
 import seedu.taskman.model.Model;
@@ -31,9 +32,10 @@ import seedu.taskman.storage.Storage;
 import seedu.taskman.storage.StorageManager;
 
 import java.time.Instant;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Deque;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,6 +52,7 @@ public abstract class LogicManagerTestBase {
     protected Model model;
     protected Storage storage;
     protected Logic logic;
+    protected Deque<CommandHistory> historyDeque;
 
     //These are for checking the correctness of the events raised
     protected ReadOnlyTaskMan latestSavedTaskMan;
@@ -74,10 +77,11 @@ public abstract class LogicManagerTestBase {
     @Before
     public void setup() {
         model = new ModelManager();
+        historyDeque = new ArrayDeque<>(LogicManager.HISTORY_SIZE);
         String tempTaskManFile = saveFolder.getRoot().getPath() + "TempTaskMan.xml";
         String tempPreferencesFile = saveFolder.getRoot().getPath() + "TempPreferences.json";
         storage = new StorageManager(tempTaskManFile, tempPreferencesFile);
-        logic = new LogicManager(model, storage);
+        logic = LogicManager.generateForTest(model, storage, historyDeque);
         EventsCenter.getInstance().registerHandler(this);
 
         latestSavedTaskMan = new TaskMan(model.getTaskMan()); // last saved assumed to be up to date before.
@@ -96,7 +100,9 @@ public abstract class LogicManagerTestBase {
      * Executes the command and confirms that no state has changed in TaskMan
      */
     protected CommandResult assertCommandNoStateChange(String inputCommand) throws Exception {
-        return assertCommandStateChange(inputCommand, new TaskMan(), Collections.emptyList());
+        return assertCommandStateChange(inputCommand,
+                new TaskMan(model.getTaskMan()),
+                new ArrayList<>(model.getFilteredActivityList()));
     }
 
     /**

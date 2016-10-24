@@ -17,8 +17,14 @@ import java.util.regex.Pattern;
  */
 public abstract class Command {
     private static final Pattern TASK_INDEX_ARGS_FORMAT = Pattern.compile(CommandParser.ArgumentPattern.TARGET_INDEX.pattern);
+    public final boolean storeHistory;
     protected Model model;
     protected Storage storage;
+    protected Deque<CommandHistory> historyDeque;
+
+    protected Command(boolean storeHistory) {
+        this.storeHistory = storeHistory;
+    }
 
     /**
      * Constructs a feedback message to summarise an operation that displayed a listing of tasks.
@@ -75,15 +81,10 @@ public abstract class Command {
      * Commands making use of any of these should override this method to gain
      * access to the dependencies.
      */
-    public void setData(Model model) {
+    public void setData(Model model, Storage storage, Deque<CommandHistory> historyDeque) {
         this.model = model;
-    }
-
-    /**
-     * Set the storage object required for any execution of a command
-     */
-    public void setStorage(Storage storage) {
         this.storage = storage;
+        this.historyDeque = historyDeque;
     }
 
     /**
