@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -24,19 +25,26 @@
           </Menu>
         </menus>
       </MenuBar>
-      <AnchorPane fx:id="taskListPanelPlaceholder" styleClass="anchor-pane">
-         <padding>
-            <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-         </padding>
-      </AnchorPane>
-      <AnchorPane fx:id="resultDisplayPlaceholder" styleClass="anchor-pane" VBox.vgrow="ALWAYS">
-         <padding>
-            <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-         </padding></AnchorPane>
-      <AnchorPane fx:id="commandBoxPlaceholder" styleClass="anchor-pane" VBox.vgrow="NEVER">
-         <padding>
-            <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-         </padding></AnchorPane>
+      <SplitPane dividerPositions="0.5">
+         <items>
+            <AnchorPane fx:id="scheduleTablePanelPlaceholder" styleClass="anchor-pane">
+               <padding>
+                  <Insets bottom="5.0" left="10.0" right="2.5" top="5.0" />
+               </padding>
+            </AnchorPane>
+            <VBox>
+               <children>
+                  <AnchorPane fx:id="deadlineTablePanelPlaceholder" styleClass="anchor-pane" VBox.vgrow="ALWAYS" />
+                  <AnchorPane fx:id="floatingTablePanelPlaceholder" styleClass="anchor-pane" />
+                  <AnchorPane fx:id="resultDisplayPlaceholder" minHeight="150.0" styleClass="anchor-pane" VBox.vgrow="NEVER" />
+                  <AnchorPane fx:id="commandBoxPlaceholder" styleClass="anchor-pane" VBox.vgrow="NEVER" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="2.5" right="10.0" top="5.0" />
+               </padding>
+            </VBox>
+         </items>
+      </SplitPane>
       <AnchorPane fx:id="statusbarPlaceholder" styleClass="anchor-pane" VBox.vgrow="NEVER" />
    </children>
    <stylesheets>

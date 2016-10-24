@@ -32,16 +32,16 @@ import java.util.logging.Logger;
 /**
  * Panel containing the list of tasks.
  */
-public class DeadlinePanel extends UiPart {
-    private final Logger logger = LogsCenter.getLogger(DeadlinePanel.class);
-    private static final String FXML = "DeadlinePanel.fxml";
+public class SchedulePanel extends UiPart {
+    private final Logger logger = LogsCenter.getLogger(SchedulePanel.class);
+    private static final String FXML = "SchedulePanel.fxml";
     private AnchorPane panel;
     private AnchorPane placeHolderPane;
 
     @FXML
-    private TableView<Activity> deadlineTableView;
+    private TableView<Activity> scheduleTableView;
 
-    public DeadlinePanel() {
+    public SchedulePanel() {
         super();
     }
 
@@ -60,10 +60,10 @@ public class DeadlinePanel extends UiPart {
         this.placeHolderPane = pane;
     }
 
-    public static DeadlinePanel load(Stage primaryStage, AnchorPane taskListPlaceholder,
+    public static SchedulePanel load(Stage primaryStage, AnchorPane taskListPlaceholder,
                                      ObservableList<Activity> taskList) {
-        DeadlinePanel deadlinePanel =
-                UiPartLoader.loadUiPart(primaryStage, taskListPlaceholder, new DeadlinePanel());
+        SchedulePanel deadlinePanel =
+                UiPartLoader.loadUiPart(primaryStage, taskListPlaceholder, new SchedulePanel());
         deadlinePanel.configure(taskList);
         return deadlinePanel;
     }
@@ -75,7 +75,7 @@ public class DeadlinePanel extends UiPart {
 
     // TODO Resolve generic type issue.
     private void setConnections(ObservableList<Activity> taskList) {
-        deadlineTableView.setItems(taskList);
+        scheduleTableView.setItems(taskList);
 
         TableColumn<Activity, String> titleColumn = new TableColumn<Activity, String>("Title");
         titleColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
@@ -83,7 +83,7 @@ public class DeadlinePanel extends UiPart {
                 return new ReadOnlyObjectWrapper<String>(p.getValue().getTitle().title);
             }
         });
-        deadlineTableView.getColumns().add(titleColumn);
+        scheduleTableView.getColumns().add(titleColumn);
 
         TableColumn<Activity, String> statusColumn = new TableColumn<Activity, String>("Status");
         statusColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
@@ -92,7 +92,7 @@ public class DeadlinePanel extends UiPart {
                         .map(Status::toString).orElse(""));
             }
         });
-        deadlineTableView.getColumns().add(statusColumn);
+        scheduleTableView.getColumns().add(statusColumn);
 
         TableColumn<Activity, String> deadlineColumn = new TableColumn<Activity, String>("Deadline");
         deadlineColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
@@ -101,7 +101,7 @@ public class DeadlinePanel extends UiPart {
                         .map(Deadline::toString).orElse(""));
             }
         });
-        deadlineTableView.getColumns().add(deadlineColumn);
+        scheduleTableView.getColumns().add(deadlineColumn);
 
         TableColumn<Activity, String> scheduleColumn = new TableColumn<Activity, String>("Schedule");
         scheduleColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
@@ -110,7 +110,7 @@ public class DeadlinePanel extends UiPart {
                         .map(Schedule::toString).orElse(""));
             }
         });
-        deadlineTableView.getColumns().add(scheduleColumn);
+        scheduleTableView.getColumns().add(scheduleColumn);
 
         TableColumn<Activity, String> frequencyColumn = new TableColumn<Activity, String>("Frequency");
         frequencyColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
@@ -119,7 +119,7 @@ public class DeadlinePanel extends UiPart {
                         .map(Frequency::toString).orElse(""));
             }
         });
-        deadlineTableView.getColumns().add(frequencyColumn);
+        scheduleTableView.getColumns().add(frequencyColumn);
 
         setEventHandlerForSelectionChangeEvent();
     }
@@ -127,12 +127,12 @@ public class DeadlinePanel extends UiPart {
     private void addToPlaceholder() {
         placeHolderPane.getChildren().add(panel);
         FxViewUtil.applyAnchorBoundaryParameters(panel, 0.0, 0.0, 0.0, 0.0);
-        FxViewUtil.applyAnchorBoundaryParameters(deadlineTableView, 0.0, 0.0, 0.0, 0.0);
+        FxViewUtil.applyAnchorBoundaryParameters(scheduleTableView, 0.0, 0.0, 0.0, 0.0);
     }
 
     // TODO Edit
     private void setEventHandlerForSelectionChangeEvent() {
-        deadlineTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        scheduleTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 logger.fine("Selection in task list panel changed to : '" + newValue + "'");
                 raise(new TaskPanelSelectionChangedEvent(newValue));
@@ -143,8 +143,8 @@ public class DeadlinePanel extends UiPart {
     // TODO Edit
     public void scrollTo(int index) {
         Platform.runLater(() -> {
-            deadlineTableView.scrollTo(index);
-            deadlineTableView.getSelectionModel().clearAndSelect(index);
+            scheduleTableView.scrollTo(index);
+            scheduleTableView.getSelectionModel().clearAndSelect(index);
         });
     }
 

@@ -29,7 +29,9 @@ public class MainWindow extends UiPart {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
+    private SchedulePanel schedulePanel;
     private DeadlinePanel deadlinePanel;
+    private FloatingPanel floatingPanel;
     private ResultDisplay resultDisplay;
     private StatusBarFooter statusBarFooter;
     private CommandBox commandBox;
@@ -49,7 +51,13 @@ public class MainWindow extends UiPart {
     private MenuItem helpMenuItem;
 
     @FXML
-    private AnchorPane taskListPanelPlaceholder;
+    private AnchorPane scheduleTablePanelPlaceholder;
+    
+    @FXML
+    private AnchorPane deadlineTablePanelPlaceholder;
+    
+    @FXML
+    private AnchorPane floatingTablePanelPlaceholder;
 
     @FXML
     private AnchorPane resultDisplayPlaceholder;
@@ -104,7 +112,9 @@ public class MainWindow extends UiPart {
     }
 
     void fillInnerParts() {
-        deadlinePanel = DeadlinePanel.load(primaryStage, getTaskListPlaceholder(), logic.getFilteredActivityList());
+        schedulePanel = SchedulePanel.load(primaryStage, getScheduleTablePlaceholder(), logic.getFilteredActivityList());
+        deadlinePanel = DeadlinePanel.load(primaryStage, getDeadlineTablePlaceholder(), logic.getFilteredActivityList());
+        floatingPanel = FloatingPanel.load(primaryStage, getFloatingTablePlaceholder(), logic.getFilteredActivityList());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getTaskManFilePath());
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
@@ -122,8 +132,16 @@ public class MainWindow extends UiPart {
         return resultDisplayPlaceholder;
     }
 
-    public AnchorPane getTaskListPlaceholder() {
-        return taskListPanelPlaceholder;
+    public AnchorPane getScheduleTablePlaceholder() {
+        return scheduleTablePanelPlaceholder;
+    }
+    
+    public AnchorPane getDeadlineTablePlaceholder() {
+        return deadlineTablePanelPlaceholder;
+    }
+    
+    public AnchorPane getFloatingTablePlaceholder() {
+        return floatingTablePanelPlaceholder;
     }
 
     public void hide() {
