@@ -32,16 +32,16 @@ import java.util.logging.Logger;
 /**
  * Panel containing the list of tasks.
  */
-public class TaskListPanel extends UiPart {
-    private final Logger logger = LogsCenter.getLogger(TaskListPanel.class);
-    private static final String FXML = "TaskListPanel.fxml";
+public class DeadlinePanel extends UiPart {
+    private final Logger logger = LogsCenter.getLogger(DeadlinePanel.class);
+    private static final String FXML = "DeadlinePanel.fxml";
     private AnchorPane panel;
     private AnchorPane placeHolderPane;
 
     @FXML
     private TableView<Activity> taskListView;
 
-    public TaskListPanel() {
+    public DeadlinePanel() {
         super();
     }
 
@@ -60,12 +60,12 @@ public class TaskListPanel extends UiPart {
         this.placeHolderPane = pane;
     }
 
-    public static TaskListPanel load(Stage primaryStage, AnchorPane taskListPlaceholder,
+    public static DeadlinePanel load(Stage primaryStage, AnchorPane taskListPlaceholder,
                                      ObservableList<Activity> taskList) {
-        TaskListPanel taskListPanel =
-                UiPartLoader.loadUiPart(primaryStage, taskListPlaceholder, new TaskListPanel());
-        taskListPanel.configure(taskList);
-        return taskListPanel;
+        DeadlinePanel deadlinePanel =
+                UiPartLoader.loadUiPart(primaryStage, taskListPlaceholder, new DeadlinePanel());
+        deadlinePanel.configure(taskList);
+        return deadlinePanel;
     }
 
     private void configure(ObservableList<Activity> taskList) {
