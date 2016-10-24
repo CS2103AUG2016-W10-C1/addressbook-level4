@@ -48,6 +48,7 @@ public class StoragelocCommand extends Command {
     }
 
     private StoragelocCommand(String filePath) {
+        super(true);
         this.filePath = FileUtil.getAbsolutePath(filePath);
     }
 

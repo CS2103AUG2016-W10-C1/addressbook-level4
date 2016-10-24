@@ -37,6 +37,7 @@ public class SelectCommand extends Command {
     }
 
     private SelectCommand(int targetIndex) {
+        super(false);
         this.targetIndex = targetIndex;
     }
 

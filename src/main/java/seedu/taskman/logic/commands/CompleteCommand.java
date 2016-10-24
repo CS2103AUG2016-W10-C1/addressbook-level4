@@ -37,6 +37,7 @@ public class CompleteCommand extends Command {
     private int targetIndex;
 
     private CompleteCommand(int targetIndex) {
+        super(true);
         this.targetIndex = targetIndex;
     }
 

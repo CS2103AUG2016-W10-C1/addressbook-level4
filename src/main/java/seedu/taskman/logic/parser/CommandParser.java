@@ -8,6 +8,7 @@ import seedu.taskman.logic.commands.DoCommand;
 import seedu.taskman.logic.commands.EditCommand;
 import seedu.taskman.logic.commands.ExitCommand;
 import seedu.taskman.logic.commands.HelpCommand;
+import seedu.taskman.logic.commands.HistoryCommand;
 import seedu.taskman.logic.commands.IncorrectCommand;
 import seedu.taskman.logic.commands.ListCommand;
 import seedu.taskman.logic.commands.MarkCommand;
@@ -89,6 +90,9 @@ public class CommandParser {
 
             case SelectCommand.COMMAND_WORD:
                 return SelectCommand.prepareSelect(arguments);
+
+            case HistoryCommand.COMMAND_WORD:
+                return new HistoryCommand();
 
             case DeleteCommand.COMMAND_WORD:
                 return DeleteCommand.prepareDelete(arguments);

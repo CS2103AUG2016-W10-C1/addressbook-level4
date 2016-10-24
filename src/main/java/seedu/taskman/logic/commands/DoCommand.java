@@ -44,6 +44,7 @@ public class DoCommand extends Command {
      */
     private DoCommand(String title, String deadline, String schedule, String frequency, Set<String> tags)
             throws IllegalValueException {
+        super(true);
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagName : tags) {
             tagSet.add(new Tag(tagName));

@@ -54,6 +54,7 @@ public class EditCommand extends Command {
     private EditCommand(int targetIndex,
                        @Nullable String title, @Nullable String deadline, @Nullable String status,
                        @Nullable String schedule, @Nullable String frequency, @Nullable Set<String> tags) {
+        super(true);
         argsContainer = new ArgumentContainer(targetIndex, title, deadline, status, schedule, frequency, tags);
     }
 

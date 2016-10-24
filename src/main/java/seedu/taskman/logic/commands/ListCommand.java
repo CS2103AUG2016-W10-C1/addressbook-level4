@@ -105,6 +105,7 @@ public class ListCommand extends Command {
     }
 
     private ListCommand(FilterMode filterMode, Set<String> keywords, Set<String> tags) {
+        super(false);
         this.filterMode = filterMode;
         this.keywords = keywords;
         this.tagNames = tags;

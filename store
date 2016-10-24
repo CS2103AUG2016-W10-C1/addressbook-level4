@@ -4,11 +4,15 @@
         <title>today</title>
     </events>
     <tasks>
-        <title>pear</title>
+        <title>homework</title>
         <status>incomplete</status>
     </tasks>
     <tasks>
-        <title>orange</title>
+        <title>nothing</title>
+        <status>incomplete</status>
+    </tasks>
+    <tasks>
+        <title>miss class</title>
         <status>incomplete</status>
     </tasks>
 </taskMan>

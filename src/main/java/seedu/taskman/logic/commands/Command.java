@@ -17,9 +17,14 @@ import java.util.regex.Pattern;
  */
 public abstract class Command {
     private static final Pattern TASK_INDEX_ARGS_FORMAT = Pattern.compile(CommandParser.ArgumentPattern.TARGET_INDEX.pattern);
+    public final boolean storeHistory;
     protected Model model;
     protected Storage storage;
     protected Stack<CommandHistory> historyStack;
+
+    protected Command(boolean storeHistory) {
+        this.storeHistory = storeHistory;
+    }
 
     /**
      * Constructs a feedback message to summarise an operation that displayed a listing of tasks.
@@ -80,12 +85,6 @@ public abstract class Command {
         this.model = model;
         this.storage = storage;
         this.historyStack = historyStack;
-    }
-
-    /**
-     * Set the storage object required for any execution of a command
-     */
-    public void setStorage(Storage storage) {
     }
 
     /**

@@ -43,6 +43,7 @@ public class MarkCommand extends Command {
      */
     private MarkCommand(String title, String schedule, String frequency, Set<String> tags)
             throws IllegalValueException {
+        super(true);
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagName : tags) {
             tagSet.add(new Tag(tagName));

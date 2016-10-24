@@ -34,15 +34,16 @@ public class LogicManager extends ComponentManager implements Logic {
 
     @Override
     public CommandResult execute(String commandText) {
+        // todo: clone model & storage here
+
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         Command command = commandParser.parseCommand(commandText);
         command.setData(model, storage, history);
         CommandResult result = command.execute();
 
-        if (result.succeeded) {
+        if (result.succeeded && command.storeHistory) {
+            // todo: save cloned model & storage below
             history.push(new CommandHistory(commandText, result.feedbackToUser));
-            // && is something that can be saved
-            // save in historyStack stack
         }
 
         return result;

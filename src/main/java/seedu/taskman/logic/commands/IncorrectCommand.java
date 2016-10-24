@@ -9,6 +9,7 @@ public class IncorrectCommand extends Command {
     public final String feedbackToUser;
 
     public IncorrectCommand(String feedbackToUser) {
+        super(false);
         this.feedbackToUser = feedbackToUser;
     }
 
