@@ -42,7 +42,7 @@ public class UndoCommand extends Command {
         assert model != null;
         if (commandsToUndo < HistoryCommand.CAPACITY_LOW_BOUND_HISTORY_COMMAND ||
                 commandsToUndo > historyDeque.size() ||
-                commandsToUndo >= HistoryCommand.CAPACITY_UPP_BOUND_HISTORY_COMMAND) {
+                commandsToUndo > HistoryCommand.CAPACITY_UPP_BOUND_HISTORY_COMMAND) {
             indicateAttemptToExecuteIncorrectCommand();
             return new CommandResult(MESSAGE_NUMBER_OUT_OF_RANGE, false);
         }
