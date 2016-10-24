@@ -82,9 +82,9 @@ public class FloatingPanel extends UiPart {
         
         TableColumn<Activity, String> numberColumn = new TableColumn<Activity, String>("#");
         numberColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
-          @Override public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
-            return new ReadOnlyObjectWrapper<String>(floatingTableView.getItems().indexOf(p.getValue()) + 1 + "");
-          }
+            public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
+                return new ReadOnlyObjectWrapper<String>(floatingTableView.getItems().indexOf(p.getValue()) + 1 + "");
+            }
         });   
         //numberColumn.setSortable(false);
         numberColumn.setMaxWidth(32);
