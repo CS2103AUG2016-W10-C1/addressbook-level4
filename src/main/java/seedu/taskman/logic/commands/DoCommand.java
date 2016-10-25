@@ -22,7 +22,7 @@ public class DoCommand extends Command {
 
     // todo, differed: let parameters be objects. we can easily generate the usage in that case
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a task to TaskMan.\n"
-            + "Parameters: TITLE d/DEADLINE s/SCHEDULE [t/TAG]...\n"
+            + "Parameters: TITLE d/OPTIONAL_DEADLINE s/OPTIONAL_SCHEDULE [t/OPTIONAL_TAGS]...\n"
             + "Example: " + COMMAND_WORD
             + " pay utility bills d/next fri 1800 s/tdy 1800, tdy 1830 t/bills";
 
@@ -30,10 +30,10 @@ public class DoCommand extends Command {
     public static final String MESSAGE_DUPLICATE_EVENT = "This task already exists in TaskMan";
     private static final Pattern TASK_DO_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("" + CommandParser.ArgumentPattern.TITLE
-                    + CommandParser.ArgumentPattern.DEADLINE
-                    + CommandParser.ArgumentPattern.SCHEDULE
-                    + CommandParser.ArgumentPattern.FREQUENCY
-                    + CommandParser.ArgumentPattern.TAG); // variable number of tags
+                    + CommandParser.ArgumentPattern.OPTIONAL_DEADLINE
+                    + CommandParser.ArgumentPattern.OPTIONAL_SCHEDULE
+                    + CommandParser.ArgumentPattern.OPTIONAL_FREQUENCY
+                    + CommandParser.ArgumentPattern.OPTIONAL_TAGS); // variable number of tags
 
     private final Task toAdd;
 

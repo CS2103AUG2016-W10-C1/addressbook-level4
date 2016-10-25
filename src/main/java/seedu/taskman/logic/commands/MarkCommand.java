@@ -22,7 +22,7 @@ public class MarkCommand extends Command {
 
     // todo, differed: let parameters be objects. we can easily generate the usage in that case
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an event to TaskMan.\n"
-            + "Parameters: TITLE s/SCHEDULE [t/TAG]...\n"
+            + "Parameters: TITLE s/OPTIONAL_SCHEDULE [t/OPTIONAL_TAGS]...\n"
             + "Example: " + COMMAND_WORD
             + " star gazing s/tdy 2300, tdy 2359 t/leisure";
 
@@ -30,9 +30,9 @@ public class MarkCommand extends Command {
     public static final String MESSAGE_DUPLICATE_EVENT = "This event already exists in TaskMan";
     private static final Pattern EVENT_MARK_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("" + CommandParser.ArgumentPattern.TITLE
-                    + CommandParser.ArgumentPattern.SCHEDULE
-                    + CommandParser.ArgumentPattern.FREQUENCY
-                    + CommandParser.ArgumentPattern.TAG); // variable number of tags
+                    + CommandParser.ArgumentPattern.OPTIONAL_SCHEDULE
+                    + CommandParser.ArgumentPattern.OPTIONAL_FREQUENCY
+                    + CommandParser.ArgumentPattern.OPTIONAL_TAGS); // variable number of tags
 
     private final Event toAdd;
 
