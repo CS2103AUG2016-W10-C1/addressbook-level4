@@ -4,36 +4,27 @@ import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import seedu.taskman.commons.core.LogsCenter;
 import seedu.taskman.commons.events.ui.TaskPanelSelectionChangedEvent;
 import seedu.taskman.commons.util.FxViewUtil;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Deadline;
-import seedu.taskman.model.event.Frequency;
-import seedu.taskman.model.event.Schedule;
 import seedu.taskman.model.event.Status;
-import seedu.taskman.commons.core.LogsCenter;
 
 import java.util.logging.Logger;
 
 /**
  * Panel containing the list of tasks.
  */
-public class DeadlinePanel extends UiPart {
+public class DeadlinePanel extends UiPart implements ListPanel {
     private final Logger logger = LogsCenter.getLogger(DeadlinePanel.class);
     private static final String FXML = "DeadlinePanel.fxml";
     private AnchorPane panel;
@@ -141,11 +132,20 @@ public class DeadlinePanel extends UiPart {
     }
 
     // TODO Edit
+    @Override
     public void scrollTo(int index) {
         Platform.runLater(() -> {
             deadlineTableView.scrollTo(index);
             deadlineTableView.getSelectionModel().clearAndSelect(index);
         });
     }
+
+    @Override
+    public void clearSelection() {
+        Platform.runLater(() -> {
+            deadlineTableView.getSelectionModel().clearSelection();
+        });
+    }
+
 
 }
