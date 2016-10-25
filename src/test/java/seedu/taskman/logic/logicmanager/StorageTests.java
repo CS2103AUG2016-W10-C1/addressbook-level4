@@ -8,6 +8,7 @@ import seedu.taskman.commons.exceptions.DataConversionException;
 import seedu.taskman.commons.util.FileUtil;
 import seedu.taskman.logic.commands.CommandResult;
 import seedu.taskman.logic.commands.StoragelocCommand;
+import seedu.taskman.logic.commands.ViewStoragelocCommand;
 import seedu.taskman.model.TaskMan;
 
 import java.io.IOException;
@@ -82,6 +83,12 @@ public class StorageTests extends LogicManagerTestBase {
     public void execute_storageloc_empty() throws Exception {
         assert_storage_location(StoragelocCommand.COMMAND_WORD + "",
                 String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, StoragelocCommand.MESSAGE_USAGE), ConfigData.DEFAULT_TASK_MAN_FILE_PATH, false);
+    }
+
+    @Test
+    public void execute_storageloc_view() throws Exception {
+        assert_storage_location(StoragelocCommand.COMMAND_WORD + " view",
+                String.format(ViewStoragelocCommand.MESSAGE,Config.DEFAULT_TASK_MAN_FILE_PATH), Config.DEFAULT_TASK_MAN_FILE_PATH, false);
     }
 
 
