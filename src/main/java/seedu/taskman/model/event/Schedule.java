@@ -2,9 +2,11 @@ package seedu.taskman.model.event;
 
 import com.google.common.base.Objects;
 
+import org.ocpsoft.prettytime.PrettyTime;
 import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.logic.parser.DateTimeParser;
 
+import java.sql.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,8 +31,11 @@ public class Schedule {
     public static final String SCHEDULE_VALIDATION_REGEX =
             "(.*)" + SCHEDULE_DIVIDER_GROUP + "(.*)";
 
+    public static final int MULTIPLIER_TIME_UNIX_TO_JAVA = 1000;
     public final long startEpochSecond;
     public final long endEpochSecond;
+
+    public final PrettyTime prettyTimeFormatter = new PrettyTime();
 
     public Schedule(long startEpochSecond, long endEpochSecond) throws IllegalValueException {
 
@@ -97,9 +102,13 @@ public class Schedule {
 
     @Override
     public String toString() {
-        return DateTimeParser.epochSecondToShortDateTime(startEpochSecond) +
+        /* return DateTimeParser.epochSecondToShortDateTime(startEpochSecond) +
                 " to\n" +
-                DateTimeParser.epochSecondToDetailedDateTime(endEpochSecond);
+                DateTimeParser.epochSecondToDetailedDateTime(endEpochSecond); */
+        return String.format(
+                prettyTimeFormatter.format(new Date(startEpochSecond * MULTIPLIER_TIME_UNIX_TO_JAVA)),
+                " to\n",
+                prettyTimeFormatter.format(new Date(endEpochSecond * MULTIPLIER_TIME_UNIX_TO_JAVA)));
     }
 
     @Override
