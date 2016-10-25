@@ -1,25 +1,6 @@
-package seedu.taskman.ui;
-
-import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableView;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import javafx.util.Callback;
-import seedu.taskman.commons.core.LogsCenter;
-import seedu.taskman.commons.events.ui.TaskPanelSelectionChangedEvent;
-import seedu.taskman.commons.util.FxViewUtil;
-import seedu.taskman.model.event.Activity;
-import seedu.taskman.model.event.Schedule;
-
-import java.util.logging.Logger;
-//@@author A0140136W-reused
+# A0140136Wreused
+###### /java/seedu/taskman/ui/SchedulePanel.java
+``` java
 /**
  * Panel containing the list of tasks.
  */
@@ -135,3 +116,4 @@ public class SchedulePanel extends UiPart implements ListPanel {
     }
 
 }
+```
