@@ -1,14 +1,14 @@
 package seedu.taskman.logic.commands;
 
+import seedu.taskman.logic.parser.CommandParser;
+import seedu.taskman.model.event.Activity;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import seedu.taskman.logic.parser.CommandParser;
-import seedu.taskman.model.event.Activity;
 
 import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
@@ -18,16 +18,9 @@ import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
  */
 public class ListCommand extends Command {
     /*
-    public enum FilterMode {
-        SCHEDULE_ONLY,
-        DEADLINE_ONLY,
-        FLOATING_ONLY,
-        ALL
-    }
-
     private enum ListFlag{
-        SCHEDULE("s/", FilterMode.SCHEDULE_ONLY),
-        DEADLINE("d/", FilterMode.DEADLINE_ONLY),
+        OPTIONAL_SCHEDULE("s/", FilterMode.SCHEDULE_ONLY),
+        OPTIONAL_DEADLINE("d/", FilterMode.DEADLINE_ONLY),
         FLOATING("f/", FilterMode.FLOATING_ONLY),
         ALL("all/", FilterMode.ALL);
 
@@ -64,14 +57,14 @@ public class ListCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all tasks whose titles contain any of "
             + "the specified keywords (case-sensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: [{d/, f/, all/}] [KEYWORDS]... [t/TAG]...\n"
+            + "Parameters: [{d/, f/, all/}] [OPTIONAL_KEYWORDS]... [t/OPTIONAL_TAGS]...\n"
             + "Example: " + COMMAND_WORD + " all/ homework t/CS2103T";
 
     public static final String MESSAGE_SUCCESS = "Listed all tasks";
-    private static final Pattern LIST_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
-            Pattern.compile("" + CommandParser.ArgumentPattern.PANEL
-                    + CommandParser.ArgumentPattern.TITLE + "?"
-                    + CommandParser.ArgumentPattern.TAG); // variable number of tags
+    private static final Pattern LIST_ARGS_FORMAT =
+            Pattern.compile("" + CommandParser.ArgumentPattern.PANEL + " ?"
+                    + CommandParser.ArgumentPattern.OPTIONAL_KEYWORDS
+                    + CommandParser.ArgumentPattern.OPTIONAL_TAGS);
 
     private final Activity.PanelType panelType;
     private final Set<String> keywords;
@@ -122,10 +115,13 @@ public class ListCommand extends Command {
     @Override
     public CommandResult execute() {
         model.updateFilteredPanel(panelType, keywords, tagNames);
-        return new CommandResult(getMessageForTaskListShownSummary(model.getActivityListForPanelType(Activity.PanelType.SCHEDULE).size()
-                                                                   + model.getActivityListForPanelType(Activity.PanelType.DEADLINE).size()
-                                                                   + model.getActivityListForPanelType(Activity.PanelType.FLOATING).size()
-                                                                   ), true);
+
+        String displayMessage = getMessageForTaskListShownSummary(
+                model.getActivityListForPanelType(Activity.PanelType.SCHEDULE).size()
+                        + model.getActivityListForPanelType(Activity.PanelType.DEADLINE).size()
+                        + model.getActivityListForPanelType(Activity.PanelType.FLOATING).size()
+        );
+        return new CommandResult(displayMessage, true);
     }
 
 }

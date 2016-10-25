@@ -24,7 +24,7 @@ public class Frequency {
         throw new AssertionError("Frequency is currently not supported");
     }
 
-    // TODO: FIX FREQUENCY!!!!
+    // TODO: FIX OPTIONAL_FREQUENCY!!!!
     public Frequency(String frequency) throws IllegalValueException {
         this();
         assert frequency != null;

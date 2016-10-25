@@ -32,7 +32,7 @@ public class EditCommand extends Command {
     public static final String COMMAND_WORD = "edit";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits an existing activity.\n"
-            + "Parameters: INDEX [TITLE] [d/DEADLINE] [c/STATUS] [s/SCHEDULE] [t/TAG]...\n"
+            + "Parameters: INDEX [TITLE] [d/OPTIONAL_DEADLINE] [c/OPTIONAL_STATUS] [s/OPTIONAL_SCHEDULE] [t/OPTIONAL_TAGS]...\n"
             + "Example: " + COMMAND_WORD
             + " 1 CS2103T Tutorial d/fri 11.59pm c/complete s/mon 2200 to tue 0200 t/friends t/owesMoney";
 
@@ -43,11 +43,11 @@ public class EditCommand extends Command {
             Pattern.compile("" + CommandParser.ArgumentPattern.PANEL
                     + CommandParser.ArgumentPattern.TARGET_INDEX
                     + CommandParser.ArgumentPattern.TITLE + "?"
-                    + CommandParser.ArgumentPattern.DEADLINE
-                    + CommandParser.ArgumentPattern.STATUS
-                    + CommandParser.ArgumentPattern.SCHEDULE
-                    + CommandParser.ArgumentPattern.FREQUENCY
-                    + CommandParser.ArgumentPattern.TAG); // variable number of tags
+                    + CommandParser.ArgumentPattern.OPTIONAL_DEADLINE
+                    + CommandParser.ArgumentPattern.OPTIONAL_STATUS
+                    + CommandParser.ArgumentPattern.OPTIONAL_SCHEDULE
+                    + CommandParser.ArgumentPattern.OPTIONAL_FREQUENCY
+                    + CommandParser.ArgumentPattern.OPTIONAL_TAGS); // variable number of tags
 
     private final ArgumentContainer argsContainer;
     private Activity beforeEdit;

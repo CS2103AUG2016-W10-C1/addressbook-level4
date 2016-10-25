@@ -36,11 +36,12 @@ public class CommandParser {
         PANEL("(?<panel>[dsf])"),
         TARGET_INDEX("(?<targetIndex>[0-9]+)"),
         TITLE("(?<title>[^/]+)"),
-        DEADLINE("(?:\\s+d/(?<deadline>[^/]+))?"),
-        SCHEDULE("(?:\\s+s/(?<schedule>[^/]+))?"),
-        STATUS("(?:\\s+c/(?<status>[^/]+))?"),
-        FREQUENCY("(?:\\s+f/(?<frequency>[^/]+))?"),
-        TAG("(?<tagArguments>(?:\\s*t/[^/]+)*)?"),
+        OPTIONAL_KEYWORDS("(?<keywords>(?:\\s*[^/]+)*?)?"),
+        OPTIONAL_DEADLINE("(?:\\s+d/(?<deadline>[^/]+))?"),
+        OPTIONAL_SCHEDULE("(?:\\s+s/(?<schedule>[^/]+))?"),
+        OPTIONAL_STATUS("(?:\\s+c/(?<status>[^/]+))?"),
+        OPTIONAL_FREQUENCY("(?:\\s+f/(?<frequency>[^/]+))?"),
+        OPTIONAL_TAGS("(?<tagArguments>(?:\\s*t/[^/]+)*)?"),
         FILE_PATH(".+");
 
         public final String pattern;

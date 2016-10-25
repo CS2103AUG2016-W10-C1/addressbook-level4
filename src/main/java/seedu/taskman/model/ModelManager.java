@@ -9,7 +9,6 @@ import seedu.taskman.commons.core.UnmodifiableObservableList;
 import seedu.taskman.commons.events.model.TaskManChangedEvent;
 import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.commons.util.StringUtil;
-import seedu.taskman.logic.commands.ListCommand;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Deadline;
 import seedu.taskman.model.event.Event;
@@ -62,10 +61,6 @@ public class ModelManager extends ComponentManager implements Model {
         sortedFloatings = filteredFloatings.sorted();
     }
 
-    public ModelManager() {
-        this(new TaskMan(), new UserPrefs());
-    }
-
     public ModelManager(ReadOnlyTaskMan initialData, UserPrefs userPrefs) {
         taskMan = new TaskMan(initialData);
         ObservableList<Activity> activities = taskMan.getActivities();
@@ -103,14 +98,12 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public synchronized void addActivity(Event event) throws UniqueActivityList.DuplicateActivityException {
         taskMan.addActivity(event);
-        //updateFilteredListToShowAll();
         indicateTaskManChanged();
     }
 
     @Override
     public synchronized void addActivity(Activity activity) throws UniqueActivityList.DuplicateActivityException {
         taskMan.addActivity(activity);
-        //updateFilteredListToShowAll();
         indicateTaskManChanged();
     }
 
@@ -198,10 +191,6 @@ public class ModelManager extends ComponentManager implements Model {
 
     //TODO Remove
     /*
-    @Override
-    public void updateFilteredListToShowAll() {
-        sortedActivities.setPredicate(null);
-    }
 
     @Override
     public void updateFilteredActivityList(ListCommand.FilterMode filterMode, Set<String> keywords, Set<String> tagNames) {
@@ -221,7 +210,7 @@ public class ModelManager extends ComponentManager implements Model {
         String toString();
     }
 
-    private class PredicateExpression implements Expression {
+    private static class PredicateExpression implements Expression {
 
         private final Qualifier qualifier;
 
@@ -246,8 +235,7 @@ public class ModelManager extends ComponentManager implements Model {
         String toString();
     }
 
-    // TODO: remove?
-    private class ActivityQualifier implements Qualifier {
+    private static class ActivityQualifier implements Qualifier {
         private Set<String> titleKeyWords;
         private Set<String> tagNames;
 
@@ -256,7 +244,6 @@ public class ModelManager extends ComponentManager implements Model {
             this.tagNames = tagNames;
         }
 
-        // TODO: refactor, improve readability of this method...
         @Override
         public boolean run(Activity activity) {
             // (fit task/event type && (no keyword || contain a keyword) && (no tag || contain a tag))
