@@ -40,9 +40,9 @@ public interface ReadOnlyEvent {
     default String getAsText() {
         final StringBuilder builder = new StringBuilder();
         builder.append(getTitle())
-                .append(" Recurring: ")
-                .append(getFrequency())
-                .append(" Frequency: ")
+                //.append(" Recurring: ")
+                //.append(getFrequency())
+                .append(" Schedule: ")
                 .append(getSchedule())
                 .append(" Tags: ");
         getTags().forEach(builder::append);
