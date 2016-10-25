@@ -1,12 +1,9 @@
 package seedu.taskman.model;
 
 import seedu.taskman.commons.core.UnmodifiableObservableList;
-import seedu.taskman.logic.commands.ListCommand;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Event;
 import seedu.taskman.model.event.UniqueActivityList;
-
-import java.util.Set;
 
 /**
  * The API of the Model component.
@@ -30,7 +27,7 @@ public interface Model {
     /**
      * Returns the filtered list of activity as an {@code UnmodifiableObservableList<Activity>}
      */
-    //UnmodifiableObservableList<Activity> getFilteredActivityList();
+    UnmodifiableObservableList<Activity> getFilteredActivityList();
     
     /**
      * Returns the filtered list of activities with schedules as an {@code UnmodifiableObservableList<Activity>}

@@ -1,7 +1,6 @@
 package seedu.taskman.model;
 
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import seedu.taskman.commons.core.ComponentManager;
 import seedu.taskman.commons.core.LogsCenter;
@@ -127,13 +126,11 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     //TODO Remove
-    /*
     @Override
     public UnmodifiableObservableList<Activity> getFilteredActivityList() {
         return new UnmodifiableObservableList<>(sortedActivities);
     }
-    */
-    
+
     @Override
     public UnmodifiableObservableList<Activity> getSortedScheduleList() {
         return new UnmodifiableObservableList<>(sortedSchedules);
@@ -199,6 +196,7 @@ public class ModelManager extends ComponentManager implements Model {
         String toString();
     }
 
+    // TODO: remove?
     private class ActivityQualifier implements Qualifier {
         private Set<String> titleKeyWords;
         private Set<String> tagNames;
