@@ -10,7 +10,6 @@ import seedu.taskman.testutil.TestUtil;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
 //TODO Change to DoCommandTest and MarkCommandTest
 public class AddCommandTest extends TaskManGuiTest {
     
@@ -34,7 +33,7 @@ public class AddCommandTest extends TaskManGuiTest {
             expectedList[i] = new Activity(new Task(currentList[i]));
         }
         assertResultMessage(DoCommand.MESSAGE_DUPLICATE_EVENT);
-        assertTrue(taskListPanel.isListMatching(expectedList));
+        assertTrue(deadlineListPanel.isListMatching(expectedList));
 
         //add to empty list
         commandBox.runCommand("clear");
@@ -49,7 +48,7 @@ public class AddCommandTest extends TaskManGuiTest {
         commandBox.runCommand(taskToAdd.getAddCommand());
 
         //confirm the new row contains the right data
-        TaskRowHandle addedRow = taskListPanel.navigateToTask(taskToAdd.getTitle().title);
+        TaskRowHandle addedRow = deadlineListPanel.navigateToActivity(taskToAdd.getTitle().title);
         assertMatching(new Activity(new Task(taskToAdd)), addedRow);
 
         //confirm the list now contains all previous tasks plus the new task
@@ -58,7 +57,7 @@ public class AddCommandTest extends TaskManGuiTest {
         for (int i = 0; i < expectedActivityList.length; i++) {
             expectedActivityList[i] = new Activity(new Task(expectedList[i]));
         }
-        assertTrue(taskListPanel.isListMatching(expectedActivityList));
+        assertTrue(deadlineListPanel.isListMatching(expectedActivityList));
     }
 
 }

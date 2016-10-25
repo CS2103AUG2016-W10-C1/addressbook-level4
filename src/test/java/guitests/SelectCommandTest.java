@@ -1,14 +1,20 @@
 package guitests;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import seedu.taskman.model.event.Activity;
 
-import static org.junit.Assert.assertEquals;
+import java.util.regex.Pattern;
 
-// todo: should fix
-@Ignore
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+/**
+ * Test select deadlines()
+ */
 public class SelectCommandTest extends TaskManGuiTest {
+
+    public static final Pattern SELECT_SUCCESS_MESSAGE_CHECK =
+            Pattern.compile("Selected Task: (?:\\S*\\s*)*");
 
 
     @Test
@@ -32,30 +38,30 @@ public class SelectCommandTest extends TaskManGuiTest {
     @Test
     public void selectTask_emptyList() {
         commandBox.runCommand("clear");
-        assertListSize(0);
+        assertDeadlineListSize(0);
         assertSelectionInvalid(1); //invalid index
     }
 
     private void assertSelectionInvalid(int index) {
-        commandBox.runCommand("select " + index);
+        commandBox.runCommand("select d" + index);
         assertResultMessage("The task index provided is invalid");
     }
 
     private void assertSelectionSuccess(int index) {
-        commandBox.runCommand("select " + index);
-        assertResultMessage("Selected Task: " + index);
+        commandBox.runCommand("select d" + index);
+        System.out.println(resultDisplay.getText());
+        assertTrue(SELECT_SUCCESS_MESSAGE_CHECK.matcher(resultDisplay.getText()).matches());
         assertTaskSelected(index);
     }
 
     private void assertTaskSelected(int index) {
-        assertEquals(taskListPanel.getSelectedTasks().size(), 1);
-        Activity selectedTask = taskListPanel.getSelectedTasks().get(0);
-        assertEquals(taskListPanel.getTask(index - 1), selectedTask);
-        //TODO: confirm the correct page is loaded in the Browser Panel
+        assertEquals(deadlineListPanel.getSelectedTasks().size(), 1);
+        Activity selectedTask = deadlineListPanel.getSelectedTasks().get(0);
+        assertEquals(deadlineListPanel.getActivity(index - 1), selectedTask);
     }
 
     private void assertNoTaskSelected() {
-        assertEquals(taskListPanel.getSelectedTasks().size(), 0);
+        assertEquals(deadlineListPanel.getSelectedTasks().size(), 0);
     }
 
 }
