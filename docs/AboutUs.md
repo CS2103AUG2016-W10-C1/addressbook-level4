@@ -9,7 +9,7 @@ We are a team based in the [School of Computing, National University of Singapor
 * Responsibilities: Team Lead
 * Features implemented:
     * [Command for Creating Tasks](https://github.com/CS2103AUG2016-W10-C1/main/pull/15)
-    *  Parsing for Relative DateTime [File](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/parser/DateTimeParser.java) [File](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/test/java/seedu/taskman/logic/parser/DateTimeParserTest.java)
+    *  Parsing for Relative DateTime [[File](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/parser/DateTimeParser.java)] [[File](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/test/java/seedu/taskman/logic/parser/DateTimeParserTest.java)]
 * Code written: [[functional code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/main/A0139019E.md)][[test code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/test/A0139019E.md)][[docs](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/docs/A0139019E.md)]
 
 * Other major contributions:
