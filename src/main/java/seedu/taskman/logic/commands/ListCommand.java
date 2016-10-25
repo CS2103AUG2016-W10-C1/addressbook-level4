@@ -51,7 +51,7 @@ public class ListCommand extends Command {
     public static final String COMMAND_WORD = "list";
     
     /*
-    public static final Pattern LIST_ARGS_FORMAT = Pattern.compile("(?<filter>" + ListFlag.matchingRegex() + ")?" +
+    public static final Pattern SPECIFY_PANEL_ARGS_FORMAT = Pattern.compile("(?<filter>" + ListFlag.matchingRegex() + ")?" +
             "(?<keywords>(?:\\s*[^/]+)*?)??(?<tagArguments>(?:\\s*t/[^/]+)*)?"); // one or more keywords separated by whitespace
     */
 
@@ -61,8 +61,8 @@ public class ListCommand extends Command {
             + "Example: " + COMMAND_WORD + " all/ homework t/CS2103T";
 
     public static final String MESSAGE_SUCCESS = "Listed all tasks";
-    private static final Pattern LIST_ARGS_FORMAT =
-            Pattern.compile("" + CommandParser.ArgumentPattern.PANEL + " ?"
+    private static final Pattern SPECIFY_PANEL_ARGS_FORMAT =
+            Pattern.compile("" + CommandParser.ArgumentPattern.PANEL
                     + CommandParser.ArgumentPattern.OPTIONAL_KEYWORDS
                     + CommandParser.ArgumentPattern.OPTIONAL_TAGS);
 
@@ -72,7 +72,7 @@ public class ListCommand extends Command {
 
     public static Command prepareList(String args) {
         final String trimmedArgs = args.trim();
-        final Matcher matcher = LIST_ARGS_FORMAT.matcher(trimmedArgs);
+        final Matcher matcher = SPECIFY_PANEL_ARGS_FORMAT.matcher(trimmedArgs);
 
         if (trimmedArgs.isEmpty()) {
             final Set<String> keywordSet = new HashSet<>();
