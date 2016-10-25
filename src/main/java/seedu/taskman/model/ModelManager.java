@@ -129,51 +129,60 @@ public class ModelManager extends ComponentManager implements Model {
     }
     
     public void updateFilteredPanelToShowAll(Activity.PanelType panel) {
-        switch(panel) {
-            case SCHEDULE: {
-                filteredSchedules.setPredicate(new DeadlinePredicate());
-                return;
-            }
-            case DEADLINE: {
-                filteredDeadlines.setPredicate(new DeadlinePredicate());
-                return;
-            }
-            case FLOATING: {
-                filteredFloatings.setPredicate(new DeadlinePredicate());
-                return;
-            }
-            default: {
-                assert false : "Unspecified panel type";
-            }
-        }    
-    }
-    
-    public void updateFilteredPanel(Activity.PanelType panel, Set<String> keywords, Set<String> tagNames) {
-        updateFilteredPanel(panel, new PredicateExpression(new ActivityQualifier(keywords, tagNames)));
-    }
-        
-    private void updateFilteredPanel(Activity.PanelType panel, Expression expression) {
-        switch(panel) {
-            case SCHEDULE: {
-                filteredSchedules.setPredicate(expression::satisfies);
-                return;
-            }
-            case DEADLINE: {
-                filteredDeadlines.setPredicate(expression::satisfies);
-                return;
-            }
-            case FLOATING: {
-                filteredFloatings.setPredicate(expression::satisfies);
-                return;
-            }
-            default: {
-                filteredSchedules.setPredicate(expression::satisfies);
-                filteredDeadlines.setPredicate(expression::satisfies);
-                filteredFloatings.setPredicate(expression::satisfies);             
-            }
+        if(panel == null) {
+            filteredSchedules.setPredicate(new SchedulePredicate());
+            filteredDeadlines.setPredicate(new DeadlinePredicate());
+            filteredFloatings.setPredicate(new FloatingPredicate());
+        } else {        
+            switch(panel) {
+                case SCHEDULE: {
+                    filteredSchedules.setPredicate(new SchedulePredicate());
+                    return;
+                }
+                case DEADLINE: {
+                    filteredDeadlines.setPredicate(new DeadlinePredicate());
+                    return;
+                }
+                case FLOATING: {
+                    filteredFloatings.setPredicate(new FloatingPredicate());
+                    return;
+                }
+                default: {
+                    assert false : "Unspecified panel type";
+                }
+            }    
         }
     }
     
+    public void updateFilteredPanel(Activity.PanelType panel, Set<String> keywords, Set<String> tagNames) {
+        updateFilteredPanel(panel, new PredicateExpression(new ActivityQualifier(panel, keywords, tagNames)));
+    }
+        
+    private void updateFilteredPanel(Activity.PanelType panel, Expression expression) {
+        if (panel == null) {
+            filteredSchedules.setPredicate(expression::satisfies);
+            filteredDeadlines.setPredicate(expression::satisfies);
+            filteredFloatings.setPredicate(expression::satisfies);
+        } else {
+            switch(panel) {
+                case SCHEDULE: {
+                    filteredSchedules.setPredicate(expression::satisfies);
+                    return;
+                }
+                case DEADLINE: {
+                    filteredDeadlines.setPredicate(expression::satisfies);
+                    return;
+                }
+                case FLOATING: {
+                    filteredFloatings.setPredicate(expression::satisfies);
+                    return;
+                }
+                default: {
+                    assert false : "No such panel.";
+                }
+            }
+        }
+    } 
 
     @Override
     public UnmodifiableObservableList<Activity> getSortedScheduleList() {
@@ -228,6 +237,7 @@ public class ModelManager extends ComponentManager implements Model {
         public String toString() {
             return qualifier.toString();
         }
+        
     }
 
     interface Qualifier {
@@ -236,24 +246,52 @@ public class ModelManager extends ComponentManager implements Model {
         String toString();
     }
 
-    private static class ActivityQualifier implements Qualifier {
+    private static class ActivityQualifier implements Qualifier {        
         private Set<String> titleKeyWords;
         private Set<String> tagNames;
+        private Activity.PanelType panelType;
 
-        ActivityQualifier(Set<String> titleKeyWords, Set<String> tagNames) {
+        ActivityQualifier(Activity.PanelType panel, Set<String> titleKeyWords, Set<String> tagNames) {
+            this.panelType = panel;
             this.titleKeyWords = titleKeyWords;
             this.tagNames = tagNames;
         }
 
         @Override
         public boolean run(@Nonnull Activity activity) {
-            boolean noTitleKeyWords = titleKeyWords == null || titleKeyWords.isEmpty() ||
-                    (titleKeyWords.size() == 1 && titleKeyWords.contains(""));
-            boolean noTags = tagNames == null || tagNames.isEmpty();
+            boolean noTitleKeyWords = titleKeyWords == null
+                                      || titleKeyWords.isEmpty()
+                                      || (titleKeyWords.size() == 1 && titleKeyWords.contains(""));
+            boolean noTags = tagNames == null
+                             || tagNames.isEmpty();
 
             // (no keyword || contain a keyword) && (no tag || contain a tag))
-            return (noTitleKeyWords || containKeyWordsInTitle(titleKeyWords, activity)) &&
-                    (noTags || containsTags(tagNames, activity));
+            return isCorrectActivityType(activity)
+                   &&(noTitleKeyWords || containKeyWordsInTitle(titleKeyWords, activity))
+                   && (noTags || containsTags(tagNames, activity));
+        }
+        
+        private boolean isCorrectActivityType(Activity activity) {
+            if (panelType == null) {
+                return true;
+            } else {
+                switch(panelType) {
+                    case SCHEDULE: {
+                        return activity.getSchedule().isPresent();
+                    }
+                    case DEADLINE: {
+                        return activity.getType() == Activity.ActivityType.TASK
+                               && activity.getDeadline().isPresent();
+                    }
+                    case FLOATING: {
+                        return activity.getType() == Activity.ActivityType.TASK
+                               && !activity.getDeadline().isPresent();
+                    }
+                    default: {
+                        throw new AssertionError("No such panel.", null);
+                    }
+                }
+            }
         }
 
         private boolean containKeyWordsInTitle(@Nonnull Set<String> titleKeyWords, Activity activity) {
