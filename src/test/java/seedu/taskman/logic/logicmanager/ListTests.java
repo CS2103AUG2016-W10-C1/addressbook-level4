@@ -7,11 +7,10 @@ import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Task;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-// todo: should fix
-@Ignore
+import static org.junit.Assert.assertTrue;
+
 public class ListTests extends LogicManagerTestBase {
 
     @Test
@@ -19,50 +18,14 @@ public class ListTests extends LogicManagerTestBase {
         assertCommandNoStateChange("list ");
     }
 
-    // todo: should fix
-    @Ignore
     @Test
-    public void execute_list_showsDeadlineTasks() throws Exception {
-        // setup expected
-        LogicManagerTestBase.TestDataHelper helper = new TestDataHelper();
-        TaskMan expectedTaskMan = helper.generateTaskMan(2);
-        List<Activity> expectedList = expectedTaskMan.getActivityList();
-
-        // setup actual
-        helper.addToModel(model, 2);
-
-        assertCommandStateChange("list",
-                expectedTaskMan
-        );
-    }
-
-    // todo: should fix
-    @Ignore
-    @Test
-    public void execute_list_filter_all() throws Exception{
-        // setup expectations
-        TestDataHelper helper = new TestDataHelper();
-        TaskMan expectedTaskMan = helper.generateTaskMan(2);
-        List<Activity> expectedList = expectedTaskMan.getActivityList();
-
-        // setup task man state
-        helper.addToModel(model, 2);
-
-        assertCommandStateChange("list all/",
-                expectedTaskMan
-        );
-    }
-
-    // todo: should fix
-    @Ignore
-    @Test
-    public void execute_listDeadline_showsDeadlineTasks() throws Exception {
+    public void execute_listFilteredDeadline_correctTasks() throws Exception {
         // setup expected
         LogicManagerTestBase.TestDataHelper helper = new TestDataHelper();
         ArrayList<Task> targetList = helper.generateTaskList(
                 helper.generateTaskWithOnlyDeadline("show1"),
                 helper.generateTaskWithOnlyDeadline("show2"),
-                helper.generateTaskWithAllFields("all")
+                helper.generateTaskWithAllFields("show3")
         );
         ArrayList<Task> fullList = helper.generateTaskList(
                 helper.generateTaskWithOnlySchedule("other1"),
@@ -70,17 +33,14 @@ public class ListTests extends LogicManagerTestBase {
         );
         fullList.addAll(targetList);
 
-        TaskMan expectedTaskMan = helper.generateTaskMan(fullList);
         List<Activity> expectedList = helper.tasksToActivity(targetList);
 
         helper.addToModel(model, fullList);
-        assertCommandStateChange("list d/",
-                expectedTaskMan
-        );
+        logic.execute("list d");
+        assertTrue(model.getSortedDeadlineList().containsAll(expectedList));
+        assertTrue(model.getSortedDeadlineList().size() == expectedList.size());
     }
 
-    // todo: should fix
-    @Ignore
     @Test
     public void execute_listSchedule_showsScheduledTasks() throws Exception {
         // setup expected
@@ -88,7 +48,7 @@ public class ListTests extends LogicManagerTestBase {
         ArrayList<Task> targetList = helper.generateTaskList(
                 helper.generateTaskWithOnlySchedule("show1"),
                 helper.generateTaskWithOnlySchedule("show2"),
-                helper.generateTaskWithAllFields("all")
+                helper.generateTaskWithAllFields("show3")
         );
         ArrayList<Task> fullList = helper.generateTaskList(
                 helper.generateTaskWithOnlyDeadline("other1"),
@@ -96,44 +56,40 @@ public class ListTests extends LogicManagerTestBase {
         );
         fullList.addAll(targetList);
 
-        TaskMan expectedTaskMan = helper.generateTaskMan(fullList);
         List<Activity> expectedList = helper.tasksToActivity(targetList);
 
         helper.addToModel(model, fullList);
-        assertCommandStateChange("list s/",
-                expectedTaskMan
-        );
+        logic.execute("list s");
+        assertTrue(model.getSortedScheduleList().containsAll(expectedList));
+        assertTrue(model.getSortedScheduleList().size() == expectedList.size());
     }
 
-    @Ignore
     @Test
-    public void execute_listFloating_showsScheduledTasks() throws Exception {
-        // setup expected
+    public void execute_listFloating_showsFloatingTasks() throws Exception {
+        // floating refers to no deadline
+
         LogicManagerTestBase.TestDataHelper helper = new TestDataHelper();
         ArrayList<Task> targetList = helper.generateTaskList(
-                helper.generateTaskWithOnlyDeadline("floating1"),
-                helper.generateTaskWithOnlyDeadline("floating2")
+                helper.generateTaskWithOnlySchedule("other1"),
+                helper.generateTaskWithOnlySchedule("other2")
         );
         ArrayList<Task> fullList = helper.generateTaskList(
-                helper.generateTaskWithOnlySchedule("other1"),
-                helper.generateTaskWithOnlySchedule("other2"),
+                helper.generateTaskWithOnlyDeadline("floating1"),
+                helper.generateTaskWithOnlyDeadline("floating2"),
                 helper.generateTaskWithAllFields("other3")
         );
         fullList.addAll(targetList);
 
-        TaskMan expectedTaskMan = helper.generateTaskMan(fullList);
         List<Activity> expectedList = helper.tasksToActivity(targetList);
 
         helper.addToModel(model, fullList);
-        assertCommandStateChange("list f/",
-                expectedTaskMan
-        );
+        logic.execute("list f");
+        assertTrue(model.getSortedFloatingList().containsAll(expectedList));
+        assertTrue(model.getSortedFloatingList().size() == expectedList.size());
     }
 
-    // todo: should fix
-    @Ignore
     @Test
-    public void execute_list_onlyMatchesFullWordsInTitles() throws Exception {
+    public void execute_listDeadlineTitleFilter_onlyMatchesFullWords() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         Task taskTarget1 = helper.generateTaskWithAllFields("bla bla KEY bla");
         Task taskTarget2 = helper.generateTaskWithAllFields("bla KEY bla bceofeia");
@@ -141,18 +97,17 @@ public class ListTests extends LogicManagerTestBase {
         Task other2 = helper.generateTaskWithAllFields("KEYKEYKEY sduauo");
 
         List<Task> fourTasks = helper.generateTaskList(other1, taskTarget1, other2, taskTarget2);
-        TaskMan expectedTaskMan = helper.generateTaskMan(fourTasks);
-        Activity[] toBeListed = {new Activity(taskTarget1), new Activity(taskTarget2)};
-        List<Activity> expectedList = Arrays.asList(toBeListed);
+        List<Activity> expectedList = helper.tasksToActivity(helper.generateTaskList(taskTarget1, taskTarget2));
 
         helper.addToModel(model, fourTasks);
-        assertCommandStateChange("list all/ KEY",
-                expectedTaskMan
-        );
+        logic.execute("list d KEY");
+
+        assertTrue(model.getSortedDeadlineList().containsAll(expectedList));
+        assertTrue(model.getSortedDeadlineList().size() == expectedList.size());
     }
 
     @Test
-    public void execute_list_isNotCaseSensitive() throws Exception {
+    public void execute_listDeadlineTitleFilter_isNotCaseSensitive() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         Task target1 = helper.generateTaskWithAllFields("bla bla KEY bla");
         Task target2 = helper.generateTaskWithAllFields("bla KEY bla bceofeia");
@@ -160,20 +115,17 @@ public class ListTests extends LogicManagerTestBase {
         Task target4 = helper.generateTaskWithAllFields("KEy sduauo");
 
         List<Task> fourTasks = helper.generateTaskList(target3, target1, target4, target2);
-        TaskMan expectedTaskMan = helper.generateTaskMan(fourTasks);
-        Activity[] toBeListed = {new Activity(target3), new Activity(target1), new Activity(target4), new Activity(target2)};
-        List<Activity> expectedList = Arrays.asList(toBeListed);
+        List<Activity> expectedList = helper.tasksToActivity(helper.generateTaskList(target1, target2, target3, target4));
 
         helper.addToModel(model, fourTasks);
-        assertCommandStateChange("list all/ KEY",
-                expectedTaskMan
-        );
+
+        logic.execute("list d KEY");
+        assertTrue(model.getSortedDeadlineList().containsAll(expectedList));
+        assertTrue(model.getSortedDeadlineList().size() == expectedList.size());
     }
 
-    // todo: should fix
-    @Ignore
     @Test
-    public void execute_list_matchesIfAnyKeywordPresent() throws Exception {
+    public void execute_listDeadline_matchesIfAnyKeywordPresent() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         Task taskTarget1 = helper.generateTaskWithAllFields("bla bla KEY bla");
         Task taskTarget2 = helper.generateTaskWithAllFields("bla rAnDoM bla bceofeia");
@@ -181,20 +133,18 @@ public class ListTests extends LogicManagerTestBase {
         Task other1 = helper.generateTaskWithAllFields("sduauo");
 
         List<Task> fourTasks = helper.generateTaskList(taskTarget1, other1, taskTarget2, taskTarget3);
-        TaskMan expectedTaskMan = helper.generateTaskMan(fourTasks);
-        Activity[] toBeListed = {new Activity(taskTarget1), new Activity(taskTarget2), new Activity(taskTarget3)};
-        List<Activity> expectedList = Arrays.asList(toBeListed);
+        List<Activity> expectedList = helper.tasksToActivity(helper.generateTaskList(taskTarget1, taskTarget2, taskTarget3));
 
         helper.addToModel(model, fourTasks);
-        assertCommandStateChange("list all/ key rAnDoM",
-                expectedTaskMan
-        );
+        logic.execute("list d KEY rAnDoM");
+        assertTrue(model.getSortedDeadlineList().containsAll(expectedList));
+        assertTrue(model.getSortedDeadlineList().size() == expectedList.size());
     }
 
 
     @Ignore
     @Test
-    public void execute_list_filter_tags() throws Exception {
+    public void execute_listDeadline_filter_tags() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
 
