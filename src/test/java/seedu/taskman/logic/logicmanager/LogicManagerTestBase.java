@@ -113,7 +113,7 @@ public abstract class LogicManagerTestBase {
      * @return Result of executed command
      */
     protected CommandResult assertCommandStateChange(String inputCommand, ReadOnlyTaskMan expectedTaskMan,
-                                                   List<? extends Activity> expectedShownList) throws Exception {
+                                                   List<Activity> expectedShownList) throws Exception {
         //Execute the command
         CommandResult result = logic.execute(inputCommand);
         List<Activity> actualShownList = model.getTaskMan().getActivityList();
