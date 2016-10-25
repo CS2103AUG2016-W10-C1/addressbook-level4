@@ -4,7 +4,15 @@ import seedu.taskman.commons.core.Messages;
 import seedu.taskman.commons.core.UnmodifiableObservableList;
 import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.logic.parser.CommandParser;
-import seedu.taskman.model.event.*;
+import seedu.taskman.model.event.Activity;
+import seedu.taskman.model.event.Deadline;
+import seedu.taskman.model.event.Event;
+import seedu.taskman.model.event.Frequency;
+import seedu.taskman.model.event.Schedule;
+import seedu.taskman.model.event.Status;
+import seedu.taskman.model.event.Task;
+import seedu.taskman.model.event.Title;
+import seedu.taskman.model.event.UniqueActivityList;
 import seedu.taskman.model.tag.Tag;
 import seedu.taskman.model.tag.UniqueTagList;
 
@@ -32,7 +40,8 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_TASK_SUCCESS = "Task updated: %1$s";
     public static final String MESSAGE_DUPLICATE_ACTIVITY = "An event or a task with the same name already exists";
     private static final Pattern TASK_EDIT_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
-            Pattern.compile("" + CommandParser.ArgumentPattern.TARGET_INDEX
+            Pattern.compile("" + CommandParser.ArgumentPattern.PANEL
+                    + CommandParser.ArgumentPattern.TARGET_INDEX
                     + CommandParser.ArgumentPattern.TITLE + "?"
                     + CommandParser.ArgumentPattern.DEADLINE
                     + CommandParser.ArgumentPattern.STATUS
@@ -51,11 +60,11 @@ public class EditCommand extends Command {
      *
      * @throws IllegalValueException if any of the raw values are invalid
      */
-    private EditCommand(int targetIndex,
-                       @Nullable String title, @Nullable String deadline, @Nullable String status,
-                       @Nullable String schedule, @Nullable String frequency, @Nullable Set<String> tags) {
+    private EditCommand(Activity.PanelType panelType, int targetIndex,
+                        @Nullable String title, @Nullable String deadline, @Nullable String status,
+                        @Nullable String schedule, @Nullable String frequency, @Nullable Set<String> tags) {
         super(true);
-        argsContainer = new ArgumentContainer(targetIndex, title, deadline, status, schedule, frequency, tags);
+        argsContainer = new ArgumentContainer(panelType, targetIndex, title, deadline, status, schedule, frequency, tags);
     }
 
     public static Command prepareEdit(String args) {
@@ -65,12 +74,14 @@ public class EditCommand extends Command {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
         }
 
-        // TODO: use variable instead of new string
+        String panelTypeRaw = matcher.group("panel").trim();
+        Activity.PanelType panelType = Activity.PanelType.fromString(panelTypeRaw);
         String indexString = matcher.group("targetIndex").trim();
         int index = Integer.parseInt(indexString);
 
             String tags = matcher.group("tagArguments");
             return new EditCommand(
+                    panelType,
                     index,
                     matcher.group("title"),
                     matcher.group("deadline"),
@@ -119,7 +130,7 @@ public class EditCommand extends Command {
     }
 
     private void initMembers(ArgumentContainer argsContainer) throws IllegalValueException {
-        UnmodifiableObservableList<Activity> lastShownList = model.getFilteredActivityList();
+        UnmodifiableObservableList<Activity> lastShownList = model.getActivityListForPanelType(argsContainer.panelType);
 
         if (lastShownList.size() < argsContainer.targetIndex) {
             indicateAttemptToExecuteIncorrectCommand();
@@ -195,15 +206,24 @@ public class EditCommand extends Command {
     }
 
     private static class ArgumentContainer {
+        public final Activity.PanelType panelType;
         public final int targetIndex;
-        public String title;
-        public String deadline;
-        public String status;
-        public String schedule;
-        public String frequency;
-        public Set<String> tags;
+        public final String title;
+        public final String deadline;
+        public final String status;
+        public final String schedule;
+        public final String frequency;
+        public final Set<String> tags;
 
-        public ArgumentContainer(int targetIndex, String title, String deadline, String status, String schedule, String frequency, Set<String> tags) {
+        public ArgumentContainer(Activity.PanelType panelType,
+                                 int targetIndex,
+                                 String title,
+                                 String deadline,
+                                 String status,
+                                 String schedule,
+                                 String frequency,
+                                 Set<String> tags) {
+            this.panelType = panelType;
             this.targetIndex = targetIndex;
             this.title = title;
             this.deadline = deadline;
