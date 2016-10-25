@@ -6,7 +6,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 #### [Alex Fong Jie Wen](https://github.com/AlexFJW)
 <img src="images/AlexFongJieWen.png" width="150"><br>
-* Components in charge of: Team Lead
+* Responsibilities: Team Lead
 * Features implemented:
 	* [Mark events](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/MarkCommand.java)
 	* [Track deadlines](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/DeadlinePanel.java)
@@ -18,19 +18,19 @@ We are a team based in the [School of Computing, National University of Singapor
 
 #### [Inaba Kazuhiro](https://github.com/inaba1231)
 <img src="images/InabaKazuhiro.jpeg" width="150"><br>
-* Components in charge of: Code Quality, UIUX
-* Features implemented:
+Responsibilities: Code Quality, UIUX<br>
+Features implemented:<br>
 	* [Mark events](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/MarkCommand.java)
 	* [Track deadlines](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/DeadlinePanel.java)
-* Code written:
-* Other major contributions:
+Code written:<br>
+Other major contributions:
 	* Change the UI of the AddressBook to that of the GTD app [[#88](https://github.com/CS2103AUG2016-W10-C1/main/pull/88)]
 
 -----
 
 #### [Lee Yi Min](https://github.com/leeyimin)
 <img src="images/LeeYiMin.png" width="150"><br>
-* Components in charge of: Testing
+* Responsibilities: Testing
 * Features implemented:
 	* [Mark events](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/MarkCommand.java)
 	* [Track deadlines](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/DeadlinePanel.java)
@@ -42,7 +42,7 @@ We are a team based in the [School of Computing, National University of Singapor
 
 #### [Lim Jia Yee](http://github.com/jia1)
 <img src="images/LimJiaYee.png" width="150"><br>
-* Components in charge of: Integration, Documentation
+* Responsibilities: Integration, Documentation
 * Features implemented:
 	* [Mark events](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/MarkCommand.java)
 	* [Track deadlines](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/DeadlinePanel.java)
