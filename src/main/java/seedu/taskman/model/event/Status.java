@@ -3,6 +3,7 @@ package seedu.taskman.model.event;
 import com.google.common.base.Objects;
 import seedu.taskman.commons.exceptions.IllegalValueException;
 
+//@@author A0139019E
 public class Status {
     public static final String COMPLETE = "complete";
     public static final String INCOMPLETE = "incomplete";

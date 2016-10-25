@@ -8,6 +8,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+//@@author A0139019E
 public class UndoTests extends LogicManagerTestBase {
 
     @Test
