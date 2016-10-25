@@ -4,15 +4,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import seedu.taskman.commons.exceptions.IllegalValueException;
-import seedu.taskman.model.event.Frequency;
 import seedu.taskman.model.event.Schedule;
 
-import java.time.Instant;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import static junit.framework.TestCase.assertEquals;
 
+//@@author A0139019E
 public class ScheduleTest {
 
     @Test
