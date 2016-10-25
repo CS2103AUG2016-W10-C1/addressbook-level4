@@ -75,10 +75,8 @@ public class DeadlinePanel extends UiPart {
     }
 
     // TODO Resolve generic type issue.
-    private void setConnections(ObservableList<Activity> taskList) {
-        SortedList<Activity> sortedData = new SortedList<>(taskList);
-        sortedData.comparatorProperty().bind(deadlineTableView.comparatorProperty());        
-        deadlineTableView.setItems(sortedData);
+    private void setConnections(ObservableList<Activity> taskList) {      
+        deadlineTableView.setItems(taskList);
 
         TableColumn<Activity, String> numberColumn = new TableColumn<Activity, String>("#");
         numberColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
@@ -86,7 +84,6 @@ public class DeadlinePanel extends UiPart {
                 return new ReadOnlyObjectWrapper<String>(deadlineTableView.getItems().indexOf(p.getValue()) + 1 + "");
             }
         });   
-        //numberColumn.setSortable(false);
         numberColumn.setMaxWidth(32);
         numberColumn.setMinWidth(32);
         numberColumn.setResizable(false);
@@ -123,9 +120,6 @@ public class DeadlinePanel extends UiPart {
         deadlineColumn.setMinWidth(135);
         deadlineColumn.setResizable(false);
         deadlineTableView.getColumns().add(deadlineColumn);
-        
-        deadlineTableView.getSortOrder().add(deadlineColumn);
-        //deadlineColumn.setSortType(TableColumn.SortType.DESCENDING);
 
         setEventHandlerForSelectionChangeEvent();
     }

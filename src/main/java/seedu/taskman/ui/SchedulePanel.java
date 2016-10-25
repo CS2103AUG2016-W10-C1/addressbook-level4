@@ -75,18 +75,15 @@ public class SchedulePanel extends UiPart {
     }
 
     // TODO Resolve generic type issue.
-    private void setConnections(ObservableList<Activity> taskList) {
-        SortedList<Activity> sortedData = new SortedList<>(taskList);
-        sortedData.comparatorProperty().bind(scheduleTableView.comparatorProperty());       
-        scheduleTableView.setItems(sortedData);
+    private void setConnections(ObservableList<Activity> taskList) {    
+        scheduleTableView.setItems(taskList);
         
         TableColumn<Activity, String> numberColumn = new TableColumn<Activity, String>("#");
         numberColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
                 return new ReadOnlyObjectWrapper<String>(scheduleTableView.getItems().indexOf(p.getValue()) + 1 + "");
             }
-        });   
-        //numberColumn.setSortable(false);
+        });
         numberColumn.setMaxWidth(32);
         numberColumn.setMinWidth(32);
         numberColumn.setResizable(false);
@@ -111,9 +108,6 @@ public class SchedulePanel extends UiPart {
         scheduleColumn.setMinWidth(150);
         scheduleColumn.setResizable(false);
         scheduleTableView.getColumns().add(scheduleColumn);       
-        
-        scheduleTableView.getSortOrder().add(scheduleColumn);
-        //scheduleColumn.setSortType(TableColumn.SortType.DESCENDING);
 
         setEventHandlerForSelectionChangeEvent();
     }

@@ -75,10 +75,8 @@ public class FloatingPanel extends UiPart {
     }
 
     // TODO Resolve generic type issue.
-    private void setConnections(ObservableList<Activity> taskList) {
-        SortedList<Activity> sortedData = new SortedList<>(taskList);
-        sortedData.comparatorProperty().bind(floatingTableView.comparatorProperty());       
-        floatingTableView.setItems(sortedData);
+    private void setConnections(ObservableList<Activity> taskList) {      
+        floatingTableView.setItems(taskList);
         
         TableColumn<Activity, String> numberColumn = new TableColumn<Activity, String>("#");
         numberColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
@@ -86,7 +84,6 @@ public class FloatingPanel extends UiPart {
                 return new ReadOnlyObjectWrapper<String>(floatingTableView.getItems().indexOf(p.getValue()) + 1 + "");
             }
         });   
-        //numberColumn.setSortable(false);
         numberColumn.setMaxWidth(32);
         numberColumn.setMinWidth(32);
         numberColumn.setResizable(false);

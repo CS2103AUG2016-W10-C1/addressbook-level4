@@ -2,6 +2,7 @@ package seedu.taskman.model;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import seedu.taskman.commons.core.ComponentManager;
 import seedu.taskman.commons.core.LogsCenter;
 import seedu.taskman.commons.core.UnmodifiableObservableList;
@@ -10,11 +11,15 @@ import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.commons.util.StringUtil;
 import seedu.taskman.logic.commands.ListCommand;
 import seedu.taskman.model.event.Activity;
+import seedu.taskman.model.event.Deadline;
 import seedu.taskman.model.event.Event;
+import seedu.taskman.model.event.Schedule;
 import seedu.taskman.model.event.UniqueActivityList;
 import seedu.taskman.model.event.UniqueActivityList.ActivityNotFoundException;
 import seedu.taskman.model.tag.Tag;
 
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -27,10 +32,10 @@ public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final TaskMan taskMan;
-    private final FilteredList<Activity> filteredActivities;
-    private final FilteredList<Activity> filteredSchedules;
-    private final FilteredList<Activity> filteredDeadlines;
-    private final FilteredList<Activity> filteredFloatings;
+    private final SortedList<Activity> sortedActivities;
+    private final SortedList<Activity> sortedSchedules;
+    private final SortedList<Activity> sortedDeadlines;
+    private final SortedList<Activity> sortedFloatings;
 
     /**
      * Initializes a ModelManager with the given TaskMan
@@ -45,10 +50,10 @@ public class ModelManager extends ComponentManager implements Model {
 
         taskMan = new TaskMan(src);
         ObservableList<Activity> activities = taskMan.getActivities();
-        filteredActivities = new FilteredList<>(activities);
-        filteredSchedules = activities.filtered(new SchedulePredicate());
-        filteredDeadlines = activities.filtered(new DeadlinePredicate());
-        filteredFloatings = activities.filtered(new FloatingPredicate());
+        sortedActivities = new SortedList<>(activities);
+        sortedSchedules = activities.filtered(new SchedulePredicate()).sorted(new ScheduleComparator());
+        sortedDeadlines = activities.filtered(new DeadlinePredicate()).sorted(new DeadlineComparator());
+        sortedFloatings = activities.filtered(new FloatingPredicate()).sorted();
     }
 
     public ModelManager() {
@@ -58,10 +63,10 @@ public class ModelManager extends ComponentManager implements Model {
     public ModelManager(ReadOnlyTaskMan initialData, UserPrefs userPrefs) {
         taskMan = new TaskMan(initialData);
         ObservableList<Activity> activities = taskMan.getActivities();
-        filteredActivities = new FilteredList<>(activities);
-        filteredSchedules = activities.filtered(new SchedulePredicate());
-        filteredDeadlines = activities.filtered(new DeadlinePredicate());
-        filteredFloatings = activities.filtered(new FloatingPredicate());
+        sortedActivities = new SortedList<>(activities);
+        sortedSchedules = activities.filtered(new SchedulePredicate()).sorted(new ScheduleComparator());
+        sortedDeadlines = activities.filtered(new DeadlinePredicate()).sorted(new DeadlineComparator());
+        sortedFloatings = activities.filtered(new FloatingPredicate()).sorted();
     }
 
     @Override
@@ -90,60 +95,65 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public synchronized void addActivity(Event event) throws UniqueActivityList.DuplicateActivityException {
         taskMan.addActivity(event);
-        updateFilteredListToShowAll();
+        //updateFilteredListToShowAll();
         indicateTaskManChanged();
     }
 
     @Override
     public synchronized void addActivity(Activity activity) throws UniqueActivityList.DuplicateActivityException {
         taskMan.addActivity(activity);
-        updateFilteredListToShowAll();
+        //updateFilteredListToShowAll();
         indicateTaskManChanged();
     }
 
-    //=========== Filtered Task List Accessors ===============================================================
+    //=========== Sorted Task List Accessors ===============================================================
 
 
     @Override
     public UnmodifiableObservableList<Activity> getActivityListForPanelType(Activity.PanelType type) {
         switch (type) {
             case DEADLINE: {
-                return getFilteredDeadlineList();
+                return getSortedDeadlineList();
             }
             case SCHEDULE: {
-                return getFilteredScheduleList();
+                return getSortedScheduleList();
             }
             case FLOATING: {
-                return getFilteredFloatingList();
+                return getSortedFloatingList();
             }
             default:
                 throw new AssertionError("Unspecified panel type");
         }
     }
 
+    //TODO Remove
+    /*
     @Override
     public UnmodifiableObservableList<Activity> getFilteredActivityList() {
-        return new UnmodifiableObservableList<>(filteredActivities);
+        return new UnmodifiableObservableList<>(sortedActivities);
     }
+    */
     
     @Override
-    public UnmodifiableObservableList<Activity> getFilteredScheduleList() {
-        return new UnmodifiableObservableList<>(filteredSchedules);
+    public UnmodifiableObservableList<Activity> getSortedScheduleList() {
+        return new UnmodifiableObservableList<>(sortedSchedules);
     }
 
     @Override
-    public UnmodifiableObservableList<Activity> getFilteredDeadlineList() {
-        return new UnmodifiableObservableList<>(filteredDeadlines);
+    public UnmodifiableObservableList<Activity> getSortedDeadlineList() {
+        return new UnmodifiableObservableList<>(sortedDeadlines);
     }
 
     @Override
-    public UnmodifiableObservableList<Activity> getFilteredFloatingList() {
-        return new UnmodifiableObservableList<>(filteredFloatings);
+    public UnmodifiableObservableList<Activity> getSortedFloatingList() {
+        return new UnmodifiableObservableList<>(sortedFloatings);
     }
 
+    //TODO Remove
+    /*
     @Override
     public void updateFilteredListToShowAll() {
-        filteredActivities.setPredicate(null);
+        sortedActivities.setPredicate(null);
     }
 
     @Override
@@ -152,8 +162,9 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     private void updateFilteredActivityList(Expression expression) {
-        filteredActivities.setPredicate(expression::satisfies);
+        sortedActivities.setPredicate(expression::satisfies);
     }
+    */
 
     //========== Inner classes/interfaces used for filtering ==================================================
 
@@ -232,14 +243,14 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
     
-    private class SchedulePredicate implements Predicate<Activity> {
+    private static class SchedulePredicate implements Predicate<Activity> {
         @Override
         public boolean test(Activity t) {
             return t.getSchedule().isPresent();
         }     
     }
     
-    private class DeadlinePredicate implements Predicate<Activity> {
+    private static class DeadlinePredicate implements Predicate<Activity> {
         @Override
         public boolean test(Activity t) {
             return t.getType() == Activity.ActivityType.TASK
@@ -247,12 +258,40 @@ public class ModelManager extends ComponentManager implements Model {
         } 
     }
     
-    private class FloatingPredicate implements Predicate<Activity> {
+    private static class FloatingPredicate implements Predicate<Activity> {
         @Override
         public boolean test(Activity t) {
             return t.getType() == Activity.ActivityType.TASK
                    && !t.getDeadline().isPresent();
         }   
+    }
+    
+    private static class ScheduleComparator implements Comparator<Activity> {
+        @Override
+        public int compare(Activity activity1, Activity activity2) {
+            Optional<Schedule> schedule1 = activity1.getSchedule();
+            Optional<Schedule> schedule2 = activity2.getSchedule();
+            if (!schedule1.isPresent() || !schedule2.isPresent()) {
+                throw new AssertionError("There are acitivities in the schedules table that have no schedules!", null);
+            }
+            Long start1 = schedule1.get().startEpochSecond;
+            Long start2 = schedule2.get().startEpochSecond;
+            return start1.compareTo(start2);
+        } 
+    }
+    
+    private static class DeadlineComparator implements Comparator<Activity> {
+        @Override
+        public int compare(Activity activity1, Activity activity2) {
+            Optional<Deadline> deadline1 = activity1.getDeadline();
+            Optional<Deadline> deadline2 = activity2.getDeadline();
+            if (!deadline1.isPresent() || !deadline2.isPresent()) {
+                throw new AssertionError("There are acitivities in the deadlines table that have no deadlines!", null);
+            }
+            Long due1 = deadline1.get().epochSecond;
+            Long due2 = deadline2.get().epochSecond;
+            return due1.compareTo(due2);
+        } 
     }
 
 }

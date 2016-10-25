@@ -114,9 +114,9 @@ public class MainWindow extends UiPart {
     }
 
     void fillInnerParts() {
-        schedulePanel = SchedulePanel.load(primaryStage, getScheduleTablePlaceholder(), logic.getFilteredScheduleList());
-        deadlinePanel = DeadlinePanel.load(primaryStage, getDeadlineTablePlaceholder(), logic.getFilteredDeadlineList());
-        floatingPanel = FloatingPanel.load(primaryStage, getFloatingTablePlaceholder(), logic.getFilteredFloatingList());
+        schedulePanel = SchedulePanel.load(primaryStage, getScheduleTablePlaceholder(), logic.getSortedScheduleList());
+        deadlinePanel = DeadlinePanel.load(primaryStage, getDeadlineTablePlaceholder(), logic.getSortedDeadlineList());
+        floatingPanel = FloatingPanel.load(primaryStage, getFloatingTablePlaceholder(), logic.getSortedFloatingList());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getTaskManFilePath());
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
