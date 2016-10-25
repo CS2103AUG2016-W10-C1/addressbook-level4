@@ -1,21 +1,20 @@
 package seedu.taskman.ui;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import seedu.taskman.Constants;
-import seedu.taskman.commons.core.config.Config;
 import seedu.taskman.commons.core.GuiSettings;
+import seedu.taskman.commons.core.config.Config;
 import seedu.taskman.commons.events.ui.ExitAppRequestEvent;
 import seedu.taskman.logic.Logic;
 import seedu.taskman.model.UserPrefs;
+import seedu.taskman.model.event.Activity;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -154,6 +153,31 @@ public class MainWindow extends UiPart {
         primaryStage.setTitle(appTitle);
     }
 
+    public void clearListPanels(){
+        deadlinePanel.clearSelection();
+        floatingPanel.clearSelection();
+        schedulePanel.clearSelection();
+    }
+
+    public ListPanel getListPanel(Activity.PanelType panelType){
+        switch (panelType){
+            case DEADLINE: {
+                return deadlinePanel;
+            }
+            case SCHEDULE:{
+                return schedulePanel;
+            }
+            case FLOATING:{
+                return floatingPanel;
+            }
+            default:{
+                assert false: "Panel Type not supported.";
+                return deadlinePanel;
+            }
+        }
+
+    }
+
     /**
      * Sets the default size based on user preferences.
      */
@@ -197,8 +221,5 @@ public class MainWindow extends UiPart {
         raise(new ExitAppRequestEvent());
     }
 
-    public DeadlinePanel getDeadlinePanel() {
-        return this.deadlinePanel;
-    }
 
 }
