@@ -81,7 +81,7 @@ public abstract class Command {
      * Returns the specified panel type and index in the {@code command}IF a positive unsigned integer is given as the
      * index and a panel type is specified
      */
-    protected static Optional<Pair<Activity.PanelType, Integer>> parsePanelTypeWIthIndex(String command) {
+    protected static Optional<Pair<Activity.PanelType, Integer>> parsePanelTypeWithIndexOnly(String command) {
         final Matcher matcher = PANEL_TYPE_WITH_INDEX_ARGS_FORMAT.matcher(command.trim());
         if (!matcher.matches()) {
             return Optional.empty();

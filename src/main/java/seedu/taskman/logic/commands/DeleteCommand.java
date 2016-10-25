@@ -34,7 +34,7 @@ public class DeleteCommand extends Command {
     }
 
     public static Command prepareDelete(String arguments) {
-        Optional<Pair<Activity.PanelType, Integer>> panelWithIndex = parsePanelTypeWIthIndex(arguments);
+        Optional<Pair<Activity.PanelType, Integer>> panelWithIndex = parsePanelTypeWithIndexOnly(arguments);
         if(!panelWithIndex.isPresent()){
             return new IncorrectCommand(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
