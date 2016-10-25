@@ -319,13 +319,26 @@ public class TestUtil {
      * @param tasksToAdd The tasks that are to be appended behind the original array.
      * @return The modified array of tasks.
      */
-    public static TestTask[] addTasksToList(final TestTask[] tasks, TestTask... tasksToAdd) {
-        List<TestTask> listOfTasks = asList(tasks);
-        listOfTasks.addAll(asList(tasksToAdd));
-        return listOfTasks.toArray(new TestTask[listOfTasks.size()]);
+    public static List<TestTask> addTasksToList(final List<TestTask> tasks, TestTask... tasksToAdd) {
+        List<TestTask> tasksList = new ArrayList<>(tasks);
+        tasksList.addAll(asList(tasksToAdd));
+        return tasksList;
     }
 
-    private static <T> List<T> asList(T[] objs) {
+    public static void sortActivitiesByDeadline(Activity[] activities){
+        Arrays.sort(activities, (o1, o2)
+                -> Long.compare(o1.getDeadline().get().epochSecond,
+                        o2.getDeadline().get().epochSecond));
+    }
+
+    public static Activity[] getActivitiesArray(List<TestTask> tasks){
+        return tasks.stream()
+                .map(a -> new Activity(new Task(a)))
+                .collect(Collectors.toList())
+                .toArray(new Activity[tasks.size()]);
+    }
+
+    public static <T> List<T> asList(T[] objs) {
         List<T> list = new ArrayList<>();
         for (T obj : objs) {
             list.add(obj);
