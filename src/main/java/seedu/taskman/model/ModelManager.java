@@ -148,21 +148,23 @@ public class ModelManager extends ComponentManager implements Model {
                     return;
                 }
                 default: {
-                    assert false : "Unspecified panel type";
+                    assert false : "No such panel.";
                 }
             }    
         }
     }
     
     public void updateFilteredPanel(Activity.PanelType panel, Set<String> keywords, Set<String> tagNames) {
-        updateFilteredPanel(panel, new PredicateExpression(new ActivityQualifier(panel, keywords, tagNames)));
+        if (panel == null) {
+            assert false : "Unspecified panel type";
+        } else {
+            updateFilteredPanel(panel, new PredicateExpression(new ActivityQualifier(panel, keywords, tagNames)));
+        }
     }
         
     private void updateFilteredPanel(Activity.PanelType panel, Expression expression) {
         if (panel == null) {
-            filteredSchedules.setPredicate(expression::satisfies);
-            filteredDeadlines.setPredicate(expression::satisfies);
-            filteredFloatings.setPredicate(expression::satisfies);
+            assert false : "Unspecified panel type";
         } else {
             switch(panel) {
                 case SCHEDULE: {
@@ -273,7 +275,7 @@ public class ModelManager extends ComponentManager implements Model {
         
         private boolean isCorrectActivityType(Activity activity) {
             if (panelType == null) {
-                return true;
+                throw new AssertionError("No such panel.", null);
             } else {
                 switch(panelType) {
                     case SCHEDULE: {
