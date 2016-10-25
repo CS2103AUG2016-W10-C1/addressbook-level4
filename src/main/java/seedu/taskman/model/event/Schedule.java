@@ -7,6 +7,7 @@ import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.logic.parser.DateTimeParser;
 
 import java.sql.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -100,15 +101,79 @@ public class Schedule {
         }
     }
 
+    /**
+     * Formats a string for displaying the schedule to the form of:
+     *
+     *      DATE TIME (elapsed) to DATE TIME (duration)
+     *
+     *      Example: 25-10-2016 23:15 (Moments from now) to 26-10-2016 04:00 (4 hours 45 minutes)
+     *
+     * For (duration), only pairs of time units are shown together
+     *      (i.e. years and months, weeks and days, hours and minutes)
+     *
+     * If the time units are zero in value, it is not shown at all
+     *      (i.e. 5 minutes instead of 0 hours 5 minutes)
+     *
+     * Assumes all months are 30 days long and all years are 365 days long
+     *
+     * @return String containing human-readable information for schedule (start, end, duration)
+     */
     @Override
     public String toString() {
         /* return DateTimeParser.epochSecondToShortDateTime(startEpochSecond) +
                 " to\n" +
                 DateTimeParser.epochSecondToDetailedDateTime(endEpochSecond); */
+
+        // TODO: Remove magic numbers
+
+        long durationSeconds = endEpochSecond - startEpochSecond;
+        long durationDays = TimeUnit.MILLISECONDS.toDays(durationSeconds);
+        long years = 0, months = 0, weeks = 0, days = 0, hours = 0, minutes = 0;
+
+        String durationString;
+        if (durationDays >= 365) {
+            years = (long) Math.floor(durationDays / 365);
+            durationDays -= years;
+        }
+        if (durationDays >= 30) {
+            months = (long) Math.floor(durationDays / 30);
+            durationDays -= months;
+        }
+        if (years == 0 && months == 0) {
+            if (durationDays >= 7) {
+                weeks = (long) Math.floor(durationDays / 7);
+                durationDays -= weeks;
+            }
+            if (durationDays >= 1) {
+                days = (long) Math.floor(durationDays);
+                durationDays -= days;
+            }
+            if (weeks == 0 || days == 0) {
+                long durationMinutes = TimeUnit.MILLISECONDS.toMinutes(durationDays);
+                if (durationMinutes >= 60) {
+                    hours = (long) Math.floor(durationMinutes / 60);
+                    durationMinutes -= hours;
+                }
+                if (durationMinutes >= 1) {
+                    minutes = (long) Math.floor(durationMinutes);
+                }
+                durationString = ((hours == 0) ? "" : "%d hours ") +
+                        ((minutes == 0) ? "" : "%d minutes");
+            } else {
+                durationString = ((weeks == 0) ? "" : "%d weeks ") +
+                        ((days == 0) ? "" : "%d days");
+            }
+        } else {
+            durationString = ((years == 0) ? "" : "%d years ") +
+                    ((months == 0) ? "" : "%d months");
+        }
+
         return String.format(
+                "%s (%s)\nto %s (%s)",
+                DateTimeParser.epochSecondToShortDateTime(startEpochSecond),
                 prettyTimeFormatter.format(new Date(startEpochSecond * MULTIPLIER_TIME_UNIX_TO_JAVA)),
-                " to\n",
-                prettyTimeFormatter.format(new Date(endEpochSecond * MULTIPLIER_TIME_UNIX_TO_JAVA)));
+                DateTimeParser.epochSecondToShortDateTime(endEpochSecond),
+                durationString.trim());
     }
 
     @Override
