@@ -5,14 +5,18 @@ We are a team based in the [School of Computing, National University of Singapor
 ## Current Project Team
 
 #### [Alex Fong Jie Wen](https://github.com/AlexFJW)
-<img src="images/AlexFongJieWen.png" width="150"><br>
+<img src="images/AlexFongJieWen.jpg" width="150"><br>
 * Responsibilities: Team Lead
 * Features implemented:
-	* [Mark events](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/MarkCommand.java)
-	* [Track deadlines](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/DeadlinePanel.java)
+    * [Command for Creating Tasks](https://github.com/CS2103AUG2016-W10-C1/main/pull/15)
+    *  Parsing for Relative DateTime
 * Code written: [[functional code](A0139019E.md)][[test code](A0139019E.md)][[docs](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/docs/A0139019E.md)]
 * Other major contributions:
-	* Change the UI of the AddressBook to that of the GTD app [[#88](https://github.com/CS2103AUG2016-W10-C1/main/pull/88)]
+	* Main reviewer for code reviews
+    * Refactored of CommandParser for maintainability [[#70](https://github.com/CS2103AUG2016-W10-C1/main/pull/79)]
+    * Refactored of LogicManagerTest for maintainability [[#80](https://github.com/CS2103AUG2016-W10-C1/main/pull/80)]
+    * Overhauled Undo command for maintainability [[#85](https://github.com/CS2103AUG2016-W10-C1/main/pull/85)]
+    * Migrated essential non-GUI tests from addressbook to that of the GTD app [[#77](https://github.com/CS2103AUG2016-W10-C1/main/pull/88)]
 
 -----
 
