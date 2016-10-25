@@ -29,8 +29,8 @@ public class DeleteTests extends LogicManagerTestBase {
         helper.addToModel(model, threeTasks);
 
         assertCommandStateChange("delete d2",
-                expectedTaskMan,
-                expectedTaskMan.getActivityList());
+                expectedTaskMan
+        );
     }
 
 }

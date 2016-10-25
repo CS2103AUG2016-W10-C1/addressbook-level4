@@ -15,28 +15,15 @@ import seedu.taskman.logic.LogicManager;
 import seedu.taskman.logic.commands.CommandHistory;
 import seedu.taskman.logic.commands.CommandResult;
 import seedu.taskman.logic.parser.DateTimeParser;
-import seedu.taskman.model.Model;
-import seedu.taskman.model.ModelManager;
-import seedu.taskman.model.ReadOnlyTaskMan;
-import seedu.taskman.model.TaskMan;
-import seedu.taskman.model.UserPrefs;
-import seedu.taskman.model.event.Activity;
-import seedu.taskman.model.event.Deadline;
-import seedu.taskman.model.event.Schedule;
-import seedu.taskman.model.event.Task;
-import seedu.taskman.model.event.Title;
+import seedu.taskman.model.*;
+import seedu.taskman.model.event.*;
 import seedu.taskman.model.tag.Tag;
 import seedu.taskman.model.tag.UniqueTagList;
 import seedu.taskman.storage.Storage;
 import seedu.taskman.storage.StorageManager;
 
 import java.time.Instant;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -57,6 +44,8 @@ public abstract class LogicManagerTestBase {
     protected ReadOnlyTaskMan latestSavedTaskMan;
     protected boolean helpShown;
     protected int targetedJumpIndex;
+    protected Activity.PanelType targetedPanelType;
+
 
     @Subscribe
     private void handleLocalModelChangedEvent(TaskManChangedEvent abce) {
@@ -71,6 +60,7 @@ public abstract class LogicManagerTestBase {
     @Subscribe
     private void handleJumpToListRequestEvent(JumpToListRequestEvent je) {
         targetedJumpIndex = je.targetIndex;
+        targetedPanelType = je.panelType;
     }
 
     @Before
@@ -86,6 +76,7 @@ public abstract class LogicManagerTestBase {
         latestSavedTaskMan = new TaskMan(model.getTaskMan()); // last saved assumed to be up to date before.
         helpShown = false;
         targetedJumpIndex = -1; // non yet
+        targetedPanelType = null;
 
         Config.setConfigFile(Config.DEFAULT_CONFIG_FILE);
     }
@@ -100,8 +91,8 @@ public abstract class LogicManagerTestBase {
      */
     protected CommandResult assertCommandNoStateChange(String inputCommand) throws Exception {
         return assertCommandStateChange(inputCommand,
-                new TaskMan(model.getTaskMan()),
-                new ArrayList<>(model.getTaskMan().getActivityList()));
+                new TaskMan(model.getTaskMan())
+        );
     }
 
     /**
@@ -112,12 +103,9 @@ public abstract class LogicManagerTestBase {
      *
      * @return Result of executed command
      */
-    protected CommandResult assertCommandStateChange(String inputCommand, ReadOnlyTaskMan expectedTaskMan,
-                                                   List<? extends Activity> expectedShownList) throws Exception {
+    protected CommandResult assertCommandStateChange(String inputCommand, ReadOnlyTaskMan expectedTaskMan) throws Exception {
         //Execute the command
         CommandResult result = logic.execute(inputCommand);
-        List<Activity> actualShownList = model.getTaskMan().getActivityList();
-        assertEquals(expectedShownList, actualShownList);
 
         //Confirm the state of data (saved and in-memory) is as expected
         ReadOnlyTaskMan actualTaskMan = model.getTaskMan();
@@ -157,8 +145,7 @@ public abstract class LogicManagerTestBase {
             model.addActivity(p);
         }
 
-        List<Activity> expectedList = taskList.stream().map(Activity::new).collect(Collectors.toList());
-        assertCommandStateChange(commandWord + " 3", model.getTaskMan(), expectedList);
+        assertCommandStateChange(commandWord + " 3", model.getTaskMan());
     }
 
     /**

@@ -23,8 +23,8 @@ public class HistoryTests extends LogicManagerTestBase {
         tasks.add(task);
 
         assertCommandStateChange(helper.generateDoCommand(task),
-                helper.generateTaskMan(tasks),
-                helper.tasksToActivity(tasks));
+                helper.generateTaskMan(tasks)
+        );
 
         assertCommandNoStateChange("history");
         assertEquals(1, historyDeque.size());

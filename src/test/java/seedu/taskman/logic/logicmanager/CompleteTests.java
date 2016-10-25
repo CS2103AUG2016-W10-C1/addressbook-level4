@@ -37,7 +37,7 @@ public class CompleteTests extends LogicManagerTestBase {
         TaskMan expectedTaskMan = helper.generateTaskMan(expectedList);
 
         assertCommandStateChange("complete " + Activity.PanelType.SCHEDULE + completeIndex,
-                expectedTaskMan, expectedTaskMan.getActivityList());
+                expectedTaskMan);
     }
 
 }

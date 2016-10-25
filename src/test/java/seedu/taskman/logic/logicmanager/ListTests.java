@@ -8,7 +8,6 @@ import seedu.taskman.model.event.Task;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class ListTests extends LogicManagerTestBase {
@@ -29,8 +28,8 @@ public class ListTests extends LogicManagerTestBase {
         helper.addToModel(model, 2);
 
         assertCommandStateChange("list",
-                expectedTaskMan,
-                expectedList);
+                expectedTaskMan
+        );
     }
 
     @Test
@@ -44,8 +43,8 @@ public class ListTests extends LogicManagerTestBase {
         helper.addToModel(model, 2);
 
         assertCommandStateChange("list all/",
-                expectedTaskMan,
-                expectedList);
+                expectedTaskMan
+        );
     }
 
     @Test
@@ -68,8 +67,8 @@ public class ListTests extends LogicManagerTestBase {
 
         helper.addToModel(model, fullList);
         assertCommandStateChange("list d/",
-                expectedTaskMan,
-                expectedList);
+                expectedTaskMan
+        );
     }
 
     @Test
@@ -92,8 +91,8 @@ public class ListTests extends LogicManagerTestBase {
 
         helper.addToModel(model, fullList);
         assertCommandStateChange("list s/",
-                expectedTaskMan,
-                expectedList);
+                expectedTaskMan
+        );
     }
 
     @Ignore
@@ -117,8 +116,8 @@ public class ListTests extends LogicManagerTestBase {
 
         helper.addToModel(model, fullList);
         assertCommandStateChange("list f/",
-                expectedTaskMan,
-                expectedList);
+                expectedTaskMan
+        );
     }
 
     @Test
@@ -136,8 +135,8 @@ public class ListTests extends LogicManagerTestBase {
 
         helper.addToModel(model, fourTasks);
         assertCommandStateChange("list all/ KEY",
-                expectedTaskMan,
-                expectedList);
+                expectedTaskMan
+        );
     }
 
     @Test
@@ -155,8 +154,8 @@ public class ListTests extends LogicManagerTestBase {
 
         helper.addToModel(model, fourTasks);
         assertCommandStateChange("list all/ KEY",
-                expectedTaskMan,
-                expectedList);
+                expectedTaskMan
+        );
     }
 
     @Test
@@ -174,8 +173,8 @@ public class ListTests extends LogicManagerTestBase {
 
         helper.addToModel(model, fourTasks);
         assertCommandStateChange("list all/ key rAnDoM",
-                expectedTaskMan,
-                expectedList);
+                expectedTaskMan
+        );
     }
 
 
@@ -191,18 +190,18 @@ public class ListTests extends LogicManagerTestBase {
         TaskMan expectedTaskMan = helper.generateTaskMan(4);
         List<Activity> expectedList = expectedTaskMan.getActivityList().subList(0, 2);
         assertCommandStateChange("list t/tag2",
-                expectedTaskMan,
-                expectedList);
+                expectedTaskMan
+        );
 
         assertCommandStateChange("list t/tag6",
-                expectedTaskMan,
-                Collections.EMPTY_LIST);
+                expectedTaskMan
+        );
 
         expectedList = new ArrayList<>(expectedTaskMan.getActivities());
         expectedList.remove(1);
         assertCommandStateChange("list t/tag1 t/tag4",
-                expectedTaskMan,
-                expectedList);
+                expectedTaskMan
+        );
     }
 
     @Ignore
@@ -220,8 +219,8 @@ public class ListTests extends LogicManagerTestBase {
         expectedList.add(new Activity(helper.generateFullTask(5)));
         // TODO: This passes and fails randomly
         assertCommandStateChange("list 1 5 t/tag2 t/tag6",
-                expectedTaskMan,
-                expectedList);
+                expectedTaskMan
+        );
     }
 
 
