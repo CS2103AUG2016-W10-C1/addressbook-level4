@@ -30,7 +30,7 @@ public class DoTests extends LogicManagerTestBase {
     public void execute_do_successful() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
-        Task toBeAdded = helper.food();
+        Task toBeAdded = helper.generateFullTask(1);
         TaskMan expectedTaskMan = new TaskMan();
         expectedTaskMan.addActivity(toBeAdded);
 
@@ -43,7 +43,7 @@ public class DoTests extends LogicManagerTestBase {
     public void execute_doDuplicate_notAllowed() throws Exception {
         // setup expected
         TestDataHelper helper = new TestDataHelper();
-        Task toBeAdded = helper.food();
+        Task toBeAdded = helper.generateFullTask(1);
         TaskMan expectedTaskMan = new TaskMan();
         expectedTaskMan.addActivity(toBeAdded);
 

@@ -216,8 +216,8 @@ public class ListTests extends LogicManagerTestBase {
         helper.addToModel(model, 5);
 
         List<Activity> expectedList = new ArrayList<>();
-        expectedList.add(new Activity(helper.generateTask(1)));
-        expectedList.add(new Activity(helper.generateTask(5)));
+        expectedList.add(new Activity(helper.generateFullTask(1)));
+        expectedList.add(new Activity(helper.generateFullTask(5)));
         // TODO: This passes and fails randomly
         assertCommandStateChange("list 1 5 t/tag2 t/tag6",
                 expectedTaskMan,

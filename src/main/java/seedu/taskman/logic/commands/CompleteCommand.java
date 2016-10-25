@@ -1,5 +1,6 @@
 package seedu.taskman.logic.commands;
 
+import javafx.util.Pair;
 import seedu.taskman.commons.core.Messages;
 import seedu.taskman.commons.core.UnmodifiableObservableList;
 import seedu.taskman.commons.exceptions.IllegalValueException;
@@ -23,6 +24,7 @@ public class CompleteCommand extends Command {
     public static final String COMMAND_WORD = "complete";
     private static final String STATUS_COMPLETE = "complete";
 
+    // todo: change me
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Marks an existing task as complete./n"
             + "Parameters: INDEX\n"
             + "Example: " + COMMAND_WORD
@@ -35,20 +37,25 @@ public class CompleteCommand extends Command {
     private Activity activityToComplete;
     private Activity afterComplete;
     private int targetIndex;
+    private Activity.PanelType panelType;
 
-    private CompleteCommand(int targetIndex) {
+    private CompleteCommand(Activity.PanelType panelType, int targetIndex) {
         super(true);
+        this.panelType = panelType;
         this.targetIndex = targetIndex;
     }
 
     public static Command prepareComplete(String arguments) {
-        Optional<Integer> index = parseIndex(arguments);
-        if(!index.isPresent()){
+        Optional<Pair<Activity.PanelType, Integer>> panelIndexPair = parsePanelTypeWithIndexOnly(arguments);
+        if(!panelIndexPair.isPresent()){
             return new IncorrectCommand(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
         }
 
-        return new CompleteCommand(index.get());
+
+        return new CompleteCommand(
+                panelIndexPair.get().getKey(),
+                panelIndexPair.get().getValue());
     }
 
     @Override
@@ -74,7 +81,7 @@ public class CompleteCommand extends Command {
     }
 
     private void initMembers() throws IllegalValueException {
-        UnmodifiableObservableList<Activity> lastShownList = model.getFilteredActivityList();
+        UnmodifiableObservableList<Activity> lastShownList = model.getActivityListForPanelType(panelType);
 
         if (lastShownList.size() < targetIndex) {
             indicateAttemptToExecuteIncorrectCommand();

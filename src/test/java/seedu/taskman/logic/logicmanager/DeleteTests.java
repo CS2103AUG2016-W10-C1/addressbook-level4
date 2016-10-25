@@ -22,7 +22,7 @@ public class DeleteTests extends LogicManagerTestBase {
     @Test
     public void execute_delete_removesCorrectTask() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        List<Task> threeTasks = helper.generateTaskList(3);
+        List<Task> threeTasks = helper.generateFullTaskList(3);
 
         TaskMan expectedTaskMan = helper.generateTaskMan(threeTasks);
         expectedTaskMan.removeActivity(new Activity(threeTasks.get(1)));

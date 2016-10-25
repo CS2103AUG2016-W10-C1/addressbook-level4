@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import seedu.taskman.commons.core.EventsCenter;
-import seedu.taskman.commons.core.UnmodifiableObservableList;
 import seedu.taskman.commons.core.config.Config;
 import seedu.taskman.commons.events.model.TaskManChangedEvent;
 import seedu.taskman.commons.events.ui.JumpToListRequestEvent;
@@ -23,7 +22,6 @@ import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.UserPrefs;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Deadline;
-import seedu.taskman.model.event.Frequency;
 import seedu.taskman.model.event.Schedule;
 import seedu.taskman.model.event.Task;
 import seedu.taskman.model.event.Title;
@@ -103,7 +101,7 @@ public abstract class LogicManagerTestBase {
     protected CommandResult assertCommandNoStateChange(String inputCommand) throws Exception {
         return assertCommandStateChange(inputCommand,
                 new TaskMan(model.getTaskMan()),
-                new ArrayList<>(model.getFilteredActivityList()));
+                new ArrayList<>(model.getTaskMan().getActivityList()));
     }
 
     /**
@@ -118,7 +116,7 @@ public abstract class LogicManagerTestBase {
                                                    List<? extends Activity> expectedShownList) throws Exception {
         //Execute the command
         CommandResult result = logic.execute(inputCommand);
-        UnmodifiableObservableList<Activity> actualShownList = model.getFilteredActivityList();
+        List<Activity> actualShownList = model.getTaskMan().getActivityList();
         assertEquals(expectedShownList, actualShownList);
 
         //Confirm the state of data (saved and in-memory) is as expected
@@ -151,7 +149,7 @@ public abstract class LogicManagerTestBase {
      */
     protected void assertIndexNotFoundBehaviorForCommand(String commandWord) throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        List<Task> taskList = helper.generateTaskList(2);
+        List<Task> taskList = helper.generateFullTaskList(2);
 
         // set TaskMan state to 2 tasks
         model.resetData(new TaskMan());
@@ -168,17 +166,6 @@ public abstract class LogicManagerTestBase {
      */
     static class TestDataHelper {
 
-        Task food() throws Exception {
-            Title title = new Title("Procure dinner");
-            Deadline privateDeadline = new Deadline("7.00pm");
-            Frequency frequency = null;// new Frequency("1 day");
-            Schedule schedule = new Schedule("6pm, 7pm");
-            Tag tag1 = new Tag("tag1");
-            Tag tag2 = new Tag("tag2");
-            UniqueTagList tags = new UniqueTagList(tag1, tag2);
-            return new Task(title, tags, privateDeadline, schedule, frequency);
-        }
-
         List<Activity> tasksToActivity(List<Task> tasks) {
             ArrayList<Activity> activities = new ArrayList<>();
             for(Task task : tasks) {
@@ -194,7 +181,7 @@ public abstract class LogicManagerTestBase {
          *
          * @param seed used to generate the task data field values
          */
-        Task generateTask(int seed) throws Exception {
+        Task generateFullTask(int seed) throws Exception {
             return new Task(
                     new Title("Task " + seed),
                     new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))),
@@ -261,7 +248,7 @@ public abstract class LogicManagerTestBase {
          * @param taskMan The TaskMan to which the Tasks will be added
          */
         void addToTaskMan(TaskMan taskMan, int numGenerated) throws Exception {
-            addToTaskMan(taskMan, generateTaskList(numGenerated));
+            addToTaskMan(taskMan, generateFullTaskList(numGenerated));
         }
 
         /**
@@ -279,7 +266,7 @@ public abstract class LogicManagerTestBase {
          * @param model The model to which the Tasks will be added
          */
         void addToModel(Model model, int numGenerated) throws Exception {
-            addToModel(model, generateTaskList(numGenerated));
+            addToModel(model, generateFullTaskList(numGenerated));
         }
 
         /**
@@ -293,11 +280,12 @@ public abstract class LogicManagerTestBase {
 
         /**
          * Generates a list of Tasks based on the flags.
+         * Each task has all its fields filled.
          */
-        List<Task> generateTaskList(int numGenerated) throws Exception {
+        List<Task> generateFullTaskList(int numGenerated) throws Exception {
             List<Task> tasks = new ArrayList<>();
             for (int i = 1; i <= numGenerated; i++) {
-                tasks.add(generateTask(i));
+                tasks.add(generateFullTask(i));
             }
             return tasks;
         }

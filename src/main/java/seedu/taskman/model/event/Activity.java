@@ -173,10 +173,10 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent {
         SCHEDULE(SCHEDULE_STRING),
         FLOATING(FLOATING_STRING);
 
-        public final String pattern;
+        private final String string;
 
-        PanelType(String pattern) {
-            this.pattern = pattern;
+        PanelType(String string) {
+            this.string = string;
         }
 
         public static PanelType fromString(String str) {
@@ -193,6 +193,11 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent {
                 default:
                     return null;
             }
+        }
+
+        @Override
+        public String toString() {
+            return string;
         }
     }
 }

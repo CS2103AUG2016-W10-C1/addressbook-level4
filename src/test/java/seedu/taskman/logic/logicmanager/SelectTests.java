@@ -24,7 +24,7 @@ public class SelectTests extends LogicManagerTestBase {
     @Test
     public void execute_select_jumpsToCorrectTask() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        List<Task> threeTasks = helper.generateTaskList(3);
+        List<Task> threeTasks = helper.generateFullTaskList(3);
 
         TaskMan expectedTaskMan = helper.generateTaskMan(threeTasks);
         helper.addToModel(model, threeTasks);
