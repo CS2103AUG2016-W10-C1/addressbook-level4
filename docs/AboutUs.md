@@ -17,7 +17,7 @@ We are a team based in the [School of Computing, National University of Singapor
     * Refactored of CommandParser for maintainability [[#70](https://github.com/CS2103AUG2016-W10-C1/main/pull/79)]
     * Refactored of LogicManagerTest for maintainability [[#80](https://github.com/CS2103AUG2016-W10-C1/main/pull/80)]
     * Overhauled Undo command for maintainability [[#85](https://github.com/CS2103AUG2016-W10-C1/main/pull/85)]
-    * Migrated essential non-GUI tests from addressbook to that of the GTD app [[#77](https://github.com/CS2103AUG2016-W10-C1/main/pull/88)]
+    * Migrated essential non-GUI tests from addressbook to that of the GTD app [[#77](https://github.com/CS2103AUG2016-W10-C1/main/pull/77)]
 
 -----
 
