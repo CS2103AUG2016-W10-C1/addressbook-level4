@@ -2,7 +2,6 @@ package seedu.taskman.model;
 
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import seedu.taskman.commons.core.ComponentManager;
 import seedu.taskman.commons.core.LogsCenter;
 import seedu.taskman.commons.core.UnmodifiableObservableList;
@@ -11,15 +10,11 @@ import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.commons.util.StringUtil;
 import seedu.taskman.logic.commands.ListCommand;
 import seedu.taskman.model.event.Activity;
-import seedu.taskman.model.event.Deadline;
 import seedu.taskman.model.event.Event;
-import seedu.taskman.model.event.Schedule;
 import seedu.taskman.model.event.UniqueActivityList;
 import seedu.taskman.model.event.UniqueActivityList.ActivityNotFoundException;
 import seedu.taskman.model.tag.Tag;
 
-import java.util.Comparator;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -107,6 +102,24 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     //=========== Filtered Task List Accessors ===============================================================
+
+
+    @Override
+    public UnmodifiableObservableList<Activity> getActivityListForPanelType(Activity.PanelType type) {
+        switch (type) {
+            case DEADLINE: {
+                return getFilteredDeadlineList();
+            }
+            case SCHEDULE: {
+                return getFilteredScheduleList();
+            }
+            case FLOATING: {
+                return getFilteredFloatingList();
+            }
+            default:
+                throw new AssertionError("Unspecified panel type");
+        }
+    }
 
     @Override
     public UnmodifiableObservableList<Activity> getFilteredActivityList() {

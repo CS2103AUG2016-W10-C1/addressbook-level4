@@ -24,6 +24,8 @@ public interface Model {
 
     void addActivity(Activity activity) throws UniqueActivityList.DuplicateActivityException;
 
+    UnmodifiableObservableList<Activity> getActivityListForPanelType(Activity.PanelType type);
+
     /**
      * Returns the filtered list of activity as an {@code UnmodifiableObservableList<Activity>}
      */

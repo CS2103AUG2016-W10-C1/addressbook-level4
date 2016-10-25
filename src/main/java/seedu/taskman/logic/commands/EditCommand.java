@@ -65,6 +65,7 @@ public class EditCommand extends Command {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
         }
 
+        // TODO: use variable instead of new string
         String indexString = matcher.group("targetIndex").trim();
         int index = Integer.parseInt(indexString);
 

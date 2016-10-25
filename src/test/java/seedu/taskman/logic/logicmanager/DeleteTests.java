@@ -25,11 +25,10 @@ public class DeleteTests extends LogicManagerTestBase {
         List<Task> threeTasks = helper.generateTaskList(3);
 
         TaskMan expectedTaskMan = helper.generateTaskMan(threeTasks);
-        // TODO: overload method to accept tasks?
         expectedTaskMan.removeActivity(new Activity(threeTasks.get(1)));
         helper.addToModel(model, threeTasks);
 
-        assertCommandStateChange("delete 2",
+        assertCommandStateChange("delete d2",
                 expectedTaskMan,
                 expectedTaskMan.getActivityList());
     }

@@ -20,6 +20,7 @@ import seedu.taskman.model.Model;
 import seedu.taskman.model.ModelManager;
 import seedu.taskman.model.ReadOnlyTaskMan;
 import seedu.taskman.model.TaskMan;
+import seedu.taskman.model.UserPrefs;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Deadline;
 import seedu.taskman.model.event.Frequency;
@@ -76,7 +77,7 @@ public abstract class LogicManagerTestBase {
 
     @Before
     public void setup() {
-        model = new ModelManager();
+        model = new ModelManager(new TaskMan(), UserPrefs.getUserPrefsForNonGuiTest());
         historyDeque = new ArrayDeque<>(LogicManager.HISTORY_SIZE);
         String tempTaskManFile = saveFolder.getRoot().getPath() + "TempTaskMan.xml";
         String tempPreferencesFile = saveFolder.getRoot().getPath() + "TempPreferences.json";

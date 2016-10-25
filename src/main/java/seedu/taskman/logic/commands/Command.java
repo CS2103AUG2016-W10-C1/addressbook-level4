@@ -1,14 +1,22 @@
 package seedu.taskman.logic.commands;
 
+import javafx.util.Pair;
 import seedu.taskman.commons.core.EventsCenter;
 import seedu.taskman.commons.core.Messages;
 import seedu.taskman.commons.events.ui.IncorrectCommandAttemptedEvent;
 import seedu.taskman.commons.util.StringUtil;
 import seedu.taskman.logic.parser.CommandParser;
 import seedu.taskman.model.Model;
+import seedu.taskman.model.event.Activity;
 import seedu.taskman.storage.Storage;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +24,10 @@ import java.util.regex.Pattern;
  * Represents a command with hidden internal logic and the ability to be executed.
  */
 public abstract class Command {
-    private static final Pattern TASK_INDEX_ARGS_FORMAT = Pattern.compile(CommandParser.ArgumentPattern.TARGET_INDEX.pattern);
+    private static final Pattern PANEL_TYPE_WITH_INDEX_ARGS_FORMAT =
+            Pattern.compile("" + CommandParser.ArgumentPattern.PANEL + CommandParser.ArgumentPattern.TARGET_INDEX);
+    private static final Pattern TASK_INDEX_ARGS_FORMAT =
+            Pattern.compile(CommandParser.ArgumentPattern.TARGET_INDEX.pattern);
     public final boolean storeHistory;
     protected Model model;
     protected Storage storage;
@@ -59,15 +70,30 @@ public abstract class Command {
         if (!matcher.matches()) {
             return Optional.empty();
         }
-
         String index = matcher.group("targetIndex");
         if(!StringUtil.isUnsignedInteger(index)){
             return Optional.empty();
         }
-        return Optional.of(Integer.parseInt(index));
-
+        return Optional.of(Integer.valueOf(index));
     }
 
+    /**
+     * Returns the specified panel type and index in the {@code command}IF a positive unsigned integer is given as the
+     * index and a panel type is specified
+     */
+    protected static Optional<Pair<Activity.PanelType, Integer>> parsePanelTypeWIthIndex(String command) {
+        final Matcher matcher = PANEL_TYPE_WITH_INDEX_ARGS_FORMAT.matcher(command.trim());
+        if (!matcher.matches()) {
+            return Optional.empty();
+        }
+        String rawPanelType = matcher.group("panel");
+        Activity.PanelType panelType = Activity.PanelType.fromString(rawPanelType);
+        String index = matcher.group("targetIndex");
+        if(!StringUtil.isUnsignedInteger(index)){
+            return Optional.empty();
+        }
+        return Optional.of(new Pair<>(panelType, Integer.parseInt(index)));
+    }
 
     /**
      * Executes the command and returns the result message.

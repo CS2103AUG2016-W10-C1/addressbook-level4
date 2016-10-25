@@ -33,6 +33,7 @@ public class CommandParser {
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
     public enum ArgumentPattern {
+        PANEL("(?<panel>[dsf])"),
         TARGET_INDEX("(?<targetIndex>[0-9]+)"),
         TITLE("(?<title>[^/]+)"),
         DEADLINE("(?:\\s+d/(?<deadline>[^/]+))?"),

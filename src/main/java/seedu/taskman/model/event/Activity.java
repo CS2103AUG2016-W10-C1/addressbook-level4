@@ -10,6 +10,10 @@ import java.util.Optional;
  */
 public class Activity implements ReadOnlyEvent, MutableTagsEvent {
 
+    private static final String DEADLINE_STRING = "d";
+    private static final String SCHEDULE_STRING = "s";
+    private static final String FLOATING_STRING = "f";
+
     public enum ActivityType {EVENT, TASK}
 
     private MutableTagsEvent activity;
@@ -164,4 +168,31 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent {
         return activity.toString();
     }
 
+    public enum PanelType {
+        DEADLINE(DEADLINE_STRING),
+        SCHEDULE(SCHEDULE_STRING),
+        FLOATING(FLOATING_STRING);
+
+        public final String pattern;
+
+        PanelType(String pattern) {
+            this.pattern = pattern;
+        }
+
+        public static PanelType fromString(String str) {
+            switch (str) {
+                case DEADLINE_STRING: {
+                    return DEADLINE;
+                }
+                case SCHEDULE_STRING: {
+                    return SCHEDULE;
+                }
+                case FLOATING_STRING: {
+                    return FLOATING;
+                }
+                default:
+                    return null;
+            }
+        }
+    }
 }
