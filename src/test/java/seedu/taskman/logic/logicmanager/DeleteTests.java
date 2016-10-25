@@ -22,16 +22,15 @@ public class DeleteTests extends LogicManagerTestBase {
     @Test
     public void execute_delete_removesCorrectTask() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        List<Task> threeTasks = helper.generateTaskList(3);
+        List<Task> threeTasks = helper.generateFullTaskList(3);
 
         TaskMan expectedTaskMan = helper.generateTaskMan(threeTasks);
-        // TODO: overload method to accept tasks?
         expectedTaskMan.removeActivity(new Activity(threeTasks.get(1)));
         helper.addToModel(model, threeTasks);
 
-        assertCommandStateChange("delete 2",
-                expectedTaskMan,
-                expectedTaskMan.getActivityList());
+        assertCommandStateChange("delete d2",
+                expectedTaskMan
+        );
     }
 
 }

@@ -16,9 +16,25 @@ public interface Logic {
      */
     CommandResult execute(String commandText);
 
+    //TODO Remove
     /**
-     * Returns the filtered list of tasks
+     * Returns the filtered list of activities
      */
-    ObservableList<Activity> getFilteredActivityList();
+    //ObservableList<Activity> getFilteredActivityList();
+    
+    /**
+     * Returns the filtered list of activities with schedules
+     */
+    ObservableList<Activity> getSortedScheduleList();
+    
+    /**
+     * Returns the filtered list of tasks with deadlines
+     */
+    ObservableList<Activity> getSortedDeadlineList();
+    
+    /**
+     * Returns the filtered list of tasks without deadlines
+     */
+    ObservableList<Activity> getSortedFloatingList();
 
 }

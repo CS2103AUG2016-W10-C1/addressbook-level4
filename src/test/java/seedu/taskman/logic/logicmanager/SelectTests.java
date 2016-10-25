@@ -22,18 +22,18 @@ public class SelectTests extends LogicManagerTestBase {
     }
 
     @Test
-    public void execute_select_jumpsToCorrectTask() throws Exception {
+    public void execute_select_jumpsToCorrectDeadline() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        List<Task> threeTasks = helper.generateTaskList(3);
+        List<Task> threeTasks = helper.generateFullTaskList(3);
 
         TaskMan expectedTaskMan = helper.generateTaskMan(threeTasks);
         helper.addToModel(model, threeTasks);
 
-        assertCommandStateChange("select 2",
-                expectedTaskMan,
-                expectedTaskMan.getActivityList());
+        assertCommandStateChange("select d2",
+                expectedTaskMan
+        );
         assertEquals(1, targetedJumpIndex);
-        assertEquals(model.getFilteredActivityList().get(1), new Activity(threeTasks.get(1)));
+        assertEquals(model.getActivityListForPanelType(targetedPanelType).get(1), new Activity(threeTasks.get(1)));
     }
 
 }

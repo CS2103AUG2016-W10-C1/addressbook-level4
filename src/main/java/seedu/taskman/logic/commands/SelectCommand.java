@@ -1,5 +1,6 @@
 package seedu.taskman.logic.commands;
 
+import javafx.util.Pair;
 import seedu.taskman.commons.core.EventsCenter;
 import seedu.taskman.commons.core.Messages;
 import seedu.taskman.commons.events.ui.JumpToListRequestEvent;
@@ -15,7 +16,8 @@ import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
  */
 public class SelectCommand extends Command {
 
-    public final int targetIndex;
+    private final int targetIndex;
+    private final Activity.PanelType panelType;
 
     public static final String COMMAND_WORD = "select";
 
@@ -27,32 +29,36 @@ public class SelectCommand extends Command {
     public static final String MESSAGE_SELECT_EVENT_SUCCESS = "Selected Task: %1$s";
 
     public static Command prepareSelect(String arguments) {
-        Optional<Integer> index = parseIndex(arguments);
-        if(!index.isPresent()){
+        Optional<Pair<Activity.PanelType, Integer>> panelWithIndex = parsePanelTypeWithIndexOnly(arguments);
+        if(!panelWithIndex.isPresent()){
             return new IncorrectCommand(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
         }
-
-        return new SelectCommand(index.get());
+        Pair<Activity.PanelType, Integer> pair = panelWithIndex.get();
+        return new SelectCommand(pair.getKey(), pair.getValue());
     }
 
-    private SelectCommand(int targetIndex) {
+    private SelectCommand(Activity.PanelType panelType, int targetIndex) {
         super(false);
         this.targetIndex = targetIndex;
+        this.panelType = panelType;
     }
 
     @Override
     public CommandResult execute() {
 
-        UnmodifiableObservableList<Activity> lastShownList = model.getFilteredActivityList();
+        assert model != null;
 
-        if (lastShownList.size() < targetIndex) {
+        UnmodifiableObservableList<Activity> shownList = model.getActivityListForPanelType(panelType);
+
+        if (shownList.size() < targetIndex) {
             indicateAttemptToExecuteIncorrectCommand();
             return new CommandResult(Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX, false);
         }
 
-        EventsCenter.getInstance().post(new JumpToListRequestEvent(targetIndex - 1));
-        return new CommandResult(String.format(MESSAGE_SELECT_EVENT_SUCCESS, targetIndex), true);
+        EventsCenter.getInstance().post(new JumpToListRequestEvent(panelType, targetIndex - 1));
+        Activity targetActivity =  shownList.get(targetIndex - 1);
+        return new CommandResult(String.format(MESSAGE_SELECT_EVENT_SUCCESS, targetActivity), true);
 
     }
 

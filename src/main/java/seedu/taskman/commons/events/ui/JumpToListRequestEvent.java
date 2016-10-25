@@ -1,6 +1,7 @@
 package seedu.taskman.commons.events.ui;
 
 import seedu.taskman.commons.events.BaseEvent;
+import seedu.taskman.model.event.Activity;
 
 /**
  * Indicates a request to jump to the list of tasks
@@ -8,8 +9,10 @@ import seedu.taskman.commons.events.BaseEvent;
 public class JumpToListRequestEvent extends BaseEvent {
 
     public final int targetIndex;
+    public final Activity.PanelType panelType;
 
-    public JumpToListRequestEvent(int targetIndex) {
+    public JumpToListRequestEvent(Activity.PanelType panelType, int targetIndex) {
+        this.panelType = panelType;
         this.targetIndex = targetIndex;
     }
 

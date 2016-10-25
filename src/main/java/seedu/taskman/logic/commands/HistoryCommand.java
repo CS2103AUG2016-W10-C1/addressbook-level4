@@ -1,7 +1,6 @@
 package seedu.taskman.logic.commands;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class HistoryCommand extends Command {
@@ -32,10 +31,7 @@ public class HistoryCommand extends Command {
         StringBuilder builder = new StringBuilder(HISTORY_STRING_HEADER);
         int commandCount = 1;
 
-        // stack is also a list, with most recent command at the tail
-        // extract & reverse for display
         List<CommandHistory> historyForExtraction = new ArrayList<>(historyDeque);
-        Collections.reverse(historyForExtraction);
 
         for (CommandHistory history : historyForExtraction) {
             builder.append(String.format(HISTORY_STRING_BULLET_POINT, commandCount++))
