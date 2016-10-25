@@ -25,6 +25,7 @@ public class Config extends ConfigData {
         configFile = DEFAULT_CONFIG_FILE;
     }
 
+    //@@author A0121299A
     public static Config getInstance() {
         if (instance == null) {
             instance = new Config();
@@ -39,6 +40,7 @@ public class Config extends ConfigData {
      * @return true if data is successfully read from file, false otherwise
      * @throws DataConversionException
      */
+    //@@author A0121299A
     public static boolean readConfig(String configFilePath) throws DataConversionException {
         Optional<ConfigData> readData = ConfigUtil.readConfig(configFilePath);
         if (readData.isPresent()) {
@@ -53,6 +55,7 @@ public class Config extends ConfigData {
      *
      * @param configFile
      */
+    //@@author A0121299A
     public static void setConfigFile(String configFile) {
         assert configFile != null;
         Config.getInstance().configFile = configFile;
@@ -62,6 +65,7 @@ public class Config extends ConfigData {
         ConfigUtil.saveConfigData(Config.getInstance().getDataClone(), Config.getInstance().configFile);
     }
 
+    //@@author
     @Override
     public int hashCode() {
         return Objects.hash(appTitle, logLevel, userPrefsFilePath, taskManFilePath, taskManName);
@@ -78,6 +82,7 @@ public class Config extends ConfigData {
         return sb.toString();
     }
 
+    //@@author A0121299A
     public static void resetInstance() {
         update(getInstance(), new ConfigData());
     }
@@ -85,6 +90,7 @@ public class Config extends ConfigData {
     /**
      * A class for accessing the Config File.
      */
+    //@@author
     private static class ConfigUtil {
 
         private static final Logger logger = LogsCenter.getLogger(ConfigUtil.class);

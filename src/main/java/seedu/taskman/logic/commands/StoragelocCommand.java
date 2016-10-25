@@ -33,6 +33,7 @@ public class StoragelocCommand extends Command {
 
     private final String filePath;
 
+    //@@author A0121299A
     public static Command prepareStorageloc(String args) {
 
         String trimmedArgs = args.trim();

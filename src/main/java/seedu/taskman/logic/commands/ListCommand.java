@@ -17,6 +17,7 @@ import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
  * Keyword matching is case sensitive.
  */
 public class ListCommand extends Command {
+    //@@author A0121299A-unused
     /*
     private enum ListFlag{
         OPTIONAL_SCHEDULE("s/", FilterMode.SCHEDULE_ONLY),
@@ -47,7 +48,7 @@ public class ListCommand extends Command {
         }
     }
     */
-
+    //@@author
     public static final String COMMAND_WORD = "list";
     
     /*

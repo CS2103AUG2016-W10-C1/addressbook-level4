@@ -29,14 +29,18 @@ We are a team based in the [School of Computing, National University of Singapor
 -----
 
 #### [Lee Yi Min](https://github.com/leeyimin)
-<img src="images/LeeYiMin.png" width="150"><br>
+<img src="images/LeeYiMin.jpg" width="150"><br>
 * Responsibilities: Testing
 * Features implemented:
-	* [Mark events](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/MarkCommand.java)
-	* [Track deadlines](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/DeadlinePanel.java)
-* Code written:
+	* [List events](https://github.com/CS2103AUG2016-W10-C1/main/pull/14)
+	* [Change storage location](https://github.com/CS2103AUG2016-W10-C1/main/pull/44)
+	* [View storage location] (https://github.com/CS2103AUG2016-W10-C1/main/pull/86)
+* Code written: [[functional code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/main/A0121299A.md)]
+[[test code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/test/A0121299A.md)]
+[[docs](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/docs/A0121299A.md)]
 * Other major contributions:
-	* Change the UI of the AddressBook to that of the GTD app [[#88](https://github.com/CS2103AUG2016-W10-C1/main/pull/88)]
+    * Added Activity Class and refactored the app to work with Activity (https://github.com/CS2103AUG2016-W10-C1/main/pull/10)
+	* Refactored command patterns in CommandParser and allowed non-compulsory fields to be optional (https://github.com/CS2103AUG2016-W10-C1/main/pull/29)
 
 -----
 

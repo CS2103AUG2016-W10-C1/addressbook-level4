@@ -249,10 +249,12 @@ Command Format: `exit`
 TaskMan data are saved in the hard disk automatically after any command that changes the data.<br>
 There is no need to save manually.
 
+<!--@@author A0121299A-->
 #### Setting the save and load location: `storageloc`
 Saves to the specified file name and location and sets the application to load from the specified location in the future.<br>
-TaskMan data are saved in a file called tasks.txt in the application folder by default.<br>
-The filename **must end in .xml<br>
+The command can be used to save the data to the default location or to view the current storage location.<br>
+TaskMan data are saved in data/taskMan.txt in the application folder by default.<br>
+
 Format: `storageloc [LOCATION]`
 
 Examples:
@@ -260,6 +262,8 @@ Examples:
     Sets the new save and load location to C:/Users/Owner/Desktop/new_tasks.xml
 * `storageloc default`<br>
     Sets the new save and load location to tasks.xml in the current application folder
+* `storageloc view`<br>
+    Displays the current storage location
 
 ## File Format
 The file is saved in xml format, which is easy to read and write with appropriate editors.
@@ -285,7 +289,7 @@ Example:
 > `<tagged>CS2103T</tagged>`<br>
 > `</tasks>`
 
-
+<!--
 #### Event
 Each Event is saved in the following format:
 > `<events>`<br>
@@ -305,7 +309,7 @@ Example:
 > `<tagged>CS2103T</tagged>`<br>
 > `<tagged>lecture</tagged>`<br>
 > `</events>`
-
+-->
 
 #### Tag
 Each Tag is saved in the following format:
@@ -317,7 +321,7 @@ Example:
 > `<tags>`<br>
 > `<tagName>CS2103T</tagName>`<br>
 > `</tags>`
-
+<!--@@author -->
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>

@@ -360,6 +360,8 @@ Use case ends.
 > 2b1. TaskMan shows an error message <br>
   Use case resumes at step 1
 
+<!--@@author A0121299A-->
+
 #### Use case 4: Undo action
 
 **MSS**
@@ -386,6 +388,8 @@ Use case ends.
 
 > Use case resumes at step 2
 
+
+<!--@@author-->
 {More to be added}
 
 ## Appendix C : Non Functional Requirements
@@ -409,7 +413,7 @@ Use case ends.
 > Windows, Linux, Unix, OS-X
 
 ## Appendix E : Product Survey
-
+<!--@@author A0121299A-->
 ### 1. [Todo.txt](http://todotxt.com/)
 #### Strengths
 1. CLI GTD tool
@@ -425,7 +429,7 @@ Use case ends.
 2. Inconvenient to start application
 3. Limited or no time and deadline support
 4. No undo functionality
-
+<!--@@author-->
 ### 2. [TaskWarrior](https://taskwarrior.org/)
 #### Strengths
 1. CLI GTD tool

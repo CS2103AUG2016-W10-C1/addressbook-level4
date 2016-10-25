@@ -32,6 +32,7 @@ public class CommandParser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
+    //@@author A0121299A
     public enum ArgumentPattern {
         PANEL("(?<panel>[dsf])"),
         TARGET_INDEX("(?<targetIndex>[0-9]+)"),
@@ -55,7 +56,7 @@ public class CommandParser {
             return pattern;
         }
     }
-
+    //@@author
 
     public CommandParser() {
     }
