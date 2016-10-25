@@ -10,7 +10,7 @@ We are a team based in the [School of Computing, National University of Singapor
 * Features implemented:
 	* [Mark events](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/MarkCommand.java)
 	* [Track deadlines](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/DeadlinePanel.java)
-* Code written:
+* Code written: [[functional code](A0139019E.md)][[test code](A0139019E.md)][[docs](A0139019E.md)]
 * Other major contributions:
 	* Change the UI of the AddressBook to that of the GTD app [[#88](https://github.com/CS2103AUG2016-W10-C1/main/pull/88)]
 
@@ -22,7 +22,7 @@ We are a team based in the [School of Computing, National University of Singapor
 * Features implemented:
 	* [Mark events](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/MarkCommand.java)
 	* [Track deadlines](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/DeadlinePanel.java)
-* Code written:
+* Code written: [[functional code](A0140136W.md)][[test code](A0140136W.md)][[docs](A0140136W.md)]
 * Other major contributions:
 	* Change the UI of the AddressBook to that of the GTD app [[#88](https://github.com/CS2103AUG2016-W10-C1/main/pull/88)]
 
