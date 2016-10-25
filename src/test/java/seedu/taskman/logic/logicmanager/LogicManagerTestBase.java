@@ -15,17 +15,13 @@ import seedu.taskman.logic.Logic;
 import seedu.taskman.logic.LogicManager;
 import seedu.taskman.logic.commands.CommandHistory;
 import seedu.taskman.logic.commands.CommandResult;
+import seedu.taskman.logic.commands.EditCommand;
 import seedu.taskman.logic.parser.DateTimeParser;
 import seedu.taskman.model.Model;
 import seedu.taskman.model.ModelManager;
 import seedu.taskman.model.ReadOnlyTaskMan;
 import seedu.taskman.model.TaskMan;
-import seedu.taskman.model.event.Activity;
-import seedu.taskman.model.event.Deadline;
-import seedu.taskman.model.event.Frequency;
-import seedu.taskman.model.event.Schedule;
-import seedu.taskman.model.event.Task;
-import seedu.taskman.model.event.Title;
+import seedu.taskman.model.event.*;
 import seedu.taskman.model.tag.Tag;
 import seedu.taskman.model.tag.UniqueTagList;
 import seedu.taskman.storage.Storage;
@@ -167,6 +163,9 @@ public abstract class LogicManagerTestBase {
      */
     static class TestDataHelper {
 
+        public final int SECONDS_DAY = 86400;
+        public final String STRING_RANDOM = "random";
+
         Task food() throws Exception {
             Title title = new Title("Procure dinner");
             Deadline privateDeadline = new Deadline("7.00pm");
@@ -230,6 +229,39 @@ public abstract class LogicManagerTestBase {
 
             UniqueTagList tags = task.getTags();
             for(Tag t: tags) {
+                command.append(" t/").append(t.tagName);
+            }
+
+            return command.toString();
+        }
+
+        String generateEditCommand(Model model, int targetIndex, Title title, Deadline deadline, Schedule schedule,
+                                   Frequency frequency, UniqueTagList tags) {
+            Activity task = model.getFilteredActivityList().get(targetIndex);
+            StringBuilder command = new StringBuilder();
+
+            command.append(EditCommand.COMMAND_WORD);
+            command.append(String.format(" %d ", targetIndex));
+            command.append(title.toString());
+
+            Instant instant = Instant.ofEpochSecond(deadline.epochSecond);
+            command.append(" d/").
+                    append(instant.toString());
+
+            if (task.getFrequency().isPresent()) {
+                throw new AssertionError("Frequency is not supported yet");
+            }
+
+            if (task.getSchedule().isPresent()) {
+                String start = DateTimeParser.epochSecondToShortDateTime(schedule.startEpochSecond);
+                String end = DateTimeParser.epochSecondToShortDateTime(schedule.endEpochSecond);
+                command.append(" s/").
+                        append(start).
+                        append(" to ").
+                        append(end);
+            }
+
+            for (Tag t : tags) {
                 command.append(" t/").append(t.tagName);
             }
 
