@@ -17,6 +17,7 @@ import seedu.taskman.model.event.UniqueActivityList;
 import seedu.taskman.model.event.UniqueActivityList.ActivityNotFoundException;
 import seedu.taskman.model.tag.Tag;
 
+import javax.annotation.Nonnull;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.Set;
@@ -245,23 +246,34 @@ public class ModelManager extends ComponentManager implements Model {
         }
 
         @Override
-        public boolean run(Activity activity) {
-            // (fit task/event type && (no keyword || contain a keyword) && (no tag || contain a tag))
-            return (titleKeyWords == null || titleKeyWords.isEmpty() || titleKeyWords.stream()
+        public boolean run(@Nonnull Activity activity) {
+            boolean noTitleKeyWords = titleKeyWords == null || titleKeyWords.isEmpty() ||
+                    (titleKeyWords.size() == 1 && titleKeyWords.contains(""));
+            boolean noTags = tagNames == null || tagNames.isEmpty();
+
+            // (no keyword || contain a keyword) && (no tag || contain a tag))
+            return (noTitleKeyWords || containKeyWordsInTitle(titleKeyWords, activity)) &&
+                    (noTags || containsTags(tagNames, activity));
+        }
+
+        private boolean containKeyWordsInTitle(@Nonnull Set<String> titleKeyWords, Activity activity) {
+            return titleKeyWords.stream()
                     .filter(keyword -> StringUtil.containsIgnoreCase(activity.getTitle().title, keyword))
                     .findAny()
-                    .isPresent())
-                    && (tagNames == null || tagNames.isEmpty() || tagNames.stream()
+                    .isPresent();
+        }
+
+        private boolean containsTags(@Nonnull Set<String> tagNames, Activity activity) {
+            return tagNames.stream()
                     .filter(tagName -> {
                         try {
                             return activity.getTags().contains(new Tag(tagName));
                         } catch (IllegalValueException e) {
                             //ignore incorrect tag name format
                             return false;
-                        }
-                    })
+                        }})
                     .findAny()
-                    .isPresent());
+                    .isPresent();
         }
 
         @Override
