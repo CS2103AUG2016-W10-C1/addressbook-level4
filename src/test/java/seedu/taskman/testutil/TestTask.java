@@ -22,29 +22,13 @@ public class TestTask implements ReadOnlyTask {
         status = new Status();
     }
 
-    public void setTitle(Title title) {
-        this.title = title;
-    }
-
-    public void setDeadline(Deadline deadline) {
-        this.deadline = deadline;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public void setFrequency(Frequency frequency) {
-        this.frequency = frequency;
-    }
-
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
-    }
-
     @Override
     public Title getTitle() {
         return title;
+    }
+
+    public void setTitle(Title title) {
+        this.title = title;
     }
 
     @Override
@@ -57,9 +41,17 @@ public class TestTask implements ReadOnlyTask {
         return status;
     }
 
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     @Override
     public Optional<Deadline> getDeadline() {
         return Optional.ofNullable(deadline);
+    }
+
+    public void setDeadline(Deadline deadline) {
+        this.deadline = deadline;
     }
 
     @Override
@@ -67,9 +59,17 @@ public class TestTask implements ReadOnlyTask {
         return Optional.ofNullable(frequency);
     }
 
+    public void setFrequency(Frequency frequency) {
+        this.frequency = frequency;
+    }
+
     @Override
     public Optional<Schedule> getSchedule() {
         return Optional.ofNullable(schedule);
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
     }
 
     @Override
@@ -79,11 +79,16 @@ public class TestTask implements ReadOnlyTask {
 
     public String getAddCommand() {
         StringBuilder sb = new StringBuilder();
-        sb.append("add " + this.getTitle().title + " ");
-        sb.append("d/" + this.getDeadline().toString() + " ");
-        sb.append("c/" + this.getStatus().toString() + " ");
-        sb.append("r/" + this.getFrequency().toString() + " ");
-        sb.append("s/" + this.getSchedule().toString() + " ");
+        sb.append("do " + this.getTitle().title + " ");
+        if (this.getDeadline().isPresent()) {
+            sb.append("d/" + this.getDeadline().get().toString() + " ");
+        }
+        if (this.getSchedule().isPresent()) {
+            sb.append("s/" + this.getSchedule().get().toString().replace('\n',' ') + " ");
+        }
+        if (this.getFrequency().isPresent()) {
+//        sb.append("f/" + this.getFrequency().toString() + " ");
+        }
         this.getTags().getInternalList().stream().forEach(s -> sb.append("t/" + s.tagName + " "));
         return sb.toString();
     }

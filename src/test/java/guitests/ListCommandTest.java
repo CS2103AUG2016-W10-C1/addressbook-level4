@@ -41,8 +41,8 @@ public class ListCommandTest extends TaskManGuiTest {
         for (int i = 0; i < expectedHits.length; i++) {
             expectedActivities[i] = new Activity(new Task(expectedHits[i]));
         }
-        assertListSize(expectedActivities.length);
+        assertDeadlineListSize(expectedActivities.length);
         assertResultMessage(expectedActivities.length + " tasks listed!");
-        assertTrue(taskListPanel.isListMatching(expectedActivities));
+        assertTrue(deadlineListPanel.isListMatching(expectedActivities));
     }
 }

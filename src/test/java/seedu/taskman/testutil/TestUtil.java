@@ -276,16 +276,16 @@ public class TestUtil {
     }
 
     /**
-     * Removes a subset from the list of tasks.
+     * Removes a subset from the list of activities.
      *
-     * @param tasks         The list of tasks
-     * @param tasksToRemove The subset of tasks.
-     * @return The modified tasks after removal of the subset from tasks.
+     * @param activities         The list of activities
+     * @param activitiesToRemove The subset of activities.
+     * @return The modified activities after removal of the subset from activities.
      */
-    public static TestTask[] removeTasksFromList(final TestTask[] tasks, TestTask... tasksToRemove) {
-        List<TestTask> listOfTasks = asList(tasks);
-        listOfTasks.removeAll(asList(tasksToRemove));
-        return listOfTasks.toArray(new TestTask[listOfTasks.size()]);
+    public static Activity[] removeActivitiesFromList(final Activity[] activities, Activity... activitiesToRemove) {
+        List<Activity> activityList = asList(activities);
+        activityList.removeAll(asList(activitiesToRemove));
+        return activityList.toArray(new Activity[activityList.size()]);
     }
 
 
@@ -295,8 +295,8 @@ public class TestUtil {
      * @param list                          original list to copy from
      * @param targetIndexInOneIndexedFormat e.g. if the first element to be removed, 1 should be given as index.
      */
-    public static TestTask[] removeTaskFromList(final TestTask[] list, int targetIndexInOneIndexedFormat) {
-        return removeTasksFromList(list, list[targetIndexInOneIndexedFormat - 1]);
+    public static Activity[] removeActivityFromList(final Activity[] list, int targetIndexInOneIndexedFormat) {
+        return removeActivitiesFromList(list, list[targetIndexInOneIndexedFormat - 1]);
     }
 
     /**
@@ -313,19 +313,42 @@ public class TestUtil {
     }
 
     /**
-     * Appends tasks to the array of tasks.
+     * Appends tasks to the list of tasks.
      *
      * @param tasks      A array of tasks.
-     * @param tasksToAdd The tasks that are to be appended behind the original array.
-     * @return The modified array of tasks.
+     * @param tasksToAdd The tasks that are to be appended behind the original list.
+     * @return A new list of tasks.
      */
-    public static TestTask[] addTasksToList(final TestTask[] tasks, TestTask... tasksToAdd) {
-        List<TestTask> listOfTasks = asList(tasks);
-        listOfTasks.addAll(asList(tasksToAdd));
-        return listOfTasks.toArray(new TestTask[listOfTasks.size()]);
+    public static List<TestTask> addTasksToList(final List<TestTask> tasks, TestTask... tasksToAdd) {
+        List<TestTask> tasksList = new ArrayList<>(tasks);
+        tasksList.addAll(asList(tasksToAdd));
+        return tasksList;
     }
 
-    private static <T> List<T> asList(T[] objs) {
+    /**
+     * Sorts the Activity objects in the array by their deadlines
+     * All Activity objects in the array should have a deadline.
+     * @param activities
+     */
+    public static void sortActivitiesByDeadline(Activity[] activities){
+        Arrays.sort(activities, (o1, o2)
+                -> Long.compare(o1.getDeadline().get().epochSecond,
+                        o2.getDeadline().get().epochSecond));
+    }
+
+    /**
+     * Converts the given list of TestTasks to an array of Activity objects
+     * @param tasks
+     * @return array of Activity objects constructed from the given TestTask objects
+     */
+    public static Activity[] getActivitiesArray(List<TestTask> tasks){
+        return tasks.stream()
+                .map(a -> new Activity(new Task(a)))
+                .collect(Collectors.toList())
+                .toArray(new Activity[tasks.size()]);
+    }
+
+    public static <T> List<T> asList(T[] objs) {
         List<T> list = new ArrayList<>();
         for (T obj : objs) {
             list.add(obj);

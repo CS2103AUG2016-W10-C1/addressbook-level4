@@ -1,30 +1,32 @@
 package guitests;
 
+import org.junit.Test;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Task;
 import seedu.taskman.testutil.TestTask;
+import seedu.taskman.testutil.TestUtil;
+
+import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
 public class ClearCommandTest extends TaskManGuiTest {
 
-    //@Test
+    @Test
     public void clear() {
 
         //verify a non-empty list can be cleared
-        TestTask[] currentList = testTasks.getTypicalTasks();
-        Activity[] expectedList = new Activity[currentList.length];
-        for (int i = 0; i < expectedList.length; i++) {
-            expectedList[i] = new Activity(new Task(currentList[i]));
-        }
-        assertTrue(taskListPanel.isListMatching(expectedList));
+        List<TestTask> currentList = TestUtil.asList(testTasks.getTypicalTasks());
+        Activity[] expectedList = TestUtil.getActivitiesArray(currentList);
+        TestUtil.sortActivitiesByDeadline(expectedList);
+        assertTrue(deadlineListPanel.isListMatching(expectedList));
         assertClearCommandSuccess();
 
         //verify other commands can work after a clear command
         commandBox.runCommand(testTasks.taskCS2102.getAddCommand());
-        assertTrue(taskListPanel.isListMatching(new Activity(new Task(testTasks.taskCS2102))));
-        commandBox.runCommand("delete 1");
-        assertListSize(0);
+        assertTrue(deadlineListPanel.isListMatching(new Activity(new Task(testTasks.taskCS2102))));
+        commandBox.runCommand("delete d1");
+        assertDeadlineListSize(0);
 
         //verify clear command works when the list is empty
         assertClearCommandSuccess();
@@ -32,7 +34,7 @@ public class ClearCommandTest extends TaskManGuiTest {
 
     private void assertClearCommandSuccess() {
         commandBox.runCommand("clear");
-        assertListSize(0);
+        assertDeadlineListSize(0);
         assertResultMessage("Task man has been cleared!");
     }
 }

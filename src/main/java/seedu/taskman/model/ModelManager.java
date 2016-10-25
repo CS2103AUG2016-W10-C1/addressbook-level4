@@ -351,7 +351,7 @@ public class ModelManager extends ComponentManager implements Model {
             Optional<Schedule> schedule1 = activity1.getSchedule();
             Optional<Schedule> schedule2 = activity2.getSchedule();
             if (!schedule1.isPresent() || !schedule2.isPresent()) {
-                throw new AssertionError("There are acitivities in the schedules table that have no schedules!", null);
+                throw new AssertionError("There are activities in the schedules table that have no schedules!", null);
             }
             Long start1 = schedule1.get().startEpochSecond;
             Long start2 = schedule2.get().startEpochSecond;
@@ -365,7 +365,7 @@ public class ModelManager extends ComponentManager implements Model {
             Optional<Deadline> deadline1 = activity1.getDeadline();
             Optional<Deadline> deadline2 = activity2.getDeadline();
             if (!deadline1.isPresent() || !deadline2.isPresent()) {
-                throw new AssertionError("There are acitivities in the deadlines table that have no deadlines!", null);
+                throw new AssertionError("There are activities in the deadlines table that have no deadlines!", null);
             }
             Long due1 = deadline1.get().epochSecond;
             Long due2 = deadline2.get().epochSecond;
