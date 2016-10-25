@@ -15,15 +15,28 @@ import seedu.taskman.logic.LogicManager;
 import seedu.taskman.logic.commands.CommandHistory;
 import seedu.taskman.logic.commands.CommandResult;
 import seedu.taskman.logic.parser.DateTimeParser;
-import seedu.taskman.model.*;
-import seedu.taskman.model.event.*;
+import seedu.taskman.model.Model;
+import seedu.taskman.model.ModelManager;
+import seedu.taskman.model.ReadOnlyTaskMan;
+import seedu.taskman.model.TaskMan;
+import seedu.taskman.model.UserPrefs;
+import seedu.taskman.model.event.Activity;
+import seedu.taskman.model.event.Deadline;
+import seedu.taskman.model.event.Schedule;
+import seedu.taskman.model.event.Task;
+import seedu.taskman.model.event.Title;
 import seedu.taskman.model.tag.Tag;
 import seedu.taskman.model.tag.UniqueTagList;
 import seedu.taskman.storage.Storage;
 import seedu.taskman.storage.StorageManager;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
