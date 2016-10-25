@@ -75,8 +75,10 @@ public class ListCommand extends Command {
         final Matcher matcher = SPECIFY_PANEL_ARGS_FORMAT.matcher(trimmedArgs);
 
         if (trimmedArgs.isEmpty()) {
-            final Set<String> keywordSet = new HashSet<>();
-            return new ListCommand(keywordSet);
+            // TODO: blocked for now
+            //return new ListCommand(keywordSet);
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    ListCommand.MESSAGE_USAGE));
 
         } else if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
