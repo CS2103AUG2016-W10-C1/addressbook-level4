@@ -2,8 +2,9 @@
 [![Coverage Status](https://coveralls.io/repos/github/CS2103AUG2016-W10-C1/main/badge.svg?branch=master)](https://coveralls.io/github/CS2103AUG2016-W10-C1/main?branch=master)
 
 # TaskMan
-
-<img src="docs/images/ui_mockup1.png"><br>
+<!--@@author A0140136W-->
+<img src="docs/images/UI.png"><br>
+<!--@@author-->
 
 * This is a desktop Task Manager application. It has a GUI but most of the user interactions happen using 
   a CLI (Command Line Interface).

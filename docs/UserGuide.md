@@ -76,7 +76,6 @@ Examples:
 * `do eat vitamins s/fri 1400 for 5 minutes f/2 days t/ribena`
 * `do backup server s/mon 0800 for 2 hours f/3 months`
 
-<!--@@author A0139019E-->
 #### Adding an event: `dot`
 Adds an event to TaskMan<br>
 Command Format: `dot TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`

@@ -102,15 +102,15 @@ being saved to the hard disk and the status bar of the UI being updated to refle
 The sections below give more details of each component.
 
 ### UI component
-
+<!--@@author A0140136W-->
 <img src="images/UiClassDiagram.png" width="800"><br>
 
 **API** : [`Ui.java`](../src/main/java/seedu/taskman/ui/Ui.java)
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `TaskListPanel`,
-`StatusBarFooter`, `BrowserPanel` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class
+The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `SchedulePanel`, `Deadline Panel`, `Floating Panel`
+`StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class
 and they can be loaded using the `UiPartLoader`.
-
+<!--@@author-->
 The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files
  that are in the `src/main/resources/view` folder.<br>
  For example, the layout of the [`MainWindow`](../src/main/java/seedu/taskman/ui/MainWindow.java) is specified in
