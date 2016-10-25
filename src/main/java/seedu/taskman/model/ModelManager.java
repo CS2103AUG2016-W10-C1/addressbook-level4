@@ -1,6 +1,7 @@
 package seedu.taskman.model;
 
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import seedu.taskman.commons.core.ComponentManager;
 import seedu.taskman.commons.core.LogsCenter;
@@ -31,7 +32,11 @@ public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final TaskMan taskMan;
-    private final SortedList<Activity> sortedActivities;
+    
+    private final FilteredList<Activity> filteredSchedules;
+    private final FilteredList<Activity> filteredDeadlines;
+    private final FilteredList<Activity> filteredFloatings;
+    
     private final SortedList<Activity> sortedSchedules;
     private final SortedList<Activity> sortedDeadlines;
     private final SortedList<Activity> sortedFloatings;
@@ -49,10 +54,12 @@ public class ModelManager extends ComponentManager implements Model {
 
         taskMan = new TaskMan(src);
         ObservableList<Activity> activities = taskMan.getActivities();
-        sortedActivities = new SortedList<>(activities);
-        sortedSchedules = activities.filtered(new SchedulePredicate()).sorted(new ScheduleComparator());
-        sortedDeadlines = activities.filtered(new DeadlinePredicate()).sorted(new DeadlineComparator());
-        sortedFloatings = activities.filtered(new FloatingPredicate()).sorted();
+        filteredSchedules = activities.filtered(new SchedulePredicate());
+        filteredDeadlines = activities.filtered(new DeadlinePredicate());
+        filteredFloatings = activities.filtered(new FloatingPredicate());
+        sortedSchedules = filteredSchedules.sorted(new ScheduleComparator());
+        sortedDeadlines = filteredDeadlines.sorted(new DeadlineComparator());
+        sortedFloatings = filteredFloatings.sorted();
     }
 
     public ModelManager() {
@@ -62,10 +69,12 @@ public class ModelManager extends ComponentManager implements Model {
     public ModelManager(ReadOnlyTaskMan initialData, UserPrefs userPrefs) {
         taskMan = new TaskMan(initialData);
         ObservableList<Activity> activities = taskMan.getActivities();
-        sortedActivities = new SortedList<>(activities);
-        sortedSchedules = activities.filtered(new SchedulePredicate()).sorted(new ScheduleComparator());
-        sortedDeadlines = activities.filtered(new DeadlinePredicate()).sorted(new DeadlineComparator());
-        sortedFloatings = activities.filtered(new FloatingPredicate()).sorted();
+        filteredSchedules = activities.filtered(new SchedulePredicate());
+        filteredDeadlines = activities.filtered(new DeadlinePredicate());
+        filteredFloatings = activities.filtered(new FloatingPredicate());
+        sortedSchedules = filteredSchedules.sorted(new ScheduleComparator());
+        sortedDeadlines = filteredDeadlines.sorted(new DeadlineComparator());
+        sortedFloatings = filteredFloatings.sorted();
     }
 
     @Override
@@ -124,12 +133,53 @@ public class ModelManager extends ComponentManager implements Model {
                 throw new AssertionError("Unspecified panel type");
         }
     }
-
-    //TODO Remove
-    @Override
-    public UnmodifiableObservableList<Activity> getFilteredActivityList() {
-        return new UnmodifiableObservableList<>(sortedActivities);
+    
+    public void updateFilteredPanelToShowAll(Activity.PanelType panel) {
+        switch(panel) {
+            case SCHEDULE: {
+                filteredSchedules.setPredicate(new DeadlinePredicate());
+                return;
+            }
+            case DEADLINE: {
+                filteredDeadlines.setPredicate(new DeadlinePredicate());
+                return;
+            }
+            case FLOATING: {
+                filteredFloatings.setPredicate(new DeadlinePredicate());
+                return;
+            }
+            default: {
+                assert false : "Unspecified panel type";
+            }
+        }    
     }
+    
+    public void updateFilteredPanel(Activity.PanelType panel, Set<String> keywords, Set<String> tagNames) {
+        updateFilteredPanel(panel, new PredicateExpression(new ActivityQualifier(keywords, tagNames)));
+    }
+        
+    private void updateFilteredPanel(Activity.PanelType panel, Expression expression) {
+        switch(panel) {
+            case SCHEDULE: {
+                filteredSchedules.setPredicate(expression::satisfies);
+                return;
+            }
+            case DEADLINE: {
+                filteredDeadlines.setPredicate(expression::satisfies);
+                return;
+            }
+            case FLOATING: {
+                filteredFloatings.setPredicate(expression::satisfies);
+                return;
+            }
+            default: {
+                filteredSchedules.setPredicate(expression::satisfies);
+                filteredDeadlines.setPredicate(expression::satisfies);
+                filteredFloatings.setPredicate(expression::satisfies);             
+            }
+        }
+    }
+    
 
     @Override
     public UnmodifiableObservableList<Activity> getSortedScheduleList() {
@@ -200,10 +250,8 @@ public class ModelManager extends ComponentManager implements Model {
     private class ActivityQualifier implements Qualifier {
         private Set<String> titleKeyWords;
         private Set<String> tagNames;
-        private ListCommand.FilterMode filterMode = ListCommand.FilterMode.ALL;
 
-        ActivityQualifier(ListCommand.FilterMode filterMode, Set<String> titleKeyWords, Set<String> tagNames) {
-            this.filterMode = filterMode;
+        ActivityQualifier(Set<String> titleKeyWords, Set<String> tagNames) {
             this.titleKeyWords = titleKeyWords;
             this.tagNames = tagNames;
         }
@@ -212,13 +260,7 @@ public class ModelManager extends ComponentManager implements Model {
         @Override
         public boolean run(Activity activity) {
             // (fit task/event type && (no keyword || contain a keyword) && (no tag || contain a tag))
-            return (filterMode == ListCommand.FilterMode.ALL
-                        || (filterMode == ListCommand.FilterMode.SCHEDULE_ONLY && activity.getSchedule().isPresent())
-                        || (filterMode == ListCommand.FilterMode.DEADLINE_ONLY && activity.getType() == Activity.ActivityType.TASK
-                            && activity.getDeadline().isPresent())
-                        || (filterMode == ListCommand.FilterMode.FLOATING_ONLY && activity.getType() == Activity.ActivityType.TASK
-                            && !activity.getDeadline().isPresent()))
-                    && (titleKeyWords == null || titleKeyWords.isEmpty() || titleKeyWords.stream()
+            return (titleKeyWords == null || titleKeyWords.isEmpty() || titleKeyWords.stream()
                     .filter(keyword -> StringUtil.containsIgnoreCase(activity.getTitle().title, keyword))
                     .findAny()
                     .isPresent())

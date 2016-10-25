@@ -7,6 +7,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import seedu.taskman.logic.parser.CommandParser;
+import seedu.taskman.model.event.Activity;
+
 import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 /**
@@ -14,7 +17,7 @@ import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
  * Keyword matching is case sensitive.
  */
 public class ListCommand extends Command {
-
+    /*
     public enum FilterMode {
         SCHEDULE_ONLY,
         DEADLINE_ONLY,
@@ -50,21 +53,27 @@ public class ListCommand extends Command {
             return builder.toString();
         }
     }
+    */
 
     public static final String COMMAND_WORD = "list";
-
+    
+    /*
     public static final Pattern LIST_ARGS_FORMAT = Pattern.compile("(?<filter>" + ListFlag.matchingRegex() + ")?" +
             "(?<keywords>(?:\\s*[^/]+)*?)??(?<tagArguments>(?:\\s*t/[^/]+)*)?"); // one or more keywords separated by whitespace
+    */
 
-    // UG/DG
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all tasks whose titles contain any of "
             + "the specified keywords (case-sensitive) and displays them as a list with index numbers.\n"
             + "Parameters: [{d/, f/, all/}] [KEYWORDS]... [t/TAG]...\n"
             + "Example: " + COMMAND_WORD + " all/ homework t/CS2103T";
 
     public static final String MESSAGE_SUCCESS = "Listed all tasks";
+    private static final Pattern LIST_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
+            Pattern.compile("" + CommandParser.ArgumentPattern.PANEL
+                    + CommandParser.ArgumentPattern.TITLE + "?"
+                    + CommandParser.ArgumentPattern.TAG); // variable number of tags
 
-    private final FilterMode filterMode;
+    private final Activity.PanelType panelType;
     private final Set<String> keywords;
     private final Set<String> tagNames;
 
@@ -80,14 +89,9 @@ public class ListCommand extends Command {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     ListCommand.MESSAGE_USAGE));
         } else {
-            //filter
-            final String filter = matcher.group("filter");
-            FilterMode filterMode = FilterMode.DEADLINE_ONLY;
-            for(ListFlag listFlag: ListFlag.values()){
-                if(listFlag.flag.equals(filter)){
-                    filterMode = listFlag.filterMode;
-                }
-            }
+            
+            String panelTypeRaw = matcher.group("panel").trim();
+            Activity.PanelType panelType = Activity.PanelType.fromString(panelTypeRaw);
 
             // keywords delimited by whitespace
             Set<String> keywordSet = Collections.EMPTY_SET;
@@ -100,26 +104,28 @@ public class ListCommand extends Command {
             if (matcher.group("tagArguments") != null) {
                 tagSet = getTagsFromArgs(matcher.group("tagArguments"));
             }
-            return new ListCommand(filterMode, keywordSet, tagSet);
+            return new ListCommand(panelType, keywordSet, tagSet);
         }
     }
 
-    private ListCommand(FilterMode filterMode, Set<String> keywords, Set<String> tags) {
+    private ListCommand(Activity.PanelType panelType, Set<String> keywords, Set<String> tags) {
         super(false);
-        this.filterMode = filterMode;
+        this.panelType = panelType;
         this.keywords = keywords;
         this.tagNames = tags;
     }
 
     private ListCommand(Set<String> keywords) {
-        this(FilterMode.DEADLINE_ONLY, keywords, new HashSet<>());
+        this(null, keywords, new HashSet<>());
     }
 
     @Override
     public CommandResult execute() {
-        // todo: disabled for now
-        //model.updateFilteredActivityList(filterMode, keywords, tagNames);
-        return new CommandResult(getMessageForTaskListShownSummary(model.getFilteredActivityList().size()), true);
+        model.updateFilteredPanel(panelType, keywords, tagNames);
+        return new CommandResult(getMessageForTaskListShownSummary(model.getActivityListForPanelType(Activity.PanelType.SCHEDULE).size()
+                                                                   + model.getActivityListForPanelType(Activity.PanelType.DEADLINE).size()
+                                                                   + model.getActivityListForPanelType(Activity.PanelType.FLOATING).size()
+                                                                   ), true);
     }
 
 }

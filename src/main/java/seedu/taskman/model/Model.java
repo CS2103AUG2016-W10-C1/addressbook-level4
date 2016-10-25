@@ -1,5 +1,7 @@
 package seedu.taskman.model;
 
+import java.util.Set;
+
 import seedu.taskman.commons.core.UnmodifiableObservableList;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Event;
@@ -22,12 +24,6 @@ public interface Model {
     void addActivity(Activity activity) throws UniqueActivityList.DuplicateActivityException;
 
     UnmodifiableObservableList<Activity> getActivityListForPanelType(Activity.PanelType type);
-
-    //TODO Remove
-    /**
-     * Returns the filtered list of activity as an {@code UnmodifiableObservableList<Activity>}
-     */
-    UnmodifiableObservableList<Activity> getFilteredActivityList();
     
     /**
      * Returns the filtered list of activities with schedules as an {@code UnmodifiableObservableList<Activity>}
@@ -44,13 +40,11 @@ public interface Model {
      */
     UnmodifiableObservableList<Activity> getSortedFloatingList();
 
-    //TODO Remove
     /**
-     * Updates the filter of the filtered activity list to show all activities
+     * Updates the filter of the filtered activity panels to show all activities
      */
-    //void updateFilteredListToShowAll();
+    void updateFilteredPanelToShowAll(Activity.PanelType panel);
     
-    //TODO Remove
     /** Updates the filter of the filtered activity list to filter by the given mode, the given keywords and the given tag names*/
-    //void updateFilteredActivityList(ListCommand.FilterMode filterMode, Set<String> keywords, Set<String> tagNames);
+    void updateFilteredPanel(Activity.PanelType panel, Set<String> keywords, Set<String> tagNames);
 }
