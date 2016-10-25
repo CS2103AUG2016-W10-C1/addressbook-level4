@@ -127,7 +127,7 @@ public class ModelManager extends ComponentManager implements Model {
                 throw new AssertionError("Unspecified panel type");
         }
     }
-    
+    //@@author A0140136W
     public void updateFilteredPanelToShowAll(Activity.PanelType panel) {
         if(panel == null) {
             filteredSchedules.setPredicate(new SchedulePredicate());
@@ -184,7 +184,8 @@ public class ModelManager extends ComponentManager implements Model {
                 }
             }
         }
-    } 
+    }
+    //@@author
 
     @Override
     public UnmodifiableObservableList<Activity> getSortedScheduleList() {

@@ -19,7 +19,7 @@ import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Status;
 
 import java.util.logging.Logger;
-
+//@@author A0140136W
 /**
  * Panel containing the list of tasks.
  */
