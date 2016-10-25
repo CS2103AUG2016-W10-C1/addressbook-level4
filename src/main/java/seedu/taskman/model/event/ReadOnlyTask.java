@@ -31,8 +31,8 @@ public interface ReadOnlyTask extends ReadOnlyEvent {
                 .append(getStatus())
                 .append(" Deadline: ")
                 .append(getDeadline())
-                .append(" Frequency: ")
-                .append(getFrequency())
+                //.append(" Frequency: ")
+                //.append(getFrequency())
                 .append(" Schedule: ")
                 .append(getSchedule())
                 .append(" Tags: ");
