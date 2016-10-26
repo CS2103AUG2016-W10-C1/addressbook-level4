@@ -118,6 +118,7 @@ public class UiManager extends ComponentManager implements Ui {
         mainWindow.getListPanel(event.panelType).scrollTo(event.targetIndex);
     }
 
+    //TODO: handle selection event?
     @Subscribe
     private void handleTaskPanelSelectionChangedEvent(TaskPanelSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));

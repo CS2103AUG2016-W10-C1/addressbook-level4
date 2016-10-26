@@ -30,9 +30,9 @@ public class MainWindow extends UiPart {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private SchedulePanel schedulePanel;
-    private DeadlinePanel deadlinePanel;
-    private FloatingPanel floatingPanel;
+    private ActivityPanel schedulePanel;
+    private ActivityPanel deadlinePanel;
+    private ActivityPanel floatingPanel;
     private ResultDisplay resultDisplay;
     private StatusBarFooter statusBarFooter;
     private CommandBox commandBox;
@@ -113,9 +113,9 @@ public class MainWindow extends UiPart {
     }
 
     void fillInnerParts() {
-        schedulePanel = SchedulePanel.load(primaryStage, getScheduleTablePlaceholder(), logic.getSortedScheduleList());
-        deadlinePanel = DeadlinePanel.load(primaryStage, getDeadlineTablePlaceholder(), logic.getSortedDeadlineList());
-        floatingPanel = FloatingPanel.load(primaryStage, getFloatingTablePlaceholder(), logic.getSortedFloatingList());
+        schedulePanel = ActivityPanel.load(primaryStage,getScheduleTablePlaceholder(), logic.getSortedScheduleList(), Activity.PanelType.SCHEDULE);
+        deadlinePanel = ActivityPanel.load(primaryStage, getDeadlineTablePlaceholder(), logic.getSortedDeadlineList(), Activity.PanelType.DEADLINE);
+        floatingPanel = ActivityPanel.load(primaryStage, getFloatingTablePlaceholder(), logic.getSortedFloatingList(), Activity.PanelType.FLOATING);
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getTaskManFilePath());
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);

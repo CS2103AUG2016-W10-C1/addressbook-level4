@@ -1,0 +1,34 @@
+
+
+.label-id {
+    -fx-font-size: 14px;
+}
+
+.label-value{
+
+}
+
+.label-title {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.panel-title {
+
+}
+
+.label-amber {
+    -fx-text-fill: #ffc107;
+}
+
+.label-red {
+    -fx-text-fill: #e53935;
+}
+
+.label-green {
+    -fx-text-fill: #009688;
+}
+
+.bg-lime {
+    -fx-background-color: #cddc39;
+}
