@@ -7,6 +7,8 @@ import seedu.taskman.commons.exceptions.IllegalValueException;
 public class Status {
     public static final String COMPLETE = "complete";
     public static final String INCOMPLETE = "incomplete";
+    public static final String YES = "y";
+    public static final String NO = "n";
 
     public final Boolean completed;
 
@@ -16,8 +18,8 @@ public class Status {
 
     public Status(String booleanString) throws IllegalValueException {
         booleanString = booleanString.trim().toLowerCase();
-        if (!booleanString.matches("("+ COMPLETE +")|("+ INCOMPLETE +")")) {
-            throw new IllegalValueException("Status should be 'complete' or 'incomplete'");
+        if (!booleanString.matches("("+ COMPLETE +")|("+ INCOMPLETE +")|("+YES+")|("+NO+")")) {
+            throw new IllegalValueException("Status should be 'complete','incomplete', 'y' or 'n'");
         }
         completed = booleanString.equals(COMPLETE);
     }
