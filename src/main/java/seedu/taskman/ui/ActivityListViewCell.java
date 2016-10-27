@@ -2,7 +2,7 @@ package seedu.taskman.ui;
 
 import javafx.scene.control.ListCell;
 import seedu.taskman.model.event.Activity;
-import seedu.taskman.ui.activitycard.ActivityCard;
+import seedu.taskman.ui.activitycard.ActivityCardLoader;
 
 /**
  * Created by YiMin on 26/10/2016.
@@ -23,7 +23,7 @@ public class ActivityListViewCell extends ListCell<Activity> {
             setGraphic(null);
             setText(null);
         } else {
-            setGraphic(ActivityCard.load(activity, panelType, getIndex() + 1).getLayout());
+            setGraphic(ActivityCardLoader.load(activity, panelType, getIndex() + 1).getLayout());
         }
     }
 
