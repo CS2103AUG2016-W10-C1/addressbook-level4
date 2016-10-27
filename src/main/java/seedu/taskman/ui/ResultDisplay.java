@@ -37,6 +37,8 @@ public class ResultDisplay extends UiPart {
         resultDisplayArea.getStyleClass().add(STATUS_BAR_STYLE_SHEET);
         resultDisplayArea.setText("");
         resultDisplayArea.textProperty().bind(displayed);
+        resultDisplayArea.setWrapText(true);
+        resultDisplayArea.setFocusTraversable(false);
         FxViewUtil.applyAnchorBoundaryParameters(resultDisplayArea, 0.0, 0.0, 0.0, 0.0);
         mainPane.getChildren().add(resultDisplayArea);
         FxViewUtil.applyAnchorBoundaryParameters(mainPane, 0.0, 0.0, 0.0, 0.0);
