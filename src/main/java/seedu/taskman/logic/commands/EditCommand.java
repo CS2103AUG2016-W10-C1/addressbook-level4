@@ -173,6 +173,7 @@ public class EditCommand extends Command {
                         : new Frequency(argsContainer.frequency)
                 );
                 afterEdit = new Activity(event);
+                break;
             }
             case TASK: {
                 Task task = new Task(
@@ -198,6 +199,7 @@ public class EditCommand extends Command {
                                : new Status(argsContainer.status));
                         
                 afterEdit = new Activity(task);
+                break;
             }
             default: {
                 assert false : "Activity is neither an event nor a task.";
