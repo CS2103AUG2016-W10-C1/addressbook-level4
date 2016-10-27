@@ -21,7 +21,8 @@ public class Status {
         if (!booleanString.matches("("+ COMPLETE +")|("+ INCOMPLETE +")|("+YES+")|("+NO+")")) {
             throw new IllegalValueException("Status should be 'complete','incomplete', 'y' or 'n'");
         }
-        completed = booleanString.equals(COMPLETE);
+        completed = booleanString.equals(COMPLETE) ||
+                    booleanString.equals(YES);
     }
 
     @Override
