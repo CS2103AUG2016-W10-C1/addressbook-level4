@@ -26,7 +26,11 @@
 }
 
 .label-green {
-    -fx-text-fill: #009688;
+    -fx-text-fill: #00bfa5;
+}
+
+.label-blue {
+    -fx-text-fill: #3949ab;
 }
 
 .bg-lime {

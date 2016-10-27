@@ -17,14 +17,5 @@ public class ScheduleActivityCard extends ActivityCard {
                 ? activity.getSchedule().get().toString()
                 : "";
         value.setText(valueText);
-        setColour();
-    }
-
-    private void setColour(){
-        switch (activity.getType()) {
-            case EVENT: {
-                cardPane.getStyleClass().add(LIME_BG);
-            }
-        }
     }
 }

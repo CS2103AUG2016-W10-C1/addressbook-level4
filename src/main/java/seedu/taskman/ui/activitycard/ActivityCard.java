@@ -20,7 +20,7 @@ public class ActivityCard extends UiPart {
     protected static final String AMBER_STYLE = "label-amber";
     protected static final String GREEN_STYLE = "label-green";
     protected static final String RED_STYLE = "label-red";
-    protected static final String LIME_BG = "bg-lime";
+    protected static final String BLUE_STYLE = "label-blue";
 
     @javafx.fxml.FXML
     protected GridPane cardPane;
@@ -36,18 +36,19 @@ public class ActivityCard extends UiPart {
     protected Activity activity;
     protected int displayedIndex;
 
-    public ActivityCard(){
+    public ActivityCard() {
 
     }
 
     /**
      * Constructs the appropriate ActivityCard given the panelType
-     * @param activity to be represented
-     * @param panelType of the Panel
+     *
+     * @param activity       to be represented
+     * @param panelType      of the Panel
      * @param displayedIndex of the activity in the panel
      * @return the ActivityCard corresponding to the panelType
      */
-    public static ActivityCard load(Activity activity, Activity.PanelType panelType, int displayedIndex){
+    public static ActivityCard load(Activity activity, Activity.PanelType panelType, int displayedIndex) {
         ActivityCard card = new ActivityCard();
 
         switch (panelType) {
@@ -78,12 +79,46 @@ public class ActivityCard extends UiPart {
     public void initialize() {
         title.setText(activity.getTitle().toString());
         id.setText(displayedIndex + "");
-        for (Tag tag: activity.getTags()) {
+        for (Tag tag : activity.getTags()) {
             tagsFlowPane.getChildren().add(new Label(tag.toString()));
+        }
+        value.setText("");
+        setColour();
+    }
+
+    /**
+     * Setting colours to title labels
+     * Event -> blue
+     * Task ->
+     *  Overdue -> red
+     *  Not overdue ->
+     *      Complete -> green
+     *      Incomplete -> amber
+     */
+    protected void setColour() {
+        switch (activity.getType()) {
+            case EVENT: {
+                title.getStyleClass().add(BLUE_STYLE);
+                break;
+            }
+            case TASK: {
+                if (activity.getDeadline().isPresent()
+                        && activity.getDeadline().get().hasPast()
+                        && !activity.getStatus().get().completed) {
+                    title.getStyleClass().add(RED_STYLE);
+                    break;
+                }
+
+                if (activity.getStatus().get().completed) {
+                    title.getStyleClass().add(GREEN_STYLE);
+                } else {
+                    title.getStyleClass().add(AMBER_STYLE);
+                }
+            }
         }
     }
 
-    public GridPane getLayout(){
+    public GridPane getLayout() {
         return cardPane;
     }
 
