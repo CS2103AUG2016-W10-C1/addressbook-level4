@@ -86,7 +86,7 @@ public class ActivityPanel extends UiPart implements ListPanel {
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 logger.fine("Selection in task list panel changed to : '" + newValue + "'");
-                raise(new TaskPanelSelectionChangedEvent(newValue));
+                raise(new TaskPanelSelectionChangedEvent(newValue, panelType));
             }
         });
     }

@@ -159,6 +159,18 @@ public class MainWindow extends UiPart {
         schedulePanel.clearSelection();
     }
 
+    public void clearListPanelsExclude(Activity.PanelType panelType){
+        if (panelType != Activity.PanelType.DEADLINE) {
+            deadlinePanel.clearSelection();
+        }
+        if (panelType != Activity.PanelType.SCHEDULE) {
+           schedulePanel.clearSelection();
+        }
+        if (panelType != Activity.PanelType.FLOATING) {
+            floatingPanel.clearSelection();
+        }
+    }
+
     public ListPanel getListPanel(Activity.PanelType panelType){
         switch (panelType){
             case DEADLINE: {
