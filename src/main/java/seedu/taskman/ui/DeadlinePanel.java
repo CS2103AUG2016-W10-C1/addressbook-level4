@@ -6,42 +6,34 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import seedu.taskman.commons.core.LogsCenter;
 import seedu.taskman.commons.events.ui.TaskPanelSelectionChangedEvent;
 import seedu.taskman.commons.util.FxViewUtil;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Deadline;
-import seedu.taskman.model.event.Frequency;
-import seedu.taskman.model.event.Schedule;
 import seedu.taskman.model.event.Status;
-import seedu.taskman.commons.core.LogsCenter;
 
 import java.util.logging.Logger;
-
+//@@author A0140136W
 /**
  * Panel containing the list of tasks.
  */
-public class TaskListPanel extends UiPart {
-    private final Logger logger = LogsCenter.getLogger(TaskListPanel.class);
-    private static final String FXML = "TaskListPanel.fxml";
+public class DeadlinePanel extends UiPart implements ListPanel {
+    private final Logger logger = LogsCenter.getLogger(DeadlinePanel.class);
+    private static final String FXML = "DeadlinePanel.fxml";
     private AnchorPane panel;
     private AnchorPane placeHolderPane;
 
     @FXML
-    private TableView<Activity> taskListView;
+    private TableView<Activity> deadlineTableView;
 
-    public TaskListPanel() {
+    public DeadlinePanel() {
         super();
     }
 
@@ -60,12 +52,12 @@ public class TaskListPanel extends UiPart {
         this.placeHolderPane = pane;
     }
 
-    public static TaskListPanel load(Stage primaryStage, AnchorPane taskListPlaceholder,
+    public static DeadlinePanel load(Stage primaryStage, AnchorPane taskListPlaceholder,
                                      ObservableList<Activity> taskList) {
-        TaskListPanel taskListPanel =
-                UiPartLoader.loadUiPart(primaryStage, taskListPlaceholder, new TaskListPanel());
-        taskListPanel.configure(taskList);
-        return taskListPanel;
+        DeadlinePanel deadlinePanel =
+                UiPartLoader.loadUiPart(primaryStage, taskListPlaceholder, new DeadlinePanel());
+        deadlinePanel.configure(taskList);
+        return deadlinePanel;
     }
 
     private void configure(ObservableList<Activity> taskList) {
@@ -74,16 +66,27 @@ public class TaskListPanel extends UiPart {
     }
 
     // TODO Resolve generic type issue.
-    private void setConnections(ObservableList<Activity> taskList) {
-        taskListView.setItems(taskList);
+    private void setConnections(ObservableList<Activity> taskList) {      
+        deadlineTableView.setItems(taskList);
 
-        TableColumn<Activity, String> titleColumn = new TableColumn<Activity, String>("Title");
+        TableColumn<Activity, String> numberColumn = new TableColumn<Activity, String>("#");
+        numberColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
+                return new ReadOnlyObjectWrapper<String>(deadlineTableView.getItems().indexOf(p.getValue()) + 1 + "");
+            }
+        });   
+        numberColumn.setMaxWidth(32);
+        numberColumn.setMinWidth(32);
+        numberColumn.setResizable(false);
+        deadlineTableView.getColumns().add(numberColumn);
+        
+        TableColumn<Activity, String> titleColumn = new TableColumn<Activity, String>("Deadline");
         titleColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
                 return new ReadOnlyObjectWrapper<String>(p.getValue().getTitle().title);
             }
         });
-        taskListView.getColumns().add(titleColumn);
+        deadlineTableView.getColumns().add(titleColumn);
 
         TableColumn<Activity, String> statusColumn = new TableColumn<Activity, String>("Status");
         statusColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
@@ -92,34 +95,22 @@ public class TaskListPanel extends UiPart {
                         .map(Status::toString).orElse(""));
             }
         });
-        taskListView.getColumns().add(statusColumn);
+        statusColumn.setMaxWidth(90);
+        statusColumn.setMinWidth(90);
+        statusColumn.setResizable(false);
+        deadlineTableView.getColumns().add(statusColumn);
 
-        TableColumn<Activity, String> deadlineColumn = new TableColumn<Activity, String>("Deadline");
+        TableColumn<Activity, String> deadlineColumn = new TableColumn<Activity, String>("Due");
         deadlineColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
                 return new ReadOnlyObjectWrapper<String>(p.getValue().getDeadline()
                         .map(Deadline::toString).orElse(""));
             }
         });
-        taskListView.getColumns().add(deadlineColumn);
-
-        TableColumn<Activity, String> scheduleColumn = new TableColumn<Activity, String>("Schedule");
-        scheduleColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
-                return new ReadOnlyObjectWrapper<String>(p.getValue().getSchedule()
-                        .map(Schedule::toString).orElse(""));
-            }
-        });
-        taskListView.getColumns().add(scheduleColumn);
-
-        TableColumn<Activity, String> frequencyColumn = new TableColumn<Activity, String>("Frequency");
-        frequencyColumn.setCellValueFactory(new Callback<CellDataFeatures<Activity, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<Activity, String> p) {
-                return new ReadOnlyObjectWrapper<String>(p.getValue().getFrequency()
-                        .map(Frequency::toString).orElse(""));
-            }
-        });
-        taskListView.getColumns().add(frequencyColumn);
+        deadlineColumn.setMaxWidth(135);
+        deadlineColumn.setMinWidth(135);
+        deadlineColumn.setResizable(false);
+        deadlineTableView.getColumns().add(deadlineColumn);
 
         setEventHandlerForSelectionChangeEvent();
     }
@@ -127,12 +118,12 @@ public class TaskListPanel extends UiPart {
     private void addToPlaceholder() {
         placeHolderPane.getChildren().add(panel);
         FxViewUtil.applyAnchorBoundaryParameters(panel, 0.0, 0.0, 0.0, 0.0);
-        FxViewUtil.applyAnchorBoundaryParameters(taskListView, 0.0, 0.0, 0.0, 0.0);
+        FxViewUtil.applyAnchorBoundaryParameters(deadlineTableView, 0.0, 0.0, 0.0, 0.0);
     }
 
     // TODO Edit
     private void setEventHandlerForSelectionChangeEvent() {
-        taskListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        deadlineTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 logger.fine("Selection in task list panel changed to : '" + newValue + "'");
                 raise(new TaskPanelSelectionChangedEvent(newValue));
@@ -141,11 +132,20 @@ public class TaskListPanel extends UiPart {
     }
 
     // TODO Edit
+    @Override
     public void scrollTo(int index) {
         Platform.runLater(() -> {
-            taskListView.scrollTo(index);
-            taskListView.getSelectionModel().clearAndSelect(index);
+            deadlineTableView.scrollTo(index);
+            deadlineTableView.getSelectionModel().clearAndSelect(index);
         });
     }
+
+    @Override
+    public void clearSelection() {
+        Platform.runLater(() -> {
+            deadlineTableView.getSelectionModel().clearSelection();
+        });
+    }
+
 
 }

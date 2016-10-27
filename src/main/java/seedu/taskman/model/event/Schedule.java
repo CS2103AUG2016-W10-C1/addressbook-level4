@@ -8,6 +8,7 @@ import seedu.taskman.logic.parser.DateTimeParser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//@@author A0139019E
 public class Schedule {
     // UG/DG: specify new datetime format
     // todo: indicate in example that format: "month-date-year time". there MUST be a space before time, not colon

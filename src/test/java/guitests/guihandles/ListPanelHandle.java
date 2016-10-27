@@ -4,7 +4,6 @@ package guitests.guihandles;
 import guitests.GuiRobot;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import seedu.taskman.TestApp;
@@ -13,21 +12,43 @@ import seedu.taskman.testutil.TestUtil;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * Provides a handle for the panel containing the task list.
  */
-public class TaskListPanelHandle extends GuiHandle {
+public class ListPanelHandle extends GuiHandle {
 
     public static final int NOT_FOUND = -1;
 
-    private static final String EVENT_LIST_VIEW_ID = "#taskListView";
+    private final String listViewId;
 
-    public TaskListPanelHandle(GuiRobot guiRobot, Stage primaryStage) {
+    public static final String SCHEDULE_LIST_VIEW_ID = "#scheduleTableView";
+    public static final String FLOATING_LIST_VIEW_ID = "#floatingTableView";
+    public static final String DEADLINE_LIST_VIEW_ID = "#deadlineTableView";
+
+
+    public ListPanelHandle(GuiRobot guiRobot, Stage primaryStage, Activity.PanelType panelType) {
         super(guiRobot, primaryStage, TestApp.APP_TITLE);
+        switch(panelType){
+            case SCHEDULE:{
+                listViewId = SCHEDULE_LIST_VIEW_ID;
+                break;
+            }
+            case FLOATING:{
+                listViewId = FLOATING_LIST_VIEW_ID;
+                break;
+            }
+            case DEADLINE:{
+                listViewId = DEADLINE_LIST_VIEW_ID;
+                break;
+            }
+            default:{
+                listViewId = "unsupported";
+                assert false: "Unsupported Panel Type";
+            }
+        }
     }
 
     public List<Activity> getSelectedTasks() {
@@ -37,17 +58,31 @@ public class TaskListPanelHandle extends GuiHandle {
 
     // TODO Resolve generic type issue.
     @SuppressWarnings("unchecked")
-    public TableView<Activity> getTableView() {
-        return (TableView<Activity>) getNode(EVENT_LIST_VIEW_ID);
+    public  TableView<Activity> getTableView(){
+        return (TableView<Activity>) getNode(listViewId);
     }
+
 
     /**
      * Returns true if the list is showing the task details correctly and in correct order.
      *
-     * @param tasks A list of task in the correct order.
+     * @param activities A list of task in the correct order.
      */
-    public boolean isListMatching(Activity... tasks) {
-        return this.isListMatching(0, tasks);
+    public boolean isListMatching(Activity... activities) {
+        if (activities.length != getTableView().getItems().size()) {
+            throw new IllegalArgumentException("List size mismatched\n" +
+                    "Expected " + activities.length + " tasks");
+        }
+        assertTrue(this.containsInOrder(0, activities));
+        for (int i = 0; i < activities.length; i++) {
+            final int scrollTo = i;
+            guiRobot.interact(() -> getTableView().scrollTo(scrollTo));
+            guiRobot.sleep(200);
+            if (!TestUtil.compareRowAndTask(getTaskRowHandle(i), activities[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -71,7 +106,7 @@ public class TaskListPanelHandle extends GuiHandle {
 
         // Return false if any of the tasks doesn't match
         for (int i = 0; i < tasks.length; i++) {
-            if (!tasksInList.get(startPosition + i).getTitle().title.equals(tasks[i].getTitle().title)) {
+            if (!tasksInList.get(startPosition + i).getTitle().toString().equals(tasks[i].getTitle().toString())) {
                 return false;
             }
         }
@@ -79,45 +114,21 @@ public class TaskListPanelHandle extends GuiHandle {
         return true;
     }
 
-    /**
-     * Returns true if the list is showing the task details correctly and in correct order.
-     *
-     * @param startPosition The starting position of the sub list.
-     * @param tasks         A list of task in the correct order.
-     */
-    public boolean isListMatching(int startPosition, Activity... tasks) throws IllegalArgumentException {
-        if (tasks.length + startPosition != getTableView().getItems().size()) {
-            throw new IllegalArgumentException("List size mismatched\n" +
-                    "Expected " + (getTableView().getItems().size() - 1) + " tasks");
-        }
-        assertTrue(this.containsInOrder(startPosition, tasks));
-        for (int i = 0; i < tasks.length; i++) {
-            final int scrollTo = i + startPosition;
-            guiRobot.interact(() -> getTableView().scrollTo(scrollTo));
-            guiRobot.sleep(200);
-            if (!TestUtil.compareRowAndTask(getTaskRowHandle(startPosition + i), tasks[i])) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-    public TaskRowHandle navigateToTask(String title) {
+    public TaskRowHandle navigateToActivity(String title) {
         guiRobot.sleep(500); //Allow a bit of time for the list to be updated
-        final Optional<Activity> task = getTableView().getItems().stream().filter(p -> p.getTitle().title.equals(title)).findAny();
+        final Optional<Activity> task = getTableView().getItems().stream().filter(p -> p.getTitle().toString().equals(title)).findAny();
         if (!task.isPresent()) {
             throw new IllegalStateException("Title not found: " + title);
         }
 
-        return navigateToTask(task.get());
+        return navigateToActivity(task.get());
     }
 
     /**
      * Navigates the TableView to display and select the task.
      */
-    public TaskRowHandle navigateToTask(Activity task) {
-        int index = getTaskIndex(task);
+    public TaskRowHandle navigateToActivity(Activity task) {
+        int index = getActivityIndex(task);
 
         guiRobot.interact(() -> {
             getTableView().scrollTo(index);
@@ -132,7 +143,7 @@ public class TaskListPanelHandle extends GuiHandle {
     /**
      * Returns the position of the task given, {@code NOT_FOUND} if not found in the list.
      */
-    public int getTaskIndex(Activity targetTask) {
+    public int getActivityIndex(Activity targetTask) {
         List<Activity> tasksInList = getTableView().getItems();
         for (int i = 0; i < tasksInList.size(); i++) {
             if (tasksInList.get(i).getTitle().equals(targetTask.getTitle())) {
@@ -145,7 +156,7 @@ public class TaskListPanelHandle extends GuiHandle {
     /**
      * Gets a task from the list by index
      */
-    public Activity getTask(int index) {
+    public Activity getActivity(int index) {
         return getTableView().getItems().get(index);
     }
 

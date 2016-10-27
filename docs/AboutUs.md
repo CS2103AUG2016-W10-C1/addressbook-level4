@@ -4,31 +4,60 @@ We are a team based in the [School of Computing, National University of Singapor
 
 ## Current Project Team
 
-#### Alex Fong Jie Wen
-<img src="images/AlexFongJieWen.png" width="150"><br>
-Role: Developer
-Responsibilities: Team Lead
+#### [Alex Fong Jie Wen](https://github.com/AlexFJW)
+<img src="images/AlexFongJieWen.jpg" width="150"><br>
+* Responsibilities: Team Lead
+* Features implemented:
+    * [Command for Creating Tasks](https://github.com/CS2103AUG2016-W10-C1/main/pull/15)
+    *  Parsing for Relative DateTime [[File](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/parser/DateTimeParser.java)] [[File](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/test/java/seedu/taskman/logic/parser/DateTimeParserTest.java)]
+* Code written: [[functional code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/main/A0139019E.md)][[test code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/test/A0139019E.md)][[docs](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/docs/A0139019E.md)]
+
+* Other major contributions:
+	* Main reviewer for code reviews
+    * Refactored of CommandParser for maintainability [[#70](https://github.com/CS2103AUG2016-W10-C1/main/pull/79)]
+    * Refactored of LogicManagerTest for maintainability [[#80](https://github.com/CS2103AUG2016-W10-C1/main/pull/80)]
+    * Overhauled Undo command for maintainability [[#85](https://github.com/CS2103AUG2016-W10-C1/main/pull/85)]
+    * Migrated essential non-GUI tests from addressbook to that of the GTD app [[#77](https://github.com/CS2103AUG2016-W10-C1/main/pull/77)]
 
 -----
 
-#### Inaba Kazuhiro
-<img src="images/InabaKazuhiro.png" width="150"><br>
-Role: Developer <br>
-Responsibilities: Code Quality, UIUX
+#### [Inaba Kazuhiro](https://github.com/inaba1231)
+<img src="images/InabaKazuhiro.jpeg" width="150"><br>
+* Responsibilities: Code Quality, UIUX
+* Features implemented:
+	* [Mark events](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/MarkCommand.java)
+	* [Track deadlines](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/DeadlinePanel.java)
+* Code written: [[functional code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/main/A0140136W.md)][[test code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/test/A0140136W.md)][[docs](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/docs/A0140136W.md)]
+* Other major contributions:
+	* Change the UI of the AddressBook to that of the GTD app [[#88](https://github.com/CS2103AUG2016-W10-C1/main/pull/88)]
 
 -----
 
-#### Lee Yi Min
-<img src="images/LeeYiMin.png" width="150"><br>
-Role: Developer <br>
-Responsibilities: Testing
+#### [Lee Yi Min](https://github.com/leeyimin)
+<img src="images/LeeYiMin.jpg" width="150"><br>
+* Responsibilities: Testing
+* Features implemented:
+	* [List events](https://github.com/CS2103AUG2016-W10-C1/main/pull/14)
+	* [Change storage location](https://github.com/CS2103AUG2016-W10-C1/main/pull/44)
+	* [View storage location] (https://github.com/CS2103AUG2016-W10-C1/main/pull/86)
+* Code written: [[functional code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/main/A0121299A.md)]
+[[test code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/test/A0121299A.md)]
+[[docs](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/docs/A0121299A.md)]
+* Other major contributions:
+    * Added Activity Class and refactored the app to work with Activity (https://github.com/CS2103AUG2016-W10-C1/main/pull/10)
+	* Refactored command patterns in CommandParser and allowed non-compulsory fields to be optional (https://github.com/CS2103AUG2016-W10-C1/main/pull/29)
 
 -----
 
 #### [Lim Jia Yee](http://github.com/jia1)
 <img src="images/LimJiaYee.png" width="150"><br>
-Role: Developer <br>
-Responsibilities: Integration, Documentation
+* Responsibilities: Integration, Documentation
+* Features implemented:
+	* [Mark events](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/MarkCommand.java)
+	* [Track deadlines](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/DeadlinePanel.java)
+* Code written:
+* Other major contributions:
+	* Change the UI of the AddressBook to that of the GTD app [[#88](https://github.com/CS2103AUG2016-W10-C1/main/pull/88)]
 
 ## Source Code Team
 

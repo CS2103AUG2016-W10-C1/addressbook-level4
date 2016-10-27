@@ -51,10 +51,11 @@ This guide will get you started in just a few steps. It also has detailed 'how t
 Command Format: `help`
 
 > Help is also shown if you enter an incorrect command e.g. `abcd`
- 
-#### Adding a task: `add`
+
+<!--@@author A0139019E-->
+#### Adding a task: `do`
 Adds a task to TaskMan<br>
-Command Format: `add TITLE [d/DEADLINE] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
+Command Format: `do TITLE [d/DEADLINE] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
 
 Parameter | Format
 -------- | :-------- 
@@ -68,16 +69,16 @@ The `SCHEDULE` represents the period of time the task is scheduled to be worked 
 > Tasks can have any number of tags. Tags may contain spaces and are case-insensitive (i.e. tags "school", "School", and "SCHOOL" are the same tags).
 
 Examples:
-* `add learn driving`
-* `add cs2101 homework d/next mon 1200`
-* `add cs3244 revision s/tue 0000 to tue 0200`
-* `add cs2103t tutorial t/java`
-* `add eat vitamins s/fri 1400 for 5 minutes f/2 days t/ribena`
-* `add backup server s/mon 0800 for 2 hours f/3 months`
+* `do learn driving`
+* `do cs2101 homework d/next mon 1200`
+* `do cs3244 revision s/tue 0000 to tue 0200`
+* `do cs2103t tutorial t/java`
+* `do eat vitamins s/fri 1400 for 5 minutes f/2 days t/ribena`
+* `do backup server s/mon 0800 for 2 hours f/3 months`
 
-#### Adding an event: `add e/`
+#### Adding an event: `dot`
 Adds an event to TaskMan<br>
-Command Format: `add e/ TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
+Command Format: `dot TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
 
 Parameter | Format
 -------- | :-------- 
@@ -87,12 +88,13 @@ Parameter | Format
 
 The `SCHEDULE` represents the period of time which the event is occurring.
 
-> Similarly like tasks, events can have any number of tags. Tags may contain spaces and are case-insensitive (i.e. tags "school", "School", and "SCHOOL" are the same tags).
+> Similar to tasks, events can have any number of tags. Tags may contain spaces and are case-insensitive (i.e. tags "school", "School", and "SCHOOL" are the same tags).
 
 Examples:
-* `add e/ CS2103T Lecture s/fri 1400 to fri 1600 f/1wk t/CS2103T`
-* `add e/ Project Meeting s/mon 1400 to mon 1400 t/CS2101 t/Lunch Time`
+* `dot CS2103T Lecture s/fri 1400 to fri 1600 f/1wk t/CS2103T`
+* `dot Project Meeting s/mon 1400 to mon 1400 t/CS2101 t/Lunch Time`
 
+<!--@@author-->
 #### Changing the View: `view`
 Shows a different view based on the parameters entered.<br>
 Command Format: view [{more/less/cal/day}]
@@ -247,10 +249,12 @@ Command Format: `exit`
 TaskMan data are saved in the hard disk automatically after any command that changes the data.<br>
 There is no need to save manually.
 
+<!--@@author A0121299A-->
 #### Setting the save and load location: `storageloc`
 Saves to the specified file name and location and sets the application to load from the specified location in the future.<br>
-TaskMan data are saved in a file called tasks.txt in the application folder by default.<br>
-The filename **must end in .xml<br>
+The command can be used to save the data to the default location or to view the current storage location.<br>
+TaskMan data are saved in data/taskMan.txt in the application folder by default.<br>
+
 Format: `storageloc [LOCATION]`
 
 Examples:
@@ -258,6 +262,8 @@ Examples:
     Sets the new save and load location to C:/Users/Owner/Desktop/new_tasks.xml
 * `storageloc default`<br>
     Sets the new save and load location to tasks.xml in the current application folder
+* `storageloc view`<br>
+    Displays the current storage location
 
 ## File Format
 The file is saved in xml format, which is easy to read and write with appropriate editors.
@@ -283,7 +289,7 @@ Example:
 > `<tagged>CS2103T</tagged>`<br>
 > `</tasks>`
 
-
+<!--
 #### Event
 Each Event is saved in the following format:
 > `<events>`<br>
@@ -303,7 +309,7 @@ Example:
 > `<tagged>CS2103T</tagged>`<br>
 > `<tagged>lecture</tagged>`<br>
 > `</events>`
-
+-->
 
 #### Tag
 Each Tag is saved in the following format:
@@ -315,7 +321,7 @@ Example:
 > `<tags>`<br>
 > `<tagName>CS2103T</tagName>`<br>
 > `</tags>`
-
+<!--@@author -->
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
@@ -325,8 +331,8 @@ Example:
 
 Command | Format
 -------- | :--------
-Add | `add TITLE [d/DEADLINE] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...    `
-Add Event | `add e/ TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...    `
+Do | `do TITLE [d/DEADLINE] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...    `
+Dot | `dot TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...    `
 Clear | `clear`
 Complete | `complete INDEX` or `complete list`
 Delete | `delete INDEX` or `delete list`

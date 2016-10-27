@@ -1,5 +1,7 @@
 package seedu.taskman.model;
 
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 import seedu.taskman.commons.core.GuiSettings;
 
 import java.util.Objects;
@@ -20,6 +22,19 @@ public class UserPrefs {
     }
 
     public UserPrefs() {
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+        this.setGuiSettings((primaryScreenBounds.getWidth() / 3),
+                            (primaryScreenBounds.getHeight()),
+                            (int) primaryScreenBounds.getWidth(),
+                            (int) primaryScreenBounds.getHeight());
+    }
+
+    public static UserPrefs getUserPrefsForNonGuiTest() {
+        return new UserPrefs(true);
+    }
+
+    // hack for tests only
+    private UserPrefs (boolean ignored) {
         this.setGuiSettings(500, 500, 0, 0);
     }
 

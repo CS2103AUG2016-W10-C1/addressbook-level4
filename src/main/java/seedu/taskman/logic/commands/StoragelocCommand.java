@@ -17,19 +17,23 @@ public class StoragelocCommand extends Command {
 
     public static final String COMMAND_WORD = "storageloc";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Saves to the specified file name and location and sets the application to load from the specified location in the future. "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Saves to the specified file name and location and sets the application to load from the specified location in the future.\n"
             + "Parameters: LOCATION\n"
             + "Example: " + COMMAND_WORD
-            + " C:/Users/Owner/Desktop/new_tasks.xml";
+            + " C:/Users/Owner/Desktop/new_tasks.xm\n"
+            + "Use storageloc default to save to default location.\n"
+            + "Use storageloc view to view current storage file location";
 
     public static final String MESSAGE_SUCCESS = "Save location successfully updated to %1$s";
     public static final String MESSAGE_FAILURE = "Attempt to Save Location was unsuccessful.\n" +
             "Save location reverted to %1$s";
     private static final String STORAGELOC_DEFAULT_KEYWORD = "default";
+    private static final String STORAGELOC_VIEW_KEYWORD = "view";
     private static final Pattern STORAGELOC_ARGS_FORMAT = Pattern.compile("" + CommandParser.ArgumentPattern.FILE_PATH);
 
     private final String filePath;
 
+    //@@author A0121299A
     public static Command prepareStorageloc(String args) {
 
         String trimmedArgs = args.trim();
@@ -39,7 +43,10 @@ public class StoragelocCommand extends Command {
                     MESSAGE_USAGE));
         }
 
-        if (trimmedArgs.equals(STORAGELOC_DEFAULT_KEYWORD)) {
+        if (trimmedArgs.equals(STORAGELOC_VIEW_KEYWORD)) {
+            return new ViewStoragelocCommand();
+        }
+        else if (trimmedArgs.equals(STORAGELOC_DEFAULT_KEYWORD)) {
             trimmedArgs = ConfigData.DEFAULT_TASK_MAN_FILE_PATH;
         }
 

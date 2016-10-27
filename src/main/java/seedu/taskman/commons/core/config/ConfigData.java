@@ -58,6 +58,7 @@ public class ConfigData {
         this.taskManName = taskManName;
     }
 
+    //@@author A0121299A
     protected static void update(ConfigData toUpdate, ConfigData source) {
         toUpdate.appTitle = source.appTitle;
         toUpdate.logLevel = source.logLevel;
@@ -72,6 +73,7 @@ public class ConfigData {
         return clone;
     }
 
+    //@@author
     @Override
     public boolean equals(Object other) {
         if (other == this) {

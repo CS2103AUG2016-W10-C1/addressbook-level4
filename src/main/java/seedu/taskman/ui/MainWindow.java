@@ -9,11 +9,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.taskman.Constants;
-import seedu.taskman.commons.core.config.Config;
 import seedu.taskman.commons.core.GuiSettings;
+import seedu.taskman.commons.core.config.Config;
 import seedu.taskman.commons.events.ui.ExitAppRequestEvent;
 import seedu.taskman.logic.Logic;
 import seedu.taskman.model.UserPrefs;
+import seedu.taskman.model.event.Activity;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -29,7 +30,9 @@ public class MainWindow extends UiPart {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private TaskListPanel taskListPanel;
+    private SchedulePanel schedulePanel;
+    private DeadlinePanel deadlinePanel;
+    private FloatingPanel floatingPanel;
     private ResultDisplay resultDisplay;
     private StatusBarFooter statusBarFooter;
     private CommandBox commandBox;
@@ -49,7 +52,13 @@ public class MainWindow extends UiPart {
     private MenuItem helpMenuItem;
 
     @FXML
-    private AnchorPane taskListPanelPlaceholder;
+    private AnchorPane scheduleTablePanelPlaceholder;
+    
+    @FXML
+    private AnchorPane deadlineTablePanelPlaceholder;
+    
+    @FXML
+    private AnchorPane floatingTablePanelPlaceholder;
 
     @FXML
     private AnchorPane resultDisplayPlaceholder;
@@ -104,7 +113,9 @@ public class MainWindow extends UiPart {
     }
 
     void fillInnerParts() {
-        taskListPanel = TaskListPanel.load(primaryStage, getTaskListPlaceholder(), logic.getFilteredActivityList());
+        schedulePanel = SchedulePanel.load(primaryStage, getScheduleTablePlaceholder(), logic.getSortedScheduleList());
+        deadlinePanel = DeadlinePanel.load(primaryStage, getDeadlineTablePlaceholder(), logic.getSortedDeadlineList());
+        floatingPanel = FloatingPanel.load(primaryStage, getFloatingTablePlaceholder(), logic.getSortedFloatingList());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getTaskManFilePath());
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
@@ -122,8 +133,16 @@ public class MainWindow extends UiPart {
         return resultDisplayPlaceholder;
     }
 
-    public AnchorPane getTaskListPlaceholder() {
-        return taskListPanelPlaceholder;
+    public AnchorPane getScheduleTablePlaceholder() {
+        return scheduleTablePanelPlaceholder;
+    }
+    
+    public AnchorPane getDeadlineTablePlaceholder() {
+        return deadlineTablePanelPlaceholder;
+    }
+    
+    public AnchorPane getFloatingTablePlaceholder() {
+        return floatingTablePanelPlaceholder;
     }
 
     public void hide() {
@@ -132,6 +151,31 @@ public class MainWindow extends UiPart {
 
     private void setTitle(String appTitle) {
         primaryStage.setTitle(appTitle);
+    }
+
+    public void clearListPanels(){
+        deadlinePanel.clearSelection();
+        floatingPanel.clearSelection();
+        schedulePanel.clearSelection();
+    }
+
+    public ListPanel getListPanel(Activity.PanelType panelType){
+        switch (panelType){
+            case DEADLINE: {
+                return deadlinePanel;
+            }
+            case SCHEDULE:{
+                return schedulePanel;
+            }
+            case FLOATING:{
+                return floatingPanel;
+            }
+            default:{
+                assert false: "Panel Type not supported.";
+                return deadlinePanel;
+            }
+        }
+
     }
 
     /**
@@ -177,8 +221,5 @@ public class MainWindow extends UiPart {
         raise(new ExitAppRequestEvent());
     }
 
-    public TaskListPanel getTaskListPanel() {
-        return this.taskListPanel;
-    }
 
 }
