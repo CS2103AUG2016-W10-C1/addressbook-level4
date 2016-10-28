@@ -9,6 +9,7 @@ import java.util.*;
 
 /**
  * A list of activities that enforces uniqueness between its elements and does not allow nulls.
+ * Also ignores order of elements when checking for equality
  * <p>
  * Supports a minimal set of list operations.
  *
@@ -41,7 +42,6 @@ public class UniqueActivityList implements Iterable<Activity> {
     public UniqueActivityList() {
     }
 
-    //TODO Do we need this? Or is simply checking for equivalence of title sufficient?
     /**
      * Returns true if the list contains an equivalent activity as the given argument.
      * Here, equivalence refers to equivalence of all fields in activity.
@@ -101,15 +101,22 @@ public class UniqueActivityList implements Iterable<Activity> {
     }
 
     @Override
-    public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof UniqueActivityList // instanceof handles nulls
-                && this.internalList.equals(
-                ((UniqueActivityList) other).internalList));
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UniqueActivityList that = (UniqueActivityList) o;
+
+        HashSet<Activity> setRepresentation = new HashSet<>();
+        setRepresentation.addAll(internalList);
+        HashSet<Activity> otherSetRepresentation = new HashSet<>();
+        otherSetRepresentation.addAll(that.internalList);
+        return setRepresentation.equals(otherSetRepresentation);
     }
 
     @Override
     public int hashCode() {
-        return internalList.hashCode();
+        HashSet<Activity> setRepresentation = new HashSet<>();
+        setRepresentation.addAll(internalList);
+        return Objects.hash(setRepresentation);
     }
 }

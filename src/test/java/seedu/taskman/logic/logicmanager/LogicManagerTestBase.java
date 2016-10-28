@@ -167,6 +167,8 @@ public abstract class LogicManagerTestBase {
      */
     static class TestDataHelper {
 
+        public final String STRING_RANDOM = "random";
+
         List<Activity> tasksToActivity(List<Task> tasks) {
             ArrayList<Activity> activities = new ArrayList<>();
             for(Task task : tasks) {
@@ -225,24 +227,30 @@ public abstract class LogicManagerTestBase {
             return command.toString();
         }
 
-        String generateEditCommand(Activity.PanelType panel, Model model, int targetIndex, Title title, Deadline deadline, Schedule schedule,
+        String generateEditCommand(Model model, Activity.PanelType panel,  int targetIndex, Title title, Deadline deadline, Schedule schedule,
                                    Frequency frequency, UniqueTagList tags) {
             Activity task = model.getActivityListForPanelType(panel).get(targetIndex);
             StringBuilder command = new StringBuilder();
 
             command.append(EditCommand.COMMAND_WORD);
-            command.append(String.format(" %d ", targetIndex));
-            command.append(title.toString());
+            command.append(" " + panel.toString());
+            command.append(targetIndex);
 
-            Instant instant = Instant.ofEpochSecond(deadline.epochSecond);
-            command.append(" d/").
-                    append(instant.toString());
+            if (title != null) {
+                command.append(" " + title.toString());
+            }
+
+            if (deadline != null) {
+                Instant instant = Instant.ofEpochSecond(deadline.epochSecond);
+                command.append(" d/").
+                        append(instant.toString());
+            }
 
             if (task.getFrequency().isPresent()) {
                 throw new AssertionError("Frequency is not supported yet");
             }
 
-            if (task.getSchedule().isPresent()) {
+            if (schedule != null) {
                 String start = DateTimeParser.epochSecondToShortDateTime(schedule.startEpochSecond);
                 String end = DateTimeParser.epochSecondToShortDateTime(schedule.endEpochSecond);
                 command.append(" s/").
