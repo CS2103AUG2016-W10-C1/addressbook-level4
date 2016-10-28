@@ -14,6 +14,7 @@ import seedu.taskman.logic.Logic;
 import seedu.taskman.logic.LogicManager;
 import seedu.taskman.logic.commands.CommandHistory;
 import seedu.taskman.logic.commands.CommandResult;
+import seedu.taskman.logic.commands.EditCommand;
 import seedu.taskman.logic.parser.DateTimeParser;
 import seedu.taskman.model.Model;
 import seedu.taskman.model.ModelManager;
@@ -22,6 +23,7 @@ import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.UserPrefs;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Deadline;
+import seedu.taskman.model.event.Frequency;
 import seedu.taskman.model.event.Schedule;
 import seedu.taskman.model.event.Task;
 import seedu.taskman.model.event.Title;
@@ -36,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
@@ -166,6 +167,8 @@ public abstract class LogicManagerTestBase {
      */
     static class TestDataHelper {
 
+        public final String STRING_RANDOM = "random";
+
         List<Activity> tasksToActivity(List<Task> tasks) {
             ArrayList<Activity> activities = new ArrayList<>();
             for(Task task : tasks) {
@@ -218,6 +221,45 @@ public abstract class LogicManagerTestBase {
 
             UniqueTagList tags = task.getTags();
             for(Tag t: tags) {
+                command.append(" t/").append(t.tagName);
+            }
+
+            return command.toString();
+        }
+
+        String generateEditCommand(Model model, Activity.PanelType panel,  int targetIndex, Title title, Deadline deadline, Schedule schedule,
+                                   Frequency frequency, UniqueTagList tags) {
+            Activity task = model.getActivityListForPanelType(panel).get(targetIndex);
+            StringBuilder command = new StringBuilder();
+
+            command.append(EditCommand.COMMAND_WORD);
+            command.append(" " + panel.toString());
+            command.append(targetIndex);
+
+            if (title != null) {
+                command.append(" " + title.toString());
+            }
+
+            if (deadline != null) {
+                Instant instant = Instant.ofEpochSecond(deadline.epochSecond);
+                command.append(" d/").
+                        append(instant.toString());
+            }
+
+            if (task.getFrequency().isPresent()) {
+                throw new AssertionError("Frequency is not supported yet");
+            }
+
+            if (schedule != null) {
+                String start = DateTimeParser.epochSecondToShortDateTime(schedule.startEpochSecond);
+                String end = DateTimeParser.epochSecondToShortDateTime(schedule.endEpochSecond);
+                command.append(" s/").
+                        append(start).
+                        append(" to ").
+                        append(end);
+            }
+
+            for (Tag t : tags) {
                 command.append(" t/").append(t.tagName);
             }
 

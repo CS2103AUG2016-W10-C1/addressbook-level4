@@ -9,6 +9,7 @@ import java.util.*;
 
 /**
  * A list of tags that enforces no nulls and uniqueness between its elements.
+ * Ignores order of contents when checking for equality.
  * <p>
  * Supports minimal set of list operations for the app's features.
  *
@@ -129,17 +130,25 @@ public class UniqueTagList implements Iterable<Tag> {
         return internalList;
     }
 
-    // order of the tags does not matter
     @Override
-    public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof UniqueTagList // instanceof handles nulls
-                && this.internalList.containsAll(
-                ((UniqueTagList) other).internalList));
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UniqueTagList tags = (UniqueTagList) o;
+
+        HashSet<Tag> setRepresentation = new HashSet<>();
+        setRepresentation.addAll(internalList);
+        HashSet<Tag> otherSetRepresentation = new HashSet<>();
+        otherSetRepresentation.addAll(tags.internalList);
+        return setRepresentation.equals(otherSetRepresentation);
     }
 
     @Override
     public int hashCode() {
-        return internalList.hashCode();
+        HashSet<Tag> setRepresentation = new HashSet<>();
+        setRepresentation.addAll(internalList);
+
+        return setRepresentation.hashCode();
     }
 }

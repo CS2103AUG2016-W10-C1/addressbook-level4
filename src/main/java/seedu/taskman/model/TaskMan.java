@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Event;
 import seedu.taskman.model.event.MutableTagsEvent;
+import seedu.taskman.model.event.Task;
 import seedu.taskman.model.event.UniqueActivityList;
 import seedu.taskman.model.tag.Tag;
 import seedu.taskman.model.tag.UniqueTagList;
@@ -123,6 +124,14 @@ public class TaskMan implements ReadOnlyTaskMan {
         event.setTags(new UniqueTagList(commonTagReferences));
     }
 
+    public boolean removeActivity(Task key) throws UniqueActivityList.ActivityNotFoundException {
+        if (activities.remove(new Activity(key))) {
+            return true;
+        } else {
+            throw new UniqueActivityList.ActivityNotFoundException();
+        }
+    }
+
     public boolean removeActivity(Activity key) throws UniqueActivityList.ActivityNotFoundException {
         if (activities.remove(key)) {
             return true;
@@ -130,7 +139,7 @@ public class TaskMan implements ReadOnlyTaskMan {
             throw new UniqueActivityList.ActivityNotFoundException();
         }
     }
-    
+
 //// tag-level operations
 
     public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
@@ -164,18 +173,18 @@ public class TaskMan implements ReadOnlyTaskMan {
         return this.tags;
     }
 
-
     @Override
-    public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof TaskMan // instanceof handles nulls
-                && this.activities.equals(((TaskMan) other).activities)
-                && this.tags.equals(((TaskMan) other).tags));
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TaskMan taskMan = (TaskMan) o;
+
+        return Objects.equals(activities, taskMan.activities) &&
+                Objects.equals(tags, taskMan.tags);
     }
 
     @Override
     public int hashCode() {
-        // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(activities, tags);
     }
 }
