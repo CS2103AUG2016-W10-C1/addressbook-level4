@@ -53,11 +53,14 @@ We are a team based in the [School of Computing, National University of Singapor
 <img src="images/LimJiaYee.png" width="150"><br>
 * Responsibilities: Integration, Documentation
 * Features implemented:
-	* [Mark events](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/MarkCommand.java)
-	* [Track deadlines](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/DeadlinePanel.java)
-* Code written:
+	* [Complete Command Logic and Tests](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/DeadlinePanel.java)
+	* [History Command Logic and Tests](https://github.com/CS2103AUG2016-W10-C1/main/blob/new/command/history/src/main/java/seedu/taskman/logic/commands/HistoryCommand.java)
+	* [Undo Command Logic (later fixed by Alex)](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/UndoCommand.java)
+* Code written: [[functional code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/main/A0136070R.md)]
+[[test code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/test/A0136070R.md)]
+[[docs](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/docs/A0136070R.md)]
 * Other major contributions:
-	* Change the UI of the AddressBook to that of the GTD app [[#88](https://github.com/CS2103AUG2016-W10-C1/main/pull/88)]
+	* [Date Time Display Formatting for Frequency and Schedule](https://github.com/CS2103AUG2016-W10-C1/main/tree/master/src/main/java/seedu/taskman/model/event)
 
 ## Source Code Team
 
