@@ -208,9 +208,17 @@ public class Schedule {
     }
 
     public String toFormalString(){
-        return DateTimeParser.epochSecondToFormalDateTime(startEpochSecond)
+        return getFormalStartString()
                 + " to "
-                + DateTimeParser.epochSecondToFormalDateTime(endEpochSecond);
+                + getFormalEndString();
+    }
+
+    public String getFormalStartString(){
+        return DateTimeParser.epochSecondToFormalDateTime(startEpochSecond);
+    }
+
+    public String getFormalEndString(){
+        return  DateTimeParser.epochSecondToFormalDateTime(endEpochSecond);
     }
 
     @Override
