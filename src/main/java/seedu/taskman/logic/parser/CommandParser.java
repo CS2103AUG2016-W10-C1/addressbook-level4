@@ -1,17 +1,17 @@
 package seedu.taskman.logic.parser;
 
+import seedu.taskman.logic.commands.AddCommand;
 import seedu.taskman.logic.commands.ClearCommand;
 import seedu.taskman.logic.commands.Command;
 import seedu.taskman.logic.commands.CompleteCommand;
 import seedu.taskman.logic.commands.DeleteCommand;
-import seedu.taskman.logic.commands.DoCommand;
 import seedu.taskman.logic.commands.EditCommand;
 import seedu.taskman.logic.commands.ExitCommand;
 import seedu.taskman.logic.commands.HelpCommand;
 import seedu.taskman.logic.commands.HistoryCommand;
 import seedu.taskman.logic.commands.IncorrectCommand;
 import seedu.taskman.logic.commands.ListCommand;
-import seedu.taskman.logic.commands.MarkCommand;
+import seedu.taskman.logic.commands.AddECommand;
 import seedu.taskman.logic.commands.SelectCommand;
 import seedu.taskman.logic.commands.StoragelocCommand;
 import seedu.taskman.logic.commands.UndoCommand;
@@ -77,11 +77,11 @@ public class CommandParser {
         final String arguments = matcher.group("arguments");
         switch (commandWord) {
 
-            case DoCommand.COMMAND_WORD:
-                return DoCommand.prepareDo(arguments);
+            case AddCommand.COMMAND_WORD:
+                return AddCommand.prepareAdd(arguments);
                 
-            case MarkCommand.COMMAND_WORD:
-                return MarkCommand.prepareMark(arguments);
+            case AddECommand.COMMAND_WORD:
+                return AddECommand.prepareAddE(arguments);
 
             case EditCommand.COMMAND_WORD:
                 return EditCommand.prepareEdit(arguments);

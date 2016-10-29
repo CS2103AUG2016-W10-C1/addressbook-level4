@@ -24,7 +24,7 @@ public class HistoryTests extends LogicManagerTestBase {
         List<Task> tasks = new ArrayList<>();
         tasks.add(task);
 
-        assertCommandStateChange(helper.generateDoCommand(task),
+        assertCommandStateChange(helper.generateAddCommand(task),
                 helper.generateTaskMan(tasks)
         );
 

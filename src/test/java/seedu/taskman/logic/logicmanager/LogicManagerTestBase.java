@@ -197,10 +197,10 @@ public abstract class LogicManagerTestBase {
         }
 
         @SuppressWarnings("OptionalGetWithoutIsPresent")
-        String generateDoCommand(Task task) {
+        String generateAddCommand(Task task) {
             StringBuilder command = new StringBuilder();
 
-            command.append("do ");
+            command.append("add ");
             command.append(task.getTitle().toString());
 
             if (task.getDeadline().isPresent()) {

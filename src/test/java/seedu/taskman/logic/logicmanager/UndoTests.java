@@ -11,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 //@@author A0139019E
 public class UndoTests extends LogicManagerTestBase {
 
+    //TODO: change hardcoded add commands to generated ones
     @Test
     public void execute_undoNothingToUndo_failure() {
         assertTrue(!logic.execute("undo").succeeded);
@@ -19,7 +20,7 @@ public class UndoTests extends LogicManagerTestBase {
     @Test
     public void execute_undoWithoutIndexAfterSingleCommand_success() throws Exception {
         TaskMan before = new TaskMan(model.getTaskMan());
-        assertExecuteCommandWithStateChange("do something");
+        assertExecuteCommandWithStateChange("add something");
         assertExecuteCommandWithStateChange("undo");
         assertEquals("failed to undo", before, model.getTaskMan());
     }
@@ -27,19 +28,19 @@ public class UndoTests extends LogicManagerTestBase {
     @Test
     public void execute_undoWithIndexAfterSingleCommand_success() throws Exception {
         TaskMan before = new TaskMan(model.getTaskMan());
-        assertExecuteCommandWithStateChange("do something");
+        assertExecuteCommandWithStateChange("add something");
         assertExecuteCommandWithStateChange("undo 1");
         assertEquals("failed to undo", before, model.getTaskMan());
     }
 
     @Test
     public void execute_undoThreeCommands_success() throws Exception {
-        assertExecuteCommandWithStateChange("do something");
+        assertExecuteCommandWithStateChange("add something");
 
         TaskMan before = new TaskMan(model.getTaskMan());
-        assertExecuteCommandWithStateChange("do something else");
-        assertExecuteCommandWithStateChange("do something else 1");
-        assertExecuteCommandWithStateChange("do something else 2");
+        assertExecuteCommandWithStateChange("add something else");
+        assertExecuteCommandWithStateChange("add something else 1");
+        assertExecuteCommandWithStateChange("add something else 2");
         assertExecuteCommandWithStateChange("undo 3");
         assertEquals("failed to undo", before, model.getTaskMan());
     }
