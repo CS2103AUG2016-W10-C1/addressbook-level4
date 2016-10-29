@@ -76,19 +76,27 @@ public class EditCommand extends Command {
 
         String panelTypeRaw = matcher.group("panel").trim();
         Activity.PanelType panelType = Activity.PanelType.fromString(panelTypeRaw);
+
         String indexString = matcher.group("targetIndex").trim();
         int index = Integer.parseInt(indexString);
 
-            String tags = matcher.group("tagArguments");
-            return new EditCommand(
-                    panelType,
-                    index,
-                    matcher.group("title"),
-                    matcher.group("deadline"),
-                    matcher.group("status"),
-                    matcher.group("schedule"),
-                    matcher.group("frequency"),
-                    tags.isEmpty() ? null : getTagsFromArgs(tags));
+        // filter out empty string
+        // an alternative would be to use non-greedy regex
+        String title = matcher.group("title");
+        if (title != null && title.trim().isEmpty()) {
+            title = null;
+        }
+
+        String tags = matcher.group("tagArguments");
+        return new EditCommand(
+                panelType,
+                index,
+                title,
+                matcher.group("deadline"),
+                matcher.group("status"),
+                matcher.group("schedule"),
+                matcher.group("frequency"),
+                tags.isEmpty() ? null : getTagsFromArgs(tags));
     }
 
     @Override
