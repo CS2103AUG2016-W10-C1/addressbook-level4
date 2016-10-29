@@ -1,6 +1,5 @@
 package seedu.taskman.logic.logicmanager;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.event.Task;
@@ -27,8 +26,6 @@ public class DoTests extends LogicManagerTestBase {
         assertCommandNoStateChange("do []\\[;]");
     }
 
-    // todo: should fix
-    @Ignore
     @Test
     public void execute_do_successful() throws Exception {
         // setup expectations

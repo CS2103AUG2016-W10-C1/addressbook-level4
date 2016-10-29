@@ -123,7 +123,6 @@ public abstract class LogicManagerTestBase {
 
         //Confirm the state of data (saved and in-memory) is as expected
         ReadOnlyTaskMan actualTaskMan = model.getTaskMan();
-        System.out.println(actualTaskMan.getActivityList().get(0).equals(expectedTaskMan.getActivityList().get(0)));
         assertEquals(expectedTaskMan, actualTaskMan);
         assertEquals(expectedTaskMan, latestSavedTaskMan);
 
@@ -189,9 +188,9 @@ public abstract class LogicManagerTestBase {
             return new Task(
                     new Title("Task " + seed),
                     new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))),
-                    new Deadline(Math.abs(seed)),
-                    new Schedule(Instant.ofEpochSecond(Math.abs(seed * seed * 10000000 - 1)) +
-                            ", " + Instant.ofEpochSecond(Math.abs(seed * seed * 100000000))),
+                    new Deadline((seed+1) +" Dec " +seed%12 +"am"),
+                    new Schedule(seed +" nov " + (seed%12+1) + "am" +
+                            ", " + seed +" nov " + ((seed+1)%12+1) + "pm" ),
                     null //new Frequency(seed + " mins")
             );
         }

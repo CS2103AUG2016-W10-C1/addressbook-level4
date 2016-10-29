@@ -178,9 +178,8 @@ public class TaskMan implements ReadOnlyTaskMan {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TaskMan taskMan = (TaskMan) o;
-
-        return Objects.equals(activities, taskMan.activities) &&
-                Objects.equals(tags, taskMan.tags);
+        return activities.equals(taskMan.activities) &&
+                tags.equals(taskMan.tags);
     }
 
     @Override
