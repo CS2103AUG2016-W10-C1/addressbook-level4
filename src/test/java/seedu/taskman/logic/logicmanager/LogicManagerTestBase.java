@@ -336,7 +336,7 @@ public abstract class LogicManagerTestBase {
             return new Task(
                     new Title(title),
                     new UniqueTagList(new Tag("t1"), new Tag("t2")),
-                    new Deadline("in 4 days"),
+                    new Deadline("07/05/2016 6pm"),
                     new Schedule("02/05/2016 5pm, 05/05/2016 5pm"),
                     null // new Frequency("7 days")
             );
