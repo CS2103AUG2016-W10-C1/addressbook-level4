@@ -37,7 +37,8 @@ public class DateTimeParser {
     private static final String GENERIC_ERROR_DATETIME = "Invalid date time";
     private static final String GENERIC_ERROR_DURATION = "Invalid duration";
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-YYYY HH:mm");
+    // TODO: Separate formatting from parsing
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE dd MMM YY\nh.mma");
     private static final Parser parser = new Parser();
 
     /**
