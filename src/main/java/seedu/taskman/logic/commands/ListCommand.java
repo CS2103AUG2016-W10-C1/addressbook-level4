@@ -118,13 +118,7 @@ public class ListCommand extends Command {
     @Override
     public CommandResult execute() {
         model.updateFilteredPanel(panelType, keywords, tagNames);
-
-        String displayMessage = getMessageForTaskListShownSummary(
-                model.getActivityListForPanelType(Activity.PanelType.SCHEDULE).size()
-                        + model.getActivityListForPanelType(Activity.PanelType.DEADLINE).size()
-                        + model.getActivityListForPanelType(Activity.PanelType.FLOATING).size()
-        );
-        return new CommandResult(displayMessage, true);
+        return new CommandResult("", true);
     }
 
 }
