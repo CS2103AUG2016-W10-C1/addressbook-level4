@@ -1,5 +1,6 @@
 package seedu.taskman.testutil;
 
+import seedu.taskman.logic.commands.AddCommand;
 import seedu.taskman.model.tag.UniqueTagList;
 import seedu.taskman.model.event.*;
 
@@ -79,7 +80,7 @@ public class TestTask implements ReadOnlyTask {
 
     public String getAddCommand() {
         StringBuilder sb = new StringBuilder();
-        sb.append("do " + this.getTitle().title + " ");
+        sb.append(AddCommand.COMMAND_WORD + " " + this.getTitle().title + " ");
         if (this.getDeadline().isPresent()) {
             sb.append("d/" + this.getDeadline().get().toFormalString() + " ");
         }
