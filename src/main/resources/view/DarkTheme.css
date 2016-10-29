@@ -127,6 +127,7 @@
 
 .result-display {
     -fx-background-color: #ffffff;
+    -fx-wrap-text: true;
 }
 
 .result-display .label {
