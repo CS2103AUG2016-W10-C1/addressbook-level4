@@ -34,10 +34,6 @@ public class ActivityPanel extends UiPart implements ListPanel {
     @FXML
     private TitledPane titledPane;
 
-    public ActivityPanel() {
-        super();
-    }
-
     @Override
     public void setNode(Node node) {
         panel = (AnchorPane) node;
