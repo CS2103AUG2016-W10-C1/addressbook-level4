@@ -98,8 +98,8 @@ public class FileUtil {
      * @param path
      * @return absolute path of given path
      */
-    public static String getAbsolutePath(String path) {
+    public static String getAbsolutePath(String path) throws IOException {
         File file = new File(path);
-        return file.getAbsolutePath();
+        return file.getCanonicalPath();
     }
 }

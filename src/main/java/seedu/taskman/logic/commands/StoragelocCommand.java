@@ -31,7 +31,7 @@ public class StoragelocCommand extends Command {
     private static final String STORAGELOC_VIEW_KEYWORD = "view";
     private static final Pattern STORAGELOC_ARGS_FORMAT = Pattern.compile("" + CommandParser.ArgumentPattern.FILE_PATH);
 
-    private final String filePath;
+    private String filePath;
 
     //@@author A0121299A
     public static Command prepareStorageloc(String args) {
@@ -56,7 +56,7 @@ public class StoragelocCommand extends Command {
 
     private StoragelocCommand(String filePath) {
         super(false);
-        this.filePath = FileUtil.getAbsolutePath(filePath);
+        this.filePath = filePath;
     }
 
 
@@ -69,6 +69,7 @@ public class StoragelocCommand extends Command {
         ConfigData initialConfigData = Config.getInstance().getDataClone();
 
         try {
+            filePath = FileUtil.getAbsolutePath(filePath);
             storage.saveTaskMan(model.getTaskMan(), filePath);
             Config.getInstance().setTaskManFilePath(filePath);
             Config.save();

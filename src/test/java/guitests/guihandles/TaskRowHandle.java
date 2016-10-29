@@ -34,8 +34,6 @@ public class TaskRowHandle extends GuiHandle {
     }
 
     public boolean isSameTask(Activity task) {
-        System.out.println(task);
-        System.out.println(this.task);
         return getTitle().equals(task.getTitle()) && getDeadline().equals(task.getDeadline())
                 && getSchedule().equals(task.getSchedule()) && getFrequency().equals(task.getFrequency());
     }
