@@ -3,7 +3,7 @@ package guitests;
 import guitests.guihandles.TaskRowHandle;
 import org.junit.Test;
 import seedu.taskman.commons.core.Messages;
-import seedu.taskman.logic.commands.DoCommand;
+import seedu.taskman.logic.commands.AddCommand;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Task;
 import seedu.taskman.testutil.TestTask;
@@ -14,8 +14,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
-//TODO Change to DoCommandTest and MarkCommandTest
-public class DoCommandTest extends TaskManGuiTest {
+//TODO Change to AddCommandTest and MarkCommandTest
+public class AddCommandTest extends TaskManGuiTest {
     
     @Test
     public void add() {
@@ -34,7 +34,7 @@ public class DoCommandTest extends TaskManGuiTest {
         commandBox.runCommand(testTasks.taskCS2102.getAddCommand());
         Activity[] expectedList = TestUtil.getActivitiesArray(currentList);
         TestUtil.sortActivitiesByDeadline(expectedList);
-        assertResultMessage(DoCommand.MESSAGE_DUPLICATE_EVENT);
+        assertResultMessage(AddCommand.MESSAGE_DUPLICATE_EVENT);
         assertTrue(deadlineListPanel.isListMatching(expectedList));
 
         //add to empty list

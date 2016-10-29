@@ -1,10 +1,10 @@
 package seedu.taskman.logic.parser;
 
+import seedu.taskman.logic.commands.AddCommand;
 import seedu.taskman.logic.commands.ClearCommand;
 import seedu.taskman.logic.commands.Command;
 import seedu.taskman.logic.commands.CompleteCommand;
 import seedu.taskman.logic.commands.DeleteCommand;
-import seedu.taskman.logic.commands.DoCommand;
 import seedu.taskman.logic.commands.EditCommand;
 import seedu.taskman.logic.commands.ExitCommand;
 import seedu.taskman.logic.commands.HelpCommand;
@@ -77,8 +77,8 @@ public class CommandParser {
         final String arguments = matcher.group("arguments");
         switch (commandWord) {
 
-            case DoCommand.COMMAND_WORD:
-                return DoCommand.prepareDo(arguments);
+            case AddCommand.COMMAND_WORD:
+                return AddCommand.prepareAdd(arguments);
                 
             case AddECommand.COMMAND_WORD:
                 return AddECommand.prepareAddE(arguments);

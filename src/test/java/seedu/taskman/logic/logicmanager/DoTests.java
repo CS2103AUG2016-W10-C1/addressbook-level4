@@ -37,7 +37,7 @@ public class DoTests extends LogicManagerTestBase {
         TaskMan expectedTaskMan = new TaskMan();
         expectedTaskMan.addActivity(toBeAdded);
 
-        assertCommandStateChange(helper.generateDoCommand(toBeAdded),
+        assertCommandStateChange(helper.generateAddCommand(toBeAdded),
                 expectedTaskMan
         );
     }
@@ -55,7 +55,7 @@ public class DoTests extends LogicManagerTestBase {
 
         // execute command and verify result
         assertCommandStateChange(
-                helper.generateDoCommand(toBeAdded),
+                helper.generateAddCommand(toBeAdded),
                 expectedTaskMan
         );
 

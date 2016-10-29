@@ -53,9 +53,9 @@ Command Format: `help`
 > Help is also shown if you enter an incorrect command e.g. `abcd`
 
 <!--@@author A0139019E-->
-#### Adding a task: `do`
+#### Adding a task: `add`
 Adds a task to TaskMan<br>
-Command Format: `do TITLE [d/DEADLINE] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
+Command Format: `add TITLE [d/DEADLINE] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
 
 Parameter | Format
 -------- | :-------- 
@@ -69,12 +69,12 @@ The `SCHEDULE` represents the period of time the task is scheduled to be worked 
 > Tasks can have any number of tags. Tags may contain spaces and are case-insensitive (i.e. tags "school", "School", and "SCHOOL" are the same tags).
 
 Examples:
-* `do learn driving`
-* `do cs2101 homework d/next mon 1200`
-* `do cs3244 revision s/tue 0000 to tue 0200`
-* `do cs2103t tutorial t/java`
-* `do eat vitamins s/fri 1400 for 5 minutes f/2 days t/ribena`
-* `do backup server s/mon 0800 for 2 hours f/3 months`
+* `add learn driving`
+* `add cs2101 homework d/next mon 1200`
+* `add cs3244 revision s/tue 0000 to tue 0200`
+* `add cs2103t tutorial t/java`
+* `add eat vitamins s/fri 1400 for 5 minutes f/2 days t/ribena`
+* `add backup server s/mon 0800 for 2 hours f/3 months`
 
 #### Adding an event: `adde`
 Adds an event to TaskMan<br>
@@ -331,7 +331,7 @@ Example:
 
 Command | Format
 -------- | :--------
-Do | `do TITLE [d/DEADLINE] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...    `
+Add | `add TITLE [d/DEADLINE] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...    `
 Adde | `adde TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...    `
 Clear | `clear`
 Complete | `complete INDEX` or `complete list`

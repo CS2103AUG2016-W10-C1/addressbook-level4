@@ -16,9 +16,9 @@ import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 /**
  * Adds a Task to the task man.
  */
-public class DoCommand extends Command {
+public class AddCommand extends Command {
 
-    public static final String COMMAND_WORD = "do";
+    public static final String COMMAND_WORD = "add";
 
     // todo, differed: let parameters be objects. we can easily generate the usage in that case
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a task to TaskMan.\n"
@@ -28,7 +28,7 @@ public class DoCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New task added: %1$s";
     public static final String MESSAGE_DUPLICATE_EVENT = "This task already exists in TaskMan";
-    private static final Pattern TASK_DO_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
+    private static final Pattern TASK_ADD_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("" + CommandParser.ArgumentPattern.TITLE
                     + CommandParser.ArgumentPattern.OPTIONAL_DEADLINE
                     + CommandParser.ArgumentPattern.OPTIONAL_SCHEDULE
@@ -42,7 +42,7 @@ public class DoCommand extends Command {
      *
      * @throws IllegalValueException if any of the raw values are invalid
      */
-    private DoCommand(String title, String deadline, String schedule, String frequency, Set<String> tags)
+    private AddCommand(String title, String deadline, String schedule, String frequency, Set<String> tags)
             throws IllegalValueException {
         super(true);
         final Set<Tag> tagSet = new HashSet<>();
@@ -64,13 +64,13 @@ public class DoCommand extends Command {
         );
     }
 
-    public static Command prepareDo(String args) {
-        final Matcher matcher = TASK_DO_ARGS_FORMAT.matcher(args.trim());
+    public static Command prepareAdd(String args) {
+        final Matcher matcher = TASK_ADD_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
         }
         try {
-            return new DoCommand(
+            return new AddCommand(
                     matcher.group("title"),
                     matcher.group("deadline"),
                     matcher.group("schedule"),
