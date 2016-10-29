@@ -16,9 +16,9 @@ import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 /**
  * Adds a Event to the task man.
  */
-public class MarkCommand extends Command {
+public class AddECommand extends Command {
 
-    public static final String COMMAND_WORD = "mark";
+    public static final String COMMAND_WORD = "adde";
 
     // todo, differed: let parameters be objects. we can easily generate the usage in that case
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an event to TaskMan.\n"
@@ -41,7 +41,7 @@ public class MarkCommand extends Command {
      *
      * @throws IllegalValueException if any of the raw values are invalid
      */
-    private MarkCommand(String title, String schedule, String frequency, Set<String> tags)
+    private AddECommand(String title, String schedule, String frequency, Set<String> tags)
             throws IllegalValueException {
         super(true);
         final Set<Tag> tagSet = new HashSet<>();
@@ -60,14 +60,14 @@ public class MarkCommand extends Command {
         );
     }
 
-    public static Command prepareMark(String args) {
+    public static Command prepareAddE(String args) {
         final Matcher matcher = EVENT_MARK_ARGS_FORMAT.matcher(args.trim());
         // Validate arg string format
         if (!matcher.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
         }
         try {
-            return new MarkCommand(
+            return new AddECommand(
                     matcher.group("title"),
                     matcher.group("schedule"),
                     matcher.group("frequency"),

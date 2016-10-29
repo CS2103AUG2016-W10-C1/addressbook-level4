@@ -76,9 +76,9 @@ Examples:
 * `do eat vitamins s/fri 1400 for 5 minutes f/2 days t/ribena`
 * `do backup server s/mon 0800 for 2 hours f/3 months`
 
-#### Adding an event: `dot`
+#### Adding an event: `adde`
 Adds an event to TaskMan<br>
-Command Format: `dot TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
+Command Format: `adde TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
 
 Parameter | Format
 -------- | :-------- 
@@ -91,8 +91,8 @@ The `SCHEDULE` represents the period of time which the event is occurring.
 > Similar to tasks, events can have any number of tags. Tags may contain spaces and are case-insensitive (i.e. tags "school", "School", and "SCHOOL" are the same tags).
 
 Examples:
-* `dot CS2103T Lecture s/fri 1400 to fri 1600 f/1wk t/CS2103T`
-* `dot Project Meeting s/mon 1400 to mon 1400 t/CS2101 t/Lunch Time`
+* `adde CS2103T Lecture s/fri 1400 to fri 1600 f/1wk t/CS2103T`
+* `adde Project Meeting s/mon 1400 to mon 1400 t/CS2101 t/Lunch Time`
 
 <!--@@author-->
 #### Changing the View: `view`
@@ -332,7 +332,7 @@ Example:
 Command | Format
 -------- | :--------
 Do | `do TITLE [d/DEADLINE] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...    `
-Dot | `dot TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...    `
+Adde | `adde TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...    `
 Clear | `clear`
 Complete | `complete INDEX` or `complete list`
 Delete | `delete INDEX` or `delete list`

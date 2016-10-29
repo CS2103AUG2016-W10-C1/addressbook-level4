@@ -11,7 +11,7 @@ import seedu.taskman.logic.commands.HelpCommand;
 import seedu.taskman.logic.commands.HistoryCommand;
 import seedu.taskman.logic.commands.IncorrectCommand;
 import seedu.taskman.logic.commands.ListCommand;
-import seedu.taskman.logic.commands.MarkCommand;
+import seedu.taskman.logic.commands.AddECommand;
 import seedu.taskman.logic.commands.SelectCommand;
 import seedu.taskman.logic.commands.StoragelocCommand;
 import seedu.taskman.logic.commands.UndoCommand;
@@ -80,8 +80,8 @@ public class CommandParser {
             case DoCommand.COMMAND_WORD:
                 return DoCommand.prepareDo(arguments);
                 
-            case MarkCommand.COMMAND_WORD:
-                return MarkCommand.prepareMark(arguments);
+            case AddECommand.COMMAND_WORD:
+                return AddECommand.prepareAddE(arguments);
 
             case EditCommand.COMMAND_WORD:
                 return EditCommand.prepareEdit(arguments);
