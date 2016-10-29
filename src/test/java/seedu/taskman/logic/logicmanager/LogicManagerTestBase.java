@@ -92,7 +92,7 @@ public abstract class LogicManagerTestBase {
         targetedJumpIndex = -1; // non yet
         targetedPanelType = null;
 
-        Config.setConfigFile(Config.DEFAULT_CONFIG_FILE);
+        Config.setConfigFile("./src/test/data/sandbox/LogicManagerTestBase/TypicalConfig.json");
     }
 
     @After
