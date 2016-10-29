@@ -53,7 +53,7 @@ We are a team based in the [School of Computing, National University of Singapor
 <img src="images/LimJiaYee.png" width="150"><br>
 * Responsibilities: Integration, Documentation
 * Features implemented:
-	* [Complete Command Logic and Tests](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/DeadlinePanel.java)
+	* [Complete Command Logic and Tests](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/CompleteCommand.java)
 	* [History Command Logic and Tests](https://github.com/CS2103AUG2016-W10-C1/main/blob/new/command/history/src/main/java/seedu/taskman/logic/commands/HistoryCommand.java)
 	* [Undo Command Logic (later fixed by Alex)](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/UndoCommand.java)
 * Code written: [[functional code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/main/A0136070R.md)]
