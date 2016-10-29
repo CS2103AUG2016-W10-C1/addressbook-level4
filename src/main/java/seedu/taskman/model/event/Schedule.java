@@ -7,6 +7,7 @@ import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.logic.parser.DateTimeParser;
 
 import java.sql.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,6 +48,7 @@ public class Schedule {
     public final long startEpochSecond;
     public final long endEpochSecond;
 
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE");
     public final PrettyTime prettyTimeFormatter = new PrettyTime();
 
     public Schedule(long startEpochSecond, long endEpochSecond) throws IllegalValueException {
@@ -112,8 +114,17 @@ public class Schedule {
         }
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+                DateTimeParser.epochSecondToShortDateTime(startEpochSecond),
+                " to ",
+                DateTimeParser.epochSecondToShortDateTime(endEpochSecond)
+        );
+    }
+
     /**
-     * Formats a string for displaying the schedule to the form of:
+     * Formats a string for displaying the schedule IN DETAIL to the form of:
      *
      *      DATE TIME (elapsed) to DATE TIME (duration)
      *
@@ -129,8 +140,7 @@ public class Schedule {
      *
      * @return String containing human-readable information for schedule (start, end, duration)
      */
-    @Override
-    public String toString() {
+    public String detailedToString() {
         long durationSeconds = endEpochSecond - startEpochSecond;
         long durationDays = TimeUnit.MILLISECONDS.toDays(durationSeconds);
         long years = 0;
