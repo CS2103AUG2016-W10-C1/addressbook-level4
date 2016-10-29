@@ -18,11 +18,11 @@
 }
 
 .label-amber {
-    -fx-text-fill: #ffc107;
+    -fx-text-fill: #ff8f00;
 }
 
 .label-red {
-    -fx-text-fill: #e53935;
+    -fx-text-fill: #f44336;
 }
 
 .label-green {
