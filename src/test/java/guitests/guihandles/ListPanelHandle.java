@@ -4,7 +4,7 @@ package guitests.guihandles;
 import guitests.GuiRobot;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
-import javafx.scene.control.TableView;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import seedu.taskman.TestApp;
 import seedu.taskman.model.event.Activity;
@@ -24,9 +24,9 @@ public class ListPanelHandle extends GuiHandle {
 
     private final String listViewId;
 
-    public static final String SCHEDULE_LIST_VIEW_ID = "#scheduleTableView";
-    public static final String FLOATING_LIST_VIEW_ID = "#floatingTableView";
-    public static final String DEADLINE_LIST_VIEW_ID = "#deadlineTableView";
+    public static final String SCHEDULE_LIST_VIEW_ID = "#scheduleListView";
+    public static final String FLOATING_LIST_VIEW_ID = "#floatingListView";
+    public static final String DEADLINE_LIST_VIEW_ID = "#deadlineListView";
 
 
     public ListPanelHandle(GuiRobot guiRobot, Stage primaryStage, Activity.PanelType panelType) {
@@ -52,14 +52,14 @@ public class ListPanelHandle extends GuiHandle {
     }
 
     public List<Activity> getSelectedTasks() {
-        TableView<Activity> taskList = getTableView();
+        ListView<Activity> taskList = getListView();
         return taskList.getSelectionModel().getSelectedItems();
     }
 
     // TODO Resolve generic type issue.
     @SuppressWarnings("unchecked")
-    public  TableView<Activity> getTableView(){
-        return (TableView<Activity>) getNode(listViewId);
+    public ListView<Activity> getListView(){
+        return (ListView<Activity>) getNode(listViewId);
     }
 
 
@@ -69,14 +69,14 @@ public class ListPanelHandle extends GuiHandle {
      * @param activities A list of task in the correct order.
      */
     public boolean isListMatching(Activity... activities) {
-        if (activities.length != getTableView().getItems().size()) {
+        if (activities.length != getListView().getItems().size()) {
             throw new IllegalArgumentException("List size mismatched\n" +
                     "Expected " + activities.length + " tasks");
         }
         assertTrue(this.containsInOrder(0, activities));
         for (int i = 0; i < activities.length; i++) {
             final int scrollTo = i;
-            guiRobot.interact(() -> getTableView().scrollTo(scrollTo));
+            guiRobot.interact(() -> getListView().scrollTo(scrollTo));
             guiRobot.sleep(200);
             if (!TestUtil.compareRowAndTask(getTaskRowHandle(i), activities[i])) {
                 return false;
@@ -88,8 +88,8 @@ public class ListPanelHandle extends GuiHandle {
     /**
      * Clicks on the TableView.
      */
-    public void clickOnTableView() {
-        Point2D point = TestUtil.getScreenMidPoint(getTableView());
+    public void clickOnListView() {
+        Point2D point = TestUtil.getScreenMidPoint(getListView());
         guiRobot.clickOn(point.getX(), point.getY());
     }
 
@@ -97,7 +97,7 @@ public class ListPanelHandle extends GuiHandle {
      * Returns true if the {@code tasks} appear as the sub list (in that order) at position {@code startPosition}.
      */
     public boolean containsInOrder(int startPosition, Activity... tasks) {
-        List<Activity> tasksInList = getTableView().getItems();
+        List<Activity> tasksInList = getListView().getItems();
 
         // Return false if the list in panel is too short to contain the given list
         if (startPosition + tasks.length > tasksInList.size()) {
@@ -116,7 +116,7 @@ public class ListPanelHandle extends GuiHandle {
 
     public TaskRowHandle navigateToActivity(String title) {
         guiRobot.sleep(500); //Allow a bit of time for the list to be updated
-        final Optional<Activity> task = getTableView().getItems().stream().filter(p -> p.getTitle().toString().equals(title)).findAny();
+        final Optional<Activity> task = getListView().getItems().stream().filter(p -> p.getTitle().toString().equals(title)).findAny();
         if (!task.isPresent()) {
             throw new IllegalStateException("Title not found: " + title);
         }
@@ -131,9 +131,9 @@ public class ListPanelHandle extends GuiHandle {
         int index = getActivityIndex(task);
 
         guiRobot.interact(() -> {
-            getTableView().scrollTo(index);
+            getListView().scrollTo(index);
             guiRobot.sleep(150);
-            getTableView().getSelectionModel().select(index);
+            getListView().getSelectionModel().select(index);
         });
         guiRobot.sleep(100);
         return getTaskRowHandle(task);
@@ -144,7 +144,7 @@ public class ListPanelHandle extends GuiHandle {
      * Returns the position of the task given, {@code NOT_FOUND} if not found in the list.
      */
     public int getActivityIndex(Activity targetTask) {
-        List<Activity> tasksInList = getTableView().getItems();
+        List<Activity> tasksInList = getListView().getItems();
         for (int i = 0; i < tasksInList.size(); i++) {
             if (tasksInList.get(i).getTitle().equals(targetTask.getTitle())) {
                 return i;
@@ -157,15 +157,15 @@ public class ListPanelHandle extends GuiHandle {
      * Gets a task from the list by index
      */
     public Activity getActivity(int index) {
-        return getTableView().getItems().get(index);
+        return getListView().getItems().get(index);
     }
 
     public TaskRowHandle getTaskRowHandle(int index) {
-        return new TaskRowHandle(guiRobot, primaryStage, getTableView().getItems().get(index));
+        return new TaskRowHandle(guiRobot, primaryStage, getListView().getItems().get(index));
     }
 
     public TaskRowHandle getTaskRowHandle(Activity task) {
-        ObservableList<Activity> taskList = getTableView().getItems();
+        ObservableList<Activity> taskList = getListView().getItems();
         Optional<Activity> hit = taskList.stream()
                 .filter(n -> new TaskRowHandle(guiRobot, primaryStage, n).isSameTask(task))
                 .findFirst();
@@ -177,6 +177,6 @@ public class ListPanelHandle extends GuiHandle {
     }
 
     public int getNumberOfPeople() {
-        return getTableView().getItems().size();
+        return getListView().getItems().size();
     }
 }

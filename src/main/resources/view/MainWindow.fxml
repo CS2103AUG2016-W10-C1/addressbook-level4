@@ -27,7 +27,7 @@
       </MenuBar>
       <SplitPane dividerPositions="0.5" VBox.vgrow="ALWAYS">
          <items>
-            <AnchorPane fx:id="scheduleTablePanelPlaceholder" styleClass="anchor-pane">
+            <AnchorPane fx:id="schedulePanelPlaceholder" styleClass="anchor-pane">
                <padding>
                   <Insets bottom="5.0" top="5.0" />
                </padding>
@@ -36,8 +36,8 @@
                <children>
                   <SplitPane dividerPositions="0.5" orientation="VERTICAL" VBox.vgrow="ALWAYS">
                      <items>
-                        <AnchorPane fx:id="deadlineTablePanelPlaceholder" styleClass="anchor-pane" />
-                        <AnchorPane fx:id="floatingTablePanelPlaceholder" styleClass="anchor-pane" />
+                        <AnchorPane fx:id="deadlinePanelPlaceholder" styleClass="anchor-pane" />
+                        <AnchorPane fx:id="floatingPanelPlaceholder" styleClass="anchor-pane" />
                      </items>
                   </SplitPane>
                   <AnchorPane fx:id="resultDisplayPlaceholder" minHeight="150.0" styleClass="anchor-pane" VBox.vgrow="NEVER">

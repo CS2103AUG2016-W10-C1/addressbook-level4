@@ -65,6 +65,7 @@ public class ActivityPanel extends UiPart implements ListPanel {
         this.panelType = panelType;
         setConnections(taskList);
         addToPlaceholder();
+        listView.setId(panelType.getName().toLowerCase()+"ListView");
         titledPane.setText(panelType.getName());
     }
 
