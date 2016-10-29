@@ -14,7 +14,7 @@ import seedu.taskman.ui.*;
  */
 public class ActivityCard extends UiPart {
 
-    private static final String FXML = "ActivityCard.fxml";
+    protected static final String FXML = "ActivityCard.fxml";
 
     //todo: shift to more appropriate place
     protected static final String AMBER_STYLE = "label-amber";
@@ -22,7 +22,7 @@ public class ActivityCard extends UiPart {
     protected static final String RED_STYLE = "label-red";
     protected static final String BLUE_STYLE = "label-blue";
 
-    @javafx.fxml.FXML
+    @FXML
     protected GridPane cardPane;
     @FXML
     protected Label title;
@@ -35,10 +35,6 @@ public class ActivityCard extends UiPart {
 
     protected Activity activity;
     protected int displayedIndex;
-
-    public ActivityCard() {
-
-    }
 
     @Override
     public void setNode(Node node) {
@@ -60,10 +56,10 @@ public class ActivityCard extends UiPart {
      * Setting colours to title labels
      * Event -> blue
      * Task ->
-     *  Overdue -> red
-     *  Not overdue ->
-     *      Complete -> green
-     *      Incomplete -> amber
+     * Overdue -> red
+     * Not overdue ->
+     * Complete -> green
+     * Incomplete -> amber
      */
     protected void setColour() {
         switch (activity.getType()) {
@@ -84,6 +80,9 @@ public class ActivityCard extends UiPart {
                 } else {
                     title.getStyleClass().add(AMBER_STYLE);
                 }
+            }
+            default: {
+                break;
             }
         }
     }

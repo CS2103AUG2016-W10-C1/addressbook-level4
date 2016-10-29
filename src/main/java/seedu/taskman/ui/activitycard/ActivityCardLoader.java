@@ -32,6 +32,9 @@ public class ActivityCardLoader {
                 card = new FloatingActivityCard();
                 break;
             }
+            default: {
+                break;
+            }
         }
         card.activity = activity;
         card.displayedIndex = displayedIndex;
