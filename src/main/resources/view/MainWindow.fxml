@@ -34,7 +34,7 @@
             </AnchorPane>
             <VBox>
                <children>
-                  <SplitPane dividerPositions="0.5" orientation="VERTICAL">
+                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" VBox.vgrow="ALWAYS">
                      <items>
                         <AnchorPane fx:id="deadlineTablePanelPlaceholder" styleClass="anchor-pane" />
                         <AnchorPane fx:id="floatingTablePanelPlaceholder" styleClass="anchor-pane" />

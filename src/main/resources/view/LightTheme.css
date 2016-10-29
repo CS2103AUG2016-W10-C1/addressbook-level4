@@ -30,9 +30,6 @@
 }
 
 .label-blue {
-    -fx-text-fill: #3949ab;
-}
 
-.bg-lime {
-    -fx-background-color: #cddc39;
+    -fx-text-fill: #3949ab;
 }
