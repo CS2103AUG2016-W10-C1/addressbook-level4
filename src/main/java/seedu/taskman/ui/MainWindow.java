@@ -30,9 +30,9 @@ public class MainWindow extends UiPart {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private SchedulePanel schedulePanel;
-    private DeadlinePanel deadlinePanel;
-    private FloatingPanel floatingPanel;
+    private ActivityPanel schedulePanel;
+    private ActivityPanel deadlinePanel;
+    private ActivityPanel floatingPanel;
     private ResultDisplay resultDisplay;
     private StatusBarFooter statusBarFooter;
     private CommandBox commandBox;
@@ -52,13 +52,13 @@ public class MainWindow extends UiPart {
     private MenuItem helpMenuItem;
 
     @FXML
-    private AnchorPane scheduleTablePanelPlaceholder;
+    private AnchorPane schedulePanelPlaceholder;
     
     @FXML
-    private AnchorPane deadlineTablePanelPlaceholder;
+    private AnchorPane deadlinePanelPlaceholder;
     
     @FXML
-    private AnchorPane floatingTablePanelPlaceholder;
+    private AnchorPane floatingPanelPlaceholder;
 
     @FXML
     private AnchorPane resultDisplayPlaceholder;
@@ -113,9 +113,9 @@ public class MainWindow extends UiPart {
     }
 
     void fillInnerParts() {
-        schedulePanel = SchedulePanel.load(primaryStage, getScheduleTablePlaceholder(), logic.getSortedScheduleList());
-        deadlinePanel = DeadlinePanel.load(primaryStage, getDeadlineTablePlaceholder(), logic.getSortedDeadlineList());
-        floatingPanel = FloatingPanel.load(primaryStage, getFloatingTablePlaceholder(), logic.getSortedFloatingList());
+        schedulePanel = ActivityPanel.load(primaryStage, getSchedulePanelPlaceholder(), logic.getSortedScheduleList(), Activity.PanelType.SCHEDULE);
+        deadlinePanel = ActivityPanel.load(primaryStage, getDeadlinePanelPlaceholder(), logic.getSortedDeadlineList(), Activity.PanelType.DEADLINE);
+        floatingPanel = ActivityPanel.load(primaryStage, getFloatingPanelPlaceholder(), logic.getSortedFloatingList(), Activity.PanelType.FLOATING);
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getTaskManFilePath());
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
@@ -133,16 +133,16 @@ public class MainWindow extends UiPart {
         return resultDisplayPlaceholder;
     }
 
-    public AnchorPane getScheduleTablePlaceholder() {
-        return scheduleTablePanelPlaceholder;
+    public AnchorPane getSchedulePanelPlaceholder() {
+        return schedulePanelPlaceholder;
     }
     
-    public AnchorPane getDeadlineTablePlaceholder() {
-        return deadlineTablePanelPlaceholder;
+    public AnchorPane getDeadlinePanelPlaceholder() {
+        return deadlinePanelPlaceholder;
     }
     
-    public AnchorPane getFloatingTablePlaceholder() {
-        return floatingTablePanelPlaceholder;
+    public AnchorPane getFloatingPanelPlaceholder() {
+        return floatingPanelPlaceholder;
     }
 
     public void hide() {
@@ -157,6 +157,18 @@ public class MainWindow extends UiPart {
         deadlinePanel.clearSelection();
         floatingPanel.clearSelection();
         schedulePanel.clearSelection();
+    }
+
+    public void clearListPanelsExclude(Activity.PanelType panelType){
+        if (panelType != Activity.PanelType.DEADLINE) {
+            deadlinePanel.clearSelection();
+        }
+        if (panelType != Activity.PanelType.SCHEDULE) {
+           schedulePanel.clearSelection();
+        }
+        if (panelType != Activity.PanelType.FLOATING) {
+            floatingPanel.clearSelection();
+        }
     }
 
     public ListPanel getListPanel(Activity.PanelType panelType){

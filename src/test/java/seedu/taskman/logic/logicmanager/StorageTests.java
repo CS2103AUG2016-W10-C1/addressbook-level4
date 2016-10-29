@@ -50,13 +50,6 @@ public class StorageTests extends LogicManagerTestBase {
     }
 
     @Test
-    public void execute_storageloc_default() throws Exception {
-        execute_storageloc_general(3, "default",
-                FileUtil.getAbsolutePath(ConfigData.DEFAULT_TASK_MAN_FILE_PATH),
-                true);
-    }
-
-    @Test
     public void execute_storageloc_absolutePath() throws Exception {
         String givenPath = FileUtil.getAbsolutePath("./src/test/data/sandbox/LogicManagerTestBase/absolute.xml");
         execute_storageloc_general(4, givenPath, givenPath, true);
@@ -66,6 +59,13 @@ public class StorageTests extends LogicManagerTestBase {
     public void execute_storageloc_relativePath() throws Exception {
         String givenPath = "./src/test/data/sandbox/LogicManagerTestBase/relative.xml";
         execute_storageloc_general(4, givenPath, FileUtil.getAbsolutePath(givenPath), true);
+    }
+
+    @Test
+    public void execute_storageloc_default() throws Exception {
+        execute_storageloc_general(3, "default",
+                FileUtil.getAbsolutePath(ConfigData.DEFAULT_TASK_MAN_FILE_PATH),
+                true);
     }
 
     @Test

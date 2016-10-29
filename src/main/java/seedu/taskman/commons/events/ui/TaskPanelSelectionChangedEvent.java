@@ -10,9 +10,11 @@ public class TaskPanelSelectionChangedEvent extends BaseEvent {
 
 
     private final Activity newSelection;
+    private final Activity.PanelType panelType;
 
-    public TaskPanelSelectionChangedEvent(Activity newSelection) {
+    public TaskPanelSelectionChangedEvent(Activity newSelection, Activity.PanelType panelType) {
         this.newSelection = newSelection;
+        this.panelType = panelType;
     }
 
     @Override
@@ -22,5 +24,9 @@ public class TaskPanelSelectionChangedEvent extends BaseEvent {
 
     public Activity getNewSelection() {
         return newSelection;
+    }
+
+    public Activity.PanelType getPanelType(){
+        return panelType;
     }
 }

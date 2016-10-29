@@ -1,0 +1,35 @@
+
+
+.label-id {
+    -fx-font-size: 14px;
+}
+
+.label-value{
+
+}
+
+.label-title {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.panel-title {
+
+}
+
+.label-amber {
+    -fx-text-fill: #ff8f00;
+}
+
+.label-red {
+    -fx-text-fill: #f44336;
+}
+
+.label-green {
+    -fx-text-fill: #00bfa5;
+}
+
+.label-blue {
+
+    -fx-text-fill: #3949ab;
+}

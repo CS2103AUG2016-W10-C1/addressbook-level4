@@ -14,6 +14,10 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent {
     private static final String SCHEDULE_STRING = "s";
     private static final String FLOATING_STRING = "f";
 
+    private static final String FULL_DEADLINE_NAME = "Deadline";
+    private static final String FULL_SCHEDULE_NAME = "Schedule";
+    private static final String FULL_FLOATING_NAME = "Floating";
+
     public enum ActivityType {EVENT, TASK}
 
     private MutableTagsEvent activity;
@@ -169,14 +173,16 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent {
     }
 
     public enum PanelType {
-        DEADLINE(DEADLINE_STRING),
-        SCHEDULE(SCHEDULE_STRING),
-        FLOATING(FLOATING_STRING);
+        DEADLINE(DEADLINE_STRING, FULL_DEADLINE_NAME),
+        SCHEDULE(SCHEDULE_STRING, FULL_SCHEDULE_NAME),
+        FLOATING(FLOATING_STRING, FULL_FLOATING_NAME);
 
         private final String string;
+        private final String name;
 
-        PanelType(String string) {
+        PanelType(String string, String name) {
             this.string = string;
+            this.name = name;
         }
 
         public static PanelType fromString(String str) {
@@ -193,6 +199,14 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent {
                 default:
                     return null;
             }
+        }
+
+        public String getName(){
+            return name;
+        }
+
+        public String getString(){
+            return string;
         }
 
         @Override
