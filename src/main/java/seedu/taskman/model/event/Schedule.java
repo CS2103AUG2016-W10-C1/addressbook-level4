@@ -41,10 +41,11 @@ public class Schedule {
     public static final String DURATION_STRING_MONTHS = "mths";
     public static final String DURATION_STRING_YEARS = "yrs";
 
-    public static final int DURATION_MINUTES_IN_HOUR = 60;
-    public static final int DURATION_DAYS_IN_WEEK = 7;
-    public static final int DURATION_DAYS_IN_MONTH = 30;
-    public static final int DURATION_DAYS_IN_YEAR = 365;
+    public static final long DURATION_MINUTES_IN_HOUR = 60;
+    public static final long DURATION_MINUTES_IN_DAY = DURATION_MINUTES_IN_HOUR * 24;
+    public static final long DURATION_MINUTES_IN_WEEK = DURATION_MINUTES_IN_DAY * 7;
+    public static final long DURATION_MINUTES_IN_MONTH = DURATION_MINUTES_IN_DAY * 30;
+    public static final long DURATION_MINUTES_IN_YEAR = DURATION_MINUTES_IN_DAY * 365;
     public static final int MULTIPLIER_TIME_UNIX_TO_JAVA = 1000;
     public final long startEpochSecond;
     public final long endEpochSecond;
@@ -117,9 +118,15 @@ public class Schedule {
 
     @Override
     public String toString() {
-        return DateTimeParser.epochSecondToShortDateTime(startEpochSecond) +
-                " to " +
-                DateTimeParser.epochSecondToShortDateTime(endEpochSecond);
+        return toStringDetailed();
+    }
+
+    public String toStringShort() {
+        return String.format(
+                "%s\n%s",
+                DateTimeParser.epochSecondToShortDateTime(startEpochSecond),
+                DateTimeParser.epochSecondToShortDateTime(endEpochSecond)
+        );
     }
 
     /**
@@ -139,68 +146,61 @@ public class Schedule {
      *
      * @return String containing human-readable information for schedule (start, end, duration)
      */
-    public String detailedToString() {
+    public String toStringDetailed() {
         long durationSeconds = endEpochSecond - startEpochSecond;
-        long durationDays = TimeUnit.MILLISECONDS.toDays(durationSeconds);
-        long years = 0;
-        long months = 0;
-        long weeks = 0;
-        long days = 0;
-        long hours = 0;
-        long minutes = 0;
+        long durationMinutes = TimeUnit.SECONDS.toMinutes(durationSeconds);
+        int years = 0;
+        int months = 0;
+        int weeks = 0;
+        int days = 0;
+        int hours = 0;
+        int minutes = 0;
         String durationString = "";
 
-        if (durationDays >= DURATION_DAYS_IN_YEAR) {
-            years = (long) Math.floor(durationDays / DURATION_DAYS_IN_YEAR);
-            durationDays -= years;
-        }
-        if (durationDays >= DURATION_DAYS_IN_MONTH) {
-            months = (long) Math.floor(durationDays / DURATION_DAYS_IN_MONTH);
-            durationDays -= months;
-        }
-        if (years == 0 && months == 0) {
-            if (durationDays >= DURATION_DAYS_IN_WEEK) {
-                weeks = (long) Math.floor(durationDays / DURATION_DAYS_IN_WEEK);
-                durationDays -= weeks;
-            }
-            if (durationDays >= 1) {
-                days = (long) Math.floor(durationDays);
-                durationDays -= days;
-            }
-            if (weeks == 0 || days == 0) {
-                long durationMinutes = TimeUnit.MILLISECONDS.toMinutes(durationDays);
-                if (durationMinutes >= DURATION_MINUTES_IN_HOUR) {
-                    hours = (long) Math.floor(durationMinutes / DURATION_MINUTES_IN_HOUR);
-                    durationMinutes -= hours;
-                }
-                if (durationMinutes >= 1) {
-                    minutes = (long) Math.floor(durationMinutes);
-                }
-                if (hours > 0) {
-                    durationString += String.format("%d %s ", hours, DURATION_STRING_HOURS);
-                }
-                if (days > 0) {
-                    durationString += String.format("%d %s", minutes, DURATION_STRING_MINUTES);
-                }
-            } else {
-                if (weeks > 0) {
-                    durationString += String.format("%d %s ", weeks, DURATION_STRING_WEEKS);
-                }
-                if (days > 0) {
-                    durationString += String.format("%d %s", days, DURATION_STRING_DAYS);
-                }
-            }
-        } else {
+        if (durationMinutes >= DURATION_MINUTES_IN_YEAR) {
+            years = (int) Math.floor(durationMinutes / DURATION_MINUTES_IN_YEAR);
             if (years > 0) {
+                durationMinutes %= years * DURATION_MINUTES_IN_YEAR;
                 durationString += String.format("%d %s ", years, DURATION_STRING_YEARS);
             }
+        }
+        if (durationMinutes >= DURATION_MINUTES_IN_MONTH) {
+            months = (int) Math.floor(durationMinutes / DURATION_MINUTES_IN_MONTH);
             if (months > 0) {
-                durationString += String.format("%d %s", years, DURATION_STRING_MONTHS);
+                durationMinutes %= months * DURATION_MINUTES_IN_MONTH;
+                durationString += String.format("%d %s ", months, DURATION_STRING_MONTHS);
+            }
+        }
+        if (durationMinutes >= DURATION_MINUTES_IN_WEEK) {
+            weeks = (int) Math.floor(durationMinutes / DURATION_MINUTES_IN_WEEK);
+            if (weeks > 0) {
+                durationMinutes %= weeks * DURATION_MINUTES_IN_WEEK;
+                durationString += String.format("%d %s ", weeks, DURATION_STRING_WEEKS);
+            }
+        }
+        if (durationMinutes >= DURATION_MINUTES_IN_DAY) {
+            days = (int) Math.floor(durationMinutes / DURATION_MINUTES_IN_DAY);
+            if (days > 0) {
+                durationMinutes %= days * DURATION_MINUTES_IN_DAY;
+                durationString += String.format("%d %s ", days, DURATION_STRING_DAYS);
+            }
+        }
+        if (durationMinutes >= DURATION_MINUTES_IN_HOUR) {
+            hours = (int) Math.floor(durationMinutes / DURATION_MINUTES_IN_HOUR);
+            if (hours > 0) {
+                durationMinutes %= hours * DURATION_MINUTES_IN_HOUR;
+                durationString += String.format("%d %s ", hours, DURATION_STRING_HOURS);
+            }
+        }
+        if (durationMinutes >= 1) {
+            minutes = (int) Math.floor(durationMinutes);
+            if (minutes > 0) {
+                durationString += String.format("%d %s ", minutes, DURATION_STRING_MINUTES);
             }
         }
 
         return String.format(
-                "%s (%s)\nto %s (%s)",
+                "%s\t(%s)\n%s\t(%s)",
                 DateTimeParser.epochSecondToShortDateTime(startEpochSecond),
                 prettyTimeFormatter.format(new Date(startEpochSecond * MULTIPLIER_TIME_UNIX_TO_JAVA)),
                 DateTimeParser.epochSecondToShortDateTime(endEpochSecond),

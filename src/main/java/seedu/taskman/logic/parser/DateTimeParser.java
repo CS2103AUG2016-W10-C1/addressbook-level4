@@ -38,8 +38,8 @@ public class DateTimeParser {
     private static final String GENERIC_ERROR_DURATION = "Invalid duration";
 
     // TODO: Separate formatting from parsing
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE dd MMM YY\nh.mma");
-    private static final DateTimeFormatter FORMAL_FORMATTER = DateTimeFormatter.ofPattern("dd MMM YYYY HHmm");
+    private static final DateTimeFormatter FORMATTER_DISPLAY = DateTimeFormatter.ofPattern("EEE, dd MMM YY, h.mma");
+    private static final DateTimeFormatter FORMATTER_FORMAL = DateTimeFormatter.ofPattern("dd MMM YYYY HHmm");
     private static final Parser parser = new Parser();
 
     /**
@@ -147,7 +147,7 @@ public class DateTimeParser {
         Instant instant = Instant.ofEpochSecond(epochSecond);
         return ZonedDateTime
                 .ofInstant(instant, ZoneId.systemDefault())
-                .format(formatter);
+                .format(FORMATTER_DISPLAY);
     }
 
     //todo: fix repetitive code
@@ -155,14 +155,14 @@ public class DateTimeParser {
         Instant instant = Instant.ofEpochSecond(epochSecond);
         return LocalDateTime
                 .ofInstant(instant, ZoneId.systemDefault())
-                .format(formatter);
+                .format(FORMATTER_DISPLAY);
     }
 
     public static String epochSecondToFormalDateTime(long epochSecond) {
         Instant instant = Instant.ofEpochSecond(epochSecond);
         return LocalDateTime
                 .ofInstant(instant, ZoneId.systemDefault())
-                .format(FORMAL_FORMATTER);
+                .format(FORMATTER_FORMAL);
     }
 
     public static class IllegalDateTimeException extends IllegalValueException {

@@ -5,7 +5,7 @@
 }
 
 .label-value{
-
+    -fx-font-family: "Monospaced";
 }
 
 .label-title {
