@@ -39,6 +39,7 @@ public class DateTimeParser {
 
     // TODO: Separate formatting from parsing
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE dd MMM YY\nh.mma");
+    private static final DateTimeFormatter FORMAL_FORMATTER = DateTimeFormatter.ofPattern("dd MMM YYYY HHmm");
     private static final Parser parser = new Parser();
 
     /**
@@ -149,11 +150,19 @@ public class DateTimeParser {
                 .format(formatter);
     }
 
+    //todo: fix repetitive code
     public static String epochSecondToShortDateTime(long epochSecond) {
         Instant instant = Instant.ofEpochSecond(epochSecond);
         return LocalDateTime
                 .ofInstant(instant, ZoneId.systemDefault())
                 .format(formatter);
+    }
+
+    public static String epochSecondToFormalDateTime(long epochSecond) {
+        Instant instant = Instant.ofEpochSecond(epochSecond);
+        return LocalDateTime
+                .ofInstant(instant, ZoneId.systemDefault())
+                .format(FORMAL_FORMATTER);
     }
 
     public static class IllegalDateTimeException extends IllegalValueException {

@@ -123,6 +123,7 @@ public abstract class LogicManagerTestBase {
 
         //Confirm the state of data (saved and in-memory) is as expected
         ReadOnlyTaskMan actualTaskMan = model.getTaskMan();
+        System.out.println(actualTaskMan.getActivityList().get(0).equals(expectedTaskMan.getActivityList().get(0)));
         assertEquals(expectedTaskMan, actualTaskMan);
         assertEquals(expectedTaskMan, latestSavedTaskMan);
 
@@ -203,20 +204,13 @@ public abstract class LogicManagerTestBase {
             command.append(task.getTitle().toString());
 
             if (task.getDeadline().isPresent()) {
-                Instant instant = Instant.ofEpochSecond(task.getDeadline().get().epochSecond);
-                command.append(" d/").
-                        append(instant.toString());
+                command.append(" d/"). append(task.getDeadline().get().toFormalString());
             }
             if (task.getFrequency().isPresent()) {
                 throw new AssertionError("Frequency is not supported yet");
             }
             if (task.getSchedule().isPresent()) {
-                String start = DateTimeParser.epochSecondToShortDateTime(task.getSchedule().get().startEpochSecond);
-                String end = DateTimeParser.epochSecondToShortDateTime(task.getSchedule().get().endEpochSecond);
-                command.append(" s/").
-                        append(start).
-                        append(" to ").
-                        append(end);
+                command.append(" s/").append(task.getSchedule().get().toFormalString());
             }
 
             UniqueTagList tags = task.getTags();

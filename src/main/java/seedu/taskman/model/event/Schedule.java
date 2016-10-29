@@ -117,11 +117,9 @@ public class Schedule {
 
     @Override
     public String toString() {
-        return String.format(
-                DateTimeParser.epochSecondToShortDateTime(startEpochSecond),
-                " to ",
-                DateTimeParser.epochSecondToShortDateTime(endEpochSecond)
-        );
+        return DateTimeParser.epochSecondToShortDateTime(startEpochSecond) +
+                " to " +
+                DateTimeParser.epochSecondToShortDateTime(endEpochSecond);
     }
 
     /**
@@ -207,6 +205,12 @@ public class Schedule {
                 prettyTimeFormatter.format(new Date(startEpochSecond * MULTIPLIER_TIME_UNIX_TO_JAVA)),
                 DateTimeParser.epochSecondToShortDateTime(endEpochSecond),
                 durationString.trim());
+    }
+
+    public String toFormalString(){
+        return DateTimeParser.epochSecondToFormalDateTime(startEpochSecond)
+                + " to "
+                + DateTimeParser.epochSecondToFormalDateTime(endEpochSecond);
     }
 
     @Override

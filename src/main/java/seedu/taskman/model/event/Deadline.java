@@ -27,15 +27,6 @@ public class Deadline {
         this.epochSecond = epochSecond;
     }
 
-    public static boolean isValidDeadline(String test) {
-        try {
-            new Deadline(test);
-            return true;
-        } catch (IllegalValueException e) {
-            return false;
-        }
-    }
-
     @Override
     public String toString() {
         return DateTimeParser.epochSecondToDetailedDateTime(epochSecond);
@@ -56,5 +47,9 @@ public class Deadline {
 
     public boolean hasPast(){
         return epochSecond <= Instant.now().getEpochSecond();
+    }
+
+    public String toFormalString(){
+        return DateTimeParser.epochSecondToFormalDateTime(epochSecond);
     }
 }

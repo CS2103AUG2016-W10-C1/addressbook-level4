@@ -1,13 +1,10 @@
 package guitests.guihandles;
 
-import java.util.Optional;
-
 import guitests.GuiRobot;
 import javafx.stage.Stage;
-import seedu.taskman.model.event.Activity;
-import seedu.taskman.model.event.Deadline;
-import seedu.taskman.model.event.Frequency;
-import seedu.taskman.model.event.Schedule;
+import seedu.taskman.model.event.*;
+
+import java.util.Optional;
 
 /**
  * Provides a handle to a task row in the task list panel.
@@ -20,8 +17,8 @@ public class TaskRowHandle extends GuiHandle {
         this.task = task;
     }
 
-    public String getTitle() {
-        return task.getTitle().title;
+    public Title getTitle() {
+        return task.getTitle();
     }
 
     public Optional<Deadline> getDeadline() {
@@ -37,7 +34,9 @@ public class TaskRowHandle extends GuiHandle {
     }
 
     public boolean isSameTask(Activity task) {
-        return getTitle().equals(task.getTitle().title) && getDeadline().equals(task.getDeadline())
+        System.out.println(task);
+        System.out.println(this.task);
+        return getTitle().equals(task.getTitle()) && getDeadline().equals(task.getDeadline())
                 && getSchedule().equals(task.getSchedule()) && getFrequency().equals(task.getFrequency());
     }
 

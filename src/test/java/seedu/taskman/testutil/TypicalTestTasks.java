@@ -19,7 +19,7 @@ public class TypicalTestTasks {
             taskCS3244 = new TaskBuilder("CS3244 Project").withDeadline("wed 1400").withSchedule("thu 1400 to thu 1500").build();
             taskCS2105 = new TaskBuilder("CS2105").withDeadline("mon 1600").withSchedule("mon 1400, mon 1600").build();
             taskCS2106 = new TaskBuilder("CS2106").withDeadline("fri 1200").withSchedule("fri 1200, fri 1400").build();
-            taskCS2107 = new TaskBuilder("CS2107").withDeadline("fri 1800").withSchedule("fri 1600, sat 1600").build();
+            taskCS2107 = new TaskBuilder("CS2107").withDeadline("fri 1800").withSchedule("fri 1600, next sat 1600").build();
             taskCS2102 = new TaskBuilder("CS2102").withDeadline("tue 1200").withSchedule("tue 1000, tue 1200").build();
             taskCS2104 = new TaskBuilder("CS2104").withDeadline("mon 1000").withSchedule("sun 2300 to next mon 0100").build();
         } catch (IllegalValueException e) {

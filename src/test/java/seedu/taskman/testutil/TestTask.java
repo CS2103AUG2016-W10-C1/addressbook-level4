@@ -81,16 +81,16 @@ public class TestTask implements ReadOnlyTask {
         StringBuilder sb = new StringBuilder();
         sb.append("do " + this.getTitle().title + " ");
         if (this.getDeadline().isPresent()) {
-            sb.append("d/" + this.getDeadline().get().toString() + " ");
+            sb.append("d/" + this.getDeadline().get().toFormalString() + " ");
         }
         if (this.getSchedule().isPresent()) {
-            sb.append("s/" + this.getSchedule().get().toString().replace('\n',' ') + " ");
+            sb.append("s/" + this.getSchedule().get().toFormalString() + " ");
         }
         if (this.getFrequency().isPresent()) {
 //        sb.append("f/" + this.getFrequency().toString() + " ");
         }
         this.getTags().getInternalList().stream().forEach(s -> sb.append("t/" + s.tagName + " "));
-        return sb.toString();
+        return sb.toString().replace('\n',' ');
     }
 
 }
