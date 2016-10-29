@@ -50,7 +50,7 @@ We are a team based in the [School of Computing, National University of Singapor
 -----
 
 #### [Lim Jia Yee](http://github.com/jia1)
-<img src="images/LimJiaYee.png" width="150"><br>
+<img src="images/LimJiaYee.jpg" width="150"><br>
 * Responsibilities: Integration, Documentation
 * Features implemented:
 	* [Complete Command Logic and Tests](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/CompleteCommand.java)
