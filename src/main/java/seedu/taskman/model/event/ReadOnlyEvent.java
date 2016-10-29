@@ -39,13 +39,15 @@ public interface ReadOnlyEvent {
      */
     default String getAsText() {
         final StringBuilder builder = new StringBuilder();
-        builder.append(getTitle())
-                //.append(" Recurring: ")
-                //.append(getFrequency())
-                .append(" Schedule: ")
-                .append(getSchedule())
-                .append(" Tags: ");
-        getTags().forEach(builder::append);
+        builder.append(getTitle());
+        if (getSchedule().isPresent()) {
+            builder.append("\nSchedule: ")
+                    .append(getSchedule().get().toFormalString());
+        }
+        if (!getTags().getInternalList().isEmpty()){
+            builder.append("\nTags: ");
+            getTags().forEach(builder::append);
+        }
         return builder.toString();
     }
 

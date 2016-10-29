@@ -27,17 +27,25 @@ public interface ReadOnlyTask extends ReadOnlyEvent {
     default String getAsText() {
         final StringBuilder builder = new StringBuilder();
         builder.append(getTitle())
-                .append(" Status: ")
-                .append(getStatus())
-                .append(" Deadline: ")
-                .append(getDeadline())
-                //.append(" Frequency: ")
-                //.append(getFrequency())
-                .append(" Schedule: ")
-                .append(getSchedule())
-                .append(" Tags: ");
+                .append("\nStatus: ")
+                .append(getStatus());
+        if (getDeadline().isPresent()) {
+            builder.append("\nDeadline: ")
+                    .append(getDeadline().get().toString());
+        }
+        if (getSchedule().isPresent()) {
+            builder.append("\nSchedule: ")
+                    .append(getSchedule().get().toString());
+        }
+        if (getFrequency().isPresent()){
+            //builder.append(" Frequency: ")
+            //.append(getFrequency());
+        }
+        if (!getTags().getInternalList().isEmpty()){
+            builder.append("\nTags: ");
+            getTags().forEach(builder::append);
+        }
 
-        getTags().forEach(builder::append);
         return builder.toString();
     }
 }
