@@ -244,7 +244,6 @@ public class MainWindow extends UiPart {
        if (commandBox.getTextField().isFocused()) {
            return;
        } else if (key.getCode().isLetterKey()){
-           System.out.println(key.getCode().getName() + " is pressed!");
            commandBox.getTextField().requestFocus();
        } else {
            return;
