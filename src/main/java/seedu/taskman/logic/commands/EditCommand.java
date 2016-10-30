@@ -31,10 +31,10 @@ public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits an existing activity.\n"
-            + "Parameters: INDEX [TITLE] [d/OPTIONAL_DEADLINE] [c/OPTIONAL_STATUS] [s/OPTIONAL_SCHEDULE] [t/OPTIONAL_TAGS]...\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits an existing entry.\n"
+            + "Parameters: INDEX [TITLE] [d/DEADLINE] [s/SCHEDULE] [t/TAGS]...\n"
             + "Example: " + COMMAND_WORD
-            + " 1 CS2103T Tutorial d/fri 11.59pm c/complete s/mon 2200 to tue 0200 t/friends t/owesMoney";
+            + " s2 s/mon 10am, tue 2pm";
 
     public static final String MESSAGE_EDIT_EVENT_SUCCESS = "Event updated: %1$s";
     public static final String MESSAGE_EDIT_TASK_SUCCESS = "Task updated: %1$s";

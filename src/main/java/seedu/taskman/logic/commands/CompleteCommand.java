@@ -24,14 +24,12 @@ public class CompleteCommand extends Command {
     public static final String COMMAND_WORD = "complete";
     private static final String STATUS_COMPLETE = "complete";
 
-    // todo: change me
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Marks an existing task as complete./n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Marks an incomplete task as complete./n"
             + "Parameters: INDEX\n"
             + "Example: " + COMMAND_WORD
-            + " 1";
+            + " d1";
 
     public static final String MESSAGE_SUCCESS = "Task completed: %1$s";
-    public static final String MESSAGE_DUPLICATE_TASK = "A task with the same name already exists in TaskMan";
 
     private Activity.ActivityType activityType;
     private Activity activityToComplete;

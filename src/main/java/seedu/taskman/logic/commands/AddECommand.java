@@ -20,11 +20,10 @@ public class AddECommand extends Command {
 
     public static final String COMMAND_WORD = "adde";
 
-    // todo, differed: let parameters be objects. we can easily generate the usage in that case
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an event to TaskMan.\n"
-            + "Parameters: TITLE s/OPTIONAL_SCHEDULE [t/OPTIONAL_TAGS]...\n"
+            + "Parameters: TITLE s/SCHEDULE [t/TAGS]...\n"
             + "Example: " + COMMAND_WORD
-            + " star gazing s/tdy 2300, tdy 2359 t/leisure";
+            + " star gazing s/today 2300, today 2330 t/telescope";
 
     public static final String MESSAGE_SUCCESS = "New event added: %1$s";
     public static final String MESSAGE_DUPLICATE_EVENT = "This event already exists in TaskMan";

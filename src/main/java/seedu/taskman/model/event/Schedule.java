@@ -118,7 +118,7 @@ public class Schedule {
 
     @Override
     public String toString() {
-        return toStringDetailed();
+        return toStringShort();
     }
 
     public String toStringShort() {

@@ -10,7 +10,7 @@ public class UndoCommand extends Command {
     public static final String COMMAND_WORD = "undo";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Undo the most recently executed command. If a number between 1 to 10 inclusive is specified, that number of commands will be undone. "
+            + ": Undo the most recently executed command which changed the data in TaskMan. If a number between 1 to 10 inclusive is specified, that number of commands will be undone. "
             + "Parameters: NUMBER (1 to 10 inclusive)\n"
             + "Example: " + COMMAND_WORD
             + " 2";
