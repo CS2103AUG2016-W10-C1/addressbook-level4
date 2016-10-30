@@ -44,6 +44,10 @@ public class ResultDisplay extends UiPart {
         FxViewUtil.applyAnchorBoundaryParameters(mainPane, 0.0, 0.0, 0.0, 0.0);
         placeHolder.getChildren().add(mainPane);
     }
+    
+    public TextArea getResultDisplayArea() {
+        return resultDisplayArea;
+    }
 
     @Override
     public void setNode(Node node) {

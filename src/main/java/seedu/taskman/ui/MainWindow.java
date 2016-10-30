@@ -245,6 +245,8 @@ public class MainWindow extends UiPart {
            return;
        } else if (key.getCode().isLetterKey()){
            commandBox.getTextField().requestFocus();
+       } else if (key.getCode().isFunctionKey()) {
+           resultDisplay.getResultDisplayArea().requestFocus();
        } else {
            return;
        }
