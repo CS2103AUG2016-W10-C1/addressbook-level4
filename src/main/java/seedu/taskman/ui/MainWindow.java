@@ -1,10 +1,15 @@
 package seedu.taskman.ui;
 
+import java.util.ArrayList;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -119,6 +124,7 @@ public class MainWindow extends UiPart {
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getTaskManFilePath());
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
+        configureFocus();
     }
 
     private AnchorPane getCommandBoxPlaceholder() {
@@ -231,6 +237,42 @@ public class MainWindow extends UiPart {
     @FXML
     private void handleExit() {
         raise(new ExitAppRequestEvent());
+    }
+    
+    @FXML
+    public void handleEnterPressed(KeyEvent key){
+       if (commandBox.getTextField().isFocused()) {
+           return;
+       } else if (key.getCode().isLetterKey()){
+           commandBox.getTextField().requestFocus();
+       } else {
+           return;
+       }
+    }
+    
+    private void configureFocus() {
+        ArrayList<Node> nodes = getAllNodes();
+        for (Node node : nodes) {
+            if (node.getClass().equals(ListView.class)) {
+                node.setFocusTraversable(true);
+            } else {
+                node.setFocusTraversable(false);
+            }
+        }
+    }
+
+    private ArrayList<Node> getAllNodes() {
+        ArrayList<Node> nodes = new ArrayList<Node>();
+        addAllDescendents(rootLayout, nodes);
+        return nodes;
+    }
+
+    private void addAllDescendents(Parent parent, ArrayList<Node> nodes) {
+        for (Node node : parent.getChildrenUnmodifiable()) {
+            nodes.add(node);
+            if (node instanceof Parent)
+                addAllDescendents((Parent)node, nodes);
+        }
     }
 
 
