@@ -49,6 +49,7 @@ public class ListCommand extends Command {
     }
     */
     //@@author
+
     public static final String COMMAND_WORD = "list";
     
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all entries whose titles contain any of "
@@ -75,10 +76,11 @@ public class ListCommand extends Command {
         final Matcher matcherPaneless = SPECIFY_PANELESS_ARGS_FORMAT.matcher(trimmedArgs);
 
         if (trimmedArgs.isEmpty()) {
-            // TODO: blocked for now
-            //return new ListCommand(keywordSet);
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    ListCommand.MESSAGE_USAGE));
+            return new ListCommand(
+                    Activity.PanelType.ALL,
+                    processRawKeywords(null),
+                    processRawTags(null)
+            );
         } else if (matcherWithPanel.matches()) {
             return panelSpecificListCommand(
                     matcherWithPanel.group("panel"),
@@ -86,7 +88,7 @@ public class ListCommand extends Command {
                     matcherWithPanel.group("tagArguments")
             );
         } else if(matcherPaneless.matches()) {
-            return fullWindowListCommand(
+            return allPanelsListCommand(
                     matcherPaneless.group("keywords"),
                     matcherPaneless.group("tagArguments")
             );
@@ -96,8 +98,8 @@ public class ListCommand extends Command {
         }
     }
 
-    private static ListCommand fullWindowListCommand(String rawKeywords, String rawTagArguments) {
-        return new ListCommand(null, processRawKeywords(rawKeywords), processRawTags(rawTagArguments));
+    private static ListCommand allPanelsListCommand(String rawKeywords, String rawTagArguments) {
+        return new ListCommand(Activity.PanelType.ALL, processRawKeywords(rawKeywords), processRawTags(rawTagArguments));
     }
 
     private static ListCommand panelSpecificListCommand(String rawPanel, String rawKeywords, String rawTagArguments) {
@@ -135,13 +137,13 @@ public class ListCommand extends Command {
         this.tagNames = tags;
     }
 
-    private ListCommand(Set<String> keywords) {
-        this(null, keywords, new HashSet<>());
-    }
-
     @Override
     public CommandResult execute() {
-        model.updateFilteredPanel(panelType, keywords, tagNames);
+        if (panelType == null && keywords == null && tagNames == null) {
+            model.updateAllPanelsToShowAll();
+        } else {
+            model.updateFilteredPanel(panelType, keywords, tagNames);
+        }
         return new CommandResult("", true);
     }
 

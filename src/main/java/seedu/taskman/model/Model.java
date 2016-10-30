@@ -1,11 +1,11 @@
 package seedu.taskman.model;
 
-import java.util.Set;
-
 import seedu.taskman.commons.core.UnmodifiableObservableList;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Event;
 import seedu.taskman.model.event.UniqueActivityList;
+
+import java.util.Set;
 
 /**
  * The API of the Model component.
@@ -41,9 +41,9 @@ public interface Model {
     UnmodifiableObservableList<Activity> getSortedFloatingList();
 
     /**
-     * Updates the filter of the filtered activity panels to show all activities
+     * Updates the filter of all filtered activity panels to show all activities
      */
-    void updateFilteredPanelToShowAll(Activity.PanelType panel);
+    void updateAllPanelsToShowAll();
     
     /** Updates the filter of the filtered activity list to filter by the given mode, the given keywords and the given tag names*/
     void updateFilteredPanel(Activity.PanelType panel, Set<String> keywords, Set<String> tagNames);
