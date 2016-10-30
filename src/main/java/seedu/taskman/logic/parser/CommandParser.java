@@ -37,6 +37,7 @@ public class CommandParser {
         PANEL("(?<panel>[dsf])"),
         TARGET_INDEX("(?<targetIndex>[0-9]+)"),
         TITLE("(?<title>[^/]+)"),
+        KEYWORDS("(?<keywords>[^/]+)"),
         OPTIONAL_KEYWORDS("(?<keywords>(?:\\s+[^/]+)*)?"),
         OPTIONAL_DEADLINE("(?:\\s+d/(?<deadline>[^/]+))?"),
         OPTIONAL_SCHEDULE("(?:\\s+s/(?<schedule>[^/]+))?"),

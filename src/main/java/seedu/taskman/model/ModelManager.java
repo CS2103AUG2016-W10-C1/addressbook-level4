@@ -155,28 +155,29 @@ public class ModelManager extends ComponentManager implements Model {
     }
     
     public void updateFilteredPanel(Activity.PanelType panel, Set<String> keywords, Set<String> tagNames) {
+        Expression schedule = new PredicateExpression(
+                new ActivityQualifier(Activity.PanelType.SCHEDULE, keywords, tagNames));
+        Expression deadline = new PredicateExpression(
+                new ActivityQualifier(Activity.PanelType.DEADLINE, keywords, tagNames));
+        Expression floating = new PredicateExpression(
+                new ActivityQualifier(Activity.PanelType.FLOATING, keywords, tagNames));
+
         if (panel == null) {
-            assert false : "Unspecified panel type";
-        } else {
-            updateFilteredPanel(panel, new PredicateExpression(new ActivityQualifier(panel, keywords, tagNames)));
-        }
-    }
-        
-    private void updateFilteredPanel(Activity.PanelType panel, Expression expression) {
-        if (panel == null) {
-            assert false : "Unspecified panel type";
+            filteredSchedules.setPredicate(schedule::satisfies);
+            filteredDeadlines.setPredicate(deadline::satisfies);
+            filteredFloatings.setPredicate(floating::satisfies);
         } else {
             switch(panel) {
                 case SCHEDULE: {
-                    filteredSchedules.setPredicate(expression::satisfies);
+                    filteredSchedules.setPredicate(schedule::satisfies);
                     return;
                 }
                 case DEADLINE: {
-                    filteredDeadlines.setPredicate(expression::satisfies);
+                    filteredDeadlines.setPredicate(deadline::satisfies);
                     return;
                 }
                 case FLOATING: {
-                    filteredFloatings.setPredicate(expression::satisfies);
+                    filteredFloatings.setPredicate(floating::satisfies);
                     return;
                 }
                 default: {
