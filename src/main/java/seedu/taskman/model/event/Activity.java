@@ -13,10 +13,12 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent {
     private static final String DEADLINE_STRING = "d";
     private static final String SCHEDULE_STRING = "s";
     private static final String FLOATING_STRING = "f";
+    private static final String ALL_STRING = "";
 
     private static final String FULL_DEADLINE_NAME = "Deadline";
     private static final String FULL_SCHEDULE_NAME = "Schedule";
     private static final String FULL_FLOATING_NAME = "Floating";
+    private static final String FULL_ALL_NAME = "All";
 
     public enum ActivityType {EVENT, TASK}
 
@@ -175,7 +177,8 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent {
     public enum PanelType {
         DEADLINE(DEADLINE_STRING, FULL_DEADLINE_NAME),
         SCHEDULE(SCHEDULE_STRING, FULL_SCHEDULE_NAME),
-        FLOATING(FLOATING_STRING, FULL_FLOATING_NAME);
+        FLOATING(FLOATING_STRING, FULL_FLOATING_NAME),
+        ALL(ALL_STRING, FULL_ALL_NAME);
 
         private final String string;
         private final String name;
@@ -195,6 +198,9 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent {
                 }
                 case FLOATING_STRING: {
                     return FLOATING;
+                }
+                case ALL_STRING: {
+                    return ALL;
                 }
                 default:
                     return null;

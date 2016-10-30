@@ -18,6 +18,7 @@ import seedu.taskman.model.event.UniqueActivityList.ActivityNotFoundException;
 import seedu.taskman.model.tag.Tag;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.Set;
@@ -127,61 +128,42 @@ public class ModelManager extends ComponentManager implements Model {
                 throw new AssertionError("Unspecified panel type");
         }
     }
+
     //@@author A0140136W
-    public void updateFilteredPanelToShowAll(Activity.PanelType panel) {
-        if(panel == null) {
-            filteredSchedules.setPredicate(new SchedulePredicate());
-            filteredDeadlines.setPredicate(new DeadlinePredicate());
-            filteredFloatings.setPredicate(new FloatingPredicate());
-        } else {        
-            switch(panel) {
-                case SCHEDULE: {
-                    filteredSchedules.setPredicate(new SchedulePredicate());
-                    return;
-                }
-                case DEADLINE: {
-                    filteredDeadlines.setPredicate(new DeadlinePredicate());
-                    return;
-                }
-                case FLOATING: {
-                    filteredFloatings.setPredicate(new FloatingPredicate());
-                    return;
-                }
-                default: {
-                    assert false : "No such panel.";
-                }
-            }    
-        }
+    @Override
+    public void updateAllPanelsToShowAll() {
+        updateFilteredPanel(Activity.PanelType.ALL, Collections.EMPTY_SET, Collections.EMPTY_SET);
     }
     
     public void updateFilteredPanel(Activity.PanelType panel, Set<String> keywords, Set<String> tagNames) {
-        if (panel == null) {
-            assert false : "Unspecified panel type";
-        } else {
-            updateFilteredPanel(panel, new PredicateExpression(new ActivityQualifier(panel, keywords, tagNames)));
-        }
-    }
-        
-    private void updateFilteredPanel(Activity.PanelType panel, Expression expression) {
-        if (panel == null) {
-            assert false : "Unspecified panel type";
-        } else {
-            switch(panel) {
-                case SCHEDULE: {
-                    filteredSchedules.setPredicate(expression::satisfies);
-                    return;
-                }
-                case DEADLINE: {
-                    filteredDeadlines.setPredicate(expression::satisfies);
-                    return;
-                }
-                case FLOATING: {
-                    filteredFloatings.setPredicate(expression::satisfies);
-                    return;
-                }
-                default: {
-                    assert false : "No such panel.";
-                }
+        Expression schedule = new PredicateExpression(
+                new ActivityQualifier(Activity.PanelType.SCHEDULE, keywords, tagNames));
+        Expression deadline = new PredicateExpression(
+                new ActivityQualifier(Activity.PanelType.DEADLINE, keywords, tagNames));
+        Expression floating = new PredicateExpression(
+                new ActivityQualifier(Activity.PanelType.FLOATING, keywords, tagNames));
+
+        switch(panel) {
+            case ALL: {
+                filteredSchedules.setPredicate(schedule::satisfies);
+                filteredDeadlines.setPredicate(deadline::satisfies);
+                filteredFloatings.setPredicate(floating::satisfies);
+                return;
+            }
+            case SCHEDULE: {
+                filteredSchedules.setPredicate(schedule::satisfies);
+                return;
+            }
+            case DEADLINE: {
+                filteredDeadlines.setPredicate(deadline::satisfies);
+                return;
+            }
+            case FLOATING: {
+                filteredFloatings.setPredicate(floating::satisfies);
+                return;
+            }
+            default: {
+                assert false : "No such panel.";
             }
         }
     }

@@ -49,22 +49,21 @@ public class ListCommand extends Command {
     }
     */
     //@@author
+
     public static final String COMMAND_WORD = "list";
     
-    /*
-    public static final Pattern SPECIFY_PANEL_ARGS_FORMAT = Pattern.compile("(?<filter>" + ListFlag.matchingRegex() + ")?" +
-            "(?<keywords>(?:\\s*[^/]+)*?)??(?<tagArguments>(?:\\s*t/[^/]+)*)?"); // one or more keywords separated by whitespace
-    */
-
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all entries whose titles contain any of "
             + "the specified keywords (case-sensitive) or tags and filters them out in their respective panels.\n"
             + "Parameters: [KEYWORDS]... [t/TAGS]...\n"
             + "Example: " + COMMAND_WORD + " d homework t/engineering";
 
-    public static final String MESSAGE_SUCCESS = "Listed all tasks";
     private static final Pattern SPECIFY_PANEL_ARGS_FORMAT =
-            Pattern.compile("" + CommandParser.ArgumentPattern.PANEL
+            Pattern.compile("" + CommandParser.ArgumentPattern.PANEL + "?"
                     + CommandParser.ArgumentPattern.OPTIONAL_KEYWORDS
+                    + CommandParser.ArgumentPattern.OPTIONAL_TAGS);
+
+    private static final Pattern SPECIFY_PANELESS_ARGS_FORMAT =
+            Pattern.compile("" + CommandParser.ArgumentPattern.KEYWORDS
                     + CommandParser.ArgumentPattern.OPTIONAL_TAGS);
 
     private final Activity.PanelType panelType;
@@ -73,35 +72,62 @@ public class ListCommand extends Command {
 
     public static Command prepareList(String args) {
         final String trimmedArgs = args.trim();
-        final Matcher matcher = SPECIFY_PANEL_ARGS_FORMAT.matcher(trimmedArgs);
+        final Matcher matcherWithPanel = SPECIFY_PANEL_ARGS_FORMAT.matcher(trimmedArgs);
+        final Matcher matcherPaneless = SPECIFY_PANELESS_ARGS_FORMAT.matcher(trimmedArgs);
 
         if (trimmedArgs.isEmpty()) {
-            // TODO: blocked for now
-            //return new ListCommand(keywordSet);
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    ListCommand.MESSAGE_USAGE));
-
-        } else if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    ListCommand.MESSAGE_USAGE));
+            return new ListCommand(
+                    Activity.PanelType.ALL,
+                    processRawKeywords(null),
+                    processRawTags(null)
+            );
+        } else if (matcherWithPanel.matches()) {
+            return panelSpecificListCommand(
+                    matcherWithPanel.group("panel"),
+                    matcherWithPanel.group("keywords"),
+                    matcherWithPanel.group("tagArguments")
+            );
+        } else if(matcherPaneless.matches()) {
+            return allPanelsListCommand(
+                    matcherPaneless.group("keywords"),
+                    matcherPaneless.group("tagArguments")
+            );
         } else {
-            
-            String panelTypeRaw = matcher.group("panel").trim();
-            Activity.PanelType panelType = Activity.PanelType.fromString(panelTypeRaw);
-
-            // keywords delimited by whitespace
-            Set<String> keywordSet = Collections.EMPTY_SET;
-            if (matcher.group("keywords") != null) {
-                String[] keywords = matcher.group("keywords").split("\\s+");
-                keywordSet = new HashSet<>(Arrays.asList(keywords));
-            }
-
-            Set<String> tagSet = Collections.EMPTY_SET;
-            if (matcher.group("tagArguments") != null) {
-                tagSet = getTagsFromArgs(matcher.group("tagArguments"));
-            }
-            return new ListCommand(panelType, keywordSet, tagSet);
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    ListCommand.MESSAGE_USAGE));
         }
+    }
+
+    private static ListCommand allPanelsListCommand(String rawKeywords, String rawTagArguments) {
+        return new ListCommand(Activity.PanelType.ALL, processRawKeywords(rawKeywords), processRawTags(rawTagArguments));
+    }
+
+    private static ListCommand panelSpecificListCommand(String rawPanel, String rawKeywords, String rawTagArguments) {
+        Activity.PanelType panelType = null;
+
+        if (rawPanel != null) {
+            rawPanel = rawPanel.trim();
+            panelType = Activity.PanelType.fromString(rawPanel);
+        }
+
+        return new ListCommand(panelType, processRawKeywords(rawKeywords), processRawTags(rawTagArguments));
+    }
+
+    private static Set<String> processRawKeywords(String rawKeywords) {
+        Set<String> keywordSet = Collections.EMPTY_SET;
+        if (rawKeywords != null) {
+            String[] keywords = rawKeywords.split("\\s+");
+            keywordSet = new HashSet<>(Arrays.asList(keywords));
+        }
+        return keywordSet;
+    }
+
+    private static Set<String> processRawTags(String rawTags) {
+        Set<String> tagSet = Collections.EMPTY_SET;
+        if (rawTags != null) {
+            tagSet = getTagsFromArgs(rawTags);
+        }
+        return tagSet;
     }
 
     private ListCommand(Activity.PanelType panelType, Set<String> keywords, Set<String> tags) {
@@ -111,13 +137,13 @@ public class ListCommand extends Command {
         this.tagNames = tags;
     }
 
-    private ListCommand(Set<String> keywords) {
-        this(null, keywords, new HashSet<>());
-    }
-
     @Override
     public CommandResult execute() {
-        model.updateFilteredPanel(panelType, keywords, tagNames);
+        if (panelType == null && keywords == null && tagNames == null) {
+            model.updateAllPanelsToShowAll();
+        } else {
+            model.updateFilteredPanel(panelType, keywords, tagNames);
+        }
         return new CommandResult("", true);
     }
 
