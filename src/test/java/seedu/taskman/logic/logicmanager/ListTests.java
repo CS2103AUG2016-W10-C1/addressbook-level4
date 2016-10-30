@@ -1,5 +1,6 @@
 package seedu.taskman.logic.logicmanager;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.event.Activity;
@@ -141,6 +142,8 @@ public class ListTests extends LogicManagerTestBase {
     }
 
 
+    // TODO: test is insufficient
+    @Ignore
     @Test
     public void execute_listDeadline_filter_tags() throws Exception {
         // setup expectations
@@ -166,6 +169,8 @@ public class ListTests extends LogicManagerTestBase {
         );
     }
 
+    // TODO: test is insufficient
+    @Ignore
     @Test
     public void execute_list_filter_keywords_with_tags() throws Exception {
         // setup expectations
