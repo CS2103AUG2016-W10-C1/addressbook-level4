@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
@@ -10,6 +11,7 @@
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="30.0" prefWidth="30.0" />
     <ColumnConstraints hgrow="ALWAYS" minWidth="50.0" prefWidth="150.0" />
+      <ColumnConstraints hgrow="NEVER" minWidth="-Infinity" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="50.0" minHeight="10.0" vgrow="SOMETIMES" />
@@ -21,5 +23,6 @@
       <Label fx:id="title" styleClass="label-title" text="&lt;title&gt;" wrapText="true" GridPane.columnIndex="1" />
       <Label fx:id="value" styleClass="label-value" text="&lt;value&gt;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Label fx:id="id" alignment="CENTER" styleClass="label-id" text="&lt;id&gt;" />
+      <ImageView fx:id="icon" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowSpan="2" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
    </children>
 </GridPane>
