@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -236,6 +237,18 @@ public class MainWindow extends UiPart {
     @FXML
     private void handleExit() {
         raise(new ExitAppRequestEvent());
+    }
+    
+    @FXML
+    public void handleEnterPressed(KeyEvent key){
+       if (commandBox.getTextField().isFocused()) {
+           return;
+       } else if (key.getCode().isLetterKey()){
+           System.out.println(key.getCode().getName() + " is pressed!");
+           commandBox.getTextField().requestFocus();
+       } else {
+           return;
+       }
     }
     
     private void configureFocus() {

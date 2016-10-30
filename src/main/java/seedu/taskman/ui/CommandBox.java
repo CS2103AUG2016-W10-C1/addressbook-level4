@@ -37,6 +37,10 @@ public class CommandBox extends UiPart {
         commandBox.addToPlaceholder();
         return commandBox;
     }
+    
+    public TextField getTextField() {
+        return commandTextField;
+    }
 
     public void configure(ResultDisplay resultDisplay, Logic logic) {
         this.resultDisplay = resultDisplay;
