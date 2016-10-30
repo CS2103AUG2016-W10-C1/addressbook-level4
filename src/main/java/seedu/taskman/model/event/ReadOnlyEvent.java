@@ -42,7 +42,7 @@ public interface ReadOnlyEvent {
         builder.append(getTitle());
         if (getSchedule().isPresent()) {
             builder.append("\nSchedule: ")
-                    .append(getSchedule().get().toFormalString());
+                    .append(getSchedule().get().toString());
         }
         if (!getTags().getInternalList().isEmpty()){
             builder.append("\nTags: ");
