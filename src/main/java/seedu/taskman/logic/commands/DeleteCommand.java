@@ -18,9 +18,9 @@ public class DeleteCommand extends Command {
 
     //todo: update me
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the task or event identified by the index number used in the last activity listing.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + " 1";
+            + ": Deletes the entry identified by the index number used in the listings.\n"
+            + "Parameters: INDEX (must be a positive whole number)\n"
+            + "Example: " + COMMAND_WORD + " f1";
 
     public static final String MESSAGE_DELETE_EVENT_SUCCESS = "Deleted Task: %1$s";
 

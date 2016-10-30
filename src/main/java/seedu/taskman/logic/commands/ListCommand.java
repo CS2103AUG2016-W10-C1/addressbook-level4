@@ -56,10 +56,10 @@ public class ListCommand extends Command {
             "(?<keywords>(?:\\s*[^/]+)*?)??(?<tagArguments>(?:\\s*t/[^/]+)*)?"); // one or more keywords separated by whitespace
     */
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all tasks whose titles contain any of "
-            + "the specified keywords (case-sensitive) and displays them as a list with index numbers.\n"
-            + "Parameters: [{d/, f/, all/}] [OPTIONAL_KEYWORDS]... [t/OPTIONAL_TAGS]...\n"
-            + "Example: " + COMMAND_WORD + " all/ homework t/CS2103T";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all entries whose titles contain any of "
+            + "the specified keywords (case-sensitive) or tags and filters them out in their respective panels.\n"
+            + "Parameters: [KEYWORDS]... [t/TAGS]...\n"
+            + "Example: " + COMMAND_WORD + " d homework t/engineering";
 
     public static final String MESSAGE_SUCCESS = "Listed all tasks";
     private static final Pattern SPECIFY_PANEL_ARGS_FORMAT =

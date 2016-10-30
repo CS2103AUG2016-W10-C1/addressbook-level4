@@ -1,10 +1,14 @@
 package seedu.taskman.model.event;
 
+import org.ocpsoft.prettytime.PrettyTime;
 import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.logic.parser.DateTimeParser;
 
+import java.sql.Date;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class Deadline {
 
@@ -13,6 +17,11 @@ public class Deadline {
                     DateTimeParser.DESCRIPTION_DATE_TIME_FULL;
 
     public final long epochSecond;
+
+    public static final int MULTIPLIER_TIME_UNIX_TO_JAVA = 1000;
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE");
+    private static final PrettyTime prettyTimeFormatter = new PrettyTime();
 
     public Deadline(String deadline) throws IllegalValueException {
         deadline = deadline.trim();
@@ -29,7 +38,24 @@ public class Deadline {
 
     @Override
     public String toString() {
-        return DateTimeParser.epochSecondToDetailedDateTime(epochSecond);
+        return toStringDetailed();
+    }
+
+    /**
+     * Formats a string for displaying the deadline IN DETAIL to the form of:
+     *
+     *      DATE TIME (natural language as to how long before deadline)
+     *
+     *      Example: 25-10-2016 23:15 (Moments from now)
+     *
+     * @return String containing human-readable information for schedule (start, how long before start)
+     */
+    public String toStringDetailed() {
+        return String.format(
+                "%s\n(%s)",
+                DateTimeParser.epochSecondToShortDateTime(epochSecond),
+                prettyTimeFormatter.format(new Date(epochSecond * MULTIPLIER_TIME_UNIX_TO_JAVA))
+        );
     }
 
     @Override
