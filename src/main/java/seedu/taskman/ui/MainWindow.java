@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -240,12 +241,11 @@ public class MainWindow extends UiPart {
     }
     
     @FXML
-    public void handleEnterPressed(KeyEvent key){
-       if (commandBox.getTextField().isFocused()) {
-           return;
-       } else if (key.getCode().isLetterKey()){
+    public void handleKeyPressed(KeyEvent key){
+       KeyCode code = key.getCode();
+       if (code.isLetterKey()){
            commandBox.getTextField().requestFocus();
-       } else if (key.getCode().isFunctionKey()) {
+       } else if (code.isFunctionKey()) {
            resultDisplay.getResultDisplayArea().requestFocus();
        } else {
            return;
