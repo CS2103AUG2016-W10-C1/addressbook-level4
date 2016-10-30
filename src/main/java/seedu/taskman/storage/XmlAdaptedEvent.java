@@ -21,9 +21,9 @@ public class XmlAdaptedEvent {
     private Long frequency;
 
     @XmlElement(required = false)
-    private Long scheduleStart;
+    private String scheduleStart;
     @XmlElement(required = false)
-    private Long scheduleEnd;
+    private String scheduleEnd;
 
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
@@ -45,8 +45,8 @@ public class XmlAdaptedEvent {
 
         if (source.getSchedule().isPresent()) {
             Schedule schedule = source.getSchedule().get();
-            scheduleStart = schedule.startEpochSecond;
-            scheduleEnd = schedule.endEpochSecond;
+            scheduleStart = schedule.getFormalStartString();
+            scheduleEnd = schedule.getFormalEndString();
         }
 
         if (source.getFrequency().isPresent()) {
@@ -76,10 +76,26 @@ public class XmlAdaptedEvent {
                 ? new Frequency(this.frequency)
                 : null;
         final Schedule schedule = this.scheduleStart != null && this.scheduleEnd != null
-                ? new Schedule(this.scheduleStart, this.scheduleEnd)
+                ? new Schedule(this.scheduleStart + ", " +this.scheduleEnd)
                 : null;
 
         Event event = new Event(title, tags, schedule, frequency);
         return event;
+    }
+
+    public String getTitle(){
+        return title;
+    }
+
+    public List<XmlAdaptedTag> getTagged() {
+        return tagged;
+    }
+
+    public String getScheduleStart(){
+        return scheduleStart;
+    }
+
+    public String getScheduleEnd(){
+        return scheduleEnd;
     }
 }

@@ -1,9 +1,9 @@
 package seedu.taskman.storage;
 
 import seedu.taskman.commons.exceptions.IllegalValueException;
+import seedu.taskman.model.event.*;
 import seedu.taskman.model.tag.Tag;
 import seedu.taskman.model.tag.UniqueTagList;
-import seedu.taskman.model.event.*;
 
 import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
@@ -20,14 +20,14 @@ public class XmlAdaptedTask {
     private String status;
 
     @XmlElement(required = false)
-    private Long deadline;
+    private String deadline;
     @XmlElement(required = false)
     private Long frequency;
 
     @XmlElement(required = false)
-    private Long scheduleStart;
+    private String scheduleStart;
     @XmlElement(required = false)
-    private Long scheduleEnd;
+    private String scheduleEnd;
 
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
@@ -54,13 +54,13 @@ public class XmlAdaptedTask {
         }
 
         if (source.getDeadline().isPresent()) {
-            deadline = source.getDeadline().get().epochSecond;
+            deadline = source.getDeadline().get().toFormalString();
         }
 
         if (source.getSchedule().isPresent()) {
             Schedule schedule = source.getSchedule().get();
-            scheduleStart = schedule.startEpochSecond;
-            scheduleEnd = schedule.endEpochSecond;
+            scheduleStart = schedule.getFormalStartString();
+            scheduleEnd = schedule.getFormalEndString();
         }
 
         if (source.getFrequency().isPresent()) {
@@ -94,7 +94,7 @@ public class XmlAdaptedTask {
                 ? new Frequency(this.frequency)
                 : null;
         final Schedule schedule = this.scheduleStart != null && this.scheduleEnd != null
-                ? new Schedule(this.scheduleStart, this.scheduleEnd)
+                ? new Schedule(this.scheduleStart + ", " + this.scheduleEnd)
                 : null;
 
         Task task = new Task(title, tags, deadline, schedule, frequency);
