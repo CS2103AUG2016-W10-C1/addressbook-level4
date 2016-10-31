@@ -79,7 +79,8 @@ public class CommandParser {
     }
     //@@author
 
-    public CommandParser() {}
+    public CommandParser() {
+    }
 
     /**
      * Parses user input into command for execution.

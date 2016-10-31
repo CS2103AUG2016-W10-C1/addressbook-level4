@@ -190,7 +190,7 @@ public class MainWindow extends UiPart {
                 return floatingPanel;
             }
             default:{
-                assert false: "Panel Type not supported.";
+                assert false : "Panel Type not supported.";
                 return deadlinePanel;
             }
         }

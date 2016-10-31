@@ -130,7 +130,7 @@ public class EditCommand extends Command {
             try {
                 model.addActivity(beforeEdit);
             } catch (UniqueActivityList.DuplicateActivityException e1) {
-                assert false: "Deleted entry should be able to be added back.";
+                assert false : "Deleted entry should be able to be added back.";
             }
             return new CommandResult(MESSAGE_DUPLICATE_ACTIVITY, false);
         }
@@ -147,14 +147,13 @@ public class EditCommand extends Command {
 
         beforeEdit = lastShownList.get(argsContainer.targetIndex - 1);
         activityType = beforeEdit.getType();
-        if (activityType.equals(Activity.ActivityType.EVENT)) {
-            if (argsContainer.deadline != null || argsContainer.status != null) {
-                throw new IllegalValueException(String.format(
-                        Messages.MESSAGE_INVALID_PARAMETERS,
-                        MESSAGE_EDIT_EVENT_PARAMETERS_DISALLOWED,
-                        Activity.ActivityType.EVENT)
-                );
-            }
+        if (activityType.equals(Activity.ActivityType.EVENT) &&
+                (argsContainer.deadline != null || argsContainer.status != null)) {
+            throw new IllegalValueException(String.format(
+                    Messages.MESSAGE_INVALID_PARAMETERS,
+                    MESSAGE_EDIT_EVENT_PARAMETERS_DISALLOWED,
+                    Activity.ActivityType.EVENT)
+            );
         }
 
         Set<Tag> tagSet = new HashSet<>();
@@ -210,7 +209,7 @@ public class EditCommand extends Command {
                 break;
             }
             default: {
-                assert false: "Entry is neither an event nor a task.";
+                assert false : "Entry is neither an event nor a task.";
             }
         }
     }
