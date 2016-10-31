@@ -57,6 +57,8 @@ public class ListCommand extends Command {
             + "Parameters: [KEYWORDS]... [t/TAGS]...\n"
             + "Example: " + COMMAND_WORD + " d homework t/engineering";
 
+    public static final String MESSAGE_FEEDBACK = "Entries with the following keywords and tags are listed.\nKeywords:%1$s\nTags:%2$s\n";
+
     private static final Pattern SPECIFY_PANEL_ARGS_FORMAT =
             Pattern.compile("" + CommandParser.ArgumentPattern.PANEL + "?"
                     + CommandParser.ArgumentPattern.OPTIONAL_KEYWORDS
@@ -144,7 +146,21 @@ public class ListCommand extends Command {
         } else {
             model.updateFilteredPanel(panelType, keywords, tagNames);
         }
-        return new CommandResult("", true);
+        StringBuilder words = new StringBuilder();
+        for (String word : keywords) {
+            words.append(" ");
+            words.append(word);
+        }
+        String keywordString = words.toString();
+        words = new StringBuilder();
+        for (String word : tagNames) {
+            words.append(" ");
+            words.append(word);
+        }
+        String tagString = words.toString();
+        System.out.println(keywordString);
+        System.out.println(tagString);
+        return new CommandResult(String.format(MESSAGE_FEEDBACK, keywordString, tagString), true);
     }
 
 }
