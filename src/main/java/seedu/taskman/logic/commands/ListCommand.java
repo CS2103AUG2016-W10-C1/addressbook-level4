@@ -17,38 +17,6 @@ import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
  * Keyword matching is case sensitive.
  */
 public class ListCommand extends Command {
-    //@@author A0121299A-unused
-    /*
-    private enum ListFlag{
-        OPTIONAL_SCHEDULE("s/", FilterMode.SCHEDULE_ONLY),
-        OPTIONAL_DEADLINE("d/", FilterMode.DEADLINE_ONLY),
-        FLOATING("f/", FilterMode.FLOATING_ONLY),
-        ALL("all/", FilterMode.ALL);
-
-        public final String flag;
-        public final FilterMode filterMode;
-
-        ListFlag(String flag, FilterMode filterMode){
-            this.flag = flag;
-            this.filterMode = filterMode;
-        }
-
-        public static String matchingRegex(){
-            ListFlag[] values = ListFlag.values();
-            StringBuilder builder = new StringBuilder();
-            for(int i = 0; i < values.length; i++){
-                if(i != 0){
-                    builder.append('|');
-                }
-                builder.append("(?:").
-                        append(values[i].flag).
-                        append(")");
-            }
-            return builder.toString();
-        }
-    }
-    */
-    //@@author
 
     public static final String COMMAND_WORD = "list";
     
@@ -57,7 +25,8 @@ public class ListCommand extends Command {
             + "Parameters: [KEYWORDS]... [t/TAGS]...\n"
             + "Example: " + COMMAND_WORD + " d homework t/engineering";
 
-    public static final String MESSAGE_FEEDBACK = "Entries with the following keywords and tags are listed.\nKeywords:%1$s\nTags:%2$s\n";
+    public static final String MESSAGE_FEEDBACK_DEFAULT = "All entries are listed.";
+    public static final String MESSAGE_FEEDBACK_FILTERED = "Entries with the following keywords and tags are listed.\nKeywords:%1$s\nTags:%2$s\n";
 
     private static final Pattern SPECIFY_PANEL_ARGS_FORMAT =
             Pattern.compile("" + CommandParser.ArgumentPattern.PANEL + "?"
@@ -141,26 +110,28 @@ public class ListCommand extends Command {
 
     @Override
     public CommandResult execute() {
+        String feedback = MESSAGE_FEEDBACK_DEFAULT;
         if (panelType == null && keywords == null && tagNames == null) {
             model.updateAllPanelsToShowAll();
         } else {
             model.updateFilteredPanel(panelType, keywords, tagNames);
+            if (keywords.size() > 0 || tagNames.size() > 0) {
+                StringBuilder words = new StringBuilder();
+                for (String word : keywords) {
+                    words.append(" ");
+                    words.append(word);
+                }
+                String keywordString = words.toString();
+                words = new StringBuilder();
+                for (String word : tagNames) {
+                    words.append(" ");
+                    words.append(word);
+                }
+                String tagString = words.toString();
+                feedback = String.format(MESSAGE_FEEDBACK_FILTERED, keywordString, tagString);
+            }
         }
-        StringBuilder words = new StringBuilder();
-        for (String word : keywords) {
-            words.append(" ");
-            words.append(word);
-        }
-        String keywordString = words.toString();
-        words = new StringBuilder();
-        for (String word : tagNames) {
-            words.append(" ");
-            words.append(word);
-        }
-        String tagString = words.toString();
-        System.out.println(keywordString);
-        System.out.println(tagString);
-        return new CommandResult(String.format(MESSAGE_FEEDBACK, keywordString, tagString), true);
+        return new CommandResult(feedback, true);
     }
 
 }
