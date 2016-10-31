@@ -15,12 +15,6 @@ public interface Logic {
      * @return the result of the command execution.
      */
     CommandResult execute(String commandText);
-
-    //TODO Remove
-    /**
-     * Returns the filtered list of activities
-     */
-    //ObservableList<Activity> getFilteredActivityList();
     
     /**
      * Returns the filtered list of activities with schedules

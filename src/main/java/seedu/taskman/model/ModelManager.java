@@ -26,7 +26,7 @@ import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 /**
- * Represents the in-memory model of the task man data.
+ * Represents the in-memory model of the TaskMan data.
  * All changes to any model should be synchronized.
  */
 public class ModelManager extends ComponentManager implements Model {
@@ -183,19 +183,6 @@ public class ModelManager extends ComponentManager implements Model {
     public UnmodifiableObservableList<Activity> getSortedFloatingList() {
         return new UnmodifiableObservableList<>(sortedFloatings);
     }
-
-    //TODO Remove
-    /*
-
-    @Override
-    public void updateFilteredActivityList(ListCommand.FilterMode filterMode, Set<String> keywords, Set<String> tagNames) {
-        updateFilteredActivityList(new PredicateExpression(new ActivityQualifier(filterMode, keywords, tagNames)));
-    }
-
-    private void updateFilteredActivityList(Expression expression) {
-        sortedActivities.setPredicate(expression::satisfies);
-    }
-    */
 
     //========== Inner classes/interfaces used for filtering ==================================================
 

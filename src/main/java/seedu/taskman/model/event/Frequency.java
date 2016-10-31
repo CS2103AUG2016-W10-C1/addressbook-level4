@@ -12,7 +12,7 @@ public class Frequency {
     public static final String MESSAGE_FREQUENCY_CONSTRAINTS =
             "Task frequency should only contain frequency and unit of time in the format: ";
 
-    public static final String FREQUENCY_VALIDATION_REGEX = "^" + DateTimeParser.MULTIPLE_DURATION + "$";
+    public static final String FREQUENCY_VALIDATION_REGEX = "^" + DateTimeParser.DURATION_MULTIPLE + "$";
     public static final int MULTIPLIER_TIME_UNIX_TO_JAVA = 1000;
 
     // TODO: decide if it's better to stick to seconds or an end time instead.

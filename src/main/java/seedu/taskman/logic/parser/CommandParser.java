@@ -32,18 +32,38 @@ public class CommandParser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
+    public enum Group {
+        panel("panel"),
+        targetIndex("targetIndex"),
+        title("title"),
+        keywords("keywords"),
+        deadline("deadline"),
+        schedule("schedule"),
+        status("status"),
+        frequency("frequency"),
+        tagArguments("tagArguments"),
+        commandWord("commandWord"),
+        arguments("arguments");
+
+        public String name;
+
+        Group(String s) {
+            name = s;
+        }
+    }
+
     //@@author A0121299A
     public enum ArgumentPattern {
-        PANEL("(?<panel>[dsf])"),
-        TARGET_INDEX("(?<targetIndex>[0-9]+)"),
-        TITLE("(?<title>[^/]+)"),
-        KEYWORDS("(?<keywords>[^/]+)"),
-        OPTIONAL_KEYWORDS("(?<keywords>(?:\\s+[^/]+)*)?"),
-        OPTIONAL_DEADLINE("(?:\\s+d/(?<deadline>[^/]+))?"),
-        OPTIONAL_SCHEDULE("(?:\\s+s/(?<schedule>[^/]+))?"),
-        OPTIONAL_STATUS("(?:\\s+c/(?<status>[^/]+))?"),
-        OPTIONAL_FREQUENCY("(?:\\s+f/(?<frequency>[^/]+))?"),
-        OPTIONAL_TAGS("(?<tagArguments>(?:\\s*t/[^/]+)*)?"),
+        PANEL("(?<" + Group.panel.name + ">[dsf])"),
+        TARGET_INDEX("(?<" + Group.targetIndex.name + ">[0-9]+)"),
+        TITLE("(?<" + Group.title.name + ">[^/]+)"),
+        KEYWORDS("(?<" + Group.keywords.name + ">[^/]+)"),
+        OPTIONAL_KEYWORDS("(?<" + Group.keywords.name + ">(?:\\s+[^/]+)*)?"),
+        OPTIONAL_DEADLINE("(?:\\s+d/(?<" + Group.deadline.name + ">[^/]+))?"),
+        OPTIONAL_SCHEDULE("(?:\\s+s/(?<" + Group.schedule.name + ">[^/]+))?"),
+        OPTIONAL_STATUS("(?:\\s+c/(?<" + Group.status.name + ">[^/]+))?"),
+        OPTIONAL_FREQUENCY("(?:\\s+f/(?<" + Group.frequency.name + ">[^/]+))?"),
+        OPTIONAL_TAGS("(?<" + Group.tagArguments.name + ">(?:\\s*t/[^/]+)*)?"),
         FILE_PATH(".+");
 
         public final String pattern;
@@ -59,8 +79,7 @@ public class CommandParser {
     }
     //@@author
 
-    public CommandParser() {
-    }
+    public CommandParser() {}
 
     /**
      * Parses user input into command for execution.
@@ -74,8 +93,8 @@ public class CommandParser {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
         }
 
-        final String commandWord = matcher.group("commandWord");
-        final String arguments = matcher.group("arguments");
+        final String commandWord = matcher.group(CommandParser.Group.commandWord.name);
+        final String arguments = matcher.group(CommandParser.Group.arguments.name);
         switch (commandWord) {
 
             case AddCommand.COMMAND_WORD:
@@ -121,5 +140,4 @@ public class CommandParser {
                 return new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
         }
     }
-
 }

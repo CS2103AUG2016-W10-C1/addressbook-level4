@@ -36,9 +36,11 @@ public class EditCommand extends Command {
             + "Example: " + COMMAND_WORD
             + " s2 s/mon 10am, tue 2pm";
 
+    public static final String MESSAGE_EDIT_EVENT_PARAMETERS_DISALLOWED = "Deadline and status";
     public static final String MESSAGE_EDIT_EVENT_SUCCESS = "Event updated: %1$s";
     public static final String MESSAGE_EDIT_TASK_SUCCESS = "Task updated: %1$s";
     public static final String MESSAGE_DUPLICATE_ACTIVITY = "An event or a task with the same name already exists";
+
     private static final Pattern TASK_EDIT_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("" + CommandParser.ArgumentPattern.PANEL
                     + CommandParser.ArgumentPattern.TARGET_INDEX
@@ -74,28 +76,26 @@ public class EditCommand extends Command {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
         }
 
-        String panelTypeRaw = matcher.group("panel").trim();
+        String panelTypeRaw = matcher.group(CommandParser.Group.targetIndex.name).trim();
         Activity.PanelType panelType = Activity.PanelType.fromString(panelTypeRaw);
 
-        String indexString = matcher.group("targetIndex").trim();
+        String indexString = matcher.group(CommandParser.Group.targetIndex.name).trim();
         int index = Integer.parseInt(indexString);
 
-        // filter out empty string
-        // an alternative would be to use non-greedy regex
-        String title = matcher.group("title");
+        String title = matcher.group(CommandParser.Group.title.name);
         if (title != null && title.trim().isEmpty()) {
             title = null;
         }
 
-        String tags = matcher.group("tagArguments");
+        String tags = matcher.group(CommandParser.Group.tagArguments.name);
         return new EditCommand(
                 panelType,
                 index,
                 title,
-                matcher.group("deadline"),
-                matcher.group("status"),
-                matcher.group("schedule"),
-                matcher.group("frequency"),
+                matcher.group(CommandParser.Group.deadline.name),
+                matcher.group(CommandParser.Group.status.name),
+                matcher.group(CommandParser.Group.schedule.name),
+                matcher.group(CommandParser.Group.frequency.name),
                 tags.isEmpty() ? null : getTagsFromArgs(tags));
     }
 
@@ -120,7 +120,7 @@ public class EditCommand extends Command {
                     return new CommandResult(String.format(MESSAGE_EDIT_TASK_SUCCESS, afterEdit), true);
                 }
                 default: {
-                    throw new AssertionError("Activity is neither an event nor a task.", null); 
+                    throw new AssertionError("Entry is neither an event nor a task.", null);
                 }
             }
         } catch (UniqueActivityList.ActivityNotFoundException pnfe) {
@@ -130,7 +130,7 @@ public class EditCommand extends Command {
             try {
                 model.addActivity(beforeEdit);
             } catch (UniqueActivityList.DuplicateActivityException e1) {
-                assert false : "Deleted activity should be able to be added back.";
+                assert false: "Deleted entry should be able to be added back.";
             }
             return new CommandResult(MESSAGE_DUPLICATE_ACTIVITY, false);
         }
@@ -148,12 +148,12 @@ public class EditCommand extends Command {
         beforeEdit = lastShownList.get(argsContainer.targetIndex - 1);
         activityType = beforeEdit.getType();
         if (activityType.equals(Activity.ActivityType.EVENT)) {
-            if (argsContainer.deadline != null && argsContainer.status != null) {
-                throw new IllegalValueException(Messages.MESSAGE_INVALID_PARAMETERS); //TODO Make error messages more specific
-            } else if (argsContainer.deadline != null) {
-                throw new IllegalValueException(Messages.MESSAGE_INVALID_PARAMETERS); //TODO Make error messages more specific
-            } else if (argsContainer.status != null){
-                throw new IllegalValueException(Messages.MESSAGE_INVALID_PARAMETERS); //TODO Make error messages more specific
+            if (argsContainer.deadline != null || argsContainer.status != null) {
+                throw new IllegalValueException(String.format(
+                        Messages.MESSAGE_INVALID_PARAMETERS,
+                        MESSAGE_EDIT_EVENT_PARAMETERS_DISALLOWED,
+                        Activity.ActivityType.EVENT)
+                );
             }
         }
 
@@ -210,7 +210,7 @@ public class EditCommand extends Command {
                 break;
             }
             default: {
-                assert false : "Activity is neither an event nor a task.";
+                assert false: "Entry is neither an event nor a task.";
             }
         }
     }

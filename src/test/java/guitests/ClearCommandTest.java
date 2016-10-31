@@ -35,6 +35,6 @@ public class ClearCommandTest extends TaskManGuiTest {
     private void assertClearCommandSuccess() {
         commandBox.runCommand("clear");
         assertDeadlineListSize(0);
-        assertResultMessage("Task man has been cleared!");
+        assertResultMessage("TaskMan has been cleared!");
     }
 }

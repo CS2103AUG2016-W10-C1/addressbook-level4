@@ -111,7 +111,7 @@ public abstract class LogicManagerTestBase {
 
     /**
      * Executes the command and confirms the following three parts of the LogicManager object's state are as expected:<br>
-     *      - the internal task man data are same as those in the {@code expectedTaskMan} <br>
+     *      - the internal TaskMan data are same as those in the {@code expectedTaskMan} <br>
      *      - the backing list shown by UI matches the {@code shownList} <br>
      *      - {@code expectedTaskMan} was saved to the storage file. <br>
      *

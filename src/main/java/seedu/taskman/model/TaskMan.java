@@ -51,7 +51,6 @@ public class TaskMan implements ReadOnlyTaskMan {
         resetData(activities.getInternalList(), tags.getInternalList());
     }
 
-    // TODO: Review - do we really need this?
     public static ReadOnlyTaskMan getEmptyTaskMan() {
         return new TaskMan();
     }

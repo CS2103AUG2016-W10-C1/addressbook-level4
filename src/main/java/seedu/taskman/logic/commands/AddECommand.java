@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 /**
- * Adds a Event to the task man.
+ * Adds an event to the task man.
  */
 public class AddECommand extends Command {
 
@@ -27,11 +27,11 @@ public class AddECommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New event added: %1$s";
     public static final String MESSAGE_DUPLICATE_EVENT = "This event already exists in TaskMan";
-    private static final Pattern EVENT_MARK_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
+    private static final Pattern EVENT_MARK_ARGS_FORMAT =
             Pattern.compile("" + CommandParser.ArgumentPattern.TITLE
                     + CommandParser.ArgumentPattern.OPTIONAL_SCHEDULE
                     + CommandParser.ArgumentPattern.OPTIONAL_FREQUENCY
-                    + CommandParser.ArgumentPattern.OPTIONAL_TAGS); // variable number of tags
+                    + CommandParser.ArgumentPattern.OPTIONAL_TAGS);
 
     private final Event toAdd;
 
@@ -67,10 +67,10 @@ public class AddECommand extends Command {
         }
         try {
             return new AddECommand(
-                    matcher.group("title"),
-                    matcher.group("schedule"),
-                    matcher.group("frequency"),
-                    getTagsFromArgs(matcher.group("tagArguments"))
+                    matcher.group(CommandParser.Group.title.name),
+                    matcher.group(CommandParser.Group.schedule.name),
+                    matcher.group(CommandParser.Group.frequency.name),
+                    getTagsFromArgs(matcher.group(CommandParser.Group.tagArguments.name))
             );
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());

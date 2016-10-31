@@ -24,23 +24,34 @@ import java.util.regex.Pattern;
  * Uses Natty internally to do the heavy lifting.
  */
 public class DateTimeParser {
-    public static final String DESCRIPTION_DATE_TIME_FULL =
-            "can use natural language, eg: 2nd Wed from now, 9pm";
+    public static final String DESCRIPTION_DATE_TIME_FULL = "Can use natural language, e.g. 2nd Wed from now, 9pm";
     public static final String DESCRIPTION_DATE_TIME_SHORT = "DATE & TIME";
-    public static final String SINGLE_DURATION =
-            "(?:[1-9]+[0-9]*) (?:(?:min)|(?:hour)|(?:day)|(?:week)|(?:month)|(?:year))s?";
-    public static final String MULTIPLE_DURATION =
-            "(" + SINGLE_DURATION + ",? ?)+";
     public static final String DESCRIPTION_DURATION = "<number> <min/hour/day/week/month/year(s)>";
-    public static final String TIME_BEFORE_DATE_ERROR = "Do not enter time before date";
-    public static final String SPECIFYING_TIMEZONE_NOT_SUPPORTED = "Currently does not support specifying of timezones.";
-    private static final String GENERIC_ERROR_DATETIME = "Invalid date time";
-    private static final String GENERIC_ERROR_DURATION = "Invalid duration";
 
-    // TODO: Separate formatting from parsing
+    public static final String DURATION_SINGLE =  "(?:[1-9]+[0-9]*) (?:(?:min)|(?:hour)|(?:day)|(?:week)|(?:month)|(?:year))s?";
+    public static final String DURATION_MULTIPLE = "(" + DURATION_SINGLE + ",? ?)+";
+
+    public static final String MESSAGE_ERROR_NO_FIRST_DATE = "No first date.";
+    public static final String MESSAGE_ERROR_REGEX_MATCH_FAILURE = "Failed to match regex.";
+    public static final String MESSAGE_ERROR_TIME_BEFORE_DATE = "Do not enter the time before the date.";
+    public static final String MESSAGE_ERROR_TIMEZONE_SPECIFICATION_NOT_SUPPORTED = "Currently does not support specifying of timezones.";
+
+    private static final String MESSAGE_ERROR_INVALID_DATETIME = "Invalid date time.";
+    private static final String MESSAGE_ERROR_INVALID_DURATION = "Invalid duration.";
+
     private static final DateTimeFormatter FORMATTER_DISPLAY = DateTimeFormatter.ofPattern("EEE, dd MMM YY, h.mma");
     private static final DateTimeFormatter FORMATTER_FORMAL = DateTimeFormatter.ofPattern("dd MMM YYYY HHmm");
-    private static final Parser parser = new Parser();
+    private static final Parser PARSER = new Parser();
+
+    public enum DateTimeClass {
+        local("LocalDateTime"), zoned("ZonedDateTime");
+
+        private String className;
+
+        DateTimeClass(String s) {
+            className = s;
+        }
+    }
 
     /**
      * Converts a date & time in natural language to unix time (seconds)
@@ -48,15 +59,15 @@ public class DateTimeParser {
      */
     public static long getUnixTime(String naturalDateTime, String errorMessage) throws IllegalDateTimeException {
         if (timeIsBeforeDate(naturalDateTime)) {
-            throw new IllegalDateTimeException(TIME_BEFORE_DATE_ERROR);
+            throw new IllegalDateTimeException(MESSAGE_ERROR_TIME_BEFORE_DATE);
         }
 
         if (hasTimeZoneSpecified(naturalDateTime)) {
-            throw new IllegalDateTimeException(SPECIFYING_TIMEZONE_NOT_SUPPORTED);
+            throw new IllegalDateTimeException(MESSAGE_ERROR_TIMEZONE_SPECIFICATION_NOT_SUPPORTED);
         }
 
         String timeZoneCorrected = appendLocalTimeZone(naturalDateTime);
-        List<DateGroup> groups = parser.parse(timeZoneCorrected);
+        List<DateGroup> groups = PARSER.parse(timeZoneCorrected);
 
         // assumes the first DateGroup & Date object in the group provided by Natty is correct
         try {
@@ -99,12 +110,12 @@ public class DateTimeParser {
     }
 
     public static long getUnixTime(String naturalDateTime) throws IllegalDateTimeException {
-        return getUnixTime(naturalDateTime, GENERIC_ERROR_DATETIME);
+        return getUnixTime(naturalDateTime, MESSAGE_ERROR_INVALID_DATETIME);
     }
 
     private static Date getFirstDate(List<Date> dates) throws IllegalDateTimeException {
         if (dates.isEmpty()) {
-            throw new IllegalDateTimeException("No first date");
+            throw new IllegalDateTimeException(MESSAGE_ERROR_NO_FIRST_DATE);
         } else {
             return dates.get(0);
         }
@@ -117,15 +128,15 @@ public class DateTimeParser {
     public static long naturalDurationToUnixTime(long startUnixTime, String naturalDuration) throws IllegalDateTimeException {
         long endUnixTime = startUnixTime + naturalDurationToSeconds(naturalDuration);
         if (endUnixTime < startUnixTime) {
-            throw new IllegalDateTimeException(GENERIC_ERROR_DURATION);
+            throw new IllegalDateTimeException(MESSAGE_ERROR_INVALID_DURATION);
         } else {
             return endUnixTime;
         }
     }
 
     public static long naturalDurationToSeconds(String naturalDuration) throws IllegalDateTimeException {
-        if (!naturalDuration.matches(MULTIPLE_DURATION)) {
-            throw new IllegalDateTimeException("failed to match regex");
+        if (!naturalDuration.matches(DURATION_MULTIPLE)) {
+            throw new IllegalDateTimeException(MESSAGE_ERROR_REGEX_MATCH_FAILURE);
         } else {
             // Natty does not have support for natural durations
             // Parse durations as relative DateTimes into Natty & subtract from current time
@@ -133,7 +144,7 @@ public class DateTimeParser {
             long unixTimeNow = Instant.now().getEpochSecond();
             long actualDurationSeconds = 0;
 
-            Pattern firstDuration = Pattern.compile(SINGLE_DURATION);
+            Pattern firstDuration = Pattern.compile(DURATION_SINGLE);
             Matcher matcher = firstDuration.matcher(naturalDuration);
             while (matcher.find()) {
                 actualDurationSeconds += getUnixTime(matcher.group()) - unixTimeNow;
@@ -144,25 +155,24 @@ public class DateTimeParser {
     }
 
     public static String epochSecondToDetailedDateTime(long epochSecond) {
-        Instant instant = Instant.ofEpochSecond(epochSecond);
-        return ZonedDateTime
-                .ofInstant(instant, ZoneId.systemDefault())
-                .format(FORMATTER_DISPLAY);
+        return epochSecondtoDateTime(epochSecond, DateTimeClass.zoned.className, FORMATTER_DISPLAY);
     }
 
-    //todo: fix repetitive code
     public static String epochSecondToShortDateTime(long epochSecond) {
-        Instant instant = Instant.ofEpochSecond(epochSecond);
-        return LocalDateTime
-                .ofInstant(instant, ZoneId.systemDefault())
-                .format(FORMATTER_DISPLAY);
+        return epochSecondtoDateTime(epochSecond, DateTimeClass.local.className, FORMATTER_DISPLAY);
     }
 
     public static String epochSecondToFormalDateTime(long epochSecond) {
+        return epochSecondtoDateTime(epochSecond, DateTimeClass.local.className, FORMATTER_FORMAL);
+    }
+
+    private static String epochSecondtoDateTime(long epochSecond, String dateTimeClassString, DateTimeFormatter formatter) {
         Instant instant = Instant.ofEpochSecond(epochSecond);
-        return LocalDateTime
-                .ofInstant(instant, ZoneId.systemDefault())
-                .format(FORMATTER_FORMAL);
+        if (dateTimeClassString == DateTimeClass.local.className) {
+            return LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).format(formatter);
+        } else {
+            return ZonedDateTime.ofInstant(instant, ZoneId.systemDefault()).format(formatter);
+        }
     }
 
     public static class IllegalDateTimeException extends IllegalValueException {
