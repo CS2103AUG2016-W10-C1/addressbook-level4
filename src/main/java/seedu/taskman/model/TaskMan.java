@@ -67,7 +67,10 @@ public class TaskMan implements ReadOnlyTaskMan {
     }
 
     // TODO: Create setEvent
-
+    public ObservableList<Tag> getTags() {
+        return tags.getInternalList();
+    }
+    
     public void setTags(Collection<Tag> tags) {
         this.tags.getInternalList().setAll(tags);
     }
