@@ -28,11 +28,7 @@ import seedu.taskman.storage.Storage;
 import seedu.taskman.storage.StorageManager;
 
 import java.time.Instant;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -93,6 +89,39 @@ public abstract class LogicManagerTestBase {
     @After
     public void teardown() {
         EventsCenter.clearSubscribers();
+    }
+
+    /**
+     * Executes the command and confirms that the result message is correct.
+     * Generally for commands which do not mutate the data.
+     * Both the 'TaskMan' and the 'list' are expected to be empty.
+     * @see #assertCommandBehavior(String, String, TaskMan, List)
+     */
+    private void assertCommandBehavior(String inputCommand, String expectedMessage) throws Exception {
+        assertCommandBehavior(inputCommand, expectedMessage, null, null);
+    }
+
+    /**
+     * Executes the command and confirms that the result message is correct and
+     * also confirms that the following three parts of the LogicManager object's state are as expected:
+     *      - the internal address book data are same as those in the {@code expectedTaskMan}
+     *      - the backing list shown by UI matches the expected list here in the method
+     *      - {@code expectedTaskMan} was saved to the storage file.
+     */
+    private void assertCommandBehavior(String inputCommand, String expectedMessage,
+                                       TaskMan expectedTaskMan,
+                                       List<Activity> activityList) throws Exception {
+
+        // Execute the command
+        CommandResult result = logic.execute(inputCommand);
+
+        // Confirm the ui display elements should contain the right data
+        assertEquals(expectedMessage, result.feedbackToUser);
+        // Add assert for the expected list versus actual list on the UI here, List<Activity> is placeholder data type
+
+        // Confirm the state of data (saved and in-memory) is as expected
+        assertEquals(expectedTaskMan, model.getTaskMan());
+        assertEquals(expectedTaskMan, latestSavedTaskMan);
     }
 
     /**
