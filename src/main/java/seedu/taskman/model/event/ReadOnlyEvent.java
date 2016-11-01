@@ -17,6 +17,12 @@ public interface ReadOnlyEvent {
     Optional<Schedule> getSchedule();
 
     /**
+     * Expiry indicates if the event is no longer useful in business logic.
+     * A positive result gives the green light for removal from storage.
+     */
+    boolean isExpired();
+
+    /**
      * The returned TagList is a deep copy of the internal TagList,
      * changes on the returned list will not affect the event's internal tags.
      */

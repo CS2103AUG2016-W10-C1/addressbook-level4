@@ -4,6 +4,7 @@ import seedu.taskman.model.tag.UniqueTagList;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -58,6 +59,15 @@ public class Task extends Event implements ReadOnlyTask, MutableTagsEvent {
     @Override
     public Status getStatus() {
         return status;
+    }
+
+    @Override
+    public boolean isExpired() {
+        if (deadline == null || !status.completed) {
+            return false;
+        }
+        long secondsElapsedSinceDeadline = Instant.now().getEpochSecond() - deadline.epochSecond;
+        return secondsElapsedSinceDeadline > EXPIRY_THRESHOLD;
     }
 
     @Override

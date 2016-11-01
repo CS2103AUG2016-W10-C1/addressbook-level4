@@ -7,11 +7,17 @@ import seedu.taskman.commons.events.model.TaskManChangedEvent;
 import seedu.taskman.commons.events.storage.DataSavingExceptionEvent;
 import seedu.taskman.commons.exceptions.DataConversionException;
 import seedu.taskman.model.ReadOnlyTaskMan;
+import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.UserPrefs;
+import seedu.taskman.model.event.Activity;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Manages storage of TaskMan data in local storage.
@@ -61,7 +67,23 @@ public class StorageManager extends ComponentManager implements Storage {
     @Override
     public Optional<ReadOnlyTaskMan> readTaskMan(String filePath) throws DataConversionException, IOException {
         logger.fine("Attempting to read data from file: " + filePath);
-        return taskManStorage.readTaskMan(filePath);
+        Optional<ReadOnlyTaskMan> rawTaskMan = taskManStorage.readTaskMan(filePath);
+
+        return rawTaskMan.isPresent()
+                ? removeExpiredActivities(rawTaskMan.get())
+                : rawTaskMan;
+    }
+
+    private Optional<ReadOnlyTaskMan> removeExpiredActivities(@Nonnull  ReadOnlyTaskMan readOnlyTskMan) {
+        TaskMan taskMan = new TaskMan(readOnlyTskMan);
+        Stream<Activity> activityStream = taskMan.getActivityList().stream();
+        List<Activity> withoutOldEntries =
+                activityStream
+                        .filter(activity -> !activity.isExpired())
+                        .collect(Collectors.toList());
+        taskMan.setActivities(withoutOldEntries);
+
+        return Optional.of(taskMan);
     }
 
     @Override
@@ -91,6 +113,5 @@ public class StorageManager extends ComponentManager implements Storage {
             raise(new DataSavingExceptionEvent(e));
         }
     }
-
 
 }
