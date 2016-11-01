@@ -47,6 +47,12 @@ public class TestTask implements ReadOnlyTask {
     }
 
     @Override
+    public boolean isExpired() {
+        // currently unused for testing
+        return false;
+    }
+
+    @Override
     public Optional<Deadline> getDeadline() {
         return Optional.ofNullable(deadline);
     }

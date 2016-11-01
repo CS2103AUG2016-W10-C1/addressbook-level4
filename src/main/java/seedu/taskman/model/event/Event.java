@@ -5,6 +5,7 @@ import seedu.taskman.model.tag.UniqueTagList;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -13,7 +14,8 @@ import java.util.Optional;
  * Guarantees: Title and UniqueTagList are present and not null, field values are validated.
  */
 public class Event implements ReadOnlyEvent, MutableTagsEvent {
-
+    private static final long DAY_IN_SECONDS = 60 * 60 * 24;
+    protected static final long EXPIRY_THRESHOLD = DAY_IN_SECONDS * 7;
     private Title title;
     private Frequency frequency;
     private Schedule schedule;
@@ -56,6 +58,16 @@ public class Event implements ReadOnlyEvent, MutableTagsEvent {
     @Override
     public UniqueTagList getTags() {
         return new UniqueTagList(tags);
+    }
+
+    @Override
+    public boolean isExpired() {
+        if (schedule == null) {
+            return false;
+        }
+
+        long secondsElapsedSinceEnd = Instant.now().getEpochSecond() - schedule.endEpochSecond;
+        return secondsElapsedSinceEnd > EXPIRY_THRESHOLD;
     }
 
     /**

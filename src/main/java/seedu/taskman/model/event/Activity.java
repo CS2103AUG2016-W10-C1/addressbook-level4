@@ -128,6 +128,11 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent {
         return activity.getTags();
     }
 
+    @Override
+    public boolean isExpired() {
+        return activity.isExpired();
+    }
+
     public boolean isSameStateAs(Activity other) {
         if (type != other.type) return false;
 
