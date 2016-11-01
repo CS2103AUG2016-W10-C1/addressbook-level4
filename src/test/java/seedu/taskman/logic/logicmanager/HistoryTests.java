@@ -31,9 +31,7 @@ public class HistoryTests extends LogicManagerTestBase {
         assertCommandNoStateChange("history");
         assertEquals(1, historyDeque.size());
     }
-
-    // todo: should fix
-    @Ignore
+    
     @Test
     public void execute_historyUnrecordedCommand_noChangeToHistory() throws Exception {
         // execute an unrecorded command after a recorded one
@@ -42,8 +40,13 @@ public class HistoryTests extends LogicManagerTestBase {
         execute_historyAfterSingleCommand_success();
         assertEquals(1, historyDeque.size());
 
-        CommandResult result = logic.execute("select 1");
+        CommandResult result = logic.execute("list");
         assertTrue(result.succeeded);
+
+        result = logic.execute("help");
+        assertTrue(result.succeeded);
+
+        // TODO: Make tests more extensive by including select (but generating tasks -> history will be made)
 
         assertCommandNoStateChange("history");
         assertEquals(1, historyDeque.size());
