@@ -1,6 +1,7 @@
 package guitests;
 
 import org.junit.Test;
+import seedu.taskman.commons.core.Messages;
 import seedu.taskman.model.event.Activity;
 
 import java.util.regex.Pattern;
@@ -44,7 +45,7 @@ public class SelectCommandTest extends TaskManGuiTest {
 
     private void assertSelectionInvalid(int index) {
         commandBox.runCommand("select d" + index);
-        assertResultMessage("The task index provided is invalid");
+        assertResultMessage(Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX);
     }
 
     private void assertSelectionSuccess(int index) {
