@@ -4,6 +4,7 @@ import seedu.taskman.commons.core.UnmodifiableObservableList;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Event;
 import seedu.taskman.model.event.UniqueActivityList;
+import seedu.taskman.model.tag.Tag;
 
 import java.util.Set;
 
@@ -39,6 +40,11 @@ public interface Model {
      * Returns the filtered list of tasks without deadlines as an {@code UnmodifiableObservableList<Activity>}
      */
     UnmodifiableObservableList<Activity> getSortedFloatingList();
+    
+    /**
+     * Returns the list of tags as an {@code UnmodifiableObservableList<Tag>}
+     */
+    UnmodifiableObservableList<Tag> getTagList();
 
     /**
      * Updates the filter of all filtered activity panels to show all activities

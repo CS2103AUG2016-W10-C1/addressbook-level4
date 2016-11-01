@@ -14,6 +14,7 @@ import seedu.taskman.logic.commands.ListCommand;
 import seedu.taskman.logic.commands.AddECommand;
 import seedu.taskman.logic.commands.SelectCommand;
 import seedu.taskman.logic.commands.StoragelocCommand;
+import seedu.taskman.logic.commands.TagsCommand;
 import seedu.taskman.logic.commands.UndoCommand;
 
 import java.util.regex.Matcher;
@@ -89,6 +90,9 @@ public class CommandParser {
 
             case ListCommand.COMMAND_WORD:
                 return ListCommand.prepareList(arguments);
+                
+            case TagsCommand.COMMAND_WORD:
+                return new TagsCommand();
 
             case CompleteCommand.COMMAND_WORD:
                 return CompleteCommand.prepareComplete(arguments);
