@@ -8,7 +8,7 @@ public class ConfigData {
     public static final String DEFAULT_APP_TITLE = "TaskMan";
     public static final Level DEFAULT_LOG_LEVEL = Level.INFO;
     public static final String DEFAULT_USER_PREFS_FILE_PATH = "preferences.json";
-    public static final String DEFAULT_TASK_MAN_FILE_PATH = "data/taskMan.xml";
+    public static final String DEFAULT_TASK_MAN_FILE_PATH = "./data/taskMan.xml";
     public static final String DEFAULT_TASK_MAN_NAME = "MyTaskMan";
 
     // Config values customizable through config file
