@@ -22,6 +22,7 @@ import seedu.taskman.ui.UiManager;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Timer;
 import java.util.logging.Logger;
 
 /**
@@ -61,6 +62,9 @@ public class MainApp extends Application {
         logic = new LogicManager(model, storage);
 
         ui = new UiManager(logic, config, userPrefs);
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new Refresh(this), 0, 1000);
 
         initEventsCenter();
     }

@@ -17,4 +17,5 @@ public interface Ui {
      */
     void stop();
 
+    void refresh();
 }

@@ -65,6 +65,10 @@ public class UiManager extends ComponentManager implements Ui {
         mainWindow.hide();
     }
 
+    public void refresh() {
+        mainWindow.fillInnerParts();
+    }
+
     private void showFileOperationAlertAndWait(String description, String details, Throwable cause) {
         final String content = details + ":\n" + cause.toString();
         showAlertDialogAndWait(AlertType.ERROR, "File Op Error", description, content);
