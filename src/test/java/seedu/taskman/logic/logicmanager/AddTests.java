@@ -4,30 +4,30 @@ import org.junit.Test;
 import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.event.Task;
 
-public class DoTests extends LogicManagerTestBase {
+public class AddTests extends LogicManagerTestBase {
     @Test
-    public void execute_do_invalidArgsFormat() throws Exception {
+    public void execute_add_invalidArgsFormat() throws Exception {
         // no args
-        assertCommandNoStateChange("do");
+        assertCommandNoStateChange("add");
 
         // non-existent flag
-        assertCommandNoStateChange("do x/");
+        assertCommandNoStateChange("add x/");
     }
 
     @Test
-    public void execute_do_invalidTaskData() throws Exception {
+    public void execute_add_invalidTaskData() throws Exception {
         // bad deadline
-        assertCommandNoStateChange("do Valid Title d/invalid Deadline");
+        assertCommandNoStateChange("add Valid Title d/invalid Deadline");
 
         // bad schedule
-        assertCommandNoStateChange("do Valid Title s/invalid Schedule");
+        assertCommandNoStateChange("add Valid Title s/invalid Schedule");
 
         // bad title
-        assertCommandNoStateChange("do []\\[;]");
+        assertCommandNoStateChange("add []\\[;]");
     }
 
     @Test
-    public void execute_do_successful() throws Exception {
+    public void execute_add_successful() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
         Task toBeAdded = helper.generateFullTask(1);
@@ -40,7 +40,7 @@ public class DoTests extends LogicManagerTestBase {
     }
 
     @Test
-    public void execute_doDuplicate_notAllowed() throws Exception {
+    public void execute_addDuplicate_notAllowed() throws Exception {
         // setup expected
         TestDataHelper helper = new TestDataHelper();
         Task toBeAdded = helper.generateFullTask(1);
