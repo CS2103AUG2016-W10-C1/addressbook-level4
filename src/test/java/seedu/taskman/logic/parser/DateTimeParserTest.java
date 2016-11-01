@@ -39,7 +39,7 @@ public class DateTimeParserTest {
             try {
                 DateTimeParser.getUnixTime(testString);
             } catch (IllegalValueException e) {
-                assertThat(e.getMessage(), is(DateTimeParser.TIME_BEFORE_DATE_ERROR));
+                assertThat(e.getMessage(), is(DateTimeParser.MESSAGE_ERROR_TIME_BEFORE_DATE));
             }
         }
 

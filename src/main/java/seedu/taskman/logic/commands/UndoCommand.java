@@ -48,7 +48,6 @@ public class UndoCommand extends Command {
             return new CommandResult(MESSAGE_NUMBER_OUT_OF_RANGE, false);
         }
 
-        // we don't want to pop all
         for (int i = 0; i < commandsToUndo - 1; i++) {
             historyDeque.pop();
         }

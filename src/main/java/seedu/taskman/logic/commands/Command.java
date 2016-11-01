@@ -70,7 +70,7 @@ public abstract class Command {
         if (!matcher.matches()) {
             return Optional.empty();
         }
-        String index = matcher.group("targetIndex");
+        String index = matcher.group(matcher.group(CommandParser.Group.targetIndex.name));
         if(!StringUtil.isUnsignedInteger(index)){
             return Optional.empty();
         }
@@ -86,9 +86,9 @@ public abstract class Command {
         if (!matcher.matches()) {
             return Optional.empty();
         }
-        String rawPanelType = matcher.group("panel");
+        String rawPanelType = matcher.group(CommandParser.Group.panel.name);
         Activity.PanelType panelType = Activity.PanelType.fromString(rawPanelType);
-        String index = matcher.group("targetIndex");
+        String index = matcher.group(CommandParser.Group.targetIndex.name);
         if(!StringUtil.isUnsignedInteger(index)){
             return Optional.empty();
         }

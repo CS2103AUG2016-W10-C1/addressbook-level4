@@ -30,7 +30,7 @@ public interface Storage extends TaskManStorage, UserPrefsStorage {
     void saveTaskMan(ReadOnlyTaskMan taskMan) throws IOException;
 
     /**
-     * Saves the current version of the Task man to the hard disk.
+     * Saves the current version of the TaskMan to the hard disk.
      * Creates the data file if it is missing.
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
      */
