@@ -118,7 +118,7 @@ public class Schedule {
 
     @Override
     public String toString() {
-        return toStringShort();
+        return toStringDetailed();
     }
 
     public String toStringShort() {
@@ -200,7 +200,7 @@ public class Schedule {
         }
 
         return String.format(
-                "%s\t(%s)\n%s\t(%s)",
+                "%s (%s) to %s\nDuration: %s",
                 DateTimeParser.epochSecondToShortDateTime(startEpochSecond),
                 prettyTimeFormatter.format(new Date(startEpochSecond * MULTIPLIER_TIME_UNIX_TO_JAVA)),
                 DateTimeParser.epochSecondToShortDateTime(endEpochSecond),

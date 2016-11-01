@@ -52,10 +52,14 @@ public class Deadline {
      */
     public String toStringDetailed() {
         return String.format(
-                "%s\n(%s)",
+                "%s (%s)",
                 DateTimeParser.epochSecondToShortDateTime(epochSecond),
                 prettyTimeFormatter.format(new Date(epochSecond * MULTIPLIER_TIME_UNIX_TO_JAVA))
         );
+    }
+
+    public String toStringWithNewline() {
+        return toString().replace(" (", "\n(");
     }
 
     @Override
