@@ -27,12 +27,12 @@ public class AddCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New task added: %1$s";
     public static final String MESSAGE_DUPLICATE_EVENT = "This task already exists in TaskMan";
-    private static final Pattern TASK_ADD_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
+    private static final Pattern TASK_ADD_ARGS_FORMAT =
             Pattern.compile("" + CommandParser.ArgumentPattern.TITLE
                     + CommandParser.ArgumentPattern.OPTIONAL_DEADLINE
                     + CommandParser.ArgumentPattern.OPTIONAL_SCHEDULE
                     + CommandParser.ArgumentPattern.OPTIONAL_FREQUENCY
-                    + CommandParser.ArgumentPattern.OPTIONAL_TAGS); // variable number of tags
+                    + CommandParser.ArgumentPattern.OPTIONAL_TAGS);
 
     private final Task toAdd;
 
@@ -70,11 +70,11 @@ public class AddCommand extends Command {
         }
         try {
             return new AddCommand(
-                    matcher.group("title"),
-                    matcher.group("deadline"),
-                    matcher.group("schedule"),
-                    matcher.group("frequency"),
-                    getTagsFromArgs(matcher.group("tagArguments"))
+                    matcher.group(CommandParser.Group.title.name),
+                    matcher.group(CommandParser.Group.deadline.name),
+                    matcher.group(CommandParser.Group.schedule.name),
+                    matcher.group(CommandParser.Group.frequency.name),
+                    getTagsFromArgs(matcher.group(CommandParser.Group.tagArguments.name))
             );
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());

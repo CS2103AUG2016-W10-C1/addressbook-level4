@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 /**
- * Finds and lists all tasks in task man whose title contains any of the argument keywords and contains any of the given tags.
+ * Finds and lists all tasks in TaskMan whose title contains any of the argument keywords and contains any of the given tags.
  * Keyword matching is case sensitive.
  */
 public class ListCommand extends Command {
@@ -26,7 +26,9 @@ public class ListCommand extends Command {
             + "Example: " + COMMAND_WORD + " d homework t/engineering";
 
     public static final String MESSAGE_FEEDBACK_DEFAULT = "All entries are listed.";
-    public static final String MESSAGE_FEEDBACK_FILTERED = "Entries with the following keywords and tags are listed.\nKeywords:%1$s\nTags:%2$s\n";
+    public static final String MESSAGE_FEEDBACK_FILTERED = "Entries with the following keywords and tags are listed.\nKeywords: %1$s\nTags: %2$s\n";
+    public static final String MESSAGE_FEEDBACK_WORD_NOT_SPECIFIED = "(Not specified)";
+    public static final String MESSAGE_FEEDBACK_WORD_SEPARATOR = " ";
 
     private static final Pattern SPECIFY_PANEL_ARGS_FORMAT =
             Pattern.compile("" + CommandParser.ArgumentPattern.PANEL + "?"
@@ -54,14 +56,14 @@ public class ListCommand extends Command {
             );
         } else if (matcherWithPanel.matches()) {
             return panelSpecificListCommand(
-                    matcherWithPanel.group("panel"),
-                    matcherWithPanel.group("keywords"),
-                    matcherWithPanel.group("tagArguments")
+                    matcherWithPanel.group(CommandParser.Group.panel.name),
+                    matcherWithPanel.group(CommandParser.Group.keywords.name),
+                    matcherWithPanel.group(CommandParser.Group.tagArguments.name)
             );
         } else if(matcherPaneless.matches()) {
             return allPanelsListCommand(
-                    matcherPaneless.group("keywords"),
-                    matcherPaneless.group("tagArguments")
+                    matcherPaneless.group(CommandParser.Group.keywords.name),
+                    matcherPaneless.group(CommandParser.Group.tagArguments.name)
             );
         } else {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
@@ -115,19 +117,24 @@ public class ListCommand extends Command {
             model.updateAllPanelsToShowAll();
         } else {
             model.updateFilteredPanel(panelType, keywords, tagNames);
-            if (keywords.size() > 0 || tagNames.size() > 0) {
-                StringBuilder words = new StringBuilder();
+            StringBuilder words = new StringBuilder();
+            String keywordString = MESSAGE_FEEDBACK_WORD_NOT_SPECIFIED;
+            String tagString = keywordString;
+            if (!keywords.isEmpty()) {
                 for (String word : keywords) {
-                    words.append(" ");
                     words.append(word);
+                    words.append(MESSAGE_FEEDBACK_WORD_SEPARATOR);
                 }
-                String keywordString = words.toString();
+                keywordString = words.toString().trim();
+                feedback = String.format(MESSAGE_FEEDBACK_FILTERED, keywordString, tagString);
+            }
+            if (!tagNames.isEmpty()) {
                 words = new StringBuilder();
                 for (String word : tagNames) {
-                    words.append(" ");
                     words.append(word);
+                    words.append(MESSAGE_FEEDBACK_WORD_SEPARATOR);
                 }
-                String tagString = words.toString();
+                tagString = words.toString().trim();
                 feedback = String.format(MESSAGE_FEEDBACK_FILTERED, keywordString, tagString);
             }
         }

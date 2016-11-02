@@ -14,32 +14,22 @@ import java.util.regex.Pattern;
 
 //@@author A0139019E
 public class Schedule {
-    // UG/DG: specify new datetime format
-    // todo: indicate in example that format: "month-date-year time". there MUST be a space before time, not colon
     public static final String MESSAGE_SCHEDULE_CONSTRAINTS =
-            "Task schedule should only contain dates and times in the format: " +
-                    // DATETIME to DATETIME
-                    DateTimeParser.DESCRIPTION_DATE_TIME_SHORT + " (a \",\" or \"to\") " +
-                    DateTimeParser.DESCRIPTION_DATE_TIME_SHORT +
-                    // DATETIME for DURATION
-                    "\nOr the format:\n" + DateTimeParser.DESCRIPTION_DATE_TIME_SHORT + " for " +
-                    DateTimeParser.DESCRIPTION_DURATION +
-                    "\nDATETIME: " + DateTimeParser.DESCRIPTION_DATE_TIME_FULL;
+        "Task schedule should only contain dates and times in the format: " +
+        // DATETIME to DATETIME
+        DateTimeParser.DESCRIPTION_DATE_TIME_SHORT + " (a \",\" or \"to\") " +
+        DateTimeParser.DESCRIPTION_DATE_TIME_SHORT +
+        // DATETIME for DURATION
+        "\nOr the format:\n" + DateTimeParser.DESCRIPTION_DATE_TIME_SHORT + " for " +
+        DateTimeParser.DESCRIPTION_DURATION +
+        "\nDATETIME: " + DateTimeParser.DESCRIPTION_DATE_TIME_FULL;
 
     public static final String ERROR_NEGATIVE_DURATION = "Duration is negative!";
     public static final String ERROR_BAD_START_DATETIME = "Bad start datetime";
     public static final String ERROR_BAD_END_DATETIME = "Bad end datetime";
 
     public static final String SCHEDULE_DIVIDER_GROUP = "((?:, )|(?: to )|(?: for ))";
-    public static final String SCHEDULE_VALIDATION_REGEX =
-            "(.*)" + SCHEDULE_DIVIDER_GROUP + "(.*)";
-
-    public static final String DURATION_STRING_MINUTES = "min";
-    public static final String DURATION_STRING_HOURS = "hrs";
-    public static final String DURATION_STRING_DAYS = "days";
-    public static final String DURATION_STRING_WEEKS = "wks";
-    public static final String DURATION_STRING_MONTHS = "mths";
-    public static final String DURATION_STRING_YEARS = "yrs";
+    public static final String SCHEDULE_VALIDATION_REGEX = "(.*)" + SCHEDULE_DIVIDER_GROUP + "(.*)";
 
     public static final long DURATION_MINUTES_IN_HOUR = 60;
     public static final long DURATION_MINUTES_IN_DAY = DURATION_MINUTES_IN_HOUR * 24;
@@ -47,11 +37,26 @@ public class Schedule {
     public static final long DURATION_MINUTES_IN_MONTH = DURATION_MINUTES_IN_DAY * 30;
     public static final long DURATION_MINUTES_IN_YEAR = DURATION_MINUTES_IN_DAY * 365;
     public static final int MULTIPLIER_TIME_UNIX_TO_JAVA = 1000;
+
     public final long startEpochSecond;
     public final long endEpochSecond;
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE");
     public final PrettyTime prettyTimeFormatter = new PrettyTime();
+
+    public enum DurationString {
+        MINUTES("min"),
+        HOURS("hrs"),
+        DAYS("days"),
+        WEEKS("wks"),
+        MONTHS("mths"),
+        YEARS("yrs");
+
+        public String string;
+
+        DurationString(String s) {
+            string = s;
+        }
+    }
 
     public Schedule(long startEpochSecond, long endEpochSecond) throws IllegalValueException {
 
@@ -63,6 +68,7 @@ public class Schedule {
         this.endEpochSecond = endEpochSecond;
     }
 
+    // TODO: Clean this up before v0.5
     public Schedule(String schedule) throws IllegalValueException {
         schedule = schedule.trim();
         Pattern pattern = Pattern.compile(SCHEDULE_VALIDATION_REGEX);
@@ -89,8 +95,6 @@ public class Schedule {
                 String endString = matcher.group(3).trim();
                 long endEpochCandidate = DateTimeParser.getUnixTime(endString, ERROR_BAD_END_DATETIME);
 
-                // user may have forgotten to type 'next' before the relative datetime
-                // "sun 2359 to mon 2359" should be "... next mon 2359"
                 endEpochSecond = (startEpochSecond > endEpochCandidate)
                         ? addNextToRelativeDateTime(endString)
                         : endEpochCandidate;
@@ -118,9 +122,10 @@ public class Schedule {
 
     @Override
     public String toString() {
-        return toStringShort();
+        return toStringDetailed();
     }
 
+    // TODO: Clean this up before v0.5
     public String toStringShort() {
         return String.format(
                 "%s\n%s",
@@ -146,6 +151,7 @@ public class Schedule {
      *
      * @return String containing human-readable information for schedule (start, end, duration)
      */
+    // TODO: Clean this up before v0.5
     public String toStringDetailed() {
         long durationSeconds = endEpochSecond - startEpochSecond;
         long durationMinutes = TimeUnit.SECONDS.toMinutes(durationSeconds);
@@ -161,62 +167,65 @@ public class Schedule {
             years = (int) Math.floor(durationMinutes / DURATION_MINUTES_IN_YEAR);
             if (years > 0) {
                 durationMinutes %= years * DURATION_MINUTES_IN_YEAR;
-                durationString += String.format("%d %s ", years, DURATION_STRING_YEARS);
+                durationString += String.format("%d %s ", years, DurationString.YEARS.string);
             }
         }
         if (durationMinutes >= DURATION_MINUTES_IN_MONTH) {
             months = (int) Math.floor(durationMinutes / DURATION_MINUTES_IN_MONTH);
             if (months > 0) {
                 durationMinutes %= months * DURATION_MINUTES_IN_MONTH;
-                durationString += String.format("%d %s ", months, DURATION_STRING_MONTHS);
+                durationString += String.format("%d %s ", months, DurationString.MONTHS.string);
             }
         }
         if (durationMinutes >= DURATION_MINUTES_IN_WEEK) {
             weeks = (int) Math.floor(durationMinutes / DURATION_MINUTES_IN_WEEK);
             if (weeks > 0) {
                 durationMinutes %= weeks * DURATION_MINUTES_IN_WEEK;
-                durationString += String.format("%d %s ", weeks, DURATION_STRING_WEEKS);
+                durationString += String.format("%d %s ", weeks, DurationString.WEEKS.string);
             }
         }
         if (durationMinutes >= DURATION_MINUTES_IN_DAY) {
             days = (int) Math.floor(durationMinutes / DURATION_MINUTES_IN_DAY);
             if (days > 0) {
                 durationMinutes %= days * DURATION_MINUTES_IN_DAY;
-                durationString += String.format("%d %s ", days, DURATION_STRING_DAYS);
+                durationString += String.format("%d %s ", days, DurationString.DAYS.string);
             }
         }
         if (durationMinutes >= DURATION_MINUTES_IN_HOUR) {
             hours = (int) Math.floor(durationMinutes / DURATION_MINUTES_IN_HOUR);
             if (hours > 0) {
                 durationMinutes %= hours * DURATION_MINUTES_IN_HOUR;
-                durationString += String.format("%d %s ", hours, DURATION_STRING_HOURS);
+                durationString += String.format("%d %s ", hours, DurationString.HOURS.string);
             }
         }
         if (durationMinutes >= 1) {
             minutes = (int) Math.floor(durationMinutes);
             if (minutes > 0) {
-                durationString += String.format("%d %s ", minutes, DURATION_STRING_MINUTES);
+                durationString += String.format("%d %s ", minutes, DurationString.MINUTES.string);
             }
         }
 
         return String.format(
-                "%s\t(%s)\n%s\t(%s)",
+                "%s (%s) to %s\nDuration: %s",
                 DateTimeParser.epochSecondToShortDateTime(startEpochSecond),
                 prettyTimeFormatter.format(new Date(startEpochSecond * MULTIPLIER_TIME_UNIX_TO_JAVA)),
                 DateTimeParser.epochSecondToShortDateTime(endEpochSecond),
                 durationString.trim());
     }
 
+    // TODO: Is this still relevant?
     public String toFormalString(){
         return getFormalStartString()
                 + " to "
                 + getFormalEndString();
     }
 
+    // TODO: Is this still relevant?
     public String getFormalStartString(){
         return DateTimeParser.epochSecondToFormalDateTime(startEpochSecond);
     }
 
+    // TODO: Is this still relevant?
     public String getFormalEndString(){
         return  DateTimeParser.epochSecondToFormalDateTime(endEpochSecond);
     }

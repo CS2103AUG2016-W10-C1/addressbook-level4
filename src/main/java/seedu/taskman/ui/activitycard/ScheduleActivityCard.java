@@ -14,7 +14,7 @@ public class ScheduleActivityCard extends ActivityCard {
         super.initialize();
         id.setText(Activity.PanelType.SCHEDULE.getString() + displayedIndex);
         String valueText = activity.getSchedule().isPresent()
-                ? activity.getSchedule().get().toString()
+                ? activity.getSchedule().get().toStringShort()
                 : "";
         value.setText(valueText);
     }

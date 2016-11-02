@@ -36,7 +36,7 @@ public class ConfigTest {
         String defaultConfigAsString = "App title : TaskMan\n" +
                 "Current log level : INFO\n" +
                 "Preference file Location : preferences.json\n" +
-                "Local data file location : data/taskMan.xml\n" +
+                "Local data file location : "+ ConfigData.DEFAULT_TASK_MAN_FILE_PATH +"\n" +
                 "TaskMan name : MyTaskMan";
         Config.resetInstance();
         assertEquals(defaultConfigAsString, Config.getInstance().toString());

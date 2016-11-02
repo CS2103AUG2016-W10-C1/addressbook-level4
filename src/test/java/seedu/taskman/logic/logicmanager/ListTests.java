@@ -149,7 +149,7 @@ public class ListTests extends LogicManagerTestBase {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
 
-        // setup task man state
+        // setup TaskMan state
         helper.addToModel(model, 4);
 
         TaskMan expectedTaskMan = helper.generateTaskMan(4);
@@ -177,7 +177,7 @@ public class ListTests extends LogicManagerTestBase {
         TestDataHelper helper = new TestDataHelper();
         TaskMan expectedTaskMan = helper.generateTaskMan(5);
 
-        // setup task man state
+        // setup TaskMan state
         helper.addToModel(model, 5);
 
         List<Activity> expectedList = new ArrayList<>();

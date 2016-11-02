@@ -14,15 +14,15 @@ import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
  * Deletes a task identified using it's last displayed index from the task man.
  */
 public class DeleteCommand extends Command {
+
     public static final String COMMAND_WORD = "delete";
 
-    //todo: update me
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the entry identified by the index number used in the listings.\n"
             + "Parameters: INDEX (must be a positive whole number)\n"
             + "Example: " + COMMAND_WORD + " f1";
 
-    public static final String MESSAGE_DELETE_EVENT_SUCCESS = "Deleted Task: %1$s";
+    public static final String MESSAGE_DELETE_EVENT_SUCCESS = "Deleted task: %1$s";
 
     private final int targetIndex;
     private final Activity.PanelType panelType;
@@ -58,7 +58,7 @@ public class DeleteCommand extends Command {
         try {
             model.deleteActivity(activityToDelete);
         } catch (ActivityNotFoundException pnfe) {
-            assert false : "The target task cannot be missing";
+            assert false : "The target task cannot be missing.";
         }
 
         return new CommandResult(String.format(MESSAGE_DELETE_EVENT_SUCCESS, activityToDelete), true);

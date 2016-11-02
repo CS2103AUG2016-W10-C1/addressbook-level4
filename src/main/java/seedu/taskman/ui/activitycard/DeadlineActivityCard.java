@@ -13,7 +13,7 @@ public class DeadlineActivityCard extends ActivityCard {
     public void initialize() {
         super.initialize();
         id.setText(Activity.PanelType.DEADLINE.getString() + displayedIndex);
-        value.setText(activity.getDeadline().get().toString());
+        value.setText(activity.getDeadline().get().toStringWithNewline());
         setColour();
     }
 }

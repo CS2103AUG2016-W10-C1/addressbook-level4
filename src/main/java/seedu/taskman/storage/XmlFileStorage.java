@@ -24,7 +24,7 @@ public class XmlFileStorage {
     }
 
     /**
-     * Returns task man in the file or an empty task man
+     * Returns TaskMan in the file or an empty task man
      */
     public static XmlSerializableTaskMan loadDataFromSaveFile(File file) throws DataConversionException,
             FileNotFoundException {

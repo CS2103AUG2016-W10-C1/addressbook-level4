@@ -23,7 +23,7 @@ public class UserPrefs {
 
     public UserPrefs() {
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-        this.setGuiSettings((primaryScreenBounds.getWidth() / 2.5),
+        this.setGuiSettings((primaryScreenBounds.getWidth() / 2),
                             (primaryScreenBounds.getHeight()),
                             (int) (0.6*primaryScreenBounds.getWidth()),
                             0);

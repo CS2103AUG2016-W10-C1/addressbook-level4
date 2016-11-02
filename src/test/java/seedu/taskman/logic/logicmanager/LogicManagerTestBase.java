@@ -21,23 +21,14 @@ import seedu.taskman.model.ModelManager;
 import seedu.taskman.model.ReadOnlyTaskMan;
 import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.UserPrefs;
-import seedu.taskman.model.event.Activity;
-import seedu.taskman.model.event.Deadline;
-import seedu.taskman.model.event.Frequency;
-import seedu.taskman.model.event.Schedule;
-import seedu.taskman.model.event.Task;
-import seedu.taskman.model.event.Title;
+import seedu.taskman.model.event.*;
 import seedu.taskman.model.tag.Tag;
 import seedu.taskman.model.tag.UniqueTagList;
 import seedu.taskman.storage.Storage;
 import seedu.taskman.storage.StorageManager;
 
 import java.time.Instant;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -101,6 +92,39 @@ public abstract class LogicManagerTestBase {
     }
 
     /**
+     * Executes the command and confirms that the result message is correct.
+     * Generally for commands which do not mutate the data.
+     * Both the 'TaskMan' and the 'list' are expected to be empty.
+     * @see #assertCommandBehavior(String, String, TaskMan, List)
+     */
+    private void assertCommandBehavior(String inputCommand, String expectedMessage) throws Exception {
+        assertCommandBehavior(inputCommand, expectedMessage, null, null);
+    }
+
+    /**
+     * Executes the command and confirms that the result message is correct and
+     * also confirms that the following three parts of the LogicManager object's state are as expected:
+     *      - the internal address book data are same as those in the {@code expectedTaskMan}
+     *      - the backing list shown by UI matches the expected list here in the method
+     *      - {@code expectedTaskMan} was saved to the storage file.
+     */
+    private void assertCommandBehavior(String inputCommand, String expectedMessage,
+                                       TaskMan expectedTaskMan,
+                                       List<Activity> activityList) throws Exception {
+
+        // Execute the command
+        CommandResult result = logic.execute(inputCommand);
+
+        // Confirm the ui display elements should contain the right data
+        assertEquals(expectedMessage, result.feedbackToUser);
+        // Add assert for the expected list versus actual list on the UI here, List<Activity> is placeholder data type
+
+        // Confirm the state of data (saved and in-memory) is as expected
+        assertEquals(expectedTaskMan, model.getTaskMan());
+        assertEquals(expectedTaskMan, latestSavedTaskMan);
+    }
+
+    /**
      * Executes the command and confirms that no state has changed in TaskMan
      */
     protected CommandResult assertCommandNoStateChange(String inputCommand) throws Exception {
@@ -111,7 +135,7 @@ public abstract class LogicManagerTestBase {
 
     /**
      * Executes the command and confirms the following three parts of the LogicManager object's state are as expected:<br>
-     *      - the internal task man data are same as those in the {@code expectedTaskMan} <br>
+     *      - the internal TaskMan data are same as those in the {@code expectedTaskMan} <br>
      *      - the backing list shown by UI matches the {@code shownList} <br>
      *      - {@code expectedTaskMan} was saved to the storage file. <br>
      *
@@ -195,6 +219,23 @@ public abstract class LogicManagerTestBase {
             );
         }
 
+        /**
+         * Generates a valid event using the given seed.
+         * Running this function with the same parameter values guarantees the returned task will have the same state.
+         * Each unique seed will generate a unique Event object.
+         *
+         * @param seed used to generate the task data field values
+         */
+        Event generateFullEvent(int seed) throws Exception {
+            return new Event(
+                    new Title("Event " + seed),
+                    new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))),
+                    new Schedule(seed +" nov " + (seed%12+1) + "am" +
+                            ", " + seed +" nov " + ((seed+1)%12+1) + "pm" ),
+                    null //new Frequency(seed + " mins")
+            );
+        }
+
         @SuppressWarnings("OptionalGetWithoutIsPresent")
         String generateAddCommand(Task task) {
             StringBuilder command = new StringBuilder();
@@ -213,6 +254,27 @@ public abstract class LogicManagerTestBase {
             }
 
             UniqueTagList tags = task.getTags();
+            for(Tag t: tags) {
+                command.append(" t/").append(t.tagName);
+            }
+
+            return command.toString();
+        }
+
+        String generateAddECommand(Event event) {
+            StringBuilder command = new StringBuilder();
+
+            command.append("adde ");
+            command.append(event.getTitle().toString());
+
+            if (event.getFrequency().isPresent()) {
+                throw new AssertionError("Frequency is not supported yet");
+            }
+            if (event.getSchedule().isPresent()) {
+                command.append(" s/").append(event.getSchedule().get().toFormalString());
+            }
+
+            UniqueTagList tags = event.getTags();
             for(Tag t: tags) {
                 command.append(" t/").append(t.tagName);
             }

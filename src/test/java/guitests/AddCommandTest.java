@@ -14,7 +14,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
-//TODO Change to AddCommandTest and MarkCommandTest
 public class AddCommandTest extends TaskManGuiTest {
     
     @Test

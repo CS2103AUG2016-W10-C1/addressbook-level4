@@ -50,7 +50,6 @@ public class CompleteCommand extends Command {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
         }
 
-
         return new CompleteCommand(
                 panelIndexPair.get().getKey(),
                 panelIndexPair.get().getValue());
@@ -105,7 +104,7 @@ public class CompleteCommand extends Command {
                 break;
             }
             default: {
-                assert false : "Activity is neither an event nor a task.";
+                assert false : "Entry is neither an event nor a task.";
             }
         }
     }

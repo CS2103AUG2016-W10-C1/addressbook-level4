@@ -46,7 +46,7 @@ public class ListPanelHandle extends GuiHandle {
             }
             default:{
                 listViewId = "unsupported";
-                assert false: "Unsupported Panel Type";
+                assert false : "Unsupported Panel Type";
             }
         }
     }
