@@ -1,5 +1,6 @@
 package seedu.taskman.ui;
 
+import com.sun.javafx.scene.control.skin.ListViewSkin;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,6 +14,12 @@ import seedu.taskman.commons.events.ui.TaskPanelSelectionChangedEvent;
 import seedu.taskman.commons.util.FxViewUtil;
 import seedu.taskman.model.event.Activity;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 //@@author A0140136W
 
@@ -25,8 +32,7 @@ public class ActivityPanel extends UiPart implements ListPanel {
     private AnchorPane panel;
     private AnchorPane placeHolderPane;
     private Activity.PanelType panelType;
-
-
+    private ScheduledExecutorService refreshService;
 
     @FXML
     private ListView<Activity> listView;
@@ -58,11 +64,28 @@ public class ActivityPanel extends UiPart implements ListPanel {
     }
 
     private void configure(ObservableList<Activity> taskList, Activity.PanelType panelType) {
+        refreshService = createRefreshService();
         this.panelType = panelType;
         setConnections(taskList);
         addToPlaceholder();
         listView.setId(panelType.getName().toLowerCase()+"ListView");
         titledPane.setText(panelType.getName());
+    }
+
+    private ScheduledExecutorService createRefreshService() {
+        RefreshListViewSkin<Activity> skin = new RefreshListViewSkin<>(listView);
+        listView.setSkin(skin);
+
+        ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
+        Runnable invalidateListView = skin::refresh;
+        service.scheduleAtFixedRate(invalidateListView, secondsToNextMinute(), 60, TimeUnit.SECONDS);
+        return service;
+    }
+
+    private long secondsToNextMinute() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime roundCeiling = now.truncatedTo(ChronoUnit.MINUTES).plusMinutes(1);
+        return roundCeiling.toEpochSecond(ZoneOffset.UTC) - now.toEpochSecond(ZoneOffset.UTC);
     }
 
     // TODO Resolve generic type issue.
@@ -105,4 +128,21 @@ public class ActivityPanel extends UiPart implements ListPanel {
     }
 
 
+    /**
+     * ListViewSkin for refreshing the ListView it is binded to
+     */
+    private static class RefreshListViewSkin<T> extends ListViewSkin<T> {
+
+        public RefreshListViewSkin(ListView<T> list) {
+            super(list);
+        }
+
+        /**
+         * Refreshes the list view using an undocumented public command
+         * Refer to http://stackoverflow.com/a/25962110 for more info
+         */
+        public void refresh() {
+            super.flow.rebuildCells();
+        }
+    }
 }
