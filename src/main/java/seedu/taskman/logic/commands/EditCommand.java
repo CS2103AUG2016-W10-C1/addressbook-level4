@@ -76,7 +76,7 @@ public class EditCommand extends Command {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
         }
 
-        String panelTypeRaw = matcher.group(CommandParser.Group.targetIndex.name).trim();
+        String panelTypeRaw = matcher.group(CommandParser.Group.panel.name).trim();
         Activity.PanelType panelType = Activity.PanelType.fromString(panelTypeRaw);
 
         String indexString = matcher.group(CommandParser.Group.targetIndex.name).trim();
