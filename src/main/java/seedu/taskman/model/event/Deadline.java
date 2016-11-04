@@ -14,7 +14,12 @@ public class Deadline {
 
     public Deadline(String deadline) throws IllegalValueException {
         deadline = deadline.trim();
-        epochSecond = DateTimeParser.getUnixTime(deadline);
+
+        try {
+            epochSecond = DateTimeParser.getUnixTime(deadline);
+        } catch (DateTimeParser.IllegalDateTimeException e) {
+            throw new IllegalValueException(e.getMessage());
+        }
     }
 
     public Deadline(long epochSecond) throws IllegalValueException {

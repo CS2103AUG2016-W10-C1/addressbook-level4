@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//@@author A0139019E
 public class Schedule {
 
     public static final String MESSAGE_SCHEDULE_CONSTRAINTS =
@@ -72,16 +71,20 @@ public class Schedule {
                 );
             }
 
-            if (hasDuration) {
-                String duration = matcher.group(3).trim();
-                endEpochSecond = DateTimeParser.naturalDurationToUnixTime(startEpochSecond, duration);
-            } else {
-                String endString = matcher.group(3).trim();
-                long endEpochCandidate = DateTimeParser.getUnixTime(endString, ERROR_BAD_DATETIME_END);
+            try {
+                if (hasDuration) {
+                    String duration = matcher.group(3).trim();
+                    endEpochSecond = DateTimeParser.toEndTime(startEpochSecond, duration);
+                } else {
+                    String endString = matcher.group(3).trim();
+                    long endEpochCandidate = DateTimeParser.getUnixTime(endString);
 
-                endEpochSecond = (startEpochSecond > endEpochCandidate)
-                        ? addNextToRelativeDateTime(endString)
-                        : endEpochCandidate;
+                    endEpochSecond = (startEpochSecond > endEpochCandidate)
+                            ? addNextToRelativeDateTime(endString)
+                            : endEpochCandidate;
+                }
+            } catch (DateTimeParser.IllegalDateTimeException e) {
+                throw new IllegalValueException(ERROR_BAD_DATETIME_END);
             }
 
             if (startEpochSecond > endEpochSecond) {
@@ -92,7 +95,11 @@ public class Schedule {
 
     private long addNextToRelativeDateTime(String dateTime) throws IllegalValueException {
         dateTime = String.format(Formatter.FORMAT_TWO_TERMS_SPACED_WITHIN_AFTER, STRING_NEXT_WEEK, dateTime).trim();
-        return DateTimeParser.getUnixTime(dateTime, ERROR_BAD_DATETIME_END);
+        try {
+            return DateTimeParser.getUnixTime(dateTime);
+        } catch (DateTimeParser.IllegalDateTimeException e) {
+            throw new IllegalValueException(ERROR_BAD_DATETIME_END);
+        }
     }
 
     public static boolean isValidSchedule(String test) {
