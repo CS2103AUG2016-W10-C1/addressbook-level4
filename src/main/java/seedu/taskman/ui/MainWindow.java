@@ -53,6 +53,9 @@ public class MainWindow extends UiPart {
     private String taskManName;
 
     @FXML
+    private MenuItem helpMenuItem;
+    
+    @FXML
     private AnchorPane commandBoxPlaceholder;
 
     @FXML
@@ -110,7 +113,12 @@ public class MainWindow extends UiPart {
         primaryStage.setScene(mainScene);
 
         //Add keyboard shortcuts
+        setAccelerators();
         addKeyPressedFilters();
+    }
+    
+    private void setAccelerators() {
+        helpMenuItem.setAccelerator(KeyCombination.valueOf("F1"));
     }
     
     /**

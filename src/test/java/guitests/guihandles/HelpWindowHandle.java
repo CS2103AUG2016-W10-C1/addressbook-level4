@@ -21,7 +21,7 @@ public class HelpWindowHandle extends GuiHandle {
     }
 
     public void closeWindow() {
-        clickOn("Back", "Escape");
+        clickOn("Navigate", "F1");
         guiRobot.sleep(500);
     }
 
