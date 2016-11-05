@@ -1,7 +1,6 @@
 package seedu.taskman.logic.parser;
 
 import org.junit.Test;
-import seedu.taskman.commons.exceptions.IllegalValueException;
 
 import java.time.DayOfWeek;
 import java.time.Instant;
@@ -10,59 +9,90 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.concurrent.TimeUnit;
 
 import static java.time.temporal.TemporalAdjusters.next;
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-//@@author A0139019E
-public class DateTimeParserTest {
-    private static final long timeDifferenceThreshold = 30L; // 30 seconds
 
-    // specify time after date
+//@@author A0139019E
+
+/**
+ * Tests for DateTimeParser.java
+ * DateTime parser is only accurate to the nearest minute
+ * Some allowance is required when comparing durations
+ */
+public class DateTimeParserTest {
+    private static final long timeDifferenceAllowance = 30L;
+
     @Test
-    public void parse_formalDateTime_success() throws Exception {
-        String testDateTimeFormal = "07/05/16 2359";
+    public void parse_formalDateTime_expectedMachineTime() throws Exception {
+        String testDateTimeFormal = "07-05-16 2359";
 
         Calendar cal = new GregorianCalendar(2016, 6, 5, 23, 59);
         long unixDateTime = DateTimeParser.getUnixTime(testDateTimeFormal);
         assertEquals(cal.toInstant().getEpochSecond() ,unixDateTime);
     }
 
-    @Test
-    public void parse_formalTimeBeforeDate_exception() {
-        String[] testCases = {"2359 07/05/16", "time 2359 07/05/16"};
 
-        for (int i = 0; i < testCases.length; i++) {
-            String testString = testCases[i];
+    @Test
+    public void parse_dateTimeWithTimeZone_exceptionWithAppropriateMessage() {
+        String[] testCases = {"07-05-2016 UTC+3 ", "07-05-2016 CST"};
+
+        for (String testString : testCases) {
             try {
                 DateTimeParser.getUnixTime(testString);
-            } catch (IllegalValueException e) {
-                assertThat(e.getMessage(), is(DateTimeParser.MESSAGE_ERROR_TIME_BEFORE_DATE));
+            } catch (DateTimeParser.IllegalDateTimeException e) {
+                assertEquals(DateTimeParser.MESSAGE_ERROR_TIMEZONE_NOT_SUPPORTED, e.getMessage());
             }
         }
-
     }
 
     @Test
-    public void parse_relativeDate_success() throws Exception {
+    public void parse_ambiguousDateTime_exceptionWithAppropriateMessage() {
+        String[] testCases = {"2359 07-05-2016", "2359 06 Dec 2016"};
+
+        for (String testString : testCases) {
+            try {
+                DateTimeParser.getUnixTime(testString);
+            } catch (DateTimeParser.IllegalDateTimeException e) {
+                assertEquals(DateTimeParser.MESSAGE_ERROR_AMBIGIOUS_TIME, e.getMessage());
+            }
+        }
+    }
+
+    @Test
+    public void parse_relativeDateOnly_expectedMachineTime() throws Exception {
         long unixDateTime1 = DateTimeParser.getUnixTime("2 weeks from now");
         long unixDateTime2 = DateTimeParser.getUnixTime("in 2 weeks");
 
         long timeNow = Instant.now().getEpochSecond();
-        long durationInSeconds = 2 * 7 * 24 * 60 * 60;
+        long durationInSeconds = TimeUnit.DAYS.toSeconds(14);
 
         assertEquals(timeNow + durationInSeconds, unixDateTime1);
         assertEquals(timeNow + durationInSeconds, unixDateTime2);
     }
 
     @Test
-    public void parse_relativeDateTime_success() throws Exception {
+    public void parse_relativeTimeOnly_expectedMachineTime() throws Exception {
+        long parsedUnixTime = DateTimeParser.getUnixTime("10pm");
+
+        ZonedDateTime now = OffsetDateTime.now().atZoneSameInstant(ZoneOffset.systemDefault());
+        ZonedDateTime today10pm = now
+                .withHour(22)
+                .withMinute(0)
+                .withSecond(0)
+                .withNano(0);
+
+        assertEquals(today10pm.toEpochSecond(), parsedUnixTime);
+    }
+
+    @Test
+    public void parse_relativeDateAndTime_expectedMachineTime() throws Exception {
         long parsedUnixTime = DateTimeParser.getUnixTime("wed 10am");
 
-        ZonedDateTime input = OffsetDateTime.now().atZoneSameInstant(ZoneOffset.systemDefault());
-        ZonedDateTime nextWed = input.with(next(DayOfWeek.WEDNESDAY))
+        ZonedDateTime timeNow = OffsetDateTime.now().atZoneSameInstant(ZoneOffset.systemDefault());
+        ZonedDateTime nextWed = timeNow.with(next(DayOfWeek.WEDNESDAY))
                 .withHour(10)
                 .withMinute(0)
                 .withSecond(0)
@@ -72,30 +102,37 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parse_durationSingle_success() throws Exception {
+    public void parse_durationSingleTemporalUnit_expectedMachineTime() throws Exception {
         String testDurationNatural = "3 days";
         long testDurationSeconds = 259200L;
 
-        long timeNow = Instant.now().getEpochSecond();
-        long expectedEndTime = timeNow + testDurationSeconds;
-        long parsedTime = DateTimeParser.naturalDurationToUnixTime(timeNow, testDurationNatural);
-        assertTrue(Math.abs(expectedEndTime - parsedTime) < timeDifferenceThreshold);
+        long parsedTime = DateTimeParser.naturalDurationToSeconds(testDurationNatural);
+
+        assertTrue(Math.abs(testDurationSeconds - parsedTime) < timeDifferenceAllowance);
     }
 
     @Test
-    public void parse_durationMultiple_success() throws Exception {
+    public void parse_durationMultipleTemporalUnits_expectedMachineTime() throws Exception {
         String testDurationNatural = "3 days 3 hours";
         String testDurationNaturalComma = "3 days, 3 hours";
+        long testDurationSeconds = 270000L;
 
+        long parsedTime = DateTimeParser.naturalDurationToSeconds(testDurationNatural);
+        assertTrue(Math.abs(testDurationSeconds - parsedTime) < timeDifferenceAllowance);
+
+        long parsedTimeComma = DateTimeParser.naturalDurationToSeconds(testDurationNaturalComma);
+        assertTrue(Math.abs(testDurationSeconds - parsedTimeComma) < timeDifferenceAllowance);
+    }
+
+    @Test
+    public void parse_startTimeAndDuration_expectedEndTime() throws Exception {
+        String testDurationNatural = "3 days 3 hours";
         long testDurationSeconds = 270000L;
         long timeNow = Instant.now().getEpochSecond();
         long expectedEndTime = timeNow + testDurationSeconds;
 
-        long parsedTime = DateTimeParser.naturalDurationToUnixTime(timeNow, testDurationNatural);
-        assertTrue(Math.abs(expectedEndTime - parsedTime) < timeDifferenceThreshold);
-
-        long parsedTimeComma = DateTimeParser.naturalDurationToUnixTime(timeNow, testDurationNaturalComma);
-        assertTrue(Math.abs(expectedEndTime - parsedTimeComma) < timeDifferenceThreshold);
+        long parsedTime = DateTimeParser.toEndTime(timeNow, testDurationNatural);
+        assertTrue(Math.abs(expectedEndTime - parsedTime) < timeDifferenceAllowance);
     }
 
 }

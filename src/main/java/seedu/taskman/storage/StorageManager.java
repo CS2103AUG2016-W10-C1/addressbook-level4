@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Manages storage of TaskMan data in local storage.
+ * Manages storage of TaskMan data in LOCAL storage.
  */
 public class StorageManager extends ComponentManager implements Storage {
 

@@ -32,7 +32,7 @@ public class TestApp extends MainApp {
         this.initialDataSupplier = initialDataSupplier;
         this.saveFileLocation = saveFileLocation;
 
-        // If some initial local data has been provided, write those to the file
+        // If some initial LOCAL data has been provided, write those to the file
         if (initialDataSupplier.get() != null) {
             TestUtil.createDataFileWithData(
                     new XmlSerializableTaskMan(this.initialDataSupplier.get()),

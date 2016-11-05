@@ -16,8 +16,8 @@ public class ScheduleTest {
 
     @Test
     public void create_dateTimeDateTime_success() throws IllegalValueException {
-        String start = "05/07/2016 0001";
-        String end = "07/07/2016 0002";
+        String start = "05/07/2016 00:01";
+        String end = "07/07/2016 00:02";
 
         Schedule schedule = new Schedule(start + ", " + end);
         new Schedule(start + " to " + end);
@@ -32,7 +32,7 @@ public class ScheduleTest {
 
     @Test
     public void create_dateTimeDuration_success() throws IllegalValueException {
-        String start = "05/07/2016 0001";
+        String start = "05/07/2016 00:01";
         String duration = "2 hours";
 
         new Schedule(start + " for " + duration);

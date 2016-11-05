@@ -76,7 +76,7 @@ public abstract class TaskManGuiTest {
     }
 
     /**
-     * Override this in child classes to set the initial local data.
+     * Override this in child classes to set the initial LOCAL data.
      * Return null to use the data in the file specified in {@link #getDataFileLocation()}
      */
     protected TaskMan getInitialData() {
