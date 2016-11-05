@@ -25,7 +25,7 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent {
     private MutableTagsEvent activity;
     private ActivityType type;
 
-    public Activity(Event event){
+    public Activity(Event event) {
         if (event.getClass().getName().equals(Task.class.getName())) {
             activity = event;
             type = ActivityType.TASK;
@@ -47,11 +47,11 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent {
                 break;
             }
             case EVENT: {
-                this.activity = new Event((ReadOnlyEvent) source.activity);
+                this.activity = new Event(source.activity);
                 break;
             }
             default: {
-                this.activity = new Event((ReadOnlyEvent) source.activity);
+                this.activity = new Event(source.activity);
             }
         }
         type = source.getType();
@@ -68,8 +68,8 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent {
         return Optional.of((ReadOnlyTask) activity);
     }
 
-    public Optional<ReadOnlyEvent> getEvent(){
-        if(type != ActivityType.EVENT){
+    public Optional<ReadOnlyEvent> getEvent() {
+        if (type != ActivityType.EVENT) {
             return Optional.empty();
         }
         return Optional.of((ReadOnlyEvent) activity);
@@ -206,11 +206,28 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent {
             }
         }
 
-        public String getName(){
+        /**
+         * Returns the String which will compile into a Pattern that can differentiate the different panel types, excluding the ALL type
+         */
+        public static String getPatternString() {
+            StringBuilder builder = new StringBuilder();
+            for (PanelType panelType : PanelType.values()) {
+                //skip if panelType is ALL
+                if (!panelType.equals(ALL)) {
+                    if (builder.length() != 0) {
+                        builder.append('|');
+                    }
+                    builder.append("(" + panelType.getString() + ")");
+                }
+            }
+            return builder.toString();
+        }
+
+        public String getName() {
             return name;
         }
 
-        public String getString(){
+        public String getString() {
             return string;
         }
 
