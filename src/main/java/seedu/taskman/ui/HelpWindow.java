@@ -1,12 +1,18 @@
 package seedu.taskman.ui;
 
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableView;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import seedu.taskman.commons.util.FxViewUtil;
 import seedu.taskman.commons.core.LogsCenter;
+import seedu.taskman.commons.events.ui.ExitAppRequestEvent;
 
 import java.util.logging.Logger;
 
@@ -16,26 +22,28 @@ import java.util.logging.Logger;
 public class HelpWindow extends UiPart {
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
-    private static final String ICON = "/images/help_icon.png";
     private static final String FXML = "HelpWindow.fxml";
-    private static final String TITLE = "Help";
-    private static final String USERGUIDE_URL =
-            "https://github.com/CS2103AUG2016-W10-C1/main/blob/master/docs/UserGuide.md";
 
-    private AnchorPane mainPane;
+    private VBox mainPane;
+    private Scene previousScene;
+    private Scene helpScene;
 
-    private Stage dialogStage;
+    @FXML
+    private MenuItem backMenuItem;
+    
+    @FXML
+    private TableView cheatSheet;
 
-    public static HelpWindow load(Stage primaryStage) {
+    public static HelpWindow load(Stage primaryStage, Scene mainScene) {
         logger.fine("Showing help page about the application.");
         HelpWindow helpWindow = UiPartLoader.loadUiPart(primaryStage, new HelpWindow());
-        helpWindow.configure();
+        helpWindow.configure(mainScene);
         return helpWindow;
     }
 
     @Override
     public void setNode(Node node) {
-        mainPane = (AnchorPane) node;
+        mainPane = (VBox) node;
     }
 
     @Override
@@ -43,20 +51,31 @@ public class HelpWindow extends UiPart {
         return FXML;
     }
 
-    private void configure() {
-        Scene scene = new Scene(mainPane);
-        //Null passed as the parent stage to make it non-modal.
-        dialogStage = createDialogStage(TITLE, null, scene);
-        dialogStage.setMaximized(true); //TODO: set a more appropriate initial size
-        setIcon(dialogStage, ICON);
-
-        WebView browser = new WebView();
-        browser.getEngine().load(USERGUIDE_URL);
-        FxViewUtil.applyAnchorBoundaryParameters(browser, 0.0, 0.0, 0.0, 0.0);
-        mainPane.getChildren().add(browser);
+    private void configure(Scene mainScene) {
+        previousScene = mainScene;
+        helpScene = new Scene(mainPane);
+        primaryStage.setScene(helpScene);
+        setAccelerators();
+    }
+    
+    private void setAccelerators() {
+        backMenuItem.setAccelerator(KeyCombination.valueOf("Esc"));
     }
 
-    public void show() {
-        dialogStage.showAndWait();
+    public Scene getScene() {
+        return helpScene;
+    }
+    
+    /**
+     * Closes the application.
+     */
+    @FXML
+    private void handleExit() {
+        raise(new ExitAppRequestEvent());
+    }
+    
+    @FXML
+    public void handleBack() {
+        primaryStage.setScene(previousScene);
     }
 }

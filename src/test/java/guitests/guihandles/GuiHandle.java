@@ -10,6 +10,7 @@ import javafx.stage.Window;
 import seedu.taskman.TestApp;
 import seedu.taskman.commons.core.LogsCenter;
 
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 /**
@@ -89,5 +90,11 @@ public class GuiHandle {
         guiRobot.targetWindow(window.get());
         guiRobot.interact(() -> ((Stage) window.get()).close());
         focusOnMainApp();
+    }
+    
+
+    public GuiHandle clickOn(String... menuText) {
+        Arrays.stream(menuText).forEach((menuItem) -> guiRobot.clickOn(menuItem));
+        return this;
     }
 }
