@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 public class SelectCommandTest extends TaskManGuiTest {
 
     public static final Pattern SELECT_SUCCESS_MESSAGE_CHECK =
-            Pattern.compile("Selected Task: (?:\\S*\\s*)*");
+            Pattern.compile("(?:\\S*\\s*)*");
 
 
     @Test

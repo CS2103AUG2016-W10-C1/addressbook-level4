@@ -22,11 +22,9 @@ public class SelectCommand extends Command {
     public static final String COMMAND_WORD = "select";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Selects the task identified by the index number used in the latest task listing.\n"
+            + ": Selects the entry identified by the index number used in the latest TaskMan listing.\n"
             + "Parameters: INDEX (must be a positive integer)\n"
             + "Example: " + COMMAND_WORD + " f2";
-
-    public static final String MESSAGE_SELECT_EVENT_SUCCESS = "Selected Task: %1$s";
 
     public static Command prepareSelect(String arguments) {
         Optional<Pair<Activity.PanelType, Integer>> panelWithIndex = parsePanelTypeWithIndexOnly(arguments);
@@ -58,7 +56,7 @@ public class SelectCommand extends Command {
 
         EventsCenter.getInstance().post(new JumpToListRequestEvent(panelType, targetIndex - 1));
         Activity targetActivity =  shownList.get(targetIndex - 1);
-        return new CommandResult(String.format(MESSAGE_SELECT_EVENT_SUCCESS, targetActivity), true);
+        return new CommandResult(targetActivity.toString(), true);
 
     }
 

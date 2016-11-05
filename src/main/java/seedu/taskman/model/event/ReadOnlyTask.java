@@ -1,5 +1,7 @@
 package seedu.taskman.model.event;
 
+import seedu.taskman.logic.Formatter;
+
 import java.util.Optional;
 
 public interface ReadOnlyTask extends ReadOnlyEvent {
@@ -26,26 +28,32 @@ public interface ReadOnlyTask extends ReadOnlyEvent {
      */
     default String getAsText() {
         final StringBuilder builder = new StringBuilder();
-        builder.append(getTitle())
-                .append("\nStatus: ")
-                .append(getStatus());
+        builder.append(
+                String.format(
+                        Formatter.FORMAT_TWO_TERMS_SPACED_WITHIN_AFTER,
+                        getTitle(),
+                        String.format(
+                                Formatter.FORMAT_WRAP_IN_BRACKET,
+                                getStatus()
+                        )
+                ).trim()
+        );
+        if (!getTags().getInternalList().isEmpty()){
+            builder.append("\n");
+            getTags().forEach(builder::append);
+        }
         if (getDeadline().isPresent()) {
-            builder.append("\nDeadline: ")
-                    .append(getDeadline().get().toString());
+            builder.append("\nDeadline:\n\t")
+                    .append(getDeadline().get().toString().replaceAll("\n", " "));
         }
         if (getSchedule().isPresent()) {
-            builder.append("\nSchedule: ")
-                    .append(getSchedule().get().toString());
+            builder.append("\nSchedule:\n\t")
+                    .append(getSchedule().get().toStringSelected());
         }
         if (getFrequency().isPresent()){
             //builder.append(" Frequency: ")
             //.append(getFrequency());
         }
-        if (!getTags().getInternalList().isEmpty()){
-            builder.append("\nTags: ");
-            getTags().forEach(builder::append);
-        }
-
         return builder.toString();
     }
 }

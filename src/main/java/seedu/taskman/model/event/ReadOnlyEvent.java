@@ -46,13 +46,13 @@ public interface ReadOnlyEvent {
     default String getAsText() {
         final StringBuilder builder = new StringBuilder();
         builder.append(getTitle());
-        if (getSchedule().isPresent()) {
-            builder.append("\nSchedule: ")
-                    .append(getSchedule().get().toString());
-        }
         if (!getTags().getInternalList().isEmpty()){
-            builder.append("\nTags: ");
+            builder.append("\n");
             getTags().forEach(builder::append);
+        }
+        if (getSchedule().isPresent()) {
+            builder.append("\nSchedule:\n\t")
+                    .append(getSchedule().get().toStringSelected());
         }
         return builder.toString();
     }

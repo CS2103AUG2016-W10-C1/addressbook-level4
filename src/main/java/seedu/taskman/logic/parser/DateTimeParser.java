@@ -3,6 +3,7 @@ package seedu.taskman.logic.parser;
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
 import seedu.taskman.commons.exceptions.IllegalValueException;
+import seedu.taskman.logic.Formatter;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -24,9 +25,6 @@ import java.util.regex.Pattern;
  * Uses Natty internally to do the heavy lifting.
  */
 public class DateTimeParser {
-    public static final String DESCRIPTION_DATE_TIME_FULL = "Can use natural language, e.g. 2nd Wed from now, 9pm";
-    public static final String DESCRIPTION_DATE_TIME_SHORT = "DATE & TIME";
-    public static final String DESCRIPTION_DURATION = "<number> <min/hour/day/week/month/year(s)>";
 
     public static final String DURATION_SINGLE =  "(?:[1-9]+[0-9]*) (?:(?:min)|(?:hour)|(?:day)|(?:week)|(?:month)|(?:year))s?";
     public static final String DURATION_MULTIPLE = "(" + DURATION_SINGLE + ",? ?)+";
@@ -39,8 +37,7 @@ public class DateTimeParser {
     private static final String MESSAGE_ERROR_INVALID_DATETIME = "Invalid date time.";
     private static final String MESSAGE_ERROR_INVALID_DURATION = "Invalid duration.";
 
-    private static final DateTimeFormatter FORMATTER_DISPLAY = DateTimeFormatter.ofPattern("EEE, dd MMM YY, h.mma");
-    private static final DateTimeFormatter FORMATTER_FORMAL = DateTimeFormatter.ofPattern("dd MMM YYYY HHmm");
+
     private static final Parser PARSER = new Parser();
 
     public enum DateTimeClass {
@@ -155,15 +152,15 @@ public class DateTimeParser {
     }
 
     public static String epochSecondToDetailedDateTime(long epochSecond) {
-        return epochSecondtoDateTime(epochSecond, DateTimeClass.zoned.className, FORMATTER_DISPLAY);
+        return epochSecondtoDateTime(epochSecond, DateTimeClass.zoned.className, Formatter.DATETIME_DISPLAY);
     }
 
     public static String epochSecondToShortDateTime(long epochSecond) {
-        return epochSecondtoDateTime(epochSecond, DateTimeClass.local.className, FORMATTER_DISPLAY);
+        return epochSecondtoDateTime(epochSecond, DateTimeClass.local.className, Formatter.DATETIME_DISPLAY);
     }
 
     public static String epochSecondToFormalDateTime(long epochSecond) {
-        return epochSecondtoDateTime(epochSecond, DateTimeClass.local.className, FORMATTER_FORMAL);
+        return epochSecondtoDateTime(epochSecond, DateTimeClass.local.className, Formatter.DATETIME_FORMAL);
     }
 
     private static String epochSecondtoDateTime(long epochSecond, String dateTimeClassString, DateTimeFormatter formatter) {
