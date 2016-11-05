@@ -23,7 +23,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <TableView fx:id="cheatSheet" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+      <TableView fx:id="cheatSheet" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <columns>
           <TableColumn editable="false" maxWidth="1000.0" minWidth="-1.0" prefWidth="-1.0" text="Commands" />
             <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Formats" />

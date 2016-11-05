@@ -47,7 +47,7 @@ public class MainWindow extends UiPart {
 
     // Handles to elements of this Ui container
     private VBox rootLayout;
-    private Scene scene;
+    private Scene mainScene;
 
     private String taskManName;
 
@@ -108,8 +108,8 @@ public class MainWindow extends UiPart {
         setIcon(ICON);
         setWindowMinSize();
         setWindowDefaultSize(prefs);
-        scene = new Scene(rootLayout);
-        primaryStage.setScene(scene);
+        mainScene = new Scene(rootLayout);
+        primaryStage.setScene(mainScene);
 
         setAccelerators();
     }
