@@ -120,7 +120,7 @@ public class MainWindow extends UiPart {
 
     private void setAccelerators() {
         helpMenuItem.setAccelerator(KeyCombination.valueOf("F1"));
-        //resultMenuItem.setAccelerator(KeyCombination.valueOf("F1"));
+        resultMenuItem.setAccelerator(KeyCombination.valueOf("F2"));
     }
 
     void fillInnerParts() {
@@ -234,26 +234,24 @@ public class MainWindow extends UiPart {
         }
         primaryStage.setScene(helpScene);
     }
+    
+    @FXML
+    public void handleResult() {
+        resultDisplay.getResultDisplayArea().requestFocus();
+    }
 
     public void show() {
         primaryStage.show();
     }
 
     /**
-     * Closes the application.
-     */
-    @FXML
-    private void handleExit() {
-        raise(new ExitAppRequestEvent());
-    }
-    
+     * Handle letter key press to focus on command box..
+     */  
     @FXML
     public void handleKeyPressed(KeyEvent key){
        KeyCode code = key.getCode();
        if (code.isLetterKey()){
            commandBox.getTextField().requestFocus();
-       } else if (code.isFunctionKey()) {
-           resultDisplay.getResultDisplayArea().requestFocus();
        } else {
            return;
        }
