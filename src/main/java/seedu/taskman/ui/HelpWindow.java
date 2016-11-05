@@ -19,13 +19,14 @@ import java.util.logging.Logger;
 /**
  * Controller for a help page
  */
-public class HelpScene extends UiPart {
+public class HelpWindow extends UiPart {
 
-    private static final Logger logger = LogsCenter.getLogger(HelpScene.class);
-    private static final String FXML = "HelpScene.fxml";
+    private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
+    private static final String FXML = "HelpWindow.fxml";
 
     private VBox mainPane;
     private Scene previousScene;
+    private Scene helpScene;
 
     @FXML
     private MenuItem backMenuItem;
@@ -33,11 +34,11 @@ public class HelpScene extends UiPart {
     @FXML
     private TableView cheatSheet;
 
-    public static HelpScene load(Stage primaryStage) {
+    public static HelpWindow load(Stage primaryStage, Scene mainScene) {
         logger.fine("Showing help page about the application.");
-        HelpScene helpScene = UiPartLoader.loadUiPart(primaryStage, new HelpScene());
-        helpScene.configure();
-        return helpScene;
+        HelpWindow helpWindow = UiPartLoader.loadUiPart(primaryStage, new HelpWindow());
+        helpWindow.configure(mainScene);
+        return helpWindow;
     }
 
     @Override
@@ -50,19 +51,19 @@ public class HelpScene extends UiPart {
         return FXML;
     }
 
-    private void configure() {
-        previousScene = primaryStage.getScene();
-        Scene scene = new Scene(mainPane);
-        primaryStage.setScene(scene);
+    private void configure(Scene mainScene) {
+        previousScene = mainScene;
+        helpScene = new Scene(mainPane);
+        primaryStage.setScene(helpScene);
         setAccelerators();
     }
     
     private void setAccelerators() {
-        backMenuItem.setAccelerator(KeyCombination.valueOf("F1"));
+        backMenuItem.setAccelerator(KeyCombination.valueOf("Esc"));
     }
 
-    public void show() {
-        primaryStage.show();
+    public Scene getScene() {
+        return helpScene;
     }
     
     /**

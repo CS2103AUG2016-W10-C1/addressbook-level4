@@ -48,6 +48,7 @@ public class MainWindow extends UiPart {
     // Handles to elements of this Ui container
     private VBox rootLayout;
     private Scene mainScene;
+    private Scene helpScene;
 
     private String taskManName;
 
@@ -224,7 +225,10 @@ public class MainWindow extends UiPart {
 
     @FXML
     public void handleHelp() {
-        HelpScene.load(primaryStage);
+        if (helpScene == null) {
+            helpScene = HelpWindow.load(primaryStage, mainScene).getScene();
+        }
+        primaryStage.setScene(helpScene);
     }
 
     public void show() {
