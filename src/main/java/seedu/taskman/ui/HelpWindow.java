@@ -59,19 +59,11 @@ public class HelpWindow extends UiPart {
     }
     
     private void setAccelerators() {
-        backMenuItem.setAccelerator(KeyCombination.valueOf("Esc"));
+        backMenuItem.setAccelerator(KeyCombination.valueOf("F1"));
     }
 
     public Scene getScene() {
         return helpScene;
-    }
-    
-    /**
-     * Closes the application.
-     */
-    @FXML
-    private void handleExit() {
-        raise(new ExitAppRequestEvent());
     }
     
     @FXML

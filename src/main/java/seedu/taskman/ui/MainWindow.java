@@ -53,10 +53,10 @@ public class MainWindow extends UiPart {
     private String taskManName;
 
     @FXML
-    private AnchorPane commandBoxPlaceholder;
-
-    @FXML
     private MenuItem helpMenuItem;
+    
+    @FXML
+    private AnchorPane commandBoxPlaceholder;
 
     @FXML
     private AnchorPane schedulePanelPlaceholder;
@@ -112,11 +112,29 @@ public class MainWindow extends UiPart {
         mainScene = new Scene(rootLayout);
         primaryStage.setScene(mainScene);
 
+        //Add keyboard shortcuts
         setAccelerators();
+        addKeyPressedFilters();
     }
-
+    
     private void setAccelerators() {
         helpMenuItem.setAccelerator(KeyCombination.valueOf("F1"));
+    }
+    
+    /**
+     * Handle letter key presses.
+     */
+    private void addKeyPressedFilters() {
+        mainScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            KeyCode code = event.getCode();
+            if (code.isLetterKey()){
+                commandBox.getTextField().requestFocus();
+            } else if (code.equals(KeyCode.F1)) {
+                handleHelp();
+            } else if (code.equals(KeyCode.F4)) {
+                handleResult();
+            }
+        });
     }
 
     void fillInnerParts() {
@@ -230,29 +248,13 @@ public class MainWindow extends UiPart {
         }
         primaryStage.setScene(helpScene);
     }
+    
+    public void handleResult() {
+        resultDisplay.getResultDisplayArea().requestFocus();
+    }
 
     public void show() {
         primaryStage.show();
-    }
-
-    /**
-     * Closes the application.
-     */
-    @FXML
-    private void handleExit() {
-        raise(new ExitAppRequestEvent());
-    }
-    
-    @FXML
-    public void handleKeyPressed(KeyEvent key){
-       KeyCode code = key.getCode();
-       if (code.isLetterKey()){
-           commandBox.getTextField().requestFocus();
-       } else if (code.isFunctionKey()) {
-           resultDisplay.getResultDisplayArea().requestFocus();
-       } else {
-           return;
-       }
     }
     
     private void configureFocus() {
