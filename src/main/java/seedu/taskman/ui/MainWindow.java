@@ -56,12 +56,6 @@ public class MainWindow extends UiPart {
     private AnchorPane commandBoxPlaceholder;
 
     @FXML
-    private MenuItem helpMenuItem;
-    
-    @FXML
-    private MenuItem resultMenuItem;
-
-    @FXML
     private AnchorPane schedulePanelPlaceholder;
     
     @FXML
@@ -115,12 +109,24 @@ public class MainWindow extends UiPart {
         mainScene = new Scene(rootLayout);
         primaryStage.setScene(mainScene);
 
-        setAccelerators();
+        //Add keyboard shortcuts
+        addKeyPressedFilters();
     }
-
-    private void setAccelerators() {
-        helpMenuItem.setAccelerator(KeyCombination.valueOf("F1"));
-        resultMenuItem.setAccelerator(KeyCombination.valueOf("F2"));
+    
+    /**
+     * Handle letter key presses.
+     */
+    private void addKeyPressedFilters() {
+        mainScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            KeyCode code = event.getCode();
+            if (code.isLetterKey()){
+                commandBox.getTextField().requestFocus();
+            } else if (code.equals(KeyCode.F1)) {
+                handleHelp();
+            } else if (code.equals(KeyCode.F4)) {
+                handleResult();
+            }
+        });
     }
 
     void fillInnerParts() {
@@ -235,26 +241,12 @@ public class MainWindow extends UiPart {
         primaryStage.setScene(helpScene);
     }
     
-    @FXML
     public void handleResult() {
         resultDisplay.getResultDisplayArea().requestFocus();
     }
 
     public void show() {
         primaryStage.show();
-    }
-
-    /**
-     * Handle letter key press to focus on command box..
-     */  
-    @FXML
-    public void handleKeyPressed(KeyEvent key){
-       KeyCode code = key.getCode();
-       if (code.isLetterKey()){
-           commandBox.getTextField().requestFocus();
-       } else {
-           return;
-       }
     }
     
     private void configureFocus() {

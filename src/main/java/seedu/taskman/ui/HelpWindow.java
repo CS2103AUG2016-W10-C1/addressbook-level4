@@ -66,14 +66,6 @@ public class HelpWindow extends UiPart {
         return helpScene;
     }
     
-    /**
-     * Closes the application.
-     */
-    @FXML
-    private void handleExit() {
-        raise(new ExitAppRequestEvent());
-    }
-    
     @FXML
     public void handleBack() {
         primaryStage.setScene(previousScene);
