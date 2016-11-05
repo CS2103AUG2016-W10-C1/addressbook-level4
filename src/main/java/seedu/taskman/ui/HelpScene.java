@@ -19,10 +19,10 @@ import java.util.logging.Logger;
 /**
  * Controller for a help page
  */
-public class HelpWindow extends UiPart {
+public class HelpScene extends UiPart {
 
-    private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
-    private static final String FXML = "HelpWindow.fxml";
+    private static final Logger logger = LogsCenter.getLogger(HelpScene.class);
+    private static final String FXML = "HelpScene.fxml";
 
     private VBox mainPane;
     private Scene previousScene;
@@ -33,11 +33,11 @@ public class HelpWindow extends UiPart {
     @FXML
     private TableView cheatSheet;
 
-    public static HelpWindow load(Stage primaryStage) {
+    public static HelpScene load(Stage primaryStage) {
         logger.fine("Showing help page about the application.");
-        HelpWindow helpWindow = UiPartLoader.loadUiPart(primaryStage, new HelpWindow());
-        helpWindow.configure();
-        return helpWindow;
+        HelpScene helpScene = UiPartLoader.loadUiPart(primaryStage, new HelpScene());
+        helpScene.configure();
+        return helpScene;
     }
 
     @Override

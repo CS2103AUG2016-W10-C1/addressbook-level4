@@ -224,7 +224,7 @@ public class MainWindow extends UiPart {
 
     @FXML
     public void handleHelp() {
-        HelpWindow.load(primaryStage);
+        HelpScene.load(primaryStage);
     }
 
     public void show() {
