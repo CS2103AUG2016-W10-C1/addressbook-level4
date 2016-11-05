@@ -57,6 +57,9 @@ public class MainWindow extends UiPart {
 
     @FXML
     private MenuItem helpMenuItem;
+    
+    @FXML
+    private MenuItem resultMenuItem;
 
     @FXML
     private AnchorPane schedulePanelPlaceholder;
@@ -117,6 +120,7 @@ public class MainWindow extends UiPart {
 
     private void setAccelerators() {
         helpMenuItem.setAccelerator(KeyCombination.valueOf("F1"));
+        //resultMenuItem.setAccelerator(KeyCombination.valueOf("F1"));
     }
 
     void fillInnerParts() {
