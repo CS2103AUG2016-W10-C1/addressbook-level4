@@ -1,21 +1,6 @@
 package seedu.taskman.logic.parser;
 
-import seedu.taskman.logic.commands.AddCommand;
-import seedu.taskman.logic.commands.ClearCommand;
-import seedu.taskman.logic.commands.Command;
-import seedu.taskman.logic.commands.CompleteCommand;
-import seedu.taskman.logic.commands.DeleteCommand;
-import seedu.taskman.logic.commands.EditCommand;
-import seedu.taskman.logic.commands.ExitCommand;
-import seedu.taskman.logic.commands.HelpCommand;
-import seedu.taskman.logic.commands.HistoryCommand;
-import seedu.taskman.logic.commands.IncorrectCommand;
-import seedu.taskman.logic.commands.ListCommand;
-import seedu.taskman.logic.commands.AddECommand;
-import seedu.taskman.logic.commands.SelectCommand;
-import seedu.taskman.logic.commands.StoragelocCommand;
-import seedu.taskman.logic.commands.TagsCommand;
-import seedu.taskman.logic.commands.UndoCommand;
+import seedu.taskman.logic.commands.*;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -57,8 +42,7 @@ public class CommandParser {
         PANEL("(?<" + Group.panel.name + ">[dsf])"),
         TARGET_INDEX("(?<" + Group.targetIndex.name + ">[0-9]+)"),
         TITLE("(?<" + Group.title.name + ">[^/]+)"),
-        KEYWORDS("(?<" + Group.keywords.name + ">[^/]+)"),
-        OPTIONAL_KEYWORDS("(?<" + Group.keywords.name + ">(?:\\s+[^/]+)*)?"),
+        OPTIONAL_KEYWORDS("(?<" + Group.keywords.name + ">(?:\\s*[^/]+)*)?"),
         OPTIONAL_DEADLINE("(?:\\s+d/(?<" + Group.deadline.name + ">[^/]+))?"),
         OPTIONAL_SCHEDULE("(?:\\s+s/(?<" + Group.schedule.name + ">[^/]+))?"),
         OPTIONAL_STATUS("(?:\\s+c/(?<" + Group.status.name + ">[^/]+))?"),
