@@ -20,9 +20,9 @@ public class ListCommand extends Command {
 
     public static final String COMMAND_WORD = "list";
     
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all entries whose titles contain any of "
-            + "the specified keywords (case-sensitive) or tags and filters them out in their respective panels.\n"
-            + "Parameters: [KEYWORDS]... [t/TAGS]...\n"
+    public static final String MESSAGE_USAGE = "Find all activities whose titles contain "
+            + "the specified keywords or holds the specified tags.\n"
+            + "Parameters: [PANEL]... [KEYWORDS]... [t/TAGS]...\n"
             + "Example: " + COMMAND_WORD + " d homework t/engineering";
 
     public static final String MESSAGE_FEEDBACK_DEFAULT = "All entries are listed.";
@@ -66,8 +66,8 @@ public class ListCommand extends Command {
                     matcherPaneless.group(CommandParser.Group.tagArguments.name)
             );
         } else {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    ListCommand.MESSAGE_USAGE));
+            return new IncorrectCommand(MESSAGE_INVALID_COMMAND_FORMAT
+                    + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE);
         }
     }
 

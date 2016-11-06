@@ -17,9 +17,8 @@ public class DeleteCommand extends Command {
 
     public static final String COMMAND_WORD = "delete";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the entry identified by the index number used in the listings.\n"
-            + "Parameters: INDEX (must be a positive whole number)\n"
+    public static final String MESSAGE_USAGE = "Delete an activity.\n"
+            + "Parameters: INDEX\n"
             + "Example: " + COMMAND_WORD + " f1";
 
     public static final String MESSAGE_DELETE_EVENT_SUCCESS = "Deleted task: %1$s";
@@ -36,8 +35,8 @@ public class DeleteCommand extends Command {
     public static Command prepareDelete(String arguments) {
         Optional<Pair<Activity.PanelType, Integer>> panelWithIndex = parsePanelTypeWithIndexOnly(arguments);
         if(!panelWithIndex.isPresent()){
-            return new IncorrectCommand(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
+            return new IncorrectCommand(MESSAGE_INVALID_COMMAND_FORMAT
+                    + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE);
         }
         Pair<Activity.PanelType, Integer> pair = panelWithIndex.get();
         return new DeleteCommand(pair.getKey(), pair.getValue());

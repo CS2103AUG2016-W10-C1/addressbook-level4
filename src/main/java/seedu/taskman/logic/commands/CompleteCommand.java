@@ -24,7 +24,7 @@ public class CompleteCommand extends Command {
     public static final String COMMAND_WORD = "complete";
     private static final String STATUS_COMPLETE = "complete";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Marks an incomplete task as complete./n"
+    public static final String MESSAGE_USAGE = "Mark a task as complete.\n"
             + "Parameters: INDEX\n"
             + "Example: " + COMMAND_WORD
             + " d1";
@@ -46,8 +46,8 @@ public class CompleteCommand extends Command {
     public static Command prepareComplete(String arguments) {
         Optional<Pair<Activity.PanelType, Integer>> panelIndexPair = parsePanelTypeWithIndexOnly(arguments);
         if(!panelIndexPair.isPresent()){
-            return new IncorrectCommand(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
+            return new IncorrectCommand(MESSAGE_INVALID_COMMAND_FORMAT
+                    + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE);
         }
 
         return new CompleteCommand(
