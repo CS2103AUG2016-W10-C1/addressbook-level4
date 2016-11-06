@@ -50,7 +50,7 @@ public class Schedule {
             "Bad duration, %1$s");
 
     private static final String SCHEDULE_DIVIDER_GROUP = "((?:, )|(?: to )|(?: for ))";
-    private static final String SCHEDULE_VALIDATION_REGEX = "(.*)" + SCHEDULE_DIVIDER_GROUP + "(.*)";
+    private static final String SCHEDULE_VALIDATION_REGEX = "(.*?)" + SCHEDULE_DIVIDER_GROUP + "(.*)";
 
     public final long startEpochSecond;
     public final long endEpochSecond;
