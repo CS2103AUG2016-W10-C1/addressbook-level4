@@ -13,10 +13,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Schedule {
-    private enum ScheduleDivider {
+    public enum ScheduleDivider {
         DURATION    ("for"),
-        DURATION_ALTERNATIVE  (","),
-        SCHEDULE    ("to");
+        SCHEDULE    ("to"),
+        SCHEDULE_ALTERNATIVE(",");
 
         public String string;
 
@@ -37,11 +37,11 @@ public class Schedule {
                     "2. DATETIME %2$s DATETIME\n" +
                     "3. DATETIME %3$s DATETIME\n",
                     ScheduleDivider.SCHEDULE.string,
-                    ScheduleDivider.DURATION_ALTERNATIVE.string,
+                    ScheduleDivider.SCHEDULE_ALTERNATIVE.string,
                     ScheduleDivider.DURATION.string);
 
     public static final String ERROR_NEGATIVE_DURATION = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
-            "Duration is negative.");
+            "Duration is negative");
     public static final String ERROR_BAD_DATETIME_START = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
             "Bad start datetime, %1$s");
     public static final String ERROR_BAD_DATETIME_END = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
@@ -118,14 +118,19 @@ public class Schedule {
     }
 
     private long parseRawEndTime(String rawEndTime, long startEpochSecond) throws IllegalValueException {
+        // User could be referring to a future occurrence of the specified end time
+        // but did not specify as such. Explicitly indicate 'next' in end time if required
+
+        // Illustration of problem:
+        // Time now - Sunday 10pm,
+        // Inputs: Start Time - Friday, End Time - Monday
+        // Since next Monday comes before next Friday, this input is illegal if not rectified
+
         try {
             long candidateResult = DateTimeParser.getEpochTime(rawEndTime);
 
-            // User could be referring to the next occurrence of the specified end time
-            // but has forgotten to specify as such
-            // Eg: Time now - Wednesday 4pm, End time input - Monday 4pm
-            boolean tryNextOccurrence = startEpochSecond > candidateResult;
-            if (tryNextOccurrence) {
+            boolean tryNextOccurrenceOfEndTime = startEpochSecond > candidateResult;
+            if (tryNextOccurrenceOfEndTime) {
                 String revisedEndTime = "next " + rawEndTime;
                 return DateTimeParser.getEpochTime(revisedEndTime);
             } else {
