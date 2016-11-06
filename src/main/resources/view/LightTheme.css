@@ -3,9 +3,10 @@
 }
 
 .menu-bar .label {
-    -fx-font-size: 14pt;
+    -fx-font-size: 11pt;
     -fx-text-fill: white;
     -fx-opacity: 0.9;
+    -fx-padding: 7 0 0 0;
 }
 
 .context-menu {
@@ -13,8 +14,18 @@
 }
 
 .context-menu .label {
+    -fx-font-size: 10pt;
     -fx-text-fill: white;
     -fx-opacity: 0.9;
+}
+
+.split-pane {
+    -fx-background-color: derive(#576082, 20%);
+}
+
+.split-pane:horizontal .split-pane-divider {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
 }
 
 .status-bar {
@@ -40,7 +51,8 @@
 }
 
 .panel-title {
-
+    -fx-font-size: 14pt;
+    -fx-font-weight: bold;
 }
 
 .label-amber {
