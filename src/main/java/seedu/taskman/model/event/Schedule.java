@@ -42,11 +42,11 @@ public class Schedule {
 
     public static final String ERROR_NEGATIVE_DURATION = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
             "Duration is negative");
-    public static final String ERROR_BAD_DATETIME_START = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
+    public static final String ERROR_FORMAT_BAD_DATETIME_START = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
             "Bad start datetime, %1$s");
-    public static final String ERROR_BAD_DATETIME_END = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
+    public static final String ERROR_FORMAT_BAD_DATETIME_END = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
             "Bad end datetime, %1$s");
-    public static final String ERROR_BAD_DURATION = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
+    public static final String ERROR_FORMAT_BAD_DURATION = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
             "Bad duration, %1$s");
 
     private static final String SCHEDULE_DIVIDER_GROUP = "((?:, )|(?: to )|(?: for ))";
@@ -110,7 +110,7 @@ public class Schedule {
         } catch (DateTimeParser.IllegalDateTimeException e) {
 
             String errorMessage = Formatter.appendWithNewlines(
-                    String.format(ERROR_BAD_DATETIME_START, rawStartTime),
+                    String.format(ERROR_FORMAT_BAD_DATETIME_START, rawStartTime),
                     e.getMessage()
             );
             throw new IllegalValueException(errorMessage);
@@ -126,10 +126,11 @@ public class Schedule {
         // Inputs: Start Time - Friday, End Time - Monday
         // Since next Monday comes before next Friday, this input is illegal if not rectified
 
+        boolean tryNextOccurrenceOfEndTime = false;
         try {
             long candidateResult = DateTimeParser.getEpochTime(rawEndTime);
 
-            boolean tryNextOccurrenceOfEndTime = startEpochSecond > candidateResult;
+            tryNextOccurrenceOfEndTime = startEpochSecond > candidateResult;
             if (tryNextOccurrenceOfEndTime) {
                 String revisedEndTime = "next " + rawEndTime;
                 return DateTimeParser.getEpochTime(revisedEndTime);
@@ -138,11 +139,18 @@ public class Schedule {
             }
 
         } catch (DateTimeParser.IllegalDateTimeException e) {
-
             String errorMessage = Formatter.appendWithNewlines(
-                    String.format(ERROR_BAD_DATETIME_END, rawEndTime),
-                    e.getMessage()
+                    String.format(ERROR_FORMAT_BAD_DATETIME_END, rawEndTime), e.getMessage()
             );
+
+            // appending "next" may give unpredictable errors
+            // return the more sensible response of a negative duration,
+            // since it did parse correctly before our attempt at fixing the error
+
+            if (tryNextOccurrenceOfEndTime) {
+                errorMessage = ERROR_NEGATIVE_DURATION;
+            }
+
             throw new IllegalValueException(errorMessage);
         }
     }
@@ -153,7 +161,7 @@ public class Schedule {
         } catch (DateTimeParser.IllegalDateTimeException e) {
 
             String errorMessage = Formatter.appendWithNewlines(
-                    String.format(ERROR_BAD_DURATION, rawDuration),
+                    String.format(ERROR_FORMAT_BAD_DURATION, rawDuration),
                     e.getMessage()
             );
             throw new IllegalValueException(errorMessage);

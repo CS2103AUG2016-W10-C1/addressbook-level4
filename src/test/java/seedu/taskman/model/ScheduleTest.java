@@ -15,6 +15,7 @@ import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
 import static java.time.temporal.TemporalAdjusters.next;
+import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
 
 public class ScheduleTest {
@@ -23,8 +24,8 @@ public class ScheduleTest {
     @Test
     public void schedule_twoDateTimes_success() throws IllegalValueException {
 
-        String start = "05/07/2016 00:01";
-        String end = "07/07/2016 00:02";
+        String start = "05-07-2016 00:01";
+        String end = "07-07-2016 00:02";
 
         Schedule schedule = new Schedule(start + " " +
                 Schedule.ScheduleDivider.SCHEDULE + " " +
@@ -47,7 +48,7 @@ public class ScheduleTest {
 
     @Test
     public void schedule_dateTimeWithDuration_success() throws IllegalValueException {
-        String start = "05/07/2016 00:01";
+        String start = "05-07-2016 00:01";
         int numHours = 2, numMinutes = 1;
         String duration =
                 numHours + " hours, " +
@@ -106,32 +107,51 @@ public class ScheduleTest {
 
     @Test
     public void schedule_useBadDivider_failureWithCorrectMessage() throws IllegalValueException {
-        String start = "05/07/2016 0001";
-        String end = "07/07/2016 0002";
+        String start = "05-07-2016 00:01";
+        String end = "07-07-2016 00:02";
 
-        exception.expect(IllegalValueException.class);
+        exception.expectMessage(Schedule.MESSAGE_SCHEDULE_CONSTRAINTS);
         new Schedule(start + " bad divider " + end);
     }
 
-    // TODO: write tests
     @Test
-    public void schedule_negativeDurationMainConstructor_failureWithCorrectMessage() {
+    public void schedule_negativeDurationMainConstructor_failureWithCorrectMessage() throws IllegalValueException {
+        String start = "07-07-2016 00:02";
+        String end = "05-07-2016 00:01";
+
+        exception.expectMessage(Schedule.ERROR_NEGATIVE_DURATION);
+        new Schedule(start + " " + Schedule.ScheduleDivider.SCHEDULE + " " + end);
+    }
+
+    @Test
+    public void schedule_negativeDurationConvenienceConstructor_failureWithCorrectMessage()
+            throws IllegalValueException {
+
+        long start = 10000;
+        long end = 1;
+        assertTrue(start > end);
+
+        exception.expectMessage(Schedule.ERROR_NEGATIVE_DURATION);
+        new Schedule(start, end);
 
     }
 
     @Test
-    public void schedule_negativeDurationConvenienceConstructor_failureWithCorrectMessage() {
+    public void schedule_unknownStartDateTime_failureWithCorrectMessage() throws IllegalValueException {
+        String start = "Unknown";
+        String end = "05-07-2016 00:01";
 
+        exception.expectMessage(String.format(Schedule.ERROR_FORMAT_BAD_DATETIME_START, start));
+        new Schedule(start + " " + Schedule.ScheduleDivider.SCHEDULE + " " + end);
     }
 
     @Test
-    public void schedule_unknownDateTime_failureWithCorrectMessage() {
+    public void schedule_unknownDuration_failureWithCorrectMessage() throws IllegalValueException {
+        String start = "05-07-2016 00:01";
+        String end = "Unknown";
 
-    }
-
-    @Test
-    public void schedule_unknownDuration_failureWithCorrectMessage() {
-
+        exception.expectMessage(String.format(Schedule.ERROR_FORMAT_BAD_DATETIME_END, end));
+        new Schedule(start + " " + Schedule.ScheduleDivider.SCHEDULE + " " + end);
     }
 
     //@@author
