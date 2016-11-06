@@ -9,8 +9,9 @@ import seedu.taskman.commons.exceptions.IllegalValueException;
  */
 public class Tag {
 
-    public static final String MESSAGE_TAG_CONSTRAINTS = "Tags names should be alphanumeric";
-    public static final String TAG_VALIDATION_REGEX = "\\p{Alnum}+";
+    public static final String MESSAGE_TAG_CONSTRAINTS = "Tag name should form a word. " +
+            "All punctuation except '/' is accepted";
+    public static final String TAG_VALIDATION_REGEX = "[\\w\\p{Punct}&&[^/]]+";
 
     public String tagName;
 
