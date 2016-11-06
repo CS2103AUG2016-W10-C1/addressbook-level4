@@ -37,15 +37,26 @@ public class DateTimeParserTest {
 
     @Test
     public void parse_dateTimeWithTimeZone_exceptionWithAppropriateMessage() {
-        String[] testCases = {"07-05-2016 UTC+3 ", "07-05-2016 CST"};
+        String[] testCases = {"07-05-2016 UTC+3 ",
+                "07-05-2016 CST",
+                "yesterday 4pm" // contains 'est', but should not throw exception
+        };
 
         for (String testString : testCases) {
             try {
                 DateTimeParser.getEpochTime(testString);
             } catch (DateTimeParser.IllegalDateTimeException e) {
-                assertEquals(DateTimeParser.MESSAGE_ERROR_TIMEZONE_NOT_SUPPORTED, e.getMessage());
+                assertTrue(e.getMessage().contains(DateTimeParser.MESSAGE_ERROR_TIMEZONE_NOT_SUPPORTED));
             }
         }
+    }
+
+    @Test
+    public void parse_dateTimeWithoutTimezone_success() throws DateTimeParser.IllegalDateTimeException {
+        String testCase = "yesterday 4pm"; // contains 'est', but should not throw exception
+
+        // assume that parsing gives the correct result, it's not our job here
+        DateTimeParser.getEpochTime(testCase);
     }
 
     @Test
