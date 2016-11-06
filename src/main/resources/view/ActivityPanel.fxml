@@ -9,7 +9,7 @@
    <children>
       <TitledPane fx:id="titledPane" collapsible="false" text="&lt;panelTitle&gt;">
          <content>
-            <ListView fx:id="listView" prefHeight="200.0" prefWidth="202.0" />
+            <ListView fx:id="listView" prefHeight="200.0" prefWidth="202.0" styleClass="activity-list-view" />
          </content>
          <font>
             <Font name="System Bold" size="12.0" />

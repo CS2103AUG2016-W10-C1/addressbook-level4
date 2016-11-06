@@ -44,6 +44,16 @@
     -fx-background-color: derive(#576082, 20%);
 }
 
+.activity-list-view {
+    -fx-border-width: 3px;
+    -fx-border-color: -fx-color;
+}
+
+.activity-list-view:focused {
+    -fx-border-width: 3px;
+    -fx-border-color: -fx-focus-color;
+}
+
 .label-id {
     -fx-font-size: 14px;
 }
