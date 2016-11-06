@@ -20,9 +20,9 @@ public class ListCommand extends Command {
 
     public static final String COMMAND_WORD = "list";
     
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all entries whose titles contain any of "
-            + "the specified keywords (case-sensitive) or tags and filters them out in their respective panels.\n"
-            + "Parameters: [KEYWORDS]... [t/TAGS]...\n"
+    public static final String MESSAGE_USAGE = "Find all activities whose titles contain "
+            + "the specified keywords or holds the specified tags.\n"
+            + "Parameters: [PANEL]... [KEYWORDS]... [t/TAGS]...\n"
             + "Example: " + COMMAND_WORD + " d homework t/engineering";
 
     public static final String MESSAGE_FEEDBACK_DEFAULT = "All entries are listed.";
@@ -31,12 +31,12 @@ public class ListCommand extends Command {
     public static final String MESSAGE_FEEDBACK_WORD_SEPARATOR = " ";
 
     private static final Pattern SPECIFY_PANEL_ARGS_FORMAT =
-            Pattern.compile("" + CommandParser.ArgumentPattern.PANEL + "?"
+            Pattern.compile("" + CommandParser.ArgumentPattern.PANEL
                     + CommandParser.ArgumentPattern.OPTIONAL_KEYWORDS
                     + CommandParser.ArgumentPattern.OPTIONAL_TAGS);
 
-    private static final Pattern SPECIFY_PANELESS_ARGS_FORMAT =
-            Pattern.compile("" + CommandParser.ArgumentPattern.KEYWORDS
+    private static final Pattern SPECIFY_NO_PANEL_ARGS_FORMAT =
+            Pattern.compile("" + CommandParser.ArgumentPattern.OPTIONAL_KEYWORDS
                     + CommandParser.ArgumentPattern.OPTIONAL_TAGS);
 
     private final Activity.PanelType panelType;
@@ -46,7 +46,7 @@ public class ListCommand extends Command {
     public static Command prepareList(String args) {
         final String trimmedArgs = args.trim();
         final Matcher matcherWithPanel = SPECIFY_PANEL_ARGS_FORMAT.matcher(trimmedArgs);
-        final Matcher matcherPaneless = SPECIFY_PANELESS_ARGS_FORMAT.matcher(trimmedArgs);
+        final Matcher matcherWithoutPanel = SPECIFY_NO_PANEL_ARGS_FORMAT.matcher(trimmedArgs);
 
         if (trimmedArgs.isEmpty()) {
             return new ListCommand(
@@ -60,14 +60,14 @@ public class ListCommand extends Command {
                     matcherWithPanel.group(CommandParser.Group.keywords.name),
                     matcherWithPanel.group(CommandParser.Group.tagArguments.name)
             );
-        } else if(matcherPaneless.matches()) {
+        } else if(matcherWithoutPanel.matches()) {
             return allPanelsListCommand(
-                    matcherPaneless.group(CommandParser.Group.keywords.name),
-                    matcherPaneless.group(CommandParser.Group.tagArguments.name)
+                    matcherWithoutPanel.group(CommandParser.Group.keywords.name),
+                    matcherWithoutPanel.group(CommandParser.Group.tagArguments.name)
             );
         } else {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    ListCommand.MESSAGE_USAGE));
+            return new IncorrectCommand(MESSAGE_INVALID_COMMAND_FORMAT
+                    + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE);
         }
     }
 

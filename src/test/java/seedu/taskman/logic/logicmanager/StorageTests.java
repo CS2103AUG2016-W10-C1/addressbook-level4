@@ -14,6 +14,7 @@ import seedu.taskman.model.TaskMan;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 public class StorageTests extends LogicManagerTestBase {
 
@@ -77,13 +78,15 @@ public class StorageTests extends LogicManagerTestBase {
     @Test
     public void execute_storageloc_whitespace() throws Exception {
         assert_storage_location(StoragelocCommand.COMMAND_WORD + "     ",
-                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, StoragelocCommand.MESSAGE_USAGE), ConfigData.DEFAULT_TASK_MAN_FILE_PATH, false);
+                MESSAGE_INVALID_COMMAND_FORMAT + "\n" + StoragelocCommand.COMMAND_WORD + ": " + StoragelocCommand.MESSAGE_USAGE,
+                ConfigData.DEFAULT_TASK_MAN_FILE_PATH, false);
     }
 
     @Test
     public void execute_storageloc_empty() throws Exception {
         assert_storage_location(StoragelocCommand.COMMAND_WORD + "",
-                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, StoragelocCommand.MESSAGE_USAGE), ConfigData.DEFAULT_TASK_MAN_FILE_PATH, false);
+                MESSAGE_INVALID_COMMAND_FORMAT + "\n" + StoragelocCommand.COMMAND_WORD + ": " + StoragelocCommand.MESSAGE_USAGE,
+                ConfigData.DEFAULT_TASK_MAN_FILE_PATH, false);
     }
 
     @Test

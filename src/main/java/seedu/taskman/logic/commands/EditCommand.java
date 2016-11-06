@@ -30,7 +30,7 @@ public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits an existing entry.\n"
+    public static final String MESSAGE_USAGE = "Edit an activity.\n"
             + "Parameters: INDEX [TITLE] [d/DEADLINE] [s/SCHEDULE] [t/TAGS]...\n"
             + "Example: " + COMMAND_WORD
             + " s2 s/mon 10am, tue 2pm";
@@ -71,7 +71,8 @@ public class EditCommand extends Command {
         final Matcher matcher = TASK_EDIT_ARGS_FORMAT.matcher(args.trim());
 
         if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
+            return new IncorrectCommand(MESSAGE_INVALID_COMMAND_FORMAT
+                    + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE);
         }
 
         String panelTypeRaw = matcher.group(CommandParser.Group.panel.name).trim();

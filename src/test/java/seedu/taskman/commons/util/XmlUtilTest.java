@@ -52,8 +52,8 @@ public class XmlUtilTest {
     @Test
     public void getDataFromFile_validFile_validResult() throws Exception {
         XmlSerializableTaskMan dataFromFile = XmlUtil.getDataFromFile(VALID_FILE, XmlSerializableTaskMan.class);
-        assertEquals(9, dataFromFile.getActivityList().size());
-        assertEquals(0, dataFromFile.getTagList().size());
+        assertEquals(5, dataFromFile.getActivityList().size());
+        assertEquals(2, dataFromFile.getTagList().size());
     }
 
     @Test
@@ -80,14 +80,13 @@ public class XmlUtilTest {
         XmlSerializableTaskMan dataToWrite = new XmlSerializableTaskMan(new TaskMan());
         XmlUtil.saveDataToFile(TEMP_FILE, dataToWrite);
         XmlSerializableTaskMan dataFromFile = XmlUtil.getDataFromFile(TEMP_FILE, XmlSerializableTaskMan.class);
-        assertEquals((new TaskMan(dataToWrite)).toString(), (new TaskMan(dataFromFile)).toString());
-        //TODO: use equality instead of string comparisons
+        assertEquals(new TaskMan(dataToWrite), new TaskMan(dataFromFile));
 
         TaskManBuilder builder = new TaskManBuilder(new TaskMan());
         dataToWrite = new XmlSerializableTaskMan(builder.withTask(TestUtil.generateSampleTaskData().get(0)).withTag("Friends").build());
 
         XmlUtil.saveDataToFile(TEMP_FILE, dataToWrite);
         dataFromFile = XmlUtil.getDataFromFile(TEMP_FILE, XmlSerializableTaskMan.class);
-        assertEquals((new TaskMan(dataToWrite)).toString(), (new TaskMan(dataFromFile)).toString());
+        assertEquals(new TaskMan(dataToWrite), new TaskMan(dataFromFile));
     }
 }

@@ -9,9 +9,8 @@ public class UndoCommand extends Command {
 
     public static final String COMMAND_WORD = "undo";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Undo the most recently executed command which changed the data in TaskMan. If a number between 1 to 10 inclusive is specified, that number of commands will be undone. "
-            + "Parameters: NUMBER (1 to 10 inclusive)\n"
+    public static final String MESSAGE_USAGE = "Undo the specified number of executed commands which modified data in TaskMan.\n"
+            + "Parameters: [NUMBER (1 to 10 inclusive)]\n"
             + "Example: " + COMMAND_WORD
             + " 2";
 
@@ -26,8 +25,8 @@ public class UndoCommand extends Command {
         } else {
             Optional<Integer> index = parseIndex(arguments);
             if(!index.isPresent()){
-                return new IncorrectCommand(
-                        String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
+                return new IncorrectCommand(MESSAGE_INVALID_COMMAND_FORMAT
+                        + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE);
             }
             return new UndoCommand(index.get());
         }

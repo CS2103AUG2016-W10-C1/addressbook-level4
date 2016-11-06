@@ -17,7 +17,7 @@ public class StoragelocCommand extends Command {
 
     public static final String COMMAND_WORD = "storageloc";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Saves to the specified file name and location and sets the application to load from the specified location in the future.\n"
+    public static final String MESSAGE_USAGE = "Save to the specified file name and location and sets the application to load from the specified location in the future.\n"
             + "Parameters: LOCATION\n"
             + "Example: " + COMMAND_WORD
             + " C:/Users/Owner/Desktop/new_tasks.xm\n"
@@ -39,8 +39,8 @@ public class StoragelocCommand extends Command {
         String trimmedArgs = args.trim();
 
         if (!STORAGELOC_ARGS_FORMAT.matcher(trimmedArgs).matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    MESSAGE_USAGE));
+            return new IncorrectCommand(MESSAGE_INVALID_COMMAND_FORMAT
+                    + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE);
         }
 
         if (trimmedArgs.equals(STORAGELOC_VIEW_KEYWORD)) {

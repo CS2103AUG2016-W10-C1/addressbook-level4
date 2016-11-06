@@ -21,16 +21,15 @@ public class SelectCommand extends Command {
 
     public static final String COMMAND_WORD = "select";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Selects the entry identified by the index number used in the latest TaskMan listing.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
+    public static final String MESSAGE_USAGE = "Select an activity.\n"
+            + "Parameters: INDEX\n"
             + "Example: " + COMMAND_WORD + " f2";
 
     public static Command prepareSelect(String arguments) {
         Optional<Pair<Activity.PanelType, Integer>> panelWithIndex = parsePanelTypeWithIndexOnly(arguments);
         if(!panelWithIndex.isPresent()){
-            return new IncorrectCommand(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
+            return new IncorrectCommand(MESSAGE_INVALID_COMMAND_FORMAT
+                    + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE);
         }
         Pair<Activity.PanelType, Integer> pair = panelWithIndex.get();
         return new SelectCommand(pair.getKey(), pair.getValue());
