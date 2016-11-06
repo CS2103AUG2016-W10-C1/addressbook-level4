@@ -7,7 +7,7 @@ public class TagsCommand extends Command {
 
     public static final String COMMAND_WORD = "tags";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows all existing tags.\n"
+    public static final String MESSAGE_USAGE = "Show all existing tags.\n"
                                                + "Example: " + COMMAND_WORD;
 
     public static final String TAG_STRING_HEADER = "Existing tags:\n";

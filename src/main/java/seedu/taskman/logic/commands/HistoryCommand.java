@@ -11,9 +11,9 @@ public class HistoryCommand extends Command {
 
     public static final String COMMAND_WORD = "history";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Shows the "
+    public static final String MESSAGE_USAGE = "Show the "
             + CAPACITY_UPP_BOUND_HISTORY_COMMAND
-            + " most recently executed commands the change the data.\n"
+            + " most recently executed commands that modified data.\n"
             + "Example: " + COMMAND_WORD;
 
     public static final String HISTORY_STRING_HEADER = "Most Recent History:\n";

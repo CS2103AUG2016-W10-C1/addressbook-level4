@@ -20,7 +20,7 @@ public class AddCommand extends Command {
 
     public static final String COMMAND_WORD = "add";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a task to TaskMan.\n"
+    public static final String MESSAGE_USAGE = "Add a task to TaskMan.\n"
             + "Parameters: TITLE [d/DEADLINE] [s/SCHEDULE] [t/TAGS]...\n"
             + "Example: " + COMMAND_WORD
             + " pay bills d/next fri 1900 s/tmr 1800 to tmr 1830 t/bills";
@@ -62,7 +62,8 @@ public class AddCommand extends Command {
     public static Command prepareAdd(String args) {
         final Matcher matcher = TASK_ADD_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
+            return new IncorrectCommand(MESSAGE_INVALID_COMMAND_FORMAT
+                    + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE);
         }
         try {
             return new AddCommand(

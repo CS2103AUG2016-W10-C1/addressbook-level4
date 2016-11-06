@@ -20,7 +20,7 @@ public class AddECommand extends Command {
 
     public static final String COMMAND_WORD = "adde";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds an event to TaskMan.\n"
+    public static final String MESSAGE_USAGE = "Add an event to TaskMan.\n"
             + "Parameters: TITLE s/SCHEDULE [t/TAGS]...\n"
             + "Example: " + COMMAND_WORD
             + " star gazing s/today 2300, today 2330 t/telescope";
@@ -59,7 +59,8 @@ public class AddECommand extends Command {
         final Matcher matcher = EVENT_MARK_ARGS_FORMAT.matcher(args.trim());
         // Validate arg string format
         if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
+            return new IncorrectCommand(MESSAGE_INVALID_COMMAND_FORMAT
+                    + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE);
         }
         try {
             return new AddECommand(
