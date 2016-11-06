@@ -190,11 +190,11 @@ public abstract class LogicManagerTestBase {
     /**
      * A utility class to generate test data.
      */
-    static class TestDataHelper {
+    protected static class TestDataHelper {
 
         public final String STRING_RANDOM = "random";
 
-        List<Activity> tasksToActivity(List<Task> tasks) {
+        protected List<Activity> tasksToActivity(List<Task> tasks) {
             ArrayList<Activity> activities = new ArrayList<>();
             for (Task task : tasks) {
                 activities.add(new Activity(task));
@@ -209,7 +209,7 @@ public abstract class LogicManagerTestBase {
          *
          * @param seed used to generate the task data field values
          */
-        Task generateFullTask(int seed) throws Exception {
+        protected Task generateFullTask(int seed) throws Exception {
             return new Task(
                     new Title("Task " + seed),
                     new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))),
@@ -226,7 +226,7 @@ public abstract class LogicManagerTestBase {
          *
          * @param seed used to generate the task data field values
          */
-        Task generateFloatingTask(int seed) throws Exception {
+        protected Task generateFloatingTask(int seed) throws Exception {
             return new Task(
                     new Title("Floating " + seed),
                     new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))),
@@ -242,7 +242,7 @@ public abstract class LogicManagerTestBase {
          *
          * @param seed used to generate the task data field values
          */
-        Event generateFullEvent(int seed) throws Exception {
+        protected Event generateFullEvent(int seed) throws Exception {
             return new Event(
                     new Title("Event " + seed),
                     new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))),
@@ -252,7 +252,7 @@ public abstract class LogicManagerTestBase {
         }
 
         @SuppressWarnings("OptionalGetWithoutIsPresent")
-        String generateAddCommand(Task task) {
+        protected String generateAddCommand(Task task) {
             StringBuilder command = new StringBuilder();
 
             command.append("add ");
@@ -273,7 +273,7 @@ public abstract class LogicManagerTestBase {
             return command.toString();
         }
 
-        String generateAddECommand(Event event) {
+        protected String generateAddECommand(Event event) {
             StringBuilder command = new StringBuilder();
 
             command.append("adde ");
@@ -291,7 +291,7 @@ public abstract class LogicManagerTestBase {
             return command.toString();
         }
 
-        String generateEditCommand(Model model, Activity.PanelType panel,  int targetIndex, Title title,
+        protected String generateEditCommand(Model model, Activity.PanelType panel,  int targetIndex, Title title,
                                    Deadline deadline, Schedule schedule, UniqueTagList tags) {
             Activity task = model.getActivityListForPanelType(panel).get(targetIndex);
             StringBuilder command = new StringBuilder();
@@ -329,7 +329,7 @@ public abstract class LogicManagerTestBase {
         /**
          * Generates an TaskMan with auto-generated tasks.
          */
-        TaskMan generateTaskMan(int numGenerated) throws Exception {
+        protected TaskMan generateTaskMan(int numGenerated) throws Exception {
             TaskMan taskMan = new TaskMan();
             addToTaskMan(taskMan, numGenerated);
             return taskMan;
@@ -338,7 +338,7 @@ public abstract class LogicManagerTestBase {
         /**
          * Generates an TaskMan based on the list of Tasks given.
          */
-        TaskMan generateTaskMan(List<Task> tasks) throws Exception {
+        protected TaskMan generateTaskMan(List<Task> tasks) throws Exception {
             TaskMan taskMan = new TaskMan();
             addToTaskMan(taskMan, tasks);
             return taskMan;
@@ -349,14 +349,14 @@ public abstract class LogicManagerTestBase {
          *
          * @param taskMan The TaskMan to which the Tasks will be added
          */
-        void addToTaskMan(TaskMan taskMan, int numGenerated) throws Exception {
+        protected void addToTaskMan(TaskMan taskMan, int numGenerated) throws Exception {
             addToTaskMan(taskMan, generateFullTaskList(numGenerated));
         }
 
         /**
          * Adds the given list of Tasks to the given TaskMan
          */
-        void addToTaskMan(TaskMan taskMan, List<Task> tasksToAdd) throws Exception {
+        protected void addToTaskMan(TaskMan taskMan, List<Task> tasksToAdd) throws Exception {
             for (Task p : tasksToAdd) {
                 taskMan.addActivity(p);
             }
@@ -367,14 +367,14 @@ public abstract class LogicManagerTestBase {
          *
          * @param taskMan The TaskMan to which the Events will be added
          */
-        void addEventsToTaskMan(TaskMan taskMan, int numGenerated) throws Exception {
+        protected void addEventsToTaskMan(TaskMan taskMan, int numGenerated) throws Exception {
             addEventsToTaskMan(taskMan, generateFullEventList(numGenerated));
         }
 
         /**
          * Adds the given list of Events to the given TaskMan
          */
-        void addEventsToTaskMan(TaskMan taskMan, List<Event> eventsToAdd) throws Exception {
+        protected void addEventsToTaskMan(TaskMan taskMan, List<Event> eventsToAdd) throws Exception {
             for (Event p : eventsToAdd) {
                 taskMan.addActivity(p);
             }
@@ -385,14 +385,14 @@ public abstract class LogicManagerTestBase {
          *
          * @param model The model to which the Tasks will be added
          */
-        void addToModel(Model model, int numGenerated) throws Exception {
+        protected void addToModel(Model model, int numGenerated) throws Exception {
             addToModel(model, generateFullTaskList(numGenerated));
         }
 
         /**
          * Adds the given list of Tasks to the given model
          */
-        void addToModel(Model model, List<? extends Event> tasksToAdd) throws Exception {
+        protected void addToModel(Model model, List<? extends Event> tasksToAdd) throws Exception {
             for (Event p : tasksToAdd) {
                 model.addActivity(p);
             }
@@ -403,7 +403,7 @@ public abstract class LogicManagerTestBase {
          *
          * @param model The model to which the Events will be added
          */
-        void addEventsToModel(Model model, int numGenerated) throws Exception {
+        protected void addEventsToModel(Model model, int numGenerated) throws Exception {
             addToModel(model, generateFullEventList(numGenerated));
         }
 
@@ -411,7 +411,7 @@ public abstract class LogicManagerTestBase {
          * Generates a list of Tasks based on the flags.
          * Each task has all its fields filled.
          */
-        List<Task> generateFullTaskList(int numGenerated) throws Exception {
+        protected List<Task> generateFullTaskList(int numGenerated) throws Exception {
             List<Task> tasks = new ArrayList<>();
             for (int i = 1; i <= numGenerated; i++) {
                 tasks.add(generateFullTask(i));
@@ -423,7 +423,7 @@ public abstract class LogicManagerTestBase {
          * Generates a list of Events based on the flags.
          * Each event has all its fields filled.
          */
-        List<Event> generateFullEventList(int numGenerated) throws Exception {
+        protected List<Event> generateFullEventList(int numGenerated) throws Exception {
             List<Event> events = new ArrayList<>();
             for (int i = 1; i <= numGenerated; i++) {
                 events.add(generateFullEvent(i));
@@ -431,14 +431,14 @@ public abstract class LogicManagerTestBase {
             return events;
         }
 
-        ArrayList<Task> generateTaskList(Task... tasks) {
+        protected ArrayList<Task> generateTaskList(Task... tasks) {
             return new ArrayList<>(Arrays.asList(tasks));
         }
 
         /**
          * Generates a Task object with given title. Other fields will have some dummy values.
          */
-        Task generateTaskWithAllFields(String title) throws Exception {
+        protected Task generateTaskWithAllFields(String title) throws Exception {
             return new Task(
                     new Title(title),
                     new UniqueTagList(new Tag("t1"), new Tag("t2")),
@@ -447,7 +447,7 @@ public abstract class LogicManagerTestBase {
             );
         }
 
-        Task generateTaskWithOnlyDeadline(String title) throws Exception {
+        protected Task generateTaskWithOnlyDeadline(String title) throws Exception {
             return new Task(
                     new Title(title),
                     new UniqueTagList(),
@@ -456,7 +456,7 @@ public abstract class LogicManagerTestBase {
             );
         }
 
-        Task generateTaskWithOnlySchedule(String title) throws Exception {
+        protected Task generateTaskWithOnlySchedule(String title) throws Exception {
             return new Task(
                     new Title(title),
                     new UniqueTagList(),
