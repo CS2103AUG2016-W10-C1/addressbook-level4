@@ -192,6 +192,7 @@ public class ListTests extends LogicManagerTestBase {
         assertTrue(model.getSortedDeadlineList().size() == expectedList.size());
     }
 
+    //@@author A0121299A
     private ReadOnlyTaskMan filterListAllSetup() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         // setup TaskMan state
@@ -222,8 +223,8 @@ public class ListTests extends LogicManagerTestBase {
         assertTrue(model.getSortedScheduleList().containsAll(expectedScheduleList));
         assertTrue(model.getSortedScheduleList().size() == expectedScheduleList.size());
         //check floating
-        assertTrue(model.getSortedScheduleList().containsAll(expectedScheduleList));
-        assertTrue(model.getSortedScheduleList().size() == expectedScheduleList.size());
+        assertTrue(model.getSortedFloatingList().containsAll(expectedFloatingList));
+        assertTrue(model.getSortedFloatingList().size() == expectedFloatingList.size());
 
     }
 
@@ -290,6 +291,30 @@ public class ListTests extends LogicManagerTestBase {
 
         // test command
         assert_list_allPanels("list t/tag1 t/tag4", expectedTaskMan,
+                expectedDeadlineList, expectedScheduleList, expectedFloatingList);
+    }
+
+    @Test
+    public void execute_listAll_filterKeywordsWithTags() throws Exception {
+        // setup
+        ReadOnlyTaskMan expectedTaskMan = filterListAllSetup();
+
+        TestDataHelper helper = new TestDataHelper();
+        // expected lists
+        // deadline list
+        List<Activity> expectedDeadlineList = new ArrayList<>();
+        expectedDeadlineList.add(new Activity(helper.generateFullTask(2)));
+        // schedule list
+        // copy items from deadline list (both have schedules)
+        List<Activity> expectedScheduleList = new ArrayList<>(expectedDeadlineList);
+        expectedScheduleList.add(new Activity(helper.generateFullEvent(2)));
+        expectedScheduleList.add(new Activity(helper.generateFullEvent(3)));
+        // floating list
+        List<Activity> expectedFloatingList = new ArrayList<>();
+        expectedFloatingList.add(new Activity(helper.generateFloatingTask(3)));
+        expectedFloatingList.add(new Activity(helper.generateFloatingTask(4)));
+        // test command
+        assert_list_allPanels("list Floating Event 2 t/tag3 t/tag4", expectedTaskMan,
                 expectedDeadlineList, expectedScheduleList, expectedFloatingList);
     }
 
