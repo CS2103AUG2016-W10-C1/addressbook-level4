@@ -28,9 +28,9 @@ import java.util.regex.Pattern;
  * Uses Natty internally to do the heavy lifting
  */
 public class DateTimeParser {
-    public static final String REGEX_DURATION_SINGLE =  "(?:[1-9]+[0-9]*) " + // quantity
+    private static final String REGEX_DURATION_SINGLE =  "(?:[1-9]+[0-9]*) " + // quantity
             "(?:(?:minute)|(?:min)|(?:hrs)|(?:hour)|(?:day)|(?:week)|(?:month)|(?:year))s?"; // temporal units
-    public static final String REGEX_DURATION_MULTIPLE = "(" + REGEX_DURATION_SINGLE + ",? ?)+";
+    private static final String REGEX_DURATION_MULTIPLE = "(" + REGEX_DURATION_SINGLE + ",? ?)+";
 
     public static final String DATE_TIME_EXAMPLES =
             "Examples: '2nd Wed from now 9pm',\t'09-07-15 23:45',\t'3pm' " +
@@ -76,8 +76,9 @@ public class DateTimeParser {
      */
     private static String preProcessNaturalDateTime(String rawNaturalDateTime) throws IllegalDateTimeException {
 
-        // reject multiple groups of 4 consecutive digits, might result in inaccurate conversion
-        // eg: "2016 2359", "2016 05 07 2017", where it is difficult to guess what the user wants
+        // ambiguity from multiple groups of 4 consecutive digits may lead to inaccurate conversion
+        // reject such cases
+        // eg: "2016 2359", "2016 05 07 2017"
 
         boolean isAmbiguous = hasMultipleGroupsOfFourDigits(rawNaturalDateTime);
         if (isAmbiguous) {
@@ -131,14 +132,17 @@ public class DateTimeParser {
      * Checks if the string contains any common timezone
      */
     private static boolean containsTimeZone(String naturalDateTime) {
+        // case insensitive regex checks for a space or decimal before the timezone
+        String timeZoneRegexWithFormat = "(?i).*((\\d)|( ))%1$s.*";
+
         Set<String> immutableTimezones = ZoneId.SHORT_IDS.keySet();
         Set<String> timezones = new HashSet<>(immutableTimezones);
         timezones.add("UTC");
         timezones.add("GMT");
 
         for (String timezone : timezones) {
-            if (naturalDateTime.contains(timezone) ||
-                    naturalDateTime.contains(timezone.toLowerCase())) {
+            String timeZoneRegex = String.format(timeZoneRegexWithFormat, timezone);
+            if (naturalDateTime.matches(timeZoneRegex)) {
                 return true;
             }
         }

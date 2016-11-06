@@ -1,6 +1,8 @@
 package seedu.taskman.logic.parser;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.time.DayOfWeek;
 import java.time.Instant;
@@ -25,8 +27,11 @@ import static org.junit.Assert.assertTrue;
 public class DateTimeParserTest {
     private static final long timeDifferenceAllowance = 30L;
 
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
+
     @Test
-    public void parse_formalDateTime_expectedMachineTime() throws Exception {
+    public void getEpochTime_formalDateTime_expectedEpochTime() throws Exception {
         String testDateTimeFormal = "07-05-16 2359";
 
         Calendar cal = new GregorianCalendar(2016, 6, 5, 23, 59);
@@ -34,22 +39,40 @@ public class DateTimeParserTest {
         assertEquals(cal.toInstant().getEpochSecond() ,unixDateTime);
     }
 
+    @Test
+    public void getEpochTime_unknownDateTime_exceptionAboutUnknownDateTime()
+            throws DateTimeParser.IllegalDateTimeException {
+
+        String testDateTime = "unknown";
+        exception.expectMessage(DateTimeParser.MESSAGE_ERROR_UNKNOWN_DATETIME);
+        DateTimeParser.getEpochTime(testDateTime);
+    }
 
     @Test
-    public void parse_dateTimeWithTimeZone_exceptionWithAppropriateMessage() {
-        String[] testCases = {"07-05-2016 UTC+3 ", "07-05-2016 CST"};
+    public void getEpochTime_dateTimesWithTimeZone_exceptionAboutTimeZone() {
+        String[] testCases = {"07-05-2016 UTC+3 ",
+                "07-05-2016 CST",
+        };
 
         for (String testString : testCases) {
             try {
                 DateTimeParser.getEpochTime(testString);
             } catch (DateTimeParser.IllegalDateTimeException e) {
-                assertEquals(DateTimeParser.MESSAGE_ERROR_TIMEZONE_NOT_SUPPORTED, e.getMessage());
+                assertTrue(e.getMessage().contains(DateTimeParser.MESSAGE_ERROR_TIMEZONE_NOT_SUPPORTED));
             }
         }
     }
 
     @Test
-    public void parse_ambiguousDateTime_exceptionWithAppropriateMessage() {
+    public void getEpochTime_dateTimeWithoutTimezone_success() throws Exception {
+        String testCase = "yesterday 4pm"; // contains 'est', but should not throw exception
+
+        // assume that parsing gives the correct result, it's not our job here
+        DateTimeParser.getEpochTime(testCase);
+    }
+
+    @Test
+    public void getEpochTime_ambiguousDateTime_exceptionAboutAmbiguousTime() {
         String[] testCases = {"2359 07-05-2016", "2359 06 Dec 2016"};
 
         for (String testString : testCases) {
@@ -62,7 +85,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parse_relativeDateOnly_expectedMachineTime() throws Exception {
+    public void getEpochTime_relativeDateOnly_expectedMachineTime() throws Exception {
         long unixDateTime1 = DateTimeParser.getEpochTime("2 weeks from now");
         long unixDateTime2 = DateTimeParser.getEpochTime("in 2 weeks");
 
@@ -74,7 +97,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parse_relativeTimeOnly_expectedMachineTime() throws Exception {
+    public void getEpochTime_relativeTimeOnly_expectedMachineTime() throws Exception {
         long parsedUnixTime = DateTimeParser.getEpochTime("10pm");
 
         ZonedDateTime now = OffsetDateTime.now().atZoneSameInstant(ZoneOffset.systemDefault());
@@ -88,8 +111,8 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parse_relativeDateAndTime_expectedMachineTime() throws Exception {
-        long parsedUnixTime = DateTimeParser.getEpochTime("wed 10am");
+    public void getEpochTime_relativeDateAndTime_expectedMachineTime() throws Exception {
+        long parsedEpochTime = DateTimeParser.getEpochTime("wed 10am");
 
         ZonedDateTime timeNow = OffsetDateTime.now().atZoneSameInstant(ZoneOffset.systemDefault());
         ZonedDateTime nextWed = timeNow.with(next(DayOfWeek.WEDNESDAY))
@@ -98,11 +121,11 @@ public class DateTimeParserTest {
                 .withSecond(0)
                 .withNano(0);
 
-        assertEquals(nextWed.toEpochSecond(), parsedUnixTime);
+        assertEquals(nextWed.toEpochSecond(), parsedEpochTime);
     }
 
     @Test
-    public void parse_durationSingleTemporalUnit_expectedMachineTime() throws Exception {
+    public void getDuration_durationWithSingleTemporalUnit_expectedDuration() throws Exception {
         String testDurationNatural = "3 days";
         long testDurationSeconds = 259200L;
 
@@ -112,7 +135,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parse_durationMultipleTemporalUnits_expectedMachineTime() throws Exception {
+    public void getDuration_durationWithMultipleTemporalUnits_expectedDuration() throws Exception {
         String testDurationNatural = "3 days 3 hours";
         String testDurationNaturalComma = "3 days, 3 hours";
         long testDurationSeconds = 270000L;
@@ -125,7 +148,9 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void parse_startTimeAndDuration_expectedEndTime() throws Exception {
+    public void getEndTime_startTimeAndDuration_expectedEndTime() throws Exception {
+        // use a start time & duration to get end time
+
         String testDurationNatural = "3 days 3 hours";
         long testDurationSeconds = 270000L;
         long timeNow = Instant.now().getEpochSecond();
@@ -133,6 +158,17 @@ public class DateTimeParserTest {
 
         long parsedTime = DateTimeParser.toEndTime(timeNow, testDurationNatural);
         assertTrue(Math.abs(expectedEndTime - parsedTime) < timeDifferenceAllowance);
+    }
+
+
+    @Test
+    public void getDuration_nonConformingDuration_exceptionWithDurationConformance()
+            throws DateTimeParser.IllegalDateTimeException {
+
+        String testDurationNatural = "3 days and 3 hours";
+
+        exception.expectMessage(DateTimeParser.MESSAGE_ERROR_NON_CONFORMING_DURATION);
+        DateTimeParser.naturalDurationToSeconds(testDurationNatural);
     }
 
 }

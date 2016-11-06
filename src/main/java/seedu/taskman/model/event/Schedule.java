@@ -40,7 +40,7 @@ public class Schedule {
                     ScheduleDivider.SCHEDULE_ALTERNATIVE.string,
                     ScheduleDivider.DURATION.string);
 
-    public static final String ERROR_NEGATIVE_DURATION = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
+    public static final String MESSAGE_ERROR_NEGATIVE_DURATION = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
             "Duration is negative");
     public static final String ERROR_FORMAT_BAD_DATETIME_START = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
             "Bad start datetime, %1$s");
@@ -62,7 +62,7 @@ public class Schedule {
     public Schedule(long startEpochSecond, long endEpochSecond) throws IllegalValueException {
         boolean isDurationNegative = (endEpochSecond - startEpochSecond) < 0;
         if (isDurationNegative) {
-            throw new IllegalValueException(ERROR_NEGATIVE_DURATION);
+            throw new IllegalValueException(MESSAGE_ERROR_NEGATIVE_DURATION);
         }
 
         this.startEpochSecond = startEpochSecond;
@@ -97,7 +97,7 @@ public class Schedule {
                     : parseRawEndTime(rawScheduleEnding, startEpochSecond);
 
             if (startEpochSecond > endEpochSecond) {
-                throw new IllegalValueException(ERROR_NEGATIVE_DURATION);
+                throw new IllegalValueException(MESSAGE_ERROR_NEGATIVE_DURATION);
             }
         }
     }
@@ -146,7 +146,7 @@ public class Schedule {
             // since it did parse correctly before our attempt at fixing the error
 
             if (tryNextOccurrenceOfEndTime) {
-                errorMessage = ERROR_NEGATIVE_DURATION;
+                errorMessage = MESSAGE_ERROR_NEGATIVE_DURATION;
             }
 
             throw new IllegalValueException(errorMessage);
