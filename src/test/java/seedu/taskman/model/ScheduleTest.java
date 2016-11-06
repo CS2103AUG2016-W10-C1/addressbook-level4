@@ -41,7 +41,7 @@ public class ScheduleTest {
     @Test
     public void create_relativeDateTimeForgotNext_success() throws IllegalValueException {
         String start = "sun 2359";
-        String end = "mon 2359";
+        String end = "mon 0001";
 
         new Schedule(start + " to " + end);
     }
@@ -50,11 +50,11 @@ public class ScheduleTest {
     public final ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void create_dadDivider_exception() throws IllegalValueException {
+    public void create_badDivider_exception() throws IllegalValueException {
         String start = "05/07/2016 0001";
         String end = "07/07/2016 0002";
 
         exception.expect(IllegalValueException.class);
-        new Schedule(start + " bad div " + end);
+        new Schedule(start + " bad divider " + end);
     }
 }

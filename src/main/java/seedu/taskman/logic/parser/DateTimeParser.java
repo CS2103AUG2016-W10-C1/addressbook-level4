@@ -18,13 +18,13 @@ import java.util.regex.Pattern;
 
 //@@author A0139019E
 /**
- * Parses "DateTimes & Durations" in natural language, to machine readable time
+ * Parses "datetimes & durations" in natural language, to machine readable time
  *
- * A DateTime is defined as a Date and a Time. Only one field needs to be present.
+ * A datetime is defined as a date and a time. Only one field needs to be present.
+ * Examples of accepted datetimes: "2nd Wed from now, 9pm" , "09-07-2015 23:45"
  * Durations are defined as X min/hour/day/week/month/years, X being a number
- * Examples of accepted input: "2nd Wed from now, 9pm" , "09-07-2015 23:45"
  *
- * Durations & times returned are only expected to be accurate to the nearest minute
+ * Durations & datetimes returned are only expected to be accurate to the nearest minute
  * Uses Natty internally to do the heavy lifting
  */
 public class DateTimeParser {
@@ -33,15 +33,19 @@ public class DateTimeParser {
     public static final String REGEX_DURATION_MULTIPLE = "(" + REGEX_DURATION_SINGLE + ",? ?)+";
 
     public static final String DATE_TIME_EXAMPLES =
-            "Examples: '2nd Wed from now, 9pm', '09-07-15 23:45', '3pm' \n" +
-            "Both natural & formal date times are accepted" + " (formal dates in MM-DD-YY format)";
+            "Examples: '2nd Wed from now 9pm',\t'09-07-15 23:45',\t'3pm' " +
+                    "\n" +
+                    "Both natural & formal date times are accepted, with formal dates in Month-Date-Year";
 
-    public static final String MESSAGE_ERROR_AMBIGIOUS_TIME = "DateTime entered is ambiguous. Please enter the time in the HH:MM format instead";
+    public static final String MESSAGE_ERROR_AMBIGUOUS_TIME = "Datetime entered is ambiguous. Please enter the time in the HH:MM format instead";
     public static final String MESSAGE_ERROR_TIMEZONE_NOT_SUPPORTED = "Please omit timezones. Specifying timezones is currently not supported";
-    public static final String MESSAGE_ERROR_UNKNOWN_DATETIME = "Invalid DateTime, please try the following: " + DATE_TIME_EXAMPLES;
-    public static final String MESSAGE_ERROR_END_IS_BEFORE_START = "Invalid Duration, end is before start";
+    public static final String MESSAGE_ERROR_UNKNOWN_DATETIME =
+            "Please refer to the following for an example of a valid datetime" +
+            "\n\n" + DATE_TIME_EXAMPLES;
+    public static final String MESSAGE_ERROR_END_IS_BEFORE_START = "Invalid duration, end is before start";
     public static final String MESSAGE_ERROR_NON_CONFORMING_DURATION =
-            "Invalid Duration, please use the following temporal units: min/hour/day/week/month/year(s)";
+            "Invalid duration, please use the following temporal units: min, hour, day, week, month, year\n" +
+                    "Example: '3 weeks, 2 hours, 1 min'";
 
     private static final Parser NATTY_PARSER = new Parser();
     //@@author
@@ -68,8 +72,8 @@ public class DateTimeParser {
     }
 
     /**
-     * Pre-processes a user entered DateTime, making modifications to improve parsing results
-     * Also rejects early if the DateTime fails to meet requirements
+     * Pre-processes a user entered datetime, making modifications to improve parsing results
+     * Also rejects early if the datetime fails to meet requirements
      */
     private static String preProcessNaturalDateTime(String rawNaturalDateTime) throws IllegalDateTimeException {
 
@@ -78,7 +82,7 @@ public class DateTimeParser {
 
         boolean isAmbiguous = hasMultipleGroupsOfFourDigits(rawNaturalDateTime);
         if (isAmbiguous) {
-            throw new IllegalDateTimeException(MESSAGE_ERROR_AMBIGIOUS_TIME);
+            throw new IllegalDateTimeException(MESSAGE_ERROR_AMBIGUOUS_TIME);
         }
 
         // TimeZones are currently not supported, due to difficulty in specifying UTC & GMT for Natty
@@ -86,8 +90,8 @@ public class DateTimeParser {
             throw new IllegalDateTimeException(MESSAGE_ERROR_TIMEZONE_NOT_SUPPORTED);
         }
 
-        // Append local timezone to eliminate timezone ambiguity for relative DateTimes,
-        // formal DateTimes and relaxed DateTimes (refer to Natty documentation for more info)
+        // Append local timezone to eliminate timezone ambiguity for relative datetimes,
+        // formal datetimes and relaxed datetimes (refer to Natty documentation for more info)
         return appendLocalTimeZone(rawNaturalDateTime);
     }
 
@@ -96,7 +100,7 @@ public class DateTimeParser {
     }
 
     /**
-     * Parse a natural DateTime string & return a Date
+     * Parse a natural datetime string & return a Date
      */
     private static Optional<Date> parseNaturalDateTime(String naturalDateTime) throws IllegalDateTimeException {
         List<DateGroup> dateGroups = NATTY_PARSER.parse(naturalDateTime);
@@ -154,7 +158,7 @@ public class DateTimeParser {
     public static long toEndTime(long startEpochTime, String naturalDuration) throws IllegalDateTimeException {
         long endEpochTime = startEpochTime + naturalDurationToSeconds(naturalDuration);
         if (endEpochTime < startEpochTime) {
-            throw new IllegalDateTimeException(MESSAGE_ERROR_END_IS_BEFORE_START );
+            throw new IllegalDateTimeException(MESSAGE_ERROR_END_IS_BEFORE_START);
         } else {
             return endEpochTime;
         }
@@ -165,7 +169,7 @@ public class DateTimeParser {
             throw new IllegalDateTimeException(MESSAGE_ERROR_NON_CONFORMING_DURATION);
         } else {
             // Natty support for natural durations
-            // Parse durations as relative DateTimes into Natty
+            // Parse durations as relative datetimes into Natty
             // Then subtract from current time to generate duration
 
             long epochTimeNow = Instant.now().getEpochSecond();
