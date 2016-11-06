@@ -40,7 +40,6 @@ public class Schedule {
     public final long endEpochSecond;
 
     public Schedule(long startEpochSecond, long endEpochSecond) throws IllegalValueException {
-
         boolean isNegativeDuration = (endEpochSecond - startEpochSecond) < 0;
         if (startEpochSecond <= 0 || endEpochSecond <= 0 || isNegativeDuration) {
             throw new IllegalValueException(ERROR_NEGATIVE_DURATION);
@@ -61,7 +60,7 @@ public class Schedule {
             boolean hasDuration = divider.contains(Formatter.ScheduleDivider.DURATION.string);
 
             try {
-                startEpochSecond = DateTimeParser.getUnixTime(start);
+                startEpochSecond = DateTimeParser.getEpochTime(start);
             } catch (DateTimeParser.IllegalDateTimeException e) {
                 throw new IllegalValueException(
                         String.format(
@@ -77,7 +76,7 @@ public class Schedule {
                     endEpochSecond = DateTimeParser.toEndTime(startEpochSecond, duration);
                 } else {
                     String endString = matcher.group(3).trim();
-                    long endEpochCandidate = DateTimeParser.getUnixTime(endString);
+                    long endEpochCandidate = DateTimeParser.getEpochTime(endString);
 
                     endEpochSecond = (startEpochSecond > endEpochCandidate)
                             ? addNextToRelativeDateTime(endString)
@@ -96,7 +95,7 @@ public class Schedule {
     private long addNextToRelativeDateTime(String dateTime) throws IllegalValueException {
         dateTime = String.format(Formatter.FORMAT_TWO_TERMS_SPACED_WITHIN_AFTER, STRING_NEXT_WEEK, dateTime).trim();
         try {
-            return DateTimeParser.getUnixTime(dateTime);
+            return DateTimeParser.getEpochTime(dateTime);
         } catch (DateTimeParser.IllegalDateTimeException e) {
             throw new IllegalValueException(ERROR_BAD_DATETIME_END);
         }

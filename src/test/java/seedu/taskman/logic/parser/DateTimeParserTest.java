@@ -30,7 +30,7 @@ public class DateTimeParserTest {
         String testDateTimeFormal = "07-05-16 2359";
 
         Calendar cal = new GregorianCalendar(2016, 6, 5, 23, 59);
-        long unixDateTime = DateTimeParser.getUnixTime(testDateTimeFormal);
+        long unixDateTime = DateTimeParser.getEpochTime(testDateTimeFormal);
         assertEquals(cal.toInstant().getEpochSecond() ,unixDateTime);
     }
 
@@ -41,7 +41,7 @@ public class DateTimeParserTest {
 
         for (String testString : testCases) {
             try {
-                DateTimeParser.getUnixTime(testString);
+                DateTimeParser.getEpochTime(testString);
             } catch (DateTimeParser.IllegalDateTimeException e) {
                 assertEquals(DateTimeParser.MESSAGE_ERROR_TIMEZONE_NOT_SUPPORTED, e.getMessage());
             }
@@ -54,7 +54,7 @@ public class DateTimeParserTest {
 
         for (String testString : testCases) {
             try {
-                DateTimeParser.getUnixTime(testString);
+                DateTimeParser.getEpochTime(testString);
             } catch (DateTimeParser.IllegalDateTimeException e) {
                 assertEquals(DateTimeParser.MESSAGE_ERROR_AMBIGIOUS_TIME, e.getMessage());
             }
@@ -63,8 +63,8 @@ public class DateTimeParserTest {
 
     @Test
     public void parse_relativeDateOnly_expectedMachineTime() throws Exception {
-        long unixDateTime1 = DateTimeParser.getUnixTime("2 weeks from now");
-        long unixDateTime2 = DateTimeParser.getUnixTime("in 2 weeks");
+        long unixDateTime1 = DateTimeParser.getEpochTime("2 weeks from now");
+        long unixDateTime2 = DateTimeParser.getEpochTime("in 2 weeks");
 
         long timeNow = Instant.now().getEpochSecond();
         long durationInSeconds = TimeUnit.DAYS.toSeconds(14);
@@ -75,7 +75,7 @@ public class DateTimeParserTest {
 
     @Test
     public void parse_relativeTimeOnly_expectedMachineTime() throws Exception {
-        long parsedUnixTime = DateTimeParser.getUnixTime("10pm");
+        long parsedUnixTime = DateTimeParser.getEpochTime("10pm");
 
         ZonedDateTime now = OffsetDateTime.now().atZoneSameInstant(ZoneOffset.systemDefault());
         ZonedDateTime today10pm = now
@@ -89,7 +89,7 @@ public class DateTimeParserTest {
 
     @Test
     public void parse_relativeDateAndTime_expectedMachineTime() throws Exception {
-        long parsedUnixTime = DateTimeParser.getUnixTime("wed 10am");
+        long parsedUnixTime = DateTimeParser.getEpochTime("wed 10am");
 
         ZonedDateTime timeNow = OffsetDateTime.now().atZoneSameInstant(ZoneOffset.systemDefault());
         ZonedDateTime nextWed = timeNow.with(next(DayOfWeek.WEDNESDAY))

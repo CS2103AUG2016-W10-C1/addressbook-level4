@@ -18,13 +18,13 @@ import java.util.regex.Pattern;
 
 //@@author A0139019E
 /**
- * Generates Unix time (seconds) from "DateTimes" or "Durations" in natural language
- * Examples: "2nd Wed from now, 9pm" , "09-07-2015 23:45"
+ * Parses "DateTimes & Durations" in natural language, to machine readable time
  *
  * A DateTime is defined as a Date and a Time. Only one field needs to be present.
  * Durations are defined as X min/hour/day/week/month/years, X being a number
+ * Examples of accepted input: "2nd Wed from now, 9pm" , "09-07-2015 23:45"
  *
- * Durations & times returned are only accurate to the nearest minute.
+ * Durations & times returned are only expected to be accurate to the nearest minute
  * Uses Natty internally to do the heavy lifting
  */
 public class DateTimeParser {
@@ -55,10 +55,10 @@ public class DateTimeParser {
     //@@author A0139019E
 
     /**
-     * Converts a date & time in natural language to unix time (seconds)
+     * Converts a date & time in natural language to epoch time (in seconds)
      * Disallows specifying of timezones to improve accuracy in conversion
      */
-    public static long getUnixTime(String naturalDateTime) throws IllegalDateTimeException {
+    public static long getEpochTime(String naturalDateTime) throws IllegalDateTimeException {
         String preProcessedDateTime = preProcessNaturalDateTime(naturalDateTime);
 
         Optional<Date> dateOptional = parseNaturalDateTime(preProcessedDateTime);
@@ -149,14 +149,14 @@ public class DateTimeParser {
 
     /**
      * Calculates the end time from a start time & duration
-     * Start time & end time in Unix time (seconds)
+     * Start time & end time in epoch time (in seconds)
      */
-    public static long toEndTime(long startUnixTime, String naturalDuration) throws IllegalDateTimeException {
-        long endUnixTime = startUnixTime + naturalDurationToSeconds(naturalDuration);
-        if (endUnixTime < startUnixTime) {
+    public static long toEndTime(long startEpochTime, String naturalDuration) throws IllegalDateTimeException {
+        long endEpochTime = startEpochTime + naturalDurationToSeconds(naturalDuration);
+        if (endEpochTime < startEpochTime) {
             throw new IllegalDateTimeException(MESSAGE_ERROR_END_IS_BEFORE_START );
         } else {
-            return endUnixTime;
+            return endEpochTime;
         }
     }
 
@@ -164,17 +164,17 @@ public class DateTimeParser {
         if (!naturalDuration.matches(REGEX_DURATION_MULTIPLE)) {
             throw new IllegalDateTimeException(MESSAGE_ERROR_NON_CONFORMING_DURATION);
         } else {
-            // Natty does not have support for natural durations
+            // Natty support for natural durations
             // Parse durations as relative DateTimes into Natty
             // Then subtract from current time to generate duration
 
-            long unixTimeNow = Instant.now().getEpochSecond();
+            long epochTimeNow = Instant.now().getEpochSecond();
             long actualDurationSeconds = 0;
 
             Pattern firstDuration = Pattern.compile(REGEX_DURATION_SINGLE);
             Matcher matcher = firstDuration.matcher(naturalDuration);
             while (matcher.find()) {
-                actualDurationSeconds += getUnixTime(matcher.group()) - unixTimeNow;
+                actualDurationSeconds += getEpochTime(matcher.group()) - epochTimeNow;
             }
 
             return actualDurationSeconds;
