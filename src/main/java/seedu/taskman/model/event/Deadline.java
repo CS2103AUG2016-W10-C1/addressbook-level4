@@ -23,10 +23,6 @@ public class Deadline {
     }
 
     public Deadline(long epochSecond) throws IllegalValueException {
-        if (epochSecond < 0) {
-            throw new IllegalValueException("Too far in the past.");
-        }
-
         this.epochSecond = epochSecond;
     }
 
