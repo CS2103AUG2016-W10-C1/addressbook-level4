@@ -95,6 +95,7 @@ public abstract class LogicManagerTestBase {
      * Executes the command and confirms that the result message is correct.
      * Generally for commands which do not mutate the data.
      * Both the 'TaskMan' and the 'list' are expected to be empty.
+     *
      * @see #assertCommandBehavior(String, String, TaskMan, List)
      */
     private void assertCommandBehavior(String inputCommand, String expectedMessage) throws Exception {
@@ -104,9 +105,9 @@ public abstract class LogicManagerTestBase {
     /**
      * Executes the command and confirms that the result message is correct and
      * also confirms that the following three parts of the LogicManager object's state are as expected:
-     *      - the internal address book data are same as those in the {@code expectedTaskMan}
-     *      - the backing list shown by UI matches the expected list here in the method
-     *      - {@code expectedTaskMan} was saved to the storage file.
+     * - the internal address book data are same as those in the {@code expectedTaskMan}
+     * - the backing list shown by UI matches the expected list here in the method
+     * - {@code expectedTaskMan} was saved to the storage file.
      */
     private void assertCommandBehavior(String inputCommand, String expectedMessage,
                                        TaskMan expectedTaskMan,
@@ -135,9 +136,9 @@ public abstract class LogicManagerTestBase {
 
     /**
      * Executes the command and confirms the following three parts of the LogicManager object's state are as expected:<br>
-     *      - the internal TaskMan data are same as those in the {@code expectedTaskMan} <br>
-     *      - the backing list shown by UI matches the {@code shownList} <br>
-     *      - {@code expectedTaskMan} was saved to the storage file. <br>
+     * - the internal TaskMan data are same as those in the {@code expectedTaskMan} <br>
+     * - the backing list shown by UI matches the {@code shownList} <br>
+     * - {@code expectedTaskMan} was saved to the storage file. <br>
      *
      * @return Result of executed command
      */
@@ -195,7 +196,7 @@ public abstract class LogicManagerTestBase {
 
         List<Activity> tasksToActivity(List<Task> tasks) {
             ArrayList<Activity> activities = new ArrayList<>();
-            for(Task task : tasks) {
+            for (Task task : tasks) {
                 activities.add(new Activity(task));
             }
             return activities;
@@ -212,9 +213,25 @@ public abstract class LogicManagerTestBase {
             return new Task(
                     new Title("Task " + seed),
                     new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))),
-                    new Deadline((seed+1) +" Dec " +seed%12 +"am"),
-                    new Schedule(seed +" nov " + (seed%12+1) + "am" +
-                            ", " + seed +" nov " + ((seed+1)%12+1) + "pm" )
+                    new Deadline((seed + 1) + " Dec " + seed % 12 + "am"),
+                    new Schedule(seed + " nov " + (seed % 12 + 1) + "am" +
+                            ", " + seed + " nov " + ((seed + 1) % 12 + 1) + "pm")
+            );
+        }
+
+        /**
+         * Generates a valid task using the given seed.
+         * Running this function with the same parameter values guarantees the returned task will have the same state.
+         * Each unique seed will generate a unique Task object.
+         *
+         * @param seed used to generate the task data field values
+         */
+        Task generateFloatingTask(int seed) throws Exception {
+            return new Task(
+                    new Title("Floating " + seed),
+                    new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))),
+                    null,
+                    null
             );
         }
 
@@ -229,8 +246,8 @@ public abstract class LogicManagerTestBase {
             return new Event(
                     new Title("Event " + seed),
                     new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))),
-                    new Schedule(seed +" nov " + (seed%12+1) + "am" +
-                            ", " + seed +" nov " + ((seed+1)%12+1) + "pm" )
+                    new Schedule(seed + " nov " + (seed % 12 + 1) + "am" +
+                            ", " + seed + " nov " + ((seed + 1) % 12 + 1) + "pm")
             );
         }
 
@@ -242,14 +259,14 @@ public abstract class LogicManagerTestBase {
             command.append(task.getTitle().toString());
 
             if (task.getDeadline().isPresent()) {
-                command.append(" d/"). append(task.getDeadline().get().toFormalString());
+                command.append(" d/").append(task.getDeadline().get().toFormalString());
             }
             if (task.getSchedule().isPresent()) {
                 command.append(" s/").append(task.getSchedule().get().toFormalString());
             }
 
             UniqueTagList tags = task.getTags();
-            for(Tag t: tags) {
+            for (Tag t : tags) {
                 command.append(" t/").append(t.tagName);
             }
 
@@ -267,7 +284,7 @@ public abstract class LogicManagerTestBase {
             }
 
             UniqueTagList tags = event.getTags();
-            for(Tag t: tags) {
+            for (Tag t : tags) {
                 command.append(" t/").append(t.tagName);
             }
 
@@ -339,8 +356,26 @@ public abstract class LogicManagerTestBase {
         /**
          * Adds the given list of Tasks to the given TaskMan
          */
-        void addToTaskMan(TaskMan taskMan, List<Task> tasksToAdd) throws Exception{
-            for (Task p: tasksToAdd) {
+        void addToTaskMan(TaskMan taskMan, List<Task> tasksToAdd) throws Exception {
+            for (Task p : tasksToAdd) {
+                taskMan.addActivity(p);
+            }
+        }
+
+        /**
+         * Adds auto-generated Events objects to the given TaskMan
+         *
+         * @param taskMan The TaskMan to which the Events will be added
+         */
+        void addEventsToTaskMan(TaskMan taskMan, int numGenerated) throws Exception {
+            addEventsToTaskMan(taskMan, generateFullEventList(numGenerated));
+        }
+
+        /**
+         * Adds the given list of Events to the given TaskMan
+         */
+        void addEventsToTaskMan(TaskMan taskMan, List<Event> eventsToAdd) throws Exception {
+            for (Event p : eventsToAdd) {
                 taskMan.addActivity(p);
             }
         }
@@ -357,10 +392,19 @@ public abstract class LogicManagerTestBase {
         /**
          * Adds the given list of Tasks to the given model
          */
-        void addToModel(Model model, List<Task> tasksToAdd) throws Exception{
-            for(Task p: tasksToAdd){
+        void addToModel(Model model, List<? extends Event> tasksToAdd) throws Exception {
+            for (Event p : tasksToAdd) {
                 model.addActivity(p);
             }
+        }
+
+        /**
+         * Adds auto-generated Event objects to the given model
+         *
+         * @param model The model to which the Events will be added
+         */
+        void addEventsToModel(Model model, int numGenerated) throws Exception {
+            addToModel(model, generateFullEventList(numGenerated));
         }
 
         /**
@@ -373,6 +417,18 @@ public abstract class LogicManagerTestBase {
                 tasks.add(generateFullTask(i));
             }
             return tasks;
+        }
+
+        /**
+         * Generates a list of Events based on the flags.
+         * Each event has all its fields filled.
+         */
+        List<Event> generateFullEventList(int numGenerated) throws Exception {
+            List<Event> events = new ArrayList<>();
+            for (int i = 1; i <= numGenerated; i++) {
+                events.add(generateFullEvent(i));
+            }
+            return events;
         }
 
         ArrayList<Task> generateTaskList(Task... tasks) {
