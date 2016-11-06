@@ -214,8 +214,7 @@ public abstract class LogicManagerTestBase {
                     new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))),
                     new Deadline((seed+1) +" Dec " +seed%12 +"am"),
                     new Schedule(seed +" nov " + (seed%12+1) + "am" +
-                            ", " + seed +" nov " + ((seed+1)%12+1) + "pm" ),
-                    null //new Frequency(seed + " mins")
+                            ", " + seed +" nov " + ((seed+1)%12+1) + "pm" )
             );
         }
 
@@ -231,8 +230,7 @@ public abstract class LogicManagerTestBase {
                     new Title("Event " + seed),
                     new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))),
                     new Schedule(seed +" nov " + (seed%12+1) + "am" +
-                            ", " + seed +" nov " + ((seed+1)%12+1) + "pm" ),
-                    null //new Frequency(seed + " mins")
+                            ", " + seed +" nov " + ((seed+1)%12+1) + "pm" )
             );
         }
 
@@ -245,9 +243,6 @@ public abstract class LogicManagerTestBase {
 
             if (task.getDeadline().isPresent()) {
                 command.append(" d/"). append(task.getDeadline().get().toFormalString());
-            }
-            if (task.getFrequency().isPresent()) {
-                throw new AssertionError("Frequency is not supported yet");
             }
             if (task.getSchedule().isPresent()) {
                 command.append(" s/").append(task.getSchedule().get().toFormalString());
@@ -267,9 +262,6 @@ public abstract class LogicManagerTestBase {
             command.append("adde ");
             command.append(event.getTitle().toString());
 
-            if (event.getFrequency().isPresent()) {
-                throw new AssertionError("Frequency is not supported yet");
-            }
             if (event.getSchedule().isPresent()) {
                 command.append(" s/").append(event.getSchedule().get().toFormalString());
             }
@@ -282,8 +274,8 @@ public abstract class LogicManagerTestBase {
             return command.toString();
         }
 
-        String generateEditCommand(Model model, Activity.PanelType panel,  int targetIndex, Title title, Deadline deadline, Schedule schedule,
-                                   Frequency frequency, UniqueTagList tags) {
+        String generateEditCommand(Model model, Activity.PanelType panel,  int targetIndex, Title title,
+                                   Deadline deadline, Schedule schedule, UniqueTagList tags) {
             Activity task = model.getActivityListForPanelType(panel).get(targetIndex);
             StringBuilder command = new StringBuilder();
 
@@ -299,10 +291,6 @@ public abstract class LogicManagerTestBase {
                 Instant instant = Instant.ofEpochSecond(deadline.epochSecond);
                 command.append(" d/").
                         append(instant.toString());
-            }
-
-            if (task.getFrequency().isPresent()) {
-                throw new AssertionError("Frequency is not supported yet");
             }
 
             if (schedule != null) {
@@ -399,8 +387,7 @@ public abstract class LogicManagerTestBase {
                     new Title(title),
                     new UniqueTagList(new Tag("t1"), new Tag("t2")),
                     new Deadline("07/05/2016 6pm"),
-                    new Schedule("02/05/2016 5pm, 05/05/2016 5pm"),
-                    null // new Frequency("7 days")
+                    new Schedule("02/05/2016 5pm, 05/05/2016 5pm")
             );
         }
 
@@ -409,7 +396,6 @@ public abstract class LogicManagerTestBase {
                     new Title(title),
                     new UniqueTagList(),
                     new Deadline("in 4 days"),
-                    null,
                     null
             );
         }
@@ -419,8 +405,7 @@ public abstract class LogicManagerTestBase {
                     new Title(title),
                     new UniqueTagList(),
                     null,
-                    new Schedule("02/05/2016 5pm, 05/05/2016 5pm"),
-                    null
+                    new Schedule("02/05/2016 5pm, 05/05/2016 5pm")
             );
         }
     }

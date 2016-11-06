@@ -17,16 +17,14 @@ public class Event implements ReadOnlyEvent, MutableTagsEvent {
     private static final long DAY_IN_SECONDS = 60 * 60 * 24;
     protected static final long EXPIRY_THRESHOLD = DAY_IN_SECONDS * 7;
     private Title title;
-    private Frequency frequency;
     private Schedule schedule;
 
     private UniqueTagList tags;
 
     public Event(@Nonnull Title title, @Nonnull UniqueTagList tags,
-                 @Nullable Schedule schedule, @Nullable Frequency frequency) {
+                 @Nullable Schedule schedule) {
         assert !CollectionUtil.isAnyNull(title, tags);
         this.title = title;
-        this.frequency = frequency;
         this.schedule = schedule;
         this.tags = new UniqueTagList(tags); // protect internal tags from changes in the arg list
     }
@@ -36,8 +34,7 @@ public class Event implements ReadOnlyEvent, MutableTagsEvent {
      */
     public Event(ReadOnlyEvent source) {
         this(source.getTitle(), source.getTags(),
-                source.getSchedule().orElse(null),
-                source.getFrequency().orElse(null)
+                source.getSchedule().orElse(null)
         );
     }
 
@@ -49,10 +46,6 @@ public class Event implements ReadOnlyEvent, MutableTagsEvent {
     @Override
     public Optional<Schedule> getSchedule() {
         return Optional.ofNullable(schedule);
-    }
-
-    public Optional<Frequency> getFrequency() {
-        return Optional.ofNullable(frequency);
     }
 
     @Override
@@ -87,7 +80,7 @@ public class Event implements ReadOnlyEvent, MutableTagsEvent {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(title, frequency, schedule, tags);
+        return Objects.hash(title, schedule, tags);
     }
 
     @Override

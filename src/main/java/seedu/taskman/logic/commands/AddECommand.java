@@ -30,7 +30,6 @@ public class AddECommand extends Command {
     private static final Pattern EVENT_MARK_ARGS_FORMAT =
             Pattern.compile("" + CommandParser.ArgumentPattern.TITLE
                     + CommandParser.ArgumentPattern.OPTIONAL_SCHEDULE
-                    + CommandParser.ArgumentPattern.OPTIONAL_FREQUENCY
                     + CommandParser.ArgumentPattern.OPTIONAL_TAGS);
 
     private final Event toAdd;
@@ -40,7 +39,7 @@ public class AddECommand extends Command {
      *
      * @throws IllegalValueException if any of the raw values are invalid
      */
-    private AddECommand(String title, String schedule, String frequency, Set<String> tags)
+    private AddECommand(String title, String schedule, Set<String> tags)
             throws IllegalValueException {
         super(true);
         final Set<Tag> tagSet = new HashSet<>();
@@ -52,10 +51,7 @@ public class AddECommand extends Command {
                 new UniqueTagList(tagSet),
                 schedule == null
                     ? null
-                    : new Schedule(schedule),
-                frequency == null
-                    ? null
-                    : new Frequency(frequency)
+                    : new Schedule(schedule)
         );
     }
 
@@ -69,7 +65,6 @@ public class AddECommand extends Command {
             return new AddECommand(
                     matcher.group(CommandParser.Group.title.name),
                     matcher.group(CommandParser.Group.schedule.name),
-                    matcher.group(CommandParser.Group.frequency.name),
                     getTagsFromArgs(matcher.group(CommandParser.Group.tagArguments.name))
             );
         } catch (IllegalValueException ive) {

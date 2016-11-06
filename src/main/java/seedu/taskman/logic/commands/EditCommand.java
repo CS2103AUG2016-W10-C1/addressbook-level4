@@ -7,7 +7,6 @@ import seedu.taskman.logic.parser.CommandParser;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Deadline;
 import seedu.taskman.model.event.Event;
-import seedu.taskman.model.event.Frequency;
 import seedu.taskman.model.event.Schedule;
 import seedu.taskman.model.event.Status;
 import seedu.taskman.model.event.Task;
@@ -48,7 +47,6 @@ public class EditCommand extends Command {
                     + CommandParser.ArgumentPattern.OPTIONAL_DEADLINE
                     + CommandParser.ArgumentPattern.OPTIONAL_STATUS
                     + CommandParser.ArgumentPattern.OPTIONAL_SCHEDULE
-                    + CommandParser.ArgumentPattern.OPTIONAL_FREQUENCY
                     + CommandParser.ArgumentPattern.OPTIONAL_TAGS); // variable number of tags
 
     private final ArgumentContainer argsContainer;
@@ -64,9 +62,9 @@ public class EditCommand extends Command {
      */
     private EditCommand(Activity.PanelType panelType, int targetIndex,
                         @Nullable String title, @Nullable String deadline, @Nullable String status,
-                        @Nullable String schedule, @Nullable String frequency, @Nullable Set<String> tags) {
+                        @Nullable String schedule, @Nullable Set<String> tags) {
         super(true);
-        argsContainer = new ArgumentContainer(panelType, targetIndex, title, deadline, status, schedule, frequency, tags);
+        argsContainer = new ArgumentContainer(panelType, targetIndex, title, deadline, status, schedule, tags);
     }
 
     public static Command prepareEdit(String args) {
@@ -95,7 +93,6 @@ public class EditCommand extends Command {
                 matcher.group(CommandParser.Group.deadline.name),
                 matcher.group(CommandParser.Group.status.name),
                 matcher.group(CommandParser.Group.schedule.name),
-                matcher.group(CommandParser.Group.frequency.name),
                 tags.isEmpty() ? null : getTagsFromArgs(tags));
     }
 
@@ -174,10 +171,7 @@ public class EditCommand extends Command {
                         : new UniqueTagList(tagSet),
                 argsContainer.schedule == null
                         ? beforeEdit.getSchedule().orElse(null)
-                        : new Schedule (argsContainer.schedule),
-                argsContainer.frequency == null
-                        ? beforeEdit.getFrequency().orElse(null)
-                        : new Frequency(argsContainer.frequency)
+                        : new Schedule (argsContainer.schedule)
                 );
                 afterEdit = new Activity(event);
                 break;
@@ -195,10 +189,7 @@ public class EditCommand extends Command {
                         : new Deadline(argsContainer.deadline),
                 argsContainer.schedule == null
                         ? beforeEdit.getSchedule().orElse(null)
-                        : new Schedule (argsContainer.schedule),
-                argsContainer.frequency == null
-                        ? beforeEdit.getFrequency().orElse(null)
-                        : new Frequency(argsContainer.frequency)
+                        : new Schedule (argsContainer.schedule)
                 );
                 
                 task.setStatus(argsContainer.status == null
@@ -221,7 +212,6 @@ public class EditCommand extends Command {
         public final String deadline;
         public final String status;
         public final String schedule;
-        public final String frequency;
         public final Set<String> tags;
 
         public ArgumentContainer(Activity.PanelType panelType,
@@ -230,7 +220,6 @@ public class EditCommand extends Command {
                                  String deadline,
                                  String status,
                                  String schedule,
-                                 String frequency,
                                  Set<String> tags) {
             this.panelType = panelType;
             this.targetIndex = targetIndex;
@@ -238,7 +227,6 @@ public class EditCommand extends Command {
             this.deadline = deadline;
             this.status = status;
             this.schedule = schedule;
-            this.frequency = frequency;
             this.tags = tags;
         }
     }

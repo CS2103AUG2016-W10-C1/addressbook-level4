@@ -41,7 +41,6 @@ public class CommandParser {
         deadline("deadline"),
         schedule("schedule"),
         status("status"),
-        frequency("frequency"),
         tagArguments("tagArguments"),
         commandWord("commandWord"),
         arguments("arguments");
@@ -63,7 +62,6 @@ public class CommandParser {
         OPTIONAL_DEADLINE("(?:\\s+d/(?<" + Group.deadline.name + ">[^/]+))?"),
         OPTIONAL_SCHEDULE("(?:\\s+s/(?<" + Group.schedule.name + ">[^/]+))?"),
         OPTIONAL_STATUS("(?:\\s+c/(?<" + Group.status.name + ">[^/]+))?"),
-        OPTIONAL_FREQUENCY("(?:\\s+f/(?<" + Group.frequency.name + ">[^/]+))?"),
         OPTIONAL_TAGS("(?<" + Group.tagArguments.name + ">(?:\\s*t/[^/]+)*)?"),
         FILE_PATH(".+");
 

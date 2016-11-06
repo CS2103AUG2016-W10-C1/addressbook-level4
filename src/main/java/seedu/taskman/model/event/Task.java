@@ -19,8 +19,8 @@ public class Task extends Event implements ReadOnlyTask, MutableTagsEvent {
 
     public Task(@Nonnull Title title, @Nonnull UniqueTagList tags,
                 @Nullable Deadline deadline,
-                @Nullable Schedule schedule, @Nullable Frequency frequency) {
-        super(title, tags, schedule, frequency);
+                @Nullable Schedule schedule) {
+        super(title, tags, schedule);
         this.deadline = deadline;
         this.status = new Status();
     }
@@ -31,8 +31,7 @@ public class Task extends Event implements ReadOnlyTask, MutableTagsEvent {
     public Task(@Nonnull ReadOnlyTask source) {
         this(source.getTitle(), source.getTags(),
                 source.getDeadline().orElse(null),
-                source.getSchedule().orElse(null),
-                source.getFrequency().orElse(null));
+                source.getSchedule().orElse(null));
         setStatus(source.getStatus());
     }
 
@@ -49,11 +48,6 @@ public class Task extends Event implements ReadOnlyTask, MutableTagsEvent {
     @Override
     public Optional<Schedule> getSchedule() {
         return super.getSchedule();
-    }
-
-    @Override
-    public Optional<Frequency> getFrequency() {
-        return super.getFrequency();
     }
 
     @Override
@@ -105,7 +99,6 @@ public class Task extends Event implements ReadOnlyTask, MutableTagsEvent {
                 deadline,
                 super.getSchedule(),
                 status,
-                super.getFrequency(),
                 super.getTags()
         );
     }

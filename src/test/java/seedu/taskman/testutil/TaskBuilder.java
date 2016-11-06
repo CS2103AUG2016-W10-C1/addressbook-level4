@@ -28,11 +28,6 @@ public class TaskBuilder {
         return this;
     }
 
-    public TaskBuilder withFrequency(String frequency) throws IllegalValueException {
-        this.task.setFrequency(new Frequency(frequency));
-        return this;
-    }
-
     public TaskBuilder withSchedule(String schedule) throws IllegalValueException {
         this.task.setSchedule(new Schedule(schedule));
         return this;

@@ -74,7 +74,6 @@ public class EditTests extends LogicManagerTestBase {
                 null, // no change in title
                 newDeadline,
                 null, // no change in edit
-                null, // no change in frequency
                 tags
         );
 
@@ -107,8 +106,7 @@ public class EditTests extends LogicManagerTestBase {
         /*
         // java.lang.AssertionError: Activity is neither an event nor a task.
         assertCommandStateChange(helper.generateEditCommand(model, targetIndex, taskB.getTitle(),
-                taskA.getDeadline().orElse(null), taskA.getSchedule().orElse(null),
-                taskA.getFrequency().orElse(null), taskA.getTags()),
+                taskA.getDeadline().orElse(null), taskA.getSchedule().orElse(null), taskA.getTags()),
                 expectedTaskMan,
                 expectedTaskMan.getActivityList());
                 */

@@ -12,8 +12,6 @@ public interface ReadOnlyEvent {
 
     Title getTitle();
 
-    Optional<Frequency> getFrequency();
-
     Optional<Schedule> getSchedule();
 
     /**
@@ -35,7 +33,6 @@ public interface ReadOnlyEvent {
         return other == this // short circuit if same object
                 || (other != null // this is first to avoid NPE below
                 && other.getTitle().equals(this.getTitle()) // state checks here onwards
-                && other.getFrequency().equals(this.getFrequency())
                 && other.getSchedule().equals(this.getSchedule())
         );
     }
