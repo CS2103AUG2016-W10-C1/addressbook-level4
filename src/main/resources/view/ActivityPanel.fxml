@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seedu.taskman.ui.ActivityPanel">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seedu.taskman.ui.ActivityPanel">
    <children>
-      <TitledPane fx:id="titledPane" collapsible="false" styleClass="panel-title" text="&lt;panelTitle&gt;">
+      <TitledPane fx:id="titledPane" collapsible="false" text="&lt;panelTitle&gt;">
          <content>
-            <ListView fx:id="listView" prefHeight="200.0" prefWidth="202.0" />
+            <ListView fx:id="listView" prefHeight="200.0" prefWidth="202.0" styleClass="activity-list-view" />
          </content>
          <font>
             <Font name="System Bold" size="12.0" />

@@ -91,10 +91,5 @@ public class GuiHandle {
         guiRobot.interact(() -> ((Stage) window.get()).close());
         focusOnMainApp();
     }
-    
 
-    public GuiHandle clickOn(String... menuText) {
-        Arrays.stream(menuText).forEach((menuItem) -> guiRobot.clickOn(menuItem));
-        return this;
-    }
 }

@@ -9,7 +9,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
@@ -61,9 +63,6 @@ public class HelpWindow extends UiPart {
     private VBox mainPane;
     private Scene previousScene;
     private Scene helpScene;
-
-    @FXML
-    private MenuItem backMenuItem;
     
     @FXML
     private TableView<HelpTableViewRow> helpTableView;
@@ -95,12 +94,17 @@ public class HelpWindow extends UiPart {
         previousScene = mainScene;
         helpScene = new Scene(mainPane);
         primaryStage.setScene(helpScene);
-        setAccelerators();
+        addKeyPressedFilters();
         initTable();
     }
     
-    private void setAccelerators() {
-        backMenuItem.setAccelerator(KeyCombination.valueOf("F1"));
+    private void addKeyPressedFilters() {
+        helpScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            KeyCode code = event.getCode();
+            if (code.equals(KeyCode.F1)) {
+                handleBack();
+            }
+        });
     }
     
     private void initTable() {
@@ -115,7 +119,6 @@ public class HelpWindow extends UiPart {
         return helpScene;
     }
     
-    @FXML
     public void handleBack() {
         primaryStage.setScene(previousScene);
     }

@@ -2,23 +2,12 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="seedu.taskman.ui.MainWindow">
    <children>
-      <MenuBar VBox.vgrow="NEVER">
-        <menus>
-          <Menu mnemonicParsing="false" text="Navigate">
-               <items>
-                  <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" onAction="#handleHelp" text="Help" />
-               </items></Menu>
-        </menus>
-      </MenuBar>
       <SplitPane dividerPositions="0.5" VBox.vgrow="ALWAYS">
          <items>
             <AnchorPane fx:id="schedulePanelPlaceholder" styleClass="anchor-pane">

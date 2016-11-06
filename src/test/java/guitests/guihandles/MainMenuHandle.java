@@ -15,17 +15,12 @@ public class MainMenuHandle extends GuiHandle {
         super(guiRobot, primaryStage, TestApp.APP_TITLE);
     }
 
-    public HelpWindowHandle openHelpWindowUsingMenu() {
-        clickOn("Navigate", "F1");
+    public HelpWindowHandle openHelpWindowUsingShortcut() {
+        useF1Shortcut();
         return new HelpWindowHandle(guiRobot, primaryStage);
     }
 
-    public HelpWindowHandle openHelpWindowUsingAccelerator() {
-        useF1Accelerator();
-        return new HelpWindowHandle(guiRobot, primaryStage);
-    }
-
-    private void useF1Accelerator() {
+    private void useF1Shortcut() {
         guiRobot.push(KeyCode.F1);
         guiRobot.sleep(500);
     }

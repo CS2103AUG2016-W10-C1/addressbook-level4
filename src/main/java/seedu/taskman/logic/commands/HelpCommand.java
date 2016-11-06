@@ -12,7 +12,7 @@ public class HelpCommand extends Command {
     public static final String COMMAND_WORD = "help";
 
     public static final String MESSAGE_USAGE = "Show command formats.\n"
-            + "Example: " + COMMAND_WORD;
+            + "Example: " + COMMAND_WORD + " (or press F1)";
 
     public static final String SHOWING_HELP_MESSAGE = "Opened help window.";
 
