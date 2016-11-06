@@ -26,21 +26,10 @@ public class Formatter {
         }
     }
 
-    public enum ScheduleDivider {
-        DURATION    ("for"),
-        SCHEDULE    ("to");
-
-        public String string;
-
-        ScheduleDivider(String string) {
-            this.string = string;
-        }
-    }
-
     // Deadline, Schedule
     public static final int MULTIPLIER_TIME_UNIX_TO_JAVA = 1000;
 
-    // Schedule.toStringSelected, Schedule.addNextToRelativeDateTime, ReadOnlyTask.getAsText
+    // Schedule.toStringSelected, ReadOnlyTask.getAsText
     public static final String FORMAT_TWO_TERMS_SPACED_WITHIN_AFTER = "%1$s %2$s ";
 
     // Schedule.toFormalString
@@ -59,4 +48,13 @@ public class Formatter {
     // Deadline, Schedule
     public static final PrettyTime PRETTY_TIME = new PrettyTime();
 
+    public static String appendWithNewlines(String string, String... strings) {
+        StringBuilder builder = new StringBuilder(string);
+        for(String str : strings) {
+            builder.append("\n")
+                    .append(str);
+        }
+
+        return builder.toString();
+    }
 }

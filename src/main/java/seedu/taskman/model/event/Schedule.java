@@ -13,42 +13,71 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Schedule {
+    public enum ScheduleDivider {
+        DURATION    ("for"),
+        SCHEDULE    ("to"),
+        SCHEDULE_ALTERNATIVE(",");
+
+        public String string;
+
+        ScheduleDivider(String string) {
+            this.string = string;
+        }
+
+        @Override
+        public String toString() {
+            return string;
+        }
+    }
 
     public static final String MESSAGE_SCHEDULE_CONSTRAINTS =
             String.format(
-                    "Date and time for scheduling should be in any of the format:\n" +
-                    "1. DATETIME, DATETIME\n" +
-                    "2. DATETIME %1$s DATETIME\n" +
-                    "3. DATETIME %2$s DATETIME\n" +
-                    "Refer to help for the full suite of date time parameter parsing.\n",
-                    Formatter.ScheduleDivider.SCHEDULE.string,
-                    Formatter.ScheduleDivider.DURATION.string);
+                    "Date and time for scheduling should be in any of the following formats:\n" +
+                    "1. DATETIME %1$s DATETIME\n" +
+                    "2. DATETIME %2$s DATETIME\n" +
+                    "3. DATETIME %3$s DATETIME\n",
+                    ScheduleDivider.SCHEDULE.string,
+                    ScheduleDivider.SCHEDULE_ALTERNATIVE.string,
+                    ScheduleDivider.DURATION.string);
 
     public static final String ERROR_NEGATIVE_DURATION = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
-            "Duration is negative.");
-    public static final String ERROR_BAD_DATETIME_START = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
-            "Bad start datetime: %1$s");
-    public static final String ERROR_BAD_DATETIME_END = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
-            "Bad end datetime.");
+            "Duration is negative");
+    public static final String ERROR_FORMAT_BAD_DATETIME_START = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
+            "Bad start datetime, %1$s");
+    public static final String ERROR_FORMAT_BAD_DATETIME_END = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
+            "Bad end datetime, %1$s");
+    public static final String ERROR_FORMAT_BAD_DURATION = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
+            "Bad duration, %1$s");
 
-    public static final String SCHEDULE_DIVIDER_GROUP = "((?:, )|(?: to )|(?: for ))";
-    public static final String SCHEDULE_VALIDATION_REGEX = "(.*)" + SCHEDULE_DIVIDER_GROUP + "(.*)";
-
-    public static final String STRING_NEXT_WEEK = "next";
+    //@@author A0139019E
+    private static final String SCHEDULE_DIVIDER_GROUP = "((?:, )|(?: to )|(?: for ))";
+    private static final String SCHEDULE_VALIDATION_REGEX = "(.*?)" + SCHEDULE_DIVIDER_GROUP + "(.*)";
 
     public final long startEpochSecond;
     public final long endEpochSecond;
 
+    /**
+     * Convenience method for creation from machine readable start & end times
+     */
     public Schedule(long startEpochSecond, long endEpochSecond) throws IllegalValueException {
-
-        boolean isNegativeDuration = (endEpochSecond - startEpochSecond) < 0;
-        if (startEpochSecond <= 0 || endEpochSecond <= 0 || isNegativeDuration) {
+        boolean isDurationNegative = (endEpochSecond - startEpochSecond) < 0;
+        if (isDurationNegative) {
             throw new IllegalValueException(ERROR_NEGATIVE_DURATION);
         }
+
         this.startEpochSecond = startEpochSecond;
         this.endEpochSecond = endEpochSecond;
     }
 
+    /**
+     * Parses a string in natural language to create a schedule object
+     * A schedule consists of a start & end time
+     *
+     * Refer to Schedule.MESSAGE_SCHEDULE_CONSTRAINS for accepted formats
+     *
+     * @throws IllegalValueException when input strays from the accepted formats,
+     * or when the start,end time or duration cannot be parsed
+     */
     public Schedule(String schedule) throws IllegalValueException {
         schedule = schedule.trim();
         Pattern pattern = Pattern.compile(SCHEDULE_VALIDATION_REGEX);
@@ -56,36 +85,16 @@ public class Schedule {
         if (!matcher.matches()) {
             throw new IllegalValueException(MESSAGE_SCHEDULE_CONSTRAINTS);
         } else {
-            String start = matcher.group(1).trim();
+            String rawStartTime = matcher.group(1).trim();
+            startEpochSecond = parseRawStartTime(rawStartTime);
+
             String divider = matcher.group(2).trim();
-            boolean hasDuration = divider.contains(Formatter.ScheduleDivider.DURATION.string);
+            boolean scheduleUsesDuration = divider.contains(ScheduleDivider.DURATION.string);
 
-            try {
-                startEpochSecond = DateTimeParser.getUnixTime(start);
-            } catch (DateTimeParser.IllegalDateTimeException e) {
-                throw new IllegalValueException(
-                        String.format(
-                                Formatter.FORMAT_TWO_LINES,
-                                MESSAGE_SCHEDULE_CONSTRAINTS,
-                                String.format(ERROR_BAD_DATETIME_START, start))
-                );
-            }
-
-            try {
-                if (hasDuration) {
-                    String duration = matcher.group(3).trim();
-                    endEpochSecond = DateTimeParser.toEndTime(startEpochSecond, duration);
-                } else {
-                    String endString = matcher.group(3).trim();
-                    long endEpochCandidate = DateTimeParser.getUnixTime(endString);
-
-                    endEpochSecond = (startEpochSecond > endEpochCandidate)
-                            ? addNextToRelativeDateTime(endString)
-                            : endEpochCandidate;
-                }
-            } catch (DateTimeParser.IllegalDateTimeException e) {
-                throw new IllegalValueException(ERROR_BAD_DATETIME_END);
-            }
+            String rawScheduleEnding = matcher.group(3).trim();
+            endEpochSecond = scheduleUsesDuration
+                    ? convertRawDurationToEndTime(rawScheduleEnding, startEpochSecond)
+                    : parseRawEndTime(rawScheduleEnding, startEpochSecond);
 
             if (startEpochSecond > endEpochSecond) {
                 throw new IllegalValueException(ERROR_NEGATIVE_DURATION);
@@ -93,28 +102,75 @@ public class Schedule {
         }
     }
 
-    private long addNextToRelativeDateTime(String dateTime) throws IllegalValueException {
-        dateTime = String.format(Formatter.FORMAT_TWO_TERMS_SPACED_WITHIN_AFTER, STRING_NEXT_WEEK, dateTime).trim();
+    private long parseRawStartTime(String rawStartTime) throws IllegalValueException {
         try {
-            return DateTimeParser.getUnixTime(dateTime);
+            return DateTimeParser.getEpochTime(rawStartTime);
         } catch (DateTimeParser.IllegalDateTimeException e) {
-            throw new IllegalValueException(ERROR_BAD_DATETIME_END);
+
+            String errorMessage = Formatter.appendWithNewlines(
+                    String.format(ERROR_FORMAT_BAD_DATETIME_START, rawStartTime),
+                    e.getMessage()
+            );
+            throw new IllegalValueException(errorMessage);
         }
     }
 
-    public static boolean isValidSchedule(String test) {
+    private long parseRawEndTime(String rawEndTime, long startEpochSecond) throws IllegalValueException {
+        // User could be referring to a future occurrence of the specified end time
+        // but did not specify as such. Explicitly indicate 'next' in end time if required
+
+        // Illustration of problem:
+        // Time now - Sunday 10pm,
+        // Inputs: Start Time - Friday, End Time - Monday
+        // Since next Monday comes before next Friday, this input is illegal if not rectified
+
+        boolean tryNextOccurrenceOfEndTime = false;
         try {
-            new Schedule(test);
-            return true;
-        } catch (IllegalValueException e) {
-            return false;
+            long candidateResult = DateTimeParser.getEpochTime(rawEndTime);
+
+            tryNextOccurrenceOfEndTime = startEpochSecond > candidateResult;
+            if (tryNextOccurrenceOfEndTime) {
+                String revisedEndTime = "next " + rawEndTime;
+                return DateTimeParser.getEpochTime(revisedEndTime);
+            } else {
+                return candidateResult;
+            }
+
+        } catch (DateTimeParser.IllegalDateTimeException e) {
+            String errorMessage = Formatter.appendWithNewlines(
+                    String.format(ERROR_FORMAT_BAD_DATETIME_END, rawEndTime), e.getMessage()
+            );
+
+            // appending "next" may give unpredictable errors
+            // return the more sensible response of a negative duration,
+            // since it did parse correctly before our attempt at fixing the error
+
+            if (tryNextOccurrenceOfEndTime) {
+                errorMessage = ERROR_NEGATIVE_DURATION;
+            }
+
+            throw new IllegalValueException(errorMessage);
         }
     }
+
+    private long convertRawDurationToEndTime(String rawDuration, long startEpochSecond) throws IllegalValueException {
+        try {
+            return DateTimeParser.toEndTime(startEpochSecond, rawDuration);
+        } catch (DateTimeParser.IllegalDateTimeException e) {
+
+            String errorMessage = Formatter.appendWithNewlines(
+                    String.format(ERROR_FORMAT_BAD_DURATION, rawDuration),
+                    e.getMessage()
+            );
+            throw new IllegalValueException(errorMessage);
+        }
+    }
+
+    //@@author
 
     @Override
     public String toString() {
-        return String.format(
-                Formatter.FORMAT_TWO_LINES,
+        return Formatter.appendWithNewlines(
                 DateTimeParser.epochSecondToShortDateTime(startEpochSecond),
                 DateTimeParser.epochSecondToShortDateTime(endEpochSecond)
         );
@@ -202,7 +258,7 @@ public class Schedule {
     public String toFormalString(){
         return String.format(Formatter.FORMAT_THREE_TERMS_SPACED_WITHIN,
                 getFormalStartString(),
-                Formatter.ScheduleDivider.SCHEDULE.string,
+                ScheduleDivider.SCHEDULE.string,
                 getFormalEndString());
     }
 
@@ -214,6 +270,7 @@ public class Schedule {
         return  DateTimeParser.epochSecondToFormalDateTime(endEpochSecond);
     }
 
+    //@@author A0139019E
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -228,4 +285,5 @@ public class Schedule {
         return Objects.hashCode(startEpochSecond, endEpochSecond);
     }
 
+    //@@author
 }

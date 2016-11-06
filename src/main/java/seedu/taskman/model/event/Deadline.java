@@ -16,7 +16,7 @@ public class Deadline {
         deadline = deadline.trim();
 
         try {
-            epochSecond = DateTimeParser.getUnixTime(deadline);
+            epochSecond = DateTimeParser.getEpochTime(deadline);
         } catch (DateTimeParser.IllegalDateTimeException e) {
             throw new IllegalValueException(e.getMessage());
         }
