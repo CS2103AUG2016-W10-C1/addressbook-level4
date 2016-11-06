@@ -49,6 +49,7 @@ public class Schedule {
     public static final String ERROR_FORMAT_BAD_DURATION = String.format(Messages.MESSAGE_INVALID_ARGUMENTS,
             "Bad duration, %1$s");
 
+    //@@author A0139019E
     private static final String SCHEDULE_DIVIDER_GROUP = "((?:, )|(?: to )|(?: for ))";
     private static final String SCHEDULE_VALIDATION_REGEX = "(.*?)" + SCHEDULE_DIVIDER_GROUP + "(.*)";
 
@@ -72,13 +73,10 @@ public class Schedule {
      * Parses a string in natural language to create a schedule object
      * A schedule consists of a start & end time
      *
-     * Three formats are accepted:
-     * "start time, end time",
-     * "start time to end time",
-     * "start time for duration"
+     * Refer to Schedule.MESSAGE_SCHEDULE_CONSTRAINS for accepted formats
      *
-     * @throws IllegalValueException when input strays from the formats,
-     * or when the start/end time/duration cannot be parsed
+     * @throws IllegalValueException when input strays from the accepted formats,
+     * or when the start,end time or duration cannot be parsed
      */
     public Schedule(String schedule) throws IllegalValueException {
         schedule = schedule.trim();
@@ -167,6 +165,8 @@ public class Schedule {
             throw new IllegalValueException(errorMessage);
         }
     }
+
+    //@@author
 
     @Override
     public String toString() {
@@ -270,6 +270,7 @@ public class Schedule {
         return  DateTimeParser.epochSecondToFormalDateTime(endEpochSecond);
     }
 
+    //@@author A0139019E
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -284,4 +285,5 @@ public class Schedule {
         return Objects.hashCode(startEpochSecond, endEpochSecond);
     }
 
+    //@@author
 }
