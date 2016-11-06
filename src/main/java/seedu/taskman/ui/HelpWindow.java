@@ -44,11 +44,11 @@ public class HelpWindow extends UiPart {
     final ObservableList<HelpTableViewRow> data = FXCollections.observableArrayList(
                                                   new HelpTableViewRow(AddCommand.COMMAND_WORD, AddCommand.MESSAGE_USAGE),
                                                   new HelpTableViewRow(AddECommand.COMMAND_WORD, AddECommand.MESSAGE_USAGE),
-                                                  new HelpTableViewRow(ClearCommand.COMMAND_WORD, ClearCommand.COMMAND_WORD),
+                                                  new HelpTableViewRow(ClearCommand.COMMAND_WORD, ClearCommand.MESSAGE_USAGE),
                                                   new HelpTableViewRow(CompleteCommand.COMMAND_WORD, CompleteCommand.MESSAGE_USAGE),
                                                   new HelpTableViewRow(DeleteCommand.COMMAND_WORD, DeleteCommand.MESSAGE_USAGE),
                                                   new HelpTableViewRow(EditCommand.COMMAND_WORD, EditCommand.MESSAGE_USAGE),
-                                                  new HelpTableViewRow(ExitCommand.COMMAND_WORD, ExitCommand.COMMAND_WORD),
+                                                  new HelpTableViewRow(ExitCommand.COMMAND_WORD, ExitCommand.MESSAGE_USAGE),
                                                   new HelpTableViewRow(HelpCommand.COMMAND_WORD, HelpCommand.MESSAGE_USAGE),
                                                   new HelpTableViewRow(HistoryCommand.COMMAND_WORD, HistoryCommand.MESSAGE_USAGE),
                                                   new HelpTableViewRow(ListCommand.COMMAND_WORD, ListCommand.MESSAGE_USAGE),

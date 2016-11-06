@@ -8,6 +8,8 @@ import seedu.taskman.model.TaskMan;
 public class ClearCommand extends Command {
 
     public static final String COMMAND_WORD = "clear";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": clears data in TaskMan.\n"
+            + "Example: " + COMMAND_WORD;
     public static final String MESSAGE_SUCCESS = "TaskMan has been cleared!";
 
     public ClearCommand() {
