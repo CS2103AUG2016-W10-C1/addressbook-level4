@@ -119,7 +119,7 @@ public class ScheduleTest {
         String start = "07-07-2016 00:02";
         String end = "05-07-2016 00:01";
 
-        exception.expectMessage(Schedule.ERROR_NEGATIVE_DURATION);
+        exception.expectMessage(Schedule.MESSAGE_ERROR_NEGATIVE_DURATION);
         new Schedule(start + " " + Schedule.ScheduleDivider.SCHEDULE + " " + end);
     }
 
@@ -131,7 +131,7 @@ public class ScheduleTest {
         long end = 1;
         assertTrue(start > end);
 
-        exception.expectMessage(Schedule.ERROR_NEGATIVE_DURATION);
+        exception.expectMessage(Schedule.MESSAGE_ERROR_NEGATIVE_DURATION);
         new Schedule(start, end);
 
     }
