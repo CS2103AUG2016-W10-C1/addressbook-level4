@@ -1,6 +1,7 @@
 package guitests.guihandles;
 
 import guitests.GuiRobot;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 /**
@@ -21,7 +22,7 @@ public class HelpWindowHandle extends GuiHandle {
     }
 
     public void closeWindow() {
-        clickOn("Navigate", "F1");
+        guiRobot.push(KeyCode.F1);
         guiRobot.sleep(500);
     }
 
