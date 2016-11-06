@@ -56,7 +56,7 @@ public class DateTimeParserTest {
             try {
                 DateTimeParser.getEpochTime(testString);
             } catch (DateTimeParser.IllegalDateTimeException e) {
-                assertEquals(DateTimeParser.MESSAGE_ERROR_AMBIGIOUS_TIME, e.getMessage());
+                assertEquals(DateTimeParser.MESSAGE_ERROR_AMBIGUOUS_TIME, e.getMessage());
             }
         }
     }

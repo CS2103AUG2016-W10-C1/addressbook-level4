@@ -39,15 +39,14 @@ public class DateTimeParser {
 
     public static final String MESSAGE_ERROR_AMBIGUOUS_TIME = "Datetime entered is ambiguous. Please enter the time in the HH:MM format instead";
     public static final String MESSAGE_ERROR_TIMEZONE_NOT_SUPPORTED = "Please omit timezones. Specifying timezones is currently not supported";
+    public static final String MESSAGE_ERROR_END_IS_BEFORE_START = "Invalid Duration, end is before start";
     public static final String MESSAGE_ERROR_UNKNOWN_DATETIME =
-            "Please refer to the following for an example of a valid datetime" +
+            "Unable to parse datetime. Refer to the following for an example of a valid datetime" +
             "\n\n" + DATE_TIME_EXAMPLES;
-    public static final String MESSAGE_ERROR_END_IS_BEFORE_START = "Invalid duration, end is before start";
     public static final String MESSAGE_ERROR_NON_CONFORMING_DURATION =
             "Invalid duration, please use the following temporal units: min, hour, day, week, month, year\n" +
                     "Example: '3 weeks, 2 hours, 1 min'";
 
-    private static final Parser NATTY_PARSER = new Parser();
     //@@author
 
     private static final DateTimeFormatter FORMATTER_DISPLAY = DateTimeFormatter.ofPattern("EEE, dd MMM YY, h.mma");
@@ -103,7 +102,7 @@ public class DateTimeParser {
      * Parse a natural datetime string & return a Date
      */
     private static Optional<Date> parseNaturalDateTime(String naturalDateTime) throws IllegalDateTimeException {
-        List<DateGroup> dateGroups = NATTY_PARSER.parse(naturalDateTime);
+        List<DateGroup> dateGroups = new Parser().parse(naturalDateTime);
 
         // Assume the first DateGroup object provided by Natty contains the desired result
         if (dateGroups.isEmpty()) {
