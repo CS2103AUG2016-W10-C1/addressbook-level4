@@ -55,14 +55,13 @@ Command Format: `help`
 <!--@@author A0139019E-->
 #### Adding a task: `add`
 Adds a task to TaskMan<br>
-Command Format: `add TITLE [d/DEADLINE] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
+Command Format: `add TITLE [d/DEADLINE] [s/SCHEDULE] [t/TAG]...`
 
 Parameter | Format
 -------- | :-------- 
 `SCHEDULE` | `DATETIME`, `DATETIME to DATETIME` or `DATETIME for DURATION` 
 `DEADLINE` and `DATETIME` | `[this/next] ddd [hhmm]`
 `DURATION` | `<number> <unit of time>`
-`FREQUENCY` | See `DURATION`
 
 The `SCHEDULE` represents the period of time the task is scheduled to be worked on.
 
@@ -78,13 +77,12 @@ Examples:
 
 #### Adding an event: `adde`
 Adds an event to TaskMan<br>
-Command Format: `adde TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
+Command Format: `adde TITLE [s/SCHEDULE] [t/TAG]...`
 
 Parameter | Format
 -------- | :-------- 
 `SCHEDULE` | `DATETIME`, `DATETIME to DATETIME` or `DATETIME for DURATION`
 `DURATION` | `<number> <unit of time>`
-`FREQUENCY` | See `DURATION`
 
 The `SCHEDULE` represents the period of time which the event is occurring.
 
@@ -134,16 +132,15 @@ Command Format: `complete INDEX` or `complete list`
 #### Editing a task/event: `edit`
 Edits a task or event to TaskMan<br>
 ##### For a Task:
-Command Format: `edit INDEX TITLE [d/DEADLINE] [s/SCHEDULE] [c/STATUS] [f/FREQUENCY] [t/TAG]...`
+Command Format: `edit INDEX TITLE [d/DEADLINE] [s/SCHEDULE] [c/STATUS] [t/TAG]...`
 ##### For an Event:
-Command Format: `edit INDEX TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...`
+Command Format: `edit INDEX TITLE [s/SCHEDULE] [t/TAG]...`
 
 Parameter | Format
 -------- | :-------- 
 `SCHEDULE` | `DATETIME`, `DATETIME to DATETIME` or `DATETIME for DURATION` 
 `DEADLINE` and `DATETIME` | `[this/next] ddd [hhmm]`
 `DURATION` | `<number> <unit of time>`
-`FREQUENCY` | See `DURATION`
 `STATUS` | `complete/incomplete` or `y/n` where y denotes complete and n denotes incomplete
 
 Fields which are not present are assumed to stay unchanged. By adding tags, previous tags are removed and the new tags are added to the task/event.
@@ -216,7 +213,6 @@ Examples:
 * sort title desc
 * sort deadline
 * sort schedule
-* sort frequency desc
 
 #### Viewing command history: `history`
 List the 10 most recently executed commands **which have made changes to the data** in reverse chronological order.<br>
@@ -274,7 +270,6 @@ Each Task is saved in the following format:
 > `<title>TITLE</title>`<br>
 > `<deadline>DD-MM-YYYY TT:TT</deadline>`<br>
 > `<schedule>DD-MM-YYYY TT:TT to DD-MM-YYYY TT:TT</schedule>`<br>
-> `<frequency>X{hr/d/wk/mth/yr}</frequency>`<br>
 > `<tagged>TAGNAME</tagged>`<br>
 > `<tagged>TAGNAME</tagged>`<br>
 > `</tasks>`<br>
@@ -285,7 +280,6 @@ Example:
 > `<title>CS2103T Tutorial HW</title>`<br>
 > `<deadline>11-10-2016 23:59</deadline>`<br>
 > `<schedule></schedule>`<br>
-> `<frequency>1wk</frequency>`<br>
 > `<tagged>CS2103T</tagged>`<br>
 > `</tasks>`
 
@@ -295,7 +289,6 @@ Each Event is saved in the following format:
 > `<events>`<br>
 > `<title>TITLE</title>`<br>
 > `<schedule>DD-MM-YYYY TT:TT to DD-MM-YYYY TT:TT</schedule>`<br>
-> `<frequency>1wk</frequency>`<br>
 > `<tagged>TAGNAME</tagged>`<br>
 > `<tagged>TAGNAME</tagged>`<br>
 > `</events>`
@@ -305,7 +298,6 @@ Example:
 > `<events>`<br>
 > `<title>CS2103T Lecture</title>`<br>
 > `<schedule>01-10-2016 12:00 to 01-10-2016 14:00</schedule>`<br>
-> `<frequency>X{hr/d/wk/mth/yr}</frequency>`<br>
 > `<tagged>CS2103T</tagged>`<br>
 > `<tagged>lecture</tagged>`<br>
 > `</events>`
@@ -331,12 +323,12 @@ Example:
 
 Command | Format
 -------- | :--------
-Add | `add TITLE [d/DEADLINE] [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...    `
-Adde | `adde TITLE [s/SCHEDULE] [f/FREQUENCY] [t/TAG]...    `
+Add | `add TITLE [d/DEADLINE] [s/SCHEDULE] [t/TAG]...    `
+Adde | `adde TITLE [s/SCHEDULE] [t/TAG]...    `
 Clear | `clear`
 Complete | `complete INDEX` or `complete list`
 Delete | `delete INDEX` or `delete list`
-Edit | `edit INDEX TITLE [d/DEADLINE] [s/SCHEDULE] [c/STATUS] [f/FREQUENCY] [t/TAG]...`
+Edit | `edit INDEX TITLE [d/DEADLINE] [s/SCHEDULE] [c/STATUS] [t/TAG]...`
 Exit | `exit`
 Help | `help`
 History | `history`

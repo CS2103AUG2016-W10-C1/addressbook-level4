@@ -37,7 +37,7 @@ public class Formatter {
         }
     }
 
-    // Deadline, Schedule, Frequency
+    // Deadline, Schedule
     public static final int MULTIPLIER_TIME_UNIX_TO_JAVA = 1000;
 
     // Schedule.toStringSelected, Schedule.addNextToRelativeDateTime, ReadOnlyTask.getAsText

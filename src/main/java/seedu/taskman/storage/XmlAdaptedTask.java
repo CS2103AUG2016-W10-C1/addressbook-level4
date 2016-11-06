@@ -22,9 +22,6 @@ public class XmlAdaptedTask {
     @XmlElement(required = false)
     private String deadline;
     @XmlElement(required = false)
-    private Long frequency;
-
-    @XmlElement(required = false)
     private String scheduleStart;
     @XmlElement(required = false)
     private String scheduleEnd;
@@ -63,10 +60,6 @@ public class XmlAdaptedTask {
             scheduleEnd = schedule.getFormalEndString();
         }
 
-        if (source.getFrequency().isPresent()) {
-            frequency = source.getFrequency().get().seconds;
-        }
-
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
@@ -90,14 +83,11 @@ public class XmlAdaptedTask {
         final Deadline deadline = this.deadline != null
                 ? new Deadline(this.deadline)
                 : null;
-        final Frequency frequency = this.frequency != null
-                ? new Frequency(this.frequency)
-                : null;
         final Schedule schedule = this.scheduleStart != null && this.scheduleEnd != null
                 ? new Schedule(this.scheduleStart + ", " + this.scheduleEnd)
                 : null;
 
-        Task task = new Task(title, tags, deadline, schedule, frequency);
+        Task task = new Task(title, tags, deadline, schedule);
         task.setStatus(status);
         return task;
     }

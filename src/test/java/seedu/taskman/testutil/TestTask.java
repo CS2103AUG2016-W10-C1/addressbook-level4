@@ -14,7 +14,6 @@ public class TestTask implements ReadOnlyTask {
     private Title title;
     private Deadline deadline;
     private Status status;
-    private Frequency frequency;
     private Schedule schedule;
     private UniqueTagList tags;
 
@@ -62,15 +61,6 @@ public class TestTask implements ReadOnlyTask {
     }
 
     @Override
-    public Optional<Frequency> getFrequency() {
-        return Optional.ofNullable(frequency);
-    }
-
-    public void setFrequency(Frequency frequency) {
-        this.frequency = frequency;
-    }
-
-    @Override
     public Optional<Schedule> getSchedule() {
         return Optional.ofNullable(schedule);
     }
@@ -92,9 +82,6 @@ public class TestTask implements ReadOnlyTask {
         }
         if (this.getSchedule().isPresent()) {
             sb.append("s/" + this.getSchedule().get().toFormalString() + " ");
-        }
-        if (this.getFrequency().isPresent()) {
-//        sb.append("f/" + this.getFrequency().toString() + " ");
         }
         this.getTags().getInternalList().stream().forEach(s -> sb.append("t/" + s.tagName + " "));
         return sb.toString().replace('\n',' ');

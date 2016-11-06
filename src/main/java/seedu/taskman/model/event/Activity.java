@@ -109,11 +109,6 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent {
     }
 
     @Override
-    public Optional<Frequency> getFrequency() {
-        return activity.getFrequency();
-    }
-
-    @Override
     public Optional<Schedule> getSchedule() {
         return activity.getSchedule();
     }
@@ -163,7 +158,6 @@ public class Activity implements ReadOnlyEvent, MutableTagsEvent {
                 getTitle(),
                 getDeadline(),
                 getStatus(),
-                getFrequency(),
                 getSchedule(),
                 getTags()
         );

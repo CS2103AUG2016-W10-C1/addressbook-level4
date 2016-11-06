@@ -16,7 +16,6 @@ public interface ReadOnlyTask extends ReadOnlyEvent {
         return other == this // short circuit if same object
                 || (other != null // this is first to avoid NPE below
                 && other.getTitle().equals(this.getTitle()) // state checks here onwards
-                && other.getFrequency().equals(this.getFrequency())
                 && other.getSchedule().equals(this.getSchedule())
                 && other.getDeadline().equals(this.getDeadline())
                 && other.getStatus().equals(this.getStatus())
@@ -49,10 +48,6 @@ public interface ReadOnlyTask extends ReadOnlyEvent {
         if (getSchedule().isPresent()) {
             builder.append("\nSchedule:\n\t")
                     .append(getSchedule().get().toStringSelected());
-        }
-        if (getFrequency().isPresent()){
-            //builder.append(" Frequency: ")
-            //.append(getFrequency());
         }
         return builder.toString();
     }

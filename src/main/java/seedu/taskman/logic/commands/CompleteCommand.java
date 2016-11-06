@@ -97,8 +97,7 @@ public class CompleteCommand extends Command {
                         activityToComplete.getTitle(),
                         activityToComplete.getTags(),
                         activityToComplete.getDeadline().orElse(null),
-                        activityToComplete.getSchedule().orElse(null),
-                        activityToComplete.getFrequency().orElse(null));
+                        activityToComplete.getSchedule().orElse(null));
                 task.setStatus(new Status(STATUS_COMPLETE));
                 afterComplete = new Activity(task);
                 break;
