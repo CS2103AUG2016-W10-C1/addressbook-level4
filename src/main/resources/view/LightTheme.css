@@ -1,4 +1,30 @@
+.menu-bar {
+    -fx-background-color: derive(#576082, 20%);
+}
 
+.menu-bar .label {
+    -fx-font-size: 14pt;
+    -fx-text-fill: white;
+    -fx-opacity: 0.9;
+}
+
+.context-menu {
+    -fx-background-color: derive(#576082, 50%);
+}
+
+.context-menu .label {
+    -fx-text-fill: white;
+    -fx-opacity: 0.9;
+}
+
+.status-bar {
+    -fx-background-color: derive(#576082, 20%);
+}
+
+.status-bar .label {
+    -fx-text-fill: white;
+    -fx-opacity: 0.9;
+}
 
 .label-id {
     -fx-font-size: 14px;
