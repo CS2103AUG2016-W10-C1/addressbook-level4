@@ -48,12 +48,11 @@ public class ModelManager extends ComponentManager implements Model {
      * Initializes a ModelManager with the given TaskMan
      * TaskMan and its variables should not be null
      */
-    public ModelManager(TaskMan src, UserPrefs userPrefs) {
+    public ModelManager(TaskMan src) {
         super();
         assert src != null;
-        assert userPrefs != null;
 
-        logger.fine("Initializing with Task Man: " + src + " and user prefs " + userPrefs);
+        logger.fine("Initializing with Task Man: " + src);
 
         taskMan = new TaskMan(src);
         ObservableList<Activity> activities = taskMan.getActivities();
@@ -66,7 +65,7 @@ public class ModelManager extends ComponentManager implements Model {
         sortedTags = taskMan.getTags().sorted();
     }
 
-    public ModelManager(ReadOnlyTaskMan initialData, UserPrefs userPrefs) {
+    public ModelManager(ReadOnlyTaskMan initialData) {
         taskMan = new TaskMan(initialData);
         ObservableList<Activity> activities = taskMan.getActivities();
         filteredSchedules = activities.filtered(new SchedulePredicate());
