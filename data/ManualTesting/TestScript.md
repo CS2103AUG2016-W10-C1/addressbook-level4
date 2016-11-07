@@ -139,10 +139,8 @@ All 3 panels should be updated, as the the activity can also be listed in the th
 ## Storageloc
 
 
-(if on windows)<br>
-1. `storageloc C:/Users/Owner/Desktop/new_task.xml`<br>
-(if on ubuntu)<br>
-2. `storageloc /home/user/Desktop/MyTaskManData.xml`<br>
+1. (if on windows) `storageloc C:/Users/Owner/Desktop/new_task.xml`<br>
+2. (if on ubuntu) `storageloc /home/user/Desktop/MyTaskManData.xml`<br>
 This should notify the user that the storage location has changed
 3. `storageloc ./relative_postion.xml`<br>
 `exit`<br>
