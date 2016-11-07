@@ -1,3 +1,4 @@
+<!--@@author A0136070R-->
 # User Guide
 
 
@@ -11,7 +12,9 @@
 
 ## About
 
-TaskMan is a task management application that aims to ease the way you record and search through your tasks and events. It is a desktop application which stores data locally. TaskMan is specifically designed for users who favour working entirely from the keyboard. Instead of navigating through the application with mouse clicks, you simply need to type the right keywords to invoke the necessary commands.
+TaskMan is a task management application which stores data locally. It aims to ease the way you record and search through your daily activities.
+
+TaskMan is specifically designed for users who favour working entirely from the keyboard. Instead of navigating through the application with mouse clicks, you simply need to type the necessary commands and shortcuts.
 
 This guide will get you started in just a few steps. It also has detailed 'how to' instructions on each feature of the application and a command summary which can be referred to anytime.
 
@@ -25,7 +28,7 @@ This guide will get you started in just a few steps. It also has detailed 'how t
 1. Download the latest `taskman.jar` from the [releases](../../../releases) tab.
 2. Copy the file to the folder you want to use as the home folder for your TaskMan.
 3. Double-click the file to start the app. The GUI should appear in a few seconds.
-   > <img src="images/ui_mockup1.png">
+   > <img src="images/UI.png">
 
 4. Type the command in the command box and press <kbd>Enter</kbd> to execute it. <br>
    e.g. typing **`help`** and pressing <kbd>Enter</kbd> will open the help window.
@@ -50,9 +53,11 @@ This guide will get you started in just a few steps. It also has detailed 'how t
 #### Viewing help: `help`
 Command Format: `help`
 
-> Help is also shown if you enter an incorrect command e.g. `abcd`
+A command line interface can be a horror if you have no inkling about the commands. 
+> Typing help or pressing F1 displays a list of commands available in TaskMan, along with their description and respective command formats.
+> Help is also shown if you enter an incorrect command e.g. abcd.
+> You may navigate down the help window via the up and down arrow keys, and to exit the help window and return to TaskMan, simply press ESC.
 
-<!--@@author A0139019E-->
 #### Adding a task: `add`
 Adds a task to TaskMan<br>
 Command Format: `add TITLE [d/DEADLINE] [s/SCHEDULE] [t/TAG]...`
