@@ -27,7 +27,6 @@ We are a team based in the [School of Computing, National University of Singapor
 * Features implemented:
 	* [Add events](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/AddECommand.java)
 	* [Display exisiting tags](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/TagsCommand.java)
-	* [Track deadlines](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/DeadlinePanel.java)
 	* [Create keyboard shorcuts](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/MainWindow.java)
 	* [Make offline help](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/HelpWindow.java)
 * Code written: [[functional code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/main/A0140136W.md)][[test code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/test/A0140136W.md)][[docs](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/docs/A0140136W.md)]
