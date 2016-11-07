@@ -5,6 +5,9 @@ import seedu.taskman.commons.core.UnmodifiableObservableList;
 import seedu.taskman.model.tag.Tag;
 
 //@@author A0140136W
+/*
+ * Displays all existing tags in TaskMan.
+ */
 public class TagsCommand extends Command {
 
     public static final String COMMAND_WORD = "tags";
