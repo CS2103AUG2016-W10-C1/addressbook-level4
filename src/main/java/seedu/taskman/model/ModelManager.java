@@ -16,8 +16,11 @@ import seedu.taskman.model.event.Schedule;
 import seedu.taskman.model.event.UniqueActivityList;
 import seedu.taskman.model.event.UniqueActivityList.ActivityNotFoundException;
 import seedu.taskman.model.tag.Tag;
+import seedu.taskman.model.tag.UniqueTagList;
 
 import javax.annotation.Nonnull;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
@@ -33,6 +36,8 @@ public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final TaskMan taskMan;
+    
+    private final ObservableList<Activity> activities;
     
     private final FilteredList<Activity> filteredSchedules;
     private final FilteredList<Activity> filteredDeadlines;
@@ -56,7 +61,7 @@ public class ModelManager extends ComponentManager implements Model {
         logger.fine("Initializing with Task Man: " + src + " and user prefs " + userPrefs);
 
         taskMan = new TaskMan(src);
-        ObservableList<Activity> activities = taskMan.getActivities();
+        activities = taskMan.getActivities();
         filteredSchedules = activities.filtered(new SchedulePredicate());
         filteredDeadlines = activities.filtered(new DeadlinePredicate());
         filteredFloatings = activities.filtered(new FloatingPredicate());
@@ -68,7 +73,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     public ModelManager(ReadOnlyTaskMan initialData, UserPrefs userPrefs) {
         taskMan = new TaskMan(initialData);
-        ObservableList<Activity> activities = taskMan.getActivities();
+        activities = taskMan.getActivities();
         filteredSchedules = activities.filtered(new SchedulePredicate());
         filteredDeadlines = activities.filtered(new DeadlinePredicate());
         filteredFloatings = activities.filtered(new FloatingPredicate());
@@ -189,8 +194,17 @@ public class ModelManager extends ComponentManager implements Model {
     }
     
     @Override
-    public UnmodifiableObservableList<Tag> getTagList() {
-        return new UnmodifiableObservableList<>(sortedTags);
+    public ArrayList<Tag> getTagList() {
+        ArrayList<Tag> tagList = new ArrayList<Tag>();
+        for (Activity activity : activities) {
+            UniqueTagList tags = activity.getTags();
+            for (Tag tag : tags) {
+                if (!tagList.contains(tag)) {
+                    tagList.add(tag);
+                }
+            }
+        }
+        return tagList;
     }
 
     //========== Inner classes/interfaces used for filtering ==================================================

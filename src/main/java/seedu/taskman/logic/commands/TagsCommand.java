@@ -1,4 +1,6 @@
 package seedu.taskman.logic.commands;
+import java.util.ArrayList;
+
 import seedu.taskman.commons.core.UnmodifiableObservableList;
 import seedu.taskman.model.tag.Tag;
 
@@ -21,7 +23,7 @@ public class TagsCommand extends Command {
     @Override
     public CommandResult execute() {
         // Gets list of tags.
-        UnmodifiableObservableList<Tag> tags = model.getTagList();
+        ArrayList<Tag> tags = model.getTagList();
             
         // Builds a string for command result.
         StringBuilder builder = new StringBuilder(TAG_STRING_HEADER);
