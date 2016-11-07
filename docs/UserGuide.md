@@ -50,54 +50,50 @@ This guide will get you started in just a few steps. It also has detailed 'how t
 > * Items with `...` after them can have multiple instances.
 > * The order of parameters is not fixed.
 
+Parameter | Format
+-------- | :-------- 
+`TITLE` | Any sequence of alphanumeric characters
+`SCHEDULE` | `DATETIME`, `DATETIME to DATETIME` or `DATETIME for DURATION` 
+`DEADLINE` and `DATETIME` | `[this/next] ddd [hhmm]`
+`DURATION` | `<number> <unit of time>`
+`TAG` | Can contain spaces and are case-insensitive
+
+
 #### Viewing help: `help`
 Command Format: `help`
 
-A command line interface can be a horror if you have no inkling about the commands. 
-> Typing help or pressing F1 displays a list of commands available in TaskMan, along with their description and respective command formats.
-> Help is also shown if you enter an incorrect command e.g. abcd.
-> You may navigate down the help window via the up and down arrow keys, and to exit the help window and return to TaskMan, simply press ESC.
+> * Typing help or pressing F1 displays a list of commands available in TaskMan, along with their description and respective command formats.
+> * Help is also shown if you enter an incorrect command e.g. abcd.
+> * You may navigate down the help window via the up and down arrow keys, and to exit the help window and return to TaskMan, simply press ESC.
 
 #### Adding a task: `add`
 Adds a task to TaskMan<br>
 Command Format: `add TITLE [d/DEADLINE] [s/SCHEDULE] [t/TAG]...`
 
-Parameter | Format
--------- | :-------- 
-`SCHEDULE` | `DATETIME`, `DATETIME to DATETIME` or `DATETIME for DURATION` 
-`DEADLINE` and `DATETIME` | `[this/next] ddd [hhmm]`
-`DURATION` | `<number> <unit of time>`
-
-The `SCHEDULE` represents the period of time the task is scheduled to be worked on.
-
-> Tasks can have any number of tags. Tags may contain spaces and are case-insensitive (i.e. tags "school", "School", and "SCHOOL" are the same tags).
+The `SCHEDULE` represents the period of time the task is scheduled to be worked on. Tasks can have any number of tags.
 
 Examples:
 * `add learn driving`
 * `add cs2101 homework d/next mon 1200`
-* `add cs3244 revision s/tue 0000 to tue 0200`
-* `add cs2103t tutorial t/java`
-* `add eat vitamins s/fri 1400 for 5 minutes f/2 days t/ribena`
-* `add backup server s/mon 0800 for 2 hours f/3 months`
+* `add math revision s/today 8pm to mon 2359`
+* `add software engineering tutorial t/java`
+* `add eat magic pill d/sat 12am s/fri 2pm for 5 minutes t/ribena`
+* `add backup computer s/mon 8am, mon 11am t/work`
+* `add buy gift for dad d/17 dec 2016 23:59 t/birthday t/cash`
+<!--@@author-->
 
+<!--@@author A0140136W-->
 #### Adding an event: `adde`
 Adds an event to TaskMan<br>
-Command Format: `adde TITLE [s/SCHEDULE] [t/TAG]...`
+Command Format: `adde TITLE s/SCHEDULE [t/TAG]...`
 
-Parameter | Format
--------- | :-------- 
-`SCHEDULE` | `DATETIME`, `DATETIME to DATETIME` or `DATETIME for DURATION`
-`DURATION` | `<number> <unit of time>`
-
-The `SCHEDULE` represents the period of time which the event is occurring.
-
-> Similar to tasks, events can have any number of tags. Tags may contain spaces and are case-insensitive (i.e. tags "school", "School", and "SCHOOL" are the same tags).
+The event must have a `SCHEDULE`, and can contain any number of tags (i.e. categories).The `SCHEDULE` represents the period of time which the event is occurring.
 
 Examples:
-* `adde CS2103T Lecture s/fri 1400 to fri 1600 f/1wk t/CS2103T`
-* `adde Project Meeting s/mon 1400 to mon 1400 t/CS2101 t/Lunch Time`
-
+* `adde dance lesson s/tomorrow 1pm to tomorrow 3pm`
+* `adde driving test s/next Tue for 2 hours t/important`
 <!--@@author-->
+
 #### Changing the View: `view`
 Shows a different view based on the parameters entered.<br>
 Command Format: view [{more/less/cal/day}]
