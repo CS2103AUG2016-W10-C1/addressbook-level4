@@ -113,7 +113,7 @@ In summary, the `UI` component,
 <!--@@author A0139019E-->
 ### Logic component
 
-<img src="images/LogicClassDiagram.png" width="800"><br>
+<img src="images/LogicClassDiagram.png" width="600"><br>
 
 **API** : [`Logic.java`](../src/main/java/seedu/taskman/logic/Logic.java)
 
@@ -125,14 +125,15 @@ The Command objects can change the Model, Storage components and/or raise events
 Given below is the Sequence Diagram for interactions within the Logic component for the execute("delete d1") API call.
 
 <img src="images/LogicSequenceDiagram.png" width="800"><br>
-As seen in Figure 3.3.2, commands that have been successfully executed (checked with result.success) and 
+
+As seen above, commands that have been successfully executed (checked with result.success) and 
 have been flagged for storing (through the storeHistory field) will undergo an additional process. 
 A CommandHistory object will be created, storing fields related to the state of the Model before the command was 
 executed, as well as the input string for the command. This object will then be stored into the HistoryDeque. 
 The HistoryDeque is utilized by the History and Undo commands, containing snapshots of the Model component at different times.
 
-<img src="images/CommandTypes.png" width="800"><br>
-Figure 3.3.3 illustrates the storeHistory field for commands. 
+<img src="images/CommandTypes.png" width="400"><br>
+The above figure illustrates the storeHistory field for commands. 
 The storeHistory field is set to true for some commands, and false for others.
 View Command.java & the respective concrete Commands for more details.
 
