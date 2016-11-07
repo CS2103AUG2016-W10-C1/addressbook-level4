@@ -50,7 +50,7 @@ public class AddETests extends LogicManagerTestBase {
         // working title but missing schedule
         assertCommandBehavior(
                 AddECommand.COMMAND_WORD + " working title",
-                Schedule.MESSAGE_SCHEDULE_CONSTRAINTS,
+                AddECommand.MESSAGE_ADDE_INVALID_COMMAND_FORMAT,
                 new TaskMan(model.getTaskMan())
         );
     }
