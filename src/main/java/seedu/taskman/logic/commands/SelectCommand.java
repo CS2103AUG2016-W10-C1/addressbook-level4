@@ -25,11 +25,13 @@ public class SelectCommand extends Command {
             + "Parameters: INDEX\n"
             + "Example: " + COMMAND_WORD + " f2";
 
+    public static final String MESSAGE_SELECT_INVALID_COMMAND_FORMAT = MESSAGE_INVALID_COMMAND_FORMAT
+            + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE;
+
     public static Command prepareSelect(String arguments) {
         Optional<Pair<Activity.PanelType, Integer>> panelWithIndex = parsePanelTypeWithIndexOnly(arguments);
         if(!panelWithIndex.isPresent()){
-            return new IncorrectCommand(MESSAGE_INVALID_COMMAND_FORMAT
-                    + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE);
+            return new IncorrectCommand(MESSAGE_SELECT_INVALID_COMMAND_FORMAT);
         }
         Pair<Activity.PanelType, Integer> pair = panelWithIndex.get();
         return new SelectCommand(pair.getKey(), pair.getValue());

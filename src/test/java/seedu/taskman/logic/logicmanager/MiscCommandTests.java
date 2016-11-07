@@ -1,6 +1,7 @@
 package seedu.taskman.logic.logicmanager;
 
 import org.junit.Test;
+import seedu.taskman.logic.commands.ExitCommand;
 
 import static org.junit.Assert.assertTrue;
 
@@ -14,7 +15,7 @@ public class MiscCommandTests extends LogicManagerTestBase {
 
     @Test
     public void execute_unknownCommandWord() throws Exception {
-        String unknownCommand = "uicfhmowqewca";
+        String unknownCommand = "abcdefghijk";
         assertCommandNoStateChange(unknownCommand);
     }
 
@@ -26,7 +27,11 @@ public class MiscCommandTests extends LogicManagerTestBase {
 
     @Test
     public void execute_exit() throws Exception {
-        assertCommandNoStateChange("exit");
+        // assertCommandNoStateChange("exit");
+        assertCommandBehavior(
+                ExitCommand.COMMAND_WORD,
+                ExitCommand.MESSAGE_EXIT_ACKNOWLEDGEMENT
+        );
     }
 
 
