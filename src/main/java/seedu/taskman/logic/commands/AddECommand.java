@@ -33,7 +33,7 @@ public class AddECommand extends Command {
 
     private static final Pattern EVENT_MARK_ARGS_FORMAT =
             Pattern.compile("" + CommandParser.ArgumentPattern.TITLE
-                    + CommandParser.ArgumentPattern.OPTIONAL_SCHEDULE
+                    + CommandParser.ArgumentPattern.SCHEDULE
                     + CommandParser.ArgumentPattern.OPTIONAL_TAGS);
 
     private final Event toAdd;
@@ -53,9 +53,7 @@ public class AddECommand extends Command {
         this.toAdd = new Event(
                 new Title(title),
                 new UniqueTagList(tagSet),
-                schedule == null
-                    ? null
-                    : new Schedule(schedule)
+                new Schedule(schedule)
         );
     }
 
