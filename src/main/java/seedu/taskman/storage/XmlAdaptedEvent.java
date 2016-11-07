@@ -76,15 +76,16 @@ public class XmlAdaptedEvent {
         return title;
     }
 
-    public List<XmlAdaptedTag> getTagged() {
-        return tagged;
-    }
-
-    public String getScheduleStart(){
-        return scheduleStart;
-    }
-
-    public String getScheduleEnd(){
-        return scheduleEnd;
+     /**
+     *
+     * @return String representation for logging
+     */
+    @Override
+    public String toString(){
+        final StringBuilder builder = new StringBuilder();
+        builder.append("Title: ").append(title).append(", ");
+        builder.append("Schedule: ").append(scheduleStart + " to " +scheduleEnd).append(", ");
+        builder.append("Tags: ").append(tagged);
+        return builder.toString();
     }
 }

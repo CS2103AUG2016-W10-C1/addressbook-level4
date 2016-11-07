@@ -3,7 +3,6 @@ package seedu.taskman.model;
 import javafx.collections.ObservableList;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Event;
-import seedu.taskman.model.event.Task;
 import seedu.taskman.model.event.UniqueActivityList;
 
 import java.util.Collection;
@@ -73,14 +72,6 @@ public class TaskMan implements ReadOnlyTaskMan {
      */
     public void addActivity(Activity activity) throws UniqueActivityList.DuplicateActivityException {
         activities.add(activity);
-    }
-
-    public boolean removeActivity(Task key) throws UniqueActivityList.ActivityNotFoundException {
-        if (activities.remove(new Activity(key))) {
-            return true;
-        } else {
-            throw new UniqueActivityList.ActivityNotFoundException();
-        }
     }
 
     public boolean removeActivity(Activity key) throws UniqueActivityList.ActivityNotFoundException {
