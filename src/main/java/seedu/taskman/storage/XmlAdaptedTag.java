@@ -37,4 +37,13 @@ public class XmlAdaptedTag {
         return new Tag(tagName);
     }
 
+    /**
+     *
+     * @return String representation for logging
+     */
+    @Override
+    public String toString(){
+        return "["+tagName+"]";
+    }
+
 }

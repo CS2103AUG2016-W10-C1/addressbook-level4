@@ -102,4 +102,11 @@ public class LogsCenter {
     public static String getEventHandlingLogMessage(BaseEvent e) {
         return getEventHandlingLogMessage(e, "");
     }
+
+    /**
+     * Decorates the given string to create a log message suitable for failed conversion from file to in-app objects
+     */
+    public static String getConversionFailedMessage(String object) {
+        return "-------[Conversion Failed][" + object + "]";
+    }
 }
