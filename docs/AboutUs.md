@@ -37,15 +37,17 @@ We are a team based in the [School of Computing, National University of Singapor
 <img src="images/LeeYiMin.jpg" width="150"><br>
 * Responsibilities: Testing
 * Features implemented:
-	* [List events](https://github.com/CS2103AUG2016-W10-C1/main/pull/14)
-	* [Change storage location](https://github.com/CS2103AUG2016-W10-C1/main/pull/44)
-	* [View storage location] (https://github.com/CS2103AUG2016-W10-C1/main/pull/86)
+	* [[List events](https://github.com/CS2103AUG2016-W10-C1/main/pull/14)]
+	* [[Change storage location](https://github.com/CS2103AUG2016-W10-C1/main/pull/44)]
+	* [[View storage location] (https://github.com/CS2103AUG2016-W10-C1/main/pull/86)]
 * Code written: [[functional code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/main/A0121299A.md)]
 [[test code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/test/A0121299A.md)]
 [[docs](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/docs/A0121299A.md)]
 * Other major contributions:
-    * Added Activity Class and refactored the app to work with Activity (https://github.com/CS2103AUG2016-W10-C1/main/pull/10)
-	* Refactored command patterns in CommandParser and allowed non-compulsory fields to be optional (https://github.com/CS2103AUG2016-W10-C1/main/pull/29)
+    * Added Activity Class and refactored the app to work with Activity [[#10](https://github.com/CS2103AUG2016-W10-C1/main/pull/10)]
+    * Refactored command patterns in CommandParser and allowed non-compulsory fields to be optional [[#29](https://github.com/CS2103AUG2016-W10-C1/main/pull/29)]
+    * Implemented ActivityCard for UI [[#108](https://github.com/CS2103AUG2016-W10-C1/main/pull/108)https://github.com/CS2103AUG2016-W10-C1/main/pull/108]
+    * Helping to fix tests
 
 -----
 
