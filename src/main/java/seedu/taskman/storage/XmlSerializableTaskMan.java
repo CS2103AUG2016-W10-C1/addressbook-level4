@@ -33,13 +33,13 @@ public class XmlSerializableTaskMan implements ReadOnlyTaskMan {
      */
     public XmlSerializableTaskMan() {
     }
-
+    
+    //@@author A0140136W//
     /**
-     * Conversion
+     * Converts data in source file to its respective type of Activity (i.e. Task, Event)
+     * for loading in TaskMan.
      */
     public XmlSerializableTaskMan(ReadOnlyTaskMan src) {
-        //TODO: writing tasks and events
-        //implemented XmlAdaptedTask(Activity activity) for now
         events.addAll(src.getActivityList().stream().filter(activity ->
                                                                 activity.getType().equals(Activity.ActivityType.EVENT)
                                                             ).map(XmlAdaptedEvent::new).collect(Collectors.toList()));
@@ -47,6 +47,7 @@ public class XmlSerializableTaskMan implements ReadOnlyTaskMan {
                                                                activity.getType().equals(Activity.ActivityType.TASK)
                                                            ).map(XmlAdaptedTask::new).collect(Collectors.toList()));
     }
+    //@@author
 
     @Override
     public UniqueActivityList getUniqueActivityList() {
@@ -55,14 +56,14 @@ public class XmlSerializableTaskMan implements ReadOnlyTaskMan {
             try {
                 lists.add(new Activity(task.toModelType()));
             } catch (IllegalValueException e) {
-                //TODO: better error handling
+                
             }
         }
         for (XmlAdaptedEvent event : events) {
             try {
                 lists.add(new Activity(event.toModelType()));
             } catch (IllegalValueException e) {
-                //TODO: better error handling
+                
             }
         }
         return lists;
@@ -76,7 +77,6 @@ public class XmlSerializableTaskMan implements ReadOnlyTaskMan {
                         return new Activity(task.toModelType());
                     } catch (IllegalValueException e) {
                         e.printStackTrace();
-                        //TODO: better error handling
                         return null;
                     }
                 }),
@@ -85,11 +85,9 @@ public class XmlSerializableTaskMan implements ReadOnlyTaskMan {
                         return new Activity(event.toModelType());
                     } catch (IllegalValueException e) {
                         e.printStackTrace();
-                        //TODO: better error handling
                         return null;
                     }
                 })
                 ).collect(Collectors.toCollection(ArrayList::new));
     }
-
 }

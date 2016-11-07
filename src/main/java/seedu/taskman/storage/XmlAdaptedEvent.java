@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
 import java.util.List;
 
+//@@author A0140136W
 /**
  * JAXB-friendly version of the Event.
  */
@@ -71,7 +72,8 @@ public class XmlAdaptedEvent {
         Event event = new Event(title, tags, schedule);
         return event;
     }
-
+    //@@author
+    
     public String getTitle(){
         return title;
     }
