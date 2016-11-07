@@ -133,7 +133,6 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
-    //@@author A0140136W
     @Override
     public void updateAllPanelsToShowAll() {
         updateFilteredPanel(Activity.PanelType.ALL, Collections.EMPTY_SET, Collections.EMPTY_SET);
@@ -171,7 +170,6 @@ public class ModelManager extends ComponentManager implements Model {
             }
         }
     }
-    //@@author
 
     @Override
     public UnmodifiableObservableList<Activity> getSortedScheduleList() {
@@ -309,7 +307,10 @@ public class ModelManager extends ComponentManager implements Model {
             return "title=" + String.join(", ", titleKeyWords);
         }
     }
-    
+    //@@author A0140136W
+    /*
+     * Predicate to filter activities with schedules.
+     */
     private static class SchedulePredicate implements Predicate<Activity> {
         @Override
         public boolean test(Activity t) {
@@ -317,6 +318,9 @@ public class ModelManager extends ComponentManager implements Model {
         }     
     }
     
+    /*
+     * Predicate to filter tasks with deadlines.
+     */
     private static class DeadlinePredicate implements Predicate<Activity> {
         @Override
         public boolean test(Activity t) {
@@ -325,6 +329,9 @@ public class ModelManager extends ComponentManager implements Model {
         } 
     }
     
+    /*
+     * Predicate to filter tasks without deadlines.
+     */
     private static class FloatingPredicate implements Predicate<Activity> {
         @Override
         public boolean test(Activity t) {
@@ -333,6 +340,9 @@ public class ModelManager extends ComponentManager implements Model {
         }   
     }
     
+    /*
+     * Comparator to sort schedules by start time.
+     */
     private static class ScheduleComparator implements Comparator<Activity> {
         @Override
         public int compare(Activity activity1, Activity activity2) {
@@ -347,6 +357,9 @@ public class ModelManager extends ComponentManager implements Model {
         } 
     }
     
+    /*
+     * Comparator to sort deadline by deadline.
+     */
     private static class DeadlineComparator implements Comparator<Activity> {
         @Override
         public int compare(Activity activity1, Activity activity2) {
@@ -360,5 +373,6 @@ public class ModelManager extends ComponentManager implements Model {
             return due1.compareTo(due2);
         } 
     }
+    //@@author
 
 }
