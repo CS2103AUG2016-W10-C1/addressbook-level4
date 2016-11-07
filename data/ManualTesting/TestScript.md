@@ -225,11 +225,11 @@ All 3 panels should be updated, as the the activity can also be listed in the th
 ## Storageloc
 
 
-(if on windows)
+(if on windows)<br>
 28a. `storageloc C:/Users/Owner/Desktop/new_task.xml`
 
 
-(if on ubuntu)
+(if on ubuntu)<br>
 28b. `storageloc /home/user/Desktop/MyTaskManData.xml`
 This should notify the user that the storage location has changed
 
@@ -279,13 +279,13 @@ Should display all activities in all panels, that has the tag ‘important’, a
 Should display all activities in the DeadlinePanel, that has the keyword ‘eliz’ and/or ‘pris’
 
 
-35. `list s t/important t/bills`
+36. `list s t/important t/bills`
 
 
 Should display all activities in the SchedulePanel, that has the tag ‘important’ and/or ‘bills’
 
 
-36. `clear`<br>
+37. `clear`<br>
 `add completeMe`<br>
 `complete f1`
 
