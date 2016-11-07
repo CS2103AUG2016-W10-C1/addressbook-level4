@@ -15,26 +15,46 @@ public class AddETests extends LogicManagerTestBase {
     public void execute_adde_invalidArgsFormat() throws Exception {
         // no args
         // assertCommandNoStateChange("adde");
-        assertCommandBehavior(AddECommand.COMMAND_WORD, AddECommand.MESSAGE_ADDE_INVALID_COMMAND_FORMAT);
+        assertCommandBehavior(
+                AddECommand.COMMAND_WORD,
+                AddECommand.MESSAGE_ADDE_INVALID_COMMAND_FORMAT,
+                new TaskMan(model.getTaskMan())
+        );
 
         // non-existent flag
         // assertCommandNoStateChange("adde x/");
-        assertCommandBehavior(AddECommand.COMMAND_WORD + " x/", AddECommand.MESSAGE_ADDE_INVALID_COMMAND_FORMAT);
+        assertCommandBehavior(
+                AddECommand.COMMAND_WORD + " x/",
+                AddECommand.MESSAGE_ADDE_INVALID_COMMAND_FORMAT,
+                new TaskMan(model.getTaskMan())
+        );
 
         // non-existent flag
         // assertCommandNoStateChange("adde d/");
-        assertCommandBehavior(AddECommand.COMMAND_WORD + " d/", AddECommand.MESSAGE_ADDE_INVALID_COMMAND_FORMAT);
+        assertCommandBehavior(
+                AddECommand.COMMAND_WORD + " d/",
+                AddECommand.MESSAGE_ADDE_INVALID_COMMAND_FORMAT,
+                new TaskMan(model.getTaskMan())
+        );
     }
 
     @Test
     public void execute_adde_invalidTaskData() throws Exception {
         // bad schedule
         // assertCommandNoStateChange("adde valid title s/invalid schedule");
-        assertCommandBehavior(AddECommand.COMMAND_WORD + " valid title s/invalid schedule", Schedule.MESSAGE_SCHEDULE_CONSTRAINTS);
+        assertCommandBehavior(
+                AddECommand.COMMAND_WORD + " valid title s/invalid schedule",
+                Schedule.MESSAGE_SCHEDULE_CONSTRAINTS,
+                new TaskMan(model.getTaskMan())
+        );
 
         // bad title
         // assertCommandNoStateChange("adde []\\[;]");
-        assertCommandBehavior(AddECommand.COMMAND_WORD + " []\\[;]", Title.MESSAGE_TITLE_CONSTRAINTS);
+        assertCommandBehavior(
+                AddECommand.COMMAND_WORD + " []\\[;]",
+                Title.MESSAGE_TITLE_CONSTRAINTS,
+                new TaskMan(model.getTaskMan())
+        );
     }
 
     @Test
