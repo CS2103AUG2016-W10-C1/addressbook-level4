@@ -25,6 +25,8 @@ TaskMan is specifically designed for users who favour working entirely from the 
   
 * Credits to [Flaticon](http://www.flaticon.com/) for their fabulous emoticons.
 
+* Many thanks to our supervisor, classmates and everyone who gave us great advice.
+
 
 # Originally Address Book (Level 4)
 
