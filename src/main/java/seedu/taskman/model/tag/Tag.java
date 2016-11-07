@@ -3,19 +3,27 @@ package seedu.taskman.model.tag;
 
 import seedu.taskman.commons.exceptions.IllegalValueException;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+
 /**
  * Represents a Tag in the task man.
  * Guarantees: immutable; name is valid as declared in {@link #isValidTagName(String)}
  */
+@XmlAccessorType(XmlAccessType.NONE)
 public class Tag {
 
     public static final String MESSAGE_TAG_CONSTRAINTS = "Tag name should form a word. " +
             "All punctuation except '/' is accepted";
     public static final String TAG_VALIDATION_REGEX = "[\\w\\p{Punct}&&[^/]]+";
 
-    public String tagName;
+    @XmlElement
+    public final String tagName;
 
-    public Tag() {
+    @SuppressWarnings("unused")
+    private Tag() {
+        tagName = null;
     }
 
     /**

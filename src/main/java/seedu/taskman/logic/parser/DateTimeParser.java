@@ -155,8 +155,8 @@ public class DateTimeParser {
     }
 
     /**
-     * Calculates the end time from a start time & duration
-     * Start time & end time in epoch time (in seconds)
+     * Calculates end time from a start time & duration
+     * Start time & end time are in epoch time (in seconds)
      */
     public static long toEndTime(long startEpochTime, String naturalDuration) throws IllegalDateTimeException {
         long endEpochTime = startEpochTime + naturalDurationToSeconds(naturalDuration);
