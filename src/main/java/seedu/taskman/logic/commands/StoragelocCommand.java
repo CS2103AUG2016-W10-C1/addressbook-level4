@@ -34,6 +34,14 @@ public class StoragelocCommand extends Command {
     private String filePath;
 
     //@@author A0121299A
+
+    /**
+     * Parses argument to construct StoragelocCommand, if successful
+     * May also return ViewStoragelocCommand or IncorrectCommand, depending on the input
+     *
+     * @param args given by user for the command
+     * @return Command object corresponding to the command
+     */
     public static Command prepareStorageloc(String args) {
 
         String trimmedArgs = args.trim();
@@ -76,6 +84,8 @@ public class StoragelocCommand extends Command {
             storage.setTaskManFilePath(filePath);
             saveChanged = true;
         } catch (IOException e) {
+            //command has failed
+            //reset all possible changes to original state
             Config.getInstance().setTaskManFilePath(initialConfigData.getTaskManFilePath());
         }
 

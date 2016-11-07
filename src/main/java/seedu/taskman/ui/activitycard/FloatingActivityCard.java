@@ -3,8 +3,9 @@ package seedu.taskman.ui.activitycard;
 import seedu.taskman.model.event.Activity;
 import javafx.fxml.FXML;
 
+//@@author A0121299A
 /**
- * Activity Card for Floating Panel, currently has no additional functionality
+ * Activity Card for Floating Panel
  */
 public class FloatingActivityCard extends ActivityCard {
 

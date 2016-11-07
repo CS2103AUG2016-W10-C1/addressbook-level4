@@ -3,8 +3,10 @@ package seedu.taskman.ui.activitycard;
 import seedu.taskman.model.event.Activity;
 import javafx.fxml.FXML;
 
+
+//@@author A0121299A
 /**
- * Created by YiMin on 27/10/2016.
+ * Activity Card for Schedule Panel with value field displaying schedule
  */
 public class ScheduleActivityCard extends ActivityCard {
 

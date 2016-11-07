@@ -26,6 +26,11 @@ public class Config extends ConfigData {
     }
 
     //@@author A0121299A
+
+    /**
+     * Returns the singleton instance of Config, constructing a new one if it does not yet exists
+     * @return the Singleton instance of Config
+     */
     public static Config getInstance() {
         if (instance == null) {
             instance = new Config();
@@ -33,6 +38,7 @@ public class Config extends ConfigData {
         return instance;
     }
 
+    //@@author A0121299A
     /**
      * Read and load the config data from the specified file to the config instance
      *
@@ -40,7 +46,6 @@ public class Config extends ConfigData {
      * @return true if data is successfully read from file, false otherwise
      * @throws DataConversionException
      */
-    //@@author A0121299A
     public static boolean readConfig(String configFilePath) throws DataConversionException {
         Optional<ConfigData> readData = ConfigUtil.readConfig(configFilePath);
         if (readData.isPresent()) {
@@ -50,17 +55,22 @@ public class Config extends ConfigData {
         return false;
     }
 
+
+    //@@author A0121299A
     /**
-     * Set the file to save the configuration settings to
+     * Sets the file to save the configuration settings in
      *
      * @param configFile
      */
-    //@@author A0121299A
     public static void setConfigFile(String configFile) {
         assert configFile != null;
         Config.getInstance().configFile = configFile;
     }
 
+    /**
+     * Saves the current Config settings to location as specified by configFile
+     * @throws IOException
+     */
     public static void save() throws IOException {
         ConfigUtil.saveConfigData(Config.getInstance().getDataClone(), Config.getInstance().configFile);
     }
@@ -83,14 +93,18 @@ public class Config extends ConfigData {
     }
 
     //@@author A0121299A
+
+    /**
+     * Resets the current Config settings to its default defined in ConfigData
+     */
     public static void resetInstance() {
         update(getInstance(), new ConfigData());
     }
 
+    //@@author
     /**
      * A class for accessing the Config File.
      */
-    //@@author
     private static class ConfigUtil {
 
         private static final Logger logger = LogsCenter.getLogger(ConfigUtil.class);

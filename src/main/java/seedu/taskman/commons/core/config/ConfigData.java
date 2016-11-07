@@ -63,6 +63,12 @@ public class ConfigData {
     }
 
     //@@author A0121299A
+
+    /**
+     * Copies the data values of the source object to the toUpdate object
+     * @param toUpdate the ConfigData object to be updated
+     * @param source the ConfigData object to take as the source
+     */
     protected static void update(ConfigData toUpdate, ConfigData source) {
         toUpdate.appTitle = source.appTitle;
         toUpdate.logLevel = source.logLevel;
@@ -71,6 +77,10 @@ public class ConfigData {
         toUpdate.taskManName = source.taskManName;
     }
 
+    /**
+     *
+     * @return a new ConfigData object holding the same data as the current object
+     */
     public ConfigData getDataClone() {
         ConfigData clone = new ConfigData();
         update(clone, this);

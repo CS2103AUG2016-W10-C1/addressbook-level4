@@ -1,15 +1,11 @@
 package seedu.taskman.ui;
 
-import java.util.ArrayList;
-
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -17,10 +13,11 @@ import javafx.stage.Stage;
 import seedu.taskman.Constants;
 import seedu.taskman.commons.core.GuiSettings;
 import seedu.taskman.commons.core.config.Config;
-import seedu.taskman.commons.events.ui.ExitAppRequestEvent;
 import seedu.taskman.logic.Logic;
 import seedu.taskman.model.UserPrefs;
 import seedu.taskman.model.event.Activity;
+
+import java.util.ArrayList;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -189,7 +186,7 @@ public class MainWindow extends UiPart {
         }
     }
 
-    public ListPanel getListPanel(Activity.PanelType panelType){
+    public ActivityPanel getActivityPanel(Activity.PanelType panelType){
         switch (panelType){
             case DEADLINE: {
                 return deadlinePanel;

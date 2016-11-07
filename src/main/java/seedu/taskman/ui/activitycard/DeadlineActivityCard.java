@@ -3,8 +3,10 @@ package seedu.taskman.ui.activitycard;
 import seedu.taskman.model.event.Activity;
 import javafx.fxml.FXML;
 
+
+//@@author A0121299A
 /**
- * Created by YiMin on 26/10/2016.
+ * Activity Card for Deadline Panel with value field displaying deadline
  */
 public class DeadlineActivityCard extends ActivityCard {
 
@@ -14,6 +16,6 @@ public class DeadlineActivityCard extends ActivityCard {
         super.initialize();
         id.setText(Activity.PanelType.DEADLINE.getString() + displayedIndex);
         value.setText(activity.getDeadline().get().toString());
-        setColour();
+        setColours();
     }
 }

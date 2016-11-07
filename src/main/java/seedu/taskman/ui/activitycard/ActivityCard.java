@@ -7,26 +7,18 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import seedu.taskman.Constants;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.tag.Tag;
-import seedu.taskman.ui.*;
+import seedu.taskman.ui.UiPart;
 
-import static seedu.taskman.Constants.APP_COMPLETE_ICON;
-import static seedu.taskman.Constants.APP_INCOMPLETE_ICON;
-import static seedu.taskman.Constants.APP_OVERDUE_ICON;
-
+//@@author A0121299A
 /**
- * Created by YiMin on 26/10/2016.
+ * Small card panel which displays a single Activity object.
  */
 public class ActivityCard extends UiPart {
 
     protected static final String FXML = "ActivityCard.fxml";
-
-    //todo: shift to more appropriate place
-    protected static final String AMBER_STYLE = "label-amber";
-    protected static final String GREEN_STYLE = "label-green";
-    protected static final String RED_STYLE = "label-red";
-    protected static final String BLUE_STYLE = "label-blue";
 
     @FXML
     protected GridPane cardPane;
@@ -57,39 +49,36 @@ public class ActivityCard extends UiPart {
             tagsFlowPane.getChildren().add(new Label(tag.toString()));
         }
         value.setText("");
-        setColour();
+        setColours();
     }
 
     /**
-     * Setting colours to title labels
-     * Event -> blue
-     * Task ->
-     * Overdue -> red
-     * Not overdue ->
-     * Complete -> green
-     * Incomplete -> amber
+     * Setting colours and styling to the card
      */
-    protected void setColour() {
+    protected void setColours() {
         switch (activity.getType()) {
             case EVENT: {
-                //title.getStyleClass().add(BLUE_STYLE);
                 break;
             }
             case TASK: {
+
                 if (activity.getDeadline().isPresent()
                         && activity.getDeadline().get().hasPast()
                         && !activity.getStatus().get().completed) {
-                    title.getStyleClass().add(RED_STYLE);
-                    icon.setImage(new Image(APP_OVERDUE_ICON));
+                    //if overdue
+                    title.getStyleClass().add(Constants.TextStyle.RED.getStyleClass());
+                    icon.setImage(new Image(Constants.Icon.OVERDUE.getPath()));
                     break;
                 }
 
                 if (activity.getStatus().get().completed) {
-                    title.getStyleClass().add(GREEN_STYLE);
-                    icon.setImage(new Image(APP_COMPLETE_ICON));
+                    //if completed
+                    title.getStyleClass().add(Constants.TextStyle.GREEN.getStyleClass());
+                    icon.setImage(new Image(Constants.Icon.COMPLETE.getPath()));
                 } else {
-                    title.getStyleClass().add(AMBER_STYLE);
-                    icon.setImage(new Image(APP_INCOMPLETE_ICON));
+                    //if not completed
+                    title.getStyleClass().add(Constants.TextStyle.AMBER.getStyleClass());
+                    icon.setImage(new Image(Constants.Icon.INCOMPLETE.getPath()));
                 }
             }
             default: {

@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 /**
  * Panel containing the list of tasks.
  */
-public class ActivityPanel extends UiPart implements ListPanel {
+public class ActivityPanel extends UiPart {
     private final Logger logger = LogsCenter.getLogger(ActivityPanel.class);
     private static final String FXML = "ActivityPanel.fxml";
     private AnchorPane panel;
@@ -88,7 +88,6 @@ public class ActivityPanel extends UiPart implements ListPanel {
         return roundCeiling.toEpochSecond(ZoneOffset.UTC) - now.toEpochSecond(ZoneOffset.UTC);
     }
 
-    // TODO Resolve generic type issue.
     private void setConnections(ObservableList<Activity> taskList) {      
         listView.setItems(taskList);
         listView.setCellFactory(listView -> new ActivityListViewCell(panelType));
@@ -101,7 +100,6 @@ public class ActivityPanel extends UiPart implements ListPanel {
         FxViewUtil.applyAnchorBoundaryParameters(titledPane, 0.0, 0.0, 0.0, 0.0);
     }
 
-    // TODO Edit
     private void setEventHandlerForSelectionChangeEvent() {
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -111,8 +109,10 @@ public class ActivityPanel extends UiPart implements ListPanel {
         });
     }
 
-    // TODO Edit
-    @Override
+    /**
+     * Scroll the listView to the given index
+     * @param index
+     */
     public void scrollTo(int index) {
         Platform.runLater(() -> {
             listView.scrollTo(index);
@@ -120,7 +120,9 @@ public class ActivityPanel extends UiPart implements ListPanel {
         });
     }
 
-    @Override
+    /**
+     * Clear the selection of the listView, if any
+     */
     public void clearSelection() {
         Platform.runLater(() -> {
             listView.getSelectionModel().clearSelection();

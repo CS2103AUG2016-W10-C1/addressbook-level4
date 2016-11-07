@@ -1,6 +1,7 @@
 package seedu.taskman.logic.parser;
 
 import seedu.taskman.logic.commands.*;
+import seedu.taskman.model.event.Activity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,7 +40,7 @@ public class CommandParser {
 
     //@@author A0121299A
     public enum ArgumentPattern {
-        PANEL("(?<" + Group.panel.name + ">[dsf])"),
+        PANEL("(?<" + Group.panel.name + ">" + Activity.PanelType.getPatternString() + ")"),
         TARGET_INDEX("(?<" + Group.targetIndex.name + ">[0-9]+)"),
         TITLE("(?<" + Group.title.name + ">[^/]+)"),
         OPTIONAL_KEYWORDS("(?<" + Group.keywords.name + ">(?:\\s*[^/]+)*)?"),

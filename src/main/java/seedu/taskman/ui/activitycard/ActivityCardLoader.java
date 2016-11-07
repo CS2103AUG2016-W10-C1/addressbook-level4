@@ -3,8 +3,9 @@ package seedu.taskman.ui.activitycard;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.ui.UiPartLoader;
 
+//@@author A0121299A
 /**
- * Loader class to load appropriate Activity Card object
+ * Loader class to load appropriate Activity Card object, given panel type
  */
 public class ActivityCardLoader {
 
@@ -18,22 +19,23 @@ public class ActivityCardLoader {
      */
     public static ActivityCard load(Activity activity, Activity.PanelType panelType, int displayedIndex) {
         ActivityCard card = new ActivityCard();
-
-        switch (panelType) {
-            case DEADLINE: {
-                card = new DeadlineActivityCard();
-                break;
-            }
-            case SCHEDULE: {
-                card = new ScheduleActivityCard();
-                break;
-            }
-            case FLOATING: {
-                card = new FloatingActivityCard();
-                break;
-            }
-            default: {
-                break;
+        if (panelType != null) {
+            switch (panelType) {
+                case DEADLINE: {
+                    card = new DeadlineActivityCard();
+                    break;
+                }
+                case SCHEDULE: {
+                    card = new ScheduleActivityCard();
+                    break;
+                }
+                case FLOATING: {
+                    card = new FloatingActivityCard();
+                    break;
+                }
+                default: {
+                    break;
+                }
             }
         }
         card.activity = activity;
