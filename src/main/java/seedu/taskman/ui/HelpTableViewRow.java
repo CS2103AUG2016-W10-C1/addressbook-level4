@@ -2,8 +2,10 @@ package seedu.taskman.ui;
 
 import javafx.beans.property.SimpleStringProperty;
 
+//@@author A0140136W
 /**
- * Controller for a help page
+ * Class for to contain data help TableView row.
+ * Contains a command and its respective format.
  */
 public class HelpTableViewRow {
 
@@ -30,3 +32,4 @@ public class HelpTableViewRow {
     }
     
 }
+//@@author

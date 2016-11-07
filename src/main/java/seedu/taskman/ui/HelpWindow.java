@@ -30,10 +30,10 @@ import seedu.taskman.logic.commands.UndoCommand;
 
 import java.util.logging.Logger;
 
+//@@author A0140136W
 /**
  * Controller for a help window
  */
-//@@author A0140136W
 public class HelpWindow extends UiPart {
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
