@@ -1,8 +1,11 @@
 package seedu.taskman.logic.logicmanager;
 
 import org.junit.Test;
+import seedu.taskman.logic.commands.AddECommand;
 import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.event.Event;
+import seedu.taskman.model.event.Schedule;
+import seedu.taskman.model.event.Title;
 
 /**
  * Created by jiayee on 11/1/16.
@@ -11,23 +14,47 @@ public class AddETests extends LogicManagerTestBase {
     @Test
     public void execute_adde_invalidArgsFormat() throws Exception {
         // no args
-        assertCommandNoStateChange("adde");
+        // assertCommandNoStateChange("adde");
+        assertCommandBehavior(
+                AddECommand.COMMAND_WORD,
+                AddECommand.MESSAGE_ADDE_INVALID_COMMAND_FORMAT,
+                new TaskMan(model.getTaskMan())
+        );
 
         // non-existent flag
-        assertCommandNoStateChange("adde x/");
+        // assertCommandNoStateChange("adde x/");
+        assertCommandBehavior(
+                AddECommand.COMMAND_WORD + " x/",
+                AddECommand.MESSAGE_ADDE_INVALID_COMMAND_FORMAT,
+                new TaskMan(model.getTaskMan())
+        );
 
         // non-existent flag
-        assertCommandNoStateChange("adde d/");
+        // assertCommandNoStateChange("adde d/");
+        assertCommandBehavior(
+                AddECommand.COMMAND_WORD + " d/",
+                AddECommand.MESSAGE_ADDE_INVALID_COMMAND_FORMAT,
+                new TaskMan(model.getTaskMan())
+        );
     }
 
     @Test
     public void execute_adde_invalidTaskData() throws Exception {
-
         // bad schedule
-        assertCommandNoStateChange("adde Valid Title s/invalid Schedule");
+        // assertCommandNoStateChange("adde valid title s/invalid schedule");
+        assertCommandBehavior(
+                AddECommand.COMMAND_WORD + " valid title s/invalid schedule",
+                Schedule.MESSAGE_SCHEDULE_CONSTRAINTS,
+                new TaskMan(model.getTaskMan())
+        );
 
         // bad title
-        assertCommandNoStateChange("adde []\\[;]");
+        // assertCommandNoStateChange("adde []\\[;]");
+        assertCommandBehavior(
+                AddECommand.COMMAND_WORD + " []\\[;]",
+                Title.MESSAGE_TITLE_CONSTRAINTS,
+                new TaskMan(model.getTaskMan())
+        );
     }
 
     @Test
@@ -38,7 +65,15 @@ public class AddETests extends LogicManagerTestBase {
         TaskMan expectedTaskMan = new TaskMan();
         expectedTaskMan.addActivity(toBeAdded);
 
+        /*
         assertCommandStateChange(helper.generateAddECommand(toBeAdded),
+                expectedTaskMan
+        );
+        */
+
+        assertCommandBehavior(
+                helper.generateAddECommand(toBeAdded),
+                String.format(AddECommand.MESSAGE_SUCCESS, toBeAdded),
                 expectedTaskMan
         );
     }
@@ -55,10 +90,17 @@ public class AddETests extends LogicManagerTestBase {
         model.addActivity(toBeAdded);
 
         // execute command and verify result
+        /*
         assertCommandStateChange(
                 helper.generateAddECommand(toBeAdded),
                 expectedTaskMan
         );
+        */
 
+        assertCommandBehavior(
+                helper.generateAddECommand(toBeAdded),
+                AddECommand.MESSAGE_DUPLICATE_EVENT,
+                expectedTaskMan
+        );
     }
 }

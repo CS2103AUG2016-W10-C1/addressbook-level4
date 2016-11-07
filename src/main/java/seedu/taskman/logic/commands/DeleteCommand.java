@@ -22,6 +22,8 @@ public class DeleteCommand extends Command {
             + "Example: " + COMMAND_WORD + " f1";
 
     public static final String MESSAGE_DELETE_EVENT_SUCCESS = "Deleted task: %1$s";
+    public static final String MESSAGE_DELETE_INVALID_COMMAND_FORMAT = MESSAGE_INVALID_COMMAND_FORMAT
+                    + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE;
 
     private final int targetIndex;
     private final Activity.PanelType panelType;
@@ -35,8 +37,7 @@ public class DeleteCommand extends Command {
     public static Command prepareDelete(String arguments) {
         Optional<Pair<Activity.PanelType, Integer>> panelWithIndex = parsePanelTypeWithIndexOnly(arguments);
         if(!panelWithIndex.isPresent()){
-            return new IncorrectCommand(MESSAGE_INVALID_COMMAND_FORMAT
-                    + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE);
+            return new IncorrectCommand(MESSAGE_DELETE_INVALID_COMMAND_FORMAT);
         }
         Pair<Activity.PanelType, Integer> pair = panelWithIndex.get();
         return new DeleteCommand(pair.getKey(), pair.getValue());

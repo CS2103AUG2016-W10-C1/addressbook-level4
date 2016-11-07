@@ -27,6 +27,10 @@ public class AddCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New task added: %1$s";
     public static final String MESSAGE_DUPLICATE_EVENT = "This task already exists in TaskMan";
+
+    public static final String MESSAGE_ADD_INVALID_COMMAND_FORMAT = MESSAGE_INVALID_COMMAND_FORMAT
+            + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE;
+
     private static final Pattern TASK_ADD_ARGS_FORMAT =
             Pattern.compile("" + CommandParser.ArgumentPattern.TITLE
                     + CommandParser.ArgumentPattern.OPTIONAL_DEADLINE
@@ -62,8 +66,7 @@ public class AddCommand extends Command {
     public static Command prepareAdd(String args) {
         final Matcher matcher = TASK_ADD_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
-            return new IncorrectCommand(MESSAGE_INVALID_COMMAND_FORMAT
-                    + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE);
+            return new IncorrectCommand(MESSAGE_ADD_INVALID_COMMAND_FORMAT);
         }
         try {
             return new AddCommand(
