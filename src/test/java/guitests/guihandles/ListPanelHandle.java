@@ -56,7 +56,6 @@ public class ListPanelHandle extends GuiHandle {
         return taskList.getSelectionModel().getSelectedItems();
     }
 
-    // TODO Resolve generic type issue.
     @SuppressWarnings("unchecked")
     public ListView<Activity> getListView(){
         return (ListView<Activity>) getNode(listViewId);

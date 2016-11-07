@@ -22,7 +22,7 @@ public class HelpWindowHandle extends GuiHandle {
     }
 
     public void closeWindow() {
-        guiRobot.push(KeyCode.F1);
+        guiRobot.push(KeyCode.ESCAPE);
         guiRobot.sleep(500);
     }
 

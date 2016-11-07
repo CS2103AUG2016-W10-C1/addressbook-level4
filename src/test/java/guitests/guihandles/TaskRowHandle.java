@@ -38,9 +38,7 @@ public class TaskRowHandle extends GuiHandle {
     public boolean equals(Object obj) {
         if (obj instanceof TaskRowHandle) {
             TaskRowHandle handle = (TaskRowHandle) obj;
-            return getTitle().equals(handle.getTitle())
-                    && getDeadline().equals(handle.getDeadline())
-                    && getSchedule().equals(handle.getSchedule());
+            return handle.task.equals(task);
         }
         return super.equals(obj);
     }
