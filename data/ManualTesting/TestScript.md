@@ -1,7 +1,10 @@
+HOW-TO-USE:
+
 Please download the SampleData.xml and then rename it to taskMan.xml
 Open the directory where TaskMan.jar is, and create a folder called data.
-Please place taskMan.xml into the data folder.
-
+Place taskMan.xml into the data folder.
+Delete the config.json file in the directory TaskMan.jar is in, if one is present.
+Then, run TaskMan.jar and input the commands listed below
 
 
 
