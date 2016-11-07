@@ -93,12 +93,12 @@ public abstract class LogicManagerTestBase {
     /**
      * Executes the command and confirms that the result message is correct.
      * Generally for commands which do not mutate the data.
-     * Both the 'TaskMan' and the 'list' are expected to be empty.
+     * 'TaskMan' is expected to be empty.
      *
-     * @see #assertCommandBehavior(String, String, TaskMan, List)
+     * @see #assertCommandBehavior(String, String, TaskMan)
      */
-    private void assertCommandBehavior(String inputCommand, String expectedMessage) throws Exception {
-        assertCommandBehavior(inputCommand, expectedMessage, null, null);
+    protected void assertCommandBehavior(String inputCommand, String expectedMessage) throws Exception {
+        assertCommandBehavior(inputCommand, expectedMessage, null);
     }
 
     /**
@@ -108,20 +108,21 @@ public abstract class LogicManagerTestBase {
      * - the backing list shown by UI matches the expected list here in the method
      * - {@code expectedTaskMan} was saved to the storage file.
      */
-    private void assertCommandBehavior(String inputCommand, String expectedMessage,
-                                       TaskMan expectedTaskMan,
-                                       List<Activity> activityList) throws Exception {
+    protected void assertCommandBehavior(String inputCommand, String expectedMessage,
+                                       TaskMan expectedTaskMan) throws Exception {
 
         // Execute the command
         CommandResult result = logic.execute(inputCommand);
 
         // Confirm the ui display elements should contain the right data
         assertEquals(expectedMessage, result.feedbackToUser);
-        // Add assert for the expected list versus actual list on the UI here, List<Activity> is placeholder data type
+        // Add assert for the expected list versus actual list on the UI here
 
         // Confirm the state of data (saved and in-memory) is as expected
-        assertEquals(expectedTaskMan, model.getTaskMan());
-        assertEquals(expectedTaskMan, latestSavedTaskMan);
+        if (expectedTaskMan != null) {
+            assertEquals(expectedTaskMan, model.getTaskMan());
+            assertEquals(expectedTaskMan, latestSavedTaskMan);
+        }
     }
 
     /**

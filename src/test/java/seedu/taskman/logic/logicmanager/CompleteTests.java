@@ -1,6 +1,8 @@
 package seedu.taskman.logic.logicmanager;
 
 import org.junit.Test;
+import seedu.taskman.commons.core.Messages;
+import seedu.taskman.logic.commands.CompleteCommand;
 import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.event.Activity;
 import seedu.taskman.model.event.Status;
@@ -13,12 +15,22 @@ public class CompleteTests extends LogicManagerTestBase {
 
     @Test
     public void execute_completeInvalidArgsFormat_errorMessageShown() throws Exception {
-        assertIncorrectIndexFormatBehaviorForCommand("complete");
+        // assertIncorrectIndexFormatBehaviorForCommand("complete");
+        assertCommandBehavior(
+                CompleteCommand.COMMAND_WORD,
+                CompleteCommand.MESSAGE_COMPLETE_INVALID_COMMAND_FORMAT,
+                new TaskMan(model.getTaskMan())
+        );
     }
 
     @Test
     public void execute_completeIndexNotFound_errorMessageShown() throws Exception {
-        assertIndexNotFoundBehaviorForCommand("complete");
+        // assertIndexNotFoundBehaviorForCommand("complete");
+        assertCommandBehavior(
+                CompleteCommand.COMMAND_WORD + " s1000000",
+                Messages.MESSAGE_INVALID_EVENT_DISPLAYED_INDEX,
+                new TaskMan(model.getTaskMan())
+        );
     }
 
     @Test
@@ -36,8 +48,22 @@ public class CompleteTests extends LogicManagerTestBase {
         expectedList.add(toComplete);
         TaskMan expectedTaskMan = helper.generateTaskMan(expectedList);
 
-        assertCommandStateChange("complete " + Activity.PanelType.SCHEDULE + completeIndex,
+        /*
+        assertCommandStateChange(CompleteCommand.COMMAND_WORD + " " + Activity.PanelType.SCHEDULE + completeIndex,
                 expectedTaskMan);
+        */
+
+        assertCommandBehavior(
+                CompleteCommand.COMMAND_WORD + " " + Activity.PanelType.SCHEDULE + completeIndex,
+                String.format(CompleteCommand.MESSAGE_SUCCESS, toComplete.getTitle().title),
+                expectedTaskMan
+        );
+
+        assertCommandBehavior(
+                CompleteCommand.COMMAND_WORD + " " + Activity.PanelType.SCHEDULE + completeIndex,
+                String.format(CompleteCommand.MESSAGE_SUCCESS, toComplete.getTitle().title),
+                expectedTaskMan
+        );
     }
 
 }
