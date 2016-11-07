@@ -70,7 +70,7 @@ public abstract class Command {
         if (!matcher.matches()) {
             return Optional.empty();
         }
-        String index = matcher.group(matcher.group(CommandParser.Group.targetIndex.name));
+        String index = matcher.group(CommandParser.Group.targetIndex.name);
         if(!StringUtil.isUnsignedInteger(index)){
             return Optional.empty();
         }
