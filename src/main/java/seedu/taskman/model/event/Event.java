@@ -4,7 +4,6 @@ import seedu.taskman.commons.util.CollectionUtil;
 import seedu.taskman.model.tag.UniqueTagList;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,7 +21,7 @@ public class Event implements ReadOnlyEvent, MutableTagsEvent {
     private UniqueTagList tags;
 
     public Event(@Nonnull Title title, @Nonnull UniqueTagList tags,
-                 @Nullable Schedule schedule) {
+                 @Nonnull Schedule schedule) {
         assert !CollectionUtil.isAnyNull(title, tags);
         this.title = title;
         this.schedule = schedule;
