@@ -110,8 +110,12 @@ public class MainWindow extends UiPart {
         addKeyPressedFilters();
     }
     
+    //@@author A0140136W
     /**
-     * Handle letter key presses.
+     * Listener and filter for keyboard shortcuts.
+     * Pressing letter keys focuses on the command box.
+     * Pressing F4 focuses on the result display.
+     * Pressing help switches to the help window.
      */
     private void addKeyPressedFilters() {
         mainScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -125,7 +129,13 @@ public class MainWindow extends UiPart {
             }
         });
     }
-
+    //@@author
+    
+    
+    /**
+     * Fills the window with its UI components.
+     * Configure list views in each activity panel to be the only focus traversable components.
+     */
     void fillInnerParts() {
         schedulePanel = ActivityPanel.load(primaryStage, getSchedulePanelPlaceholder(), logic.getSortedScheduleList(), Activity.PanelType.SCHEDULE);
         deadlinePanel = ActivityPanel.load(primaryStage, getDeadlinePanelPlaceholder(), logic.getSortedDeadlineList(), Activity.PanelType.DEADLINE);
@@ -222,6 +232,7 @@ public class MainWindow extends UiPart {
         primaryStage.setMinWidth(MIN_WIDTH);
     }
 
+    //@@author A0140136W
     /**
      * Returns the current size and the position of the main Window.
      */
@@ -230,6 +241,7 @@ public class MainWindow extends UiPart {
                 (int) primaryStage.getX(), (int) primaryStage.getY());
     }
 
+    // Handles switching to the help scene.
     public void handleHelp() {
         if (helpScene == null) {
             helpScene = HelpWindow.load(primaryStage, mainScene).getScene();
@@ -237,14 +249,18 @@ public class MainWindow extends UiPart {
         primaryStage.setScene(helpScene);
     }
     
+    // Handles focusing on the result display
     public void handleResult() {
         resultDisplay.getResultDisplayArea().requestFocus();
     }
+    //@@author
 
     public void show() {
         primaryStage.show();
     }
     
+    //@@author A0140136W
+    // Configure list views in each activity panel to be the only focus traversable components.
     private void configureFocus() {
         ArrayList<Node> nodes = getAllNodes();
         for (Node node : nodes) {
@@ -255,13 +271,15 @@ public class MainWindow extends UiPart {
             }
         }
     }
-
+    
+    // Gets all the nodes in the window.
     private ArrayList<Node> getAllNodes() {
         ArrayList<Node> nodes = new ArrayList<Node>();
         addAllDescendents(rootLayout, nodes);
         return nodes;
     }
 
+    // Adds all descendant nodes of a parent to an array.
     private void addAllDescendents(Parent parent, ArrayList<Node> nodes) {
         for (Node node : parent.getChildrenUnmodifiable()) {
             nodes.add(node);
@@ -269,6 +287,6 @@ public class MainWindow extends UiPart {
                 addAllDescendents((Parent)node, nodes);
         }
     }
-
+    //@@author
 
 }

@@ -31,7 +31,7 @@ import seedu.taskman.logic.commands.UndoCommand;
 import java.util.logging.Logger;
 
 /**
- * Controller for a help page
+ * Controller for a help window
  */
 //@@author A0140136W
 public class HelpWindow extends UiPart {
