@@ -84,7 +84,7 @@ For more information on each specific component, you can read the corresponding 
 
 ### UI component
 <!--@@author A0140136W-->
-<img src="images/UiClassDiagram.png" width="800"><br>
+<img src="images/UiClassDiagram.png" width="600"><br>
 
 **API** : [`Ui.java`](../src/main/java/seedu/taskman/ui/Ui.java)
 
@@ -99,7 +99,7 @@ matching `.fxml` files that are in the `src/main/resources/view` folder.<br>
 For example, the layout of the [`MainWindow`](../src/main/java/seedu/taskman/ui/MainWindow.java) is specified 
 in [`MainWindow.fxml`](../src/main/resources/view/MainWindow.fxml).
 <!--@@author A0121299A-->
-<img src="images/UiActivityCardClassDiagram.PNG" width="500"><br>
+<img src="images/UiActivityCardClassDiagram.PNG" width="400"><br>
 
 You can load multiple `ActivityPanel` parts in the `MainWindow` and control 
 the kind of display for the `Activity` objects in the panel through 
@@ -127,7 +127,7 @@ Given below is the Sequence Diagram for interactions within the `Logic` componen
 
 ### Model component
 <!--@@author A0121299A-->
-<img src="images/ModelClassDiagram.png" width="800"><br>
+<img src="images/ModelClassDiagram.png" width="600"><br>
 
 **API** : [`Model.java`](../src/main/java/seedu/taskman/model/Model.java)
 
