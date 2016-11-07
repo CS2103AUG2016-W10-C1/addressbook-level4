@@ -146,7 +146,7 @@ This should notify the user that the storage location has changed
 `exit`<br>
 Storage location should be changed to the specified relative position
 Exiting will write the file to disk. Open your file browser and see the relative_position.xml created.
-3 `storageloc view`<br>
+3. `storageloc view`<br>
 Should show current file location in ResultDisplay
 4. `storageloc default`<br>
 Should save to default save location as indicated in the ResultDisplay
