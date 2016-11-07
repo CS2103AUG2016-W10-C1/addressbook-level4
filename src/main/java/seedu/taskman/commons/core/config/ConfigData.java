@@ -3,6 +3,10 @@ package seedu.taskman.commons.core.config;
 import java.util.Objects;
 import java.util.logging.Level;
 
+//@@author A0121299A
+/**
+ * This class is a data structure to store the data for Config.
+ */
 public class ConfigData {
 
     public static final String DEFAULT_APP_TITLE = "TaskMan";
