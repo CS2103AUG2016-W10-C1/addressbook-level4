@@ -408,6 +408,7 @@ Use case ends.
 
 > Use case resumes at step 2
 
+<!--@@author A0140136W-->
 #### Use case 3: List task
 
 **MSS**
@@ -426,6 +427,8 @@ Use case ends.
 
 > 2b1. TaskMan shows an error message <br>
   Use case resumes at step 1
+
+<!--@@author-->
 
 <!--@@author A0121299A-->
 
@@ -527,6 +530,7 @@ Use case ends.
 2. GUI only
 3. No Open API
 
+<!--@@author A0140136W-->
 ### 4. [Evernote](https://evernote.com/)
 #### Strengths
 1. Cross platform
@@ -538,3 +542,5 @@ Use case ends.
 3. Does not have support for various tasks (although it can be done manually to a certain extent)
 4. No friendly UI to display overview calendar
 5. Occasional conflict of data even when used only on one platform/device.
+
+<!--@@author-->

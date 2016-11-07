@@ -26,10 +26,14 @@ We are a team based in the [School of Computing, National University of Singapor
 * Responsibilities: Code Quality, UIUX
 * Features implemented:
 	* [Add events](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/AddECommand.java)
+	* [Display exisiting tags](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/logic/commands/TagsCommand.java)
 	* [Track deadlines](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/DeadlinePanel.java)
+	* [Create keyboard shorcuts](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/MainWindow.java)
+	* [Make offline help](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/src/main/java/seedu/taskman/ui/HelpWindow.java)
 * Code written: [[functional code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/main/A0140136W.md)][[test code](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/test/A0140136W.md)][[docs](https://github.com/CS2103AUG2016-W10-C1/main/blob/master/collated/docs/A0140136W.md)]
 * Other major contributions:
-	* Change the UI of the AddressBook to that of the GTD app [[#88](https://github.com/CS2103AUG2016-W10-C1/main/pull/88)]
+	* Styling UI [[#159](https://github.com/CS2103AUG2016-W10-C1/main/pull/159)]
+	* Keeping activties sorted [[#87](https://github.com/CS2103AUG2016-W10-C1/main/pull/87)]
 
 -----
 
