@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<taskMan>
+    <events>
+        <title>star gazing</title>
+        <scheduleStart>03 Jan 2017 23:00</scheduleStart>
+        <scheduleEnd>04 Jan 2017 17:48</scheduleEnd>
+        <tagged>leisure</tagged>
+    </events>
+    <events>
+        <title>moon watching</title>
+        <scheduleStart>12 Feb 2017 23:00</scheduleStart>
+        <scheduleEnd>13 Feb 2017 01:00</scheduleEnd>
+        <tagged>leisure</tagged>
+    </events>
+    <events>
+        <title>shop for guitar tools</title>
+        <scheduleStart>07 Mar 2017 14:00</scheduleStart>
+        <scheduleEnd>07 Mar 2017 15:00</scheduleEnd>
+        <tagged>bass</tagged>
+        <tagged>leisure</tagged>
+    </events>
+    <events>
+        <title>driving test</title>
+        <scheduleStart>06 Apr 2017 10:00</scheduleStart>
+        <scheduleEnd>06 Apr 2017 10:15</scheduleEnd>
+        <tagged>important</tagged>
+        <tagged>test</tagged>
+    </events>
+    <events>
+        <title>set up bass</title>
+        <scheduleStart>08 Mar 2017 11:00</scheduleStart>
+        <scheduleEnd>08 Mar 2017 12:00</scheduleEnd>
+        <tagged>bass</tagged>
+        <tagged>leisure</tagged>
+    </events>
+    <events>
+        <title>team meeting</title>
+        <scheduleStart>28 Dec 2016 19:00</scheduleStart>
+        <scheduleEnd>28 Dec 2016 20:00</scheduleEnd>
+        <tagged>project</tagged>
+    </events>
+    <events>
+        <title>fishing</title>
+        <scheduleStart>11 Jan 2017 07:00</scheduleStart>
+        <scheduleEnd>11 Jan 2017 09:00</scheduleEnd>
+        <tagged>leisure</tagged>
+    </events>
+    <tasks>
+        <title>buy christmas gift for nephew</title>
+        <status>incomplete</status>
+        <deadline>20 Dec 2016 17:51</deadline>
+        <scheduleStart>19 Dec 2016 18:00</scheduleStart>
+        <scheduleEnd>19 Dec 2016 19:00</scheduleEnd>
+        <tagged>important</tagged>
+        <tagged>family</tagged>
+    </tasks>
+    <tasks>
+        <title>buy bakwa for siblings</title>
+        <status>incomplete</status>
+        <deadline>20 Jan 2017 18:00</deadline>
+        <scheduleStart>18 Jan 2017 13:00</scheduleStart>
+        <scheduleEnd>18 Jan 2017 14:00</scheduleEnd>
+        <tagged>family</tagged>
+    </tasks>
+    <tasks>
+        <title>go on a gourmet tour</title>
+        <status>incomplete</status>
+        <tagged>leisure</tagged>
+        <tagged>food</tagged>
+    </tasks>
+    <tasks>
+        <title>pay utility bills</title>
+        <status>incomplete</status>
+        <deadline>10 Jan 2017 18:00</deadline>
+        <scheduleStart>09 Jan 2017 11:00</scheduleStart>
+        <scheduleEnd>09 Jan 2017 11:30</scheduleEnd>
+        <tagged>important</tagged>
+        <tagged>bills</tagged>
+    </tasks>
+    <tasks>
+        <title>repair desktop</title>
+        <status>incomplete</status>
+        <deadline>28 Dec 2016 18:10</deadline>
+        <scheduleStart>26 Dec 2016 11:00</scheduleStart>
+        <scheduleEnd>26 Dec 2016 12:00</scheduleEnd>
+    </tasks>
+    <tasks>
+        <title>pick up Android</title>
+        <status>incomplete</status>
+        <tagged>project</tagged>
+    </tasks>
+</taskMan>
