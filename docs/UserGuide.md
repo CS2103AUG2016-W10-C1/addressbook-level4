@@ -36,7 +36,7 @@ This guide will get you started in just a few steps. It also has detailed 'how t
    * **`list`**: lists all tasks
    * **`add`**` eat vitamins s/fri 1400 for 5 minutes f/2 days t/ribena` :
      adds a task titled `eat vitamins` to TaskMan
-   * **`delete`**` 3`: deletes the third task shown in the current list
+   * **`delete`**` d3`: deletes the third task shown in the deadline list
    * **`exit`**: exits the app
 6. Refer to the [Features](#features) section below for details of each command.<br>
 
@@ -52,7 +52,7 @@ This guide will get you started in just a few steps. It also has detailed 'how t
 Parameter | Format
 -------- | :-------- 
 `TITLE` | Any sequence of alphanumeric characters
-`SCHEDULE` | `DATETIME`, `DATETIME to DATETIME` or `DATETIME for DURATION` 
+`SCHEDULE` | `DATETIME, DATETIME`, `DATETIME to DATETIME` or `DATETIME for DURATION` 
 `DEADLINE` and `DATETIME` | `[this/next] ddd [hhmm]`
 `DURATION` | `<number> <unit of time>`
 `TAG` | Can contain spaces and are case-insensitive
