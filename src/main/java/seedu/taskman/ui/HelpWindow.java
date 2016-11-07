@@ -5,18 +5,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import seedu.taskman.commons.util.FxViewUtil;
+import seedu.taskman.commons.core.LogsCenter;
 import seedu.taskman.logic.commands.AddCommand;
 import seedu.taskman.logic.commands.AddECommand;
 import seedu.taskman.logic.commands.ClearCommand;
@@ -31,8 +27,6 @@ import seedu.taskman.logic.commands.SelectCommand;
 import seedu.taskman.logic.commands.StoragelocCommand;
 import seedu.taskman.logic.commands.TagsCommand;
 import seedu.taskman.logic.commands.UndoCommand;
-import seedu.taskman.commons.core.LogsCenter;
-import seedu.taskman.commons.events.ui.ExitAppRequestEvent;
 
 import java.util.logging.Logger;
 
@@ -101,7 +95,7 @@ public class HelpWindow extends UiPart {
     private void addKeyPressedFilters() {
         helpScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             KeyCode code = event.getCode();
-            if (code.equals(KeyCode.F1)) {
+            if (code.equals(KeyCode.ESCAPE)) {
                 handleBack();
             }
         });
