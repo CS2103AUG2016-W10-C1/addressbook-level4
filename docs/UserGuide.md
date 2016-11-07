@@ -43,7 +43,7 @@ This guide will get you started in just a few steps. It also has detailed 'how t
 
 ## Features
 
-> **Command Format**
+>**Command Format**
 > * Words in `UPPER_CASE` are the parameters.
 > * Items in `SQUARE_BRACKETS` are optional.
 > * Only one item should be picked from items in `CURLY_BRACES`.
@@ -244,25 +244,23 @@ Example:
 > `<tagged>CS2103T</tagged>`<br>
 > `</tasks>`
 
-<!--
 #### Event
 Each Event is saved in the following format:
-> `<events>`<br>
+> `<event>`<br>
 > `<title>TITLE</title>`<br>
 > `<schedule>DD-MM-YYYY TT:TT to DD-MM-YYYY TT:TT</schedule>`<br>
 > `<tagged>TAGNAME</tagged>`<br>
 > `<tagged>TAGNAME</tagged>`<br>
-> `</events>`
+> `</event>`
 
 Fields which are empty can be left out.<br>
 Example:
-> `<events>`<br>
+> `<event>`<br>
 > `<title>CS2103T Lecture</title>`<br>
 > `<schedule>01-10-2016 12:00 to 01-10-2016 14:00</schedule>`<br>
 > `<tagged>CS2103T</tagged>`<br>
-> `<tagged>lecture</tagged>`<br>
-> `</events>`
--->
+> `</event>`
+
 <!--@@author -->
 ## FAQ
 
