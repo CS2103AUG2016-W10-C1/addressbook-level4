@@ -1,7 +1,6 @@
 package seedu.taskman.logic.logicmanager;
 
 import org.junit.Test;
-import seedu.taskman.commons.core.Messages;
 import seedu.taskman.commons.core.config.Config;
 import seedu.taskman.commons.core.config.ConfigData;
 import seedu.taskman.commons.exceptions.DataConversionException;
@@ -19,6 +18,16 @@ import static seedu.taskman.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 public class StorageTests extends LogicManagerTestBase {
 
     //@@author A0121299A
+
+    /**
+     * Executes the input commands and asserts the feedback, file path of the resulting state
+     * @param inputCommand
+     * @param expectedFeedback
+     * @param expectedPath
+     * @param success
+     * @throws IOException
+     * @throws DataConversionException
+     */
     private void assert_storage_location(String inputCommand, String expectedFeedback,
                                          String expectedPath, boolean success)
             throws IOException, DataConversionException {
@@ -33,6 +42,12 @@ public class StorageTests extends LogicManagerTestBase {
         assertEquals(Config.getInstance().getTaskManFilePath(), expectedPath);
     }
 
+    /**
+     * Returns the expected feedback string given the file path and expected success of the input command
+     * @param path
+     * @param success
+     * @return expected feedback string
+     */
     private String getStoragelocFeedback(String path, boolean success) {
         String message = success
                 ? StoragelocCommand.MESSAGE_SUCCESS
@@ -40,6 +55,14 @@ public class StorageTests extends LogicManagerTestBase {
         return String.format(message, path);
     }
 
+    /**
+     * Populates model with given number of tasks and assert results of the command
+     * @param generatedTasks no of tasks to populate model with
+     * @param commandArgs to be added behind command
+     * @param expectedPath of the storage file
+     * @param isExpectedSuccess of the command
+     * @throws Exception
+     */
     private void execute_storageloc_general(int generatedTasks,
                                             String commandArgs,
                                             String expectedPath,
@@ -89,6 +112,10 @@ public class StorageTests extends LogicManagerTestBase {
                 ConfigData.DEFAULT_TASK_MAN_FILE_PATH, false);
     }
 
+    /**
+     * Tests ViewStoragelocCommand
+     * @throws Exception
+     */
     @Test
     public void execute_storageloc_view() throws Exception {
         assert_storage_location(StoragelocCommand.COMMAND_WORD + " view",
