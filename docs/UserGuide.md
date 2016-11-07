@@ -18,7 +18,6 @@ TaskMan is specifically designed for users who favour working entirely from the 
 
 This guide will get you started in just a few steps. It also has detailed 'how to' instructions on each feature of the application and a command summary which can be referred to anytime.
 
-
 ## Quick Start
 
 0. Ensure you have Java version `1.8.0_60` or later installed in your Computer.<br>
@@ -132,6 +131,7 @@ Display more details of the specified task.
 Command Format: `select INDEX`
 <!--@@author-->
 
+<!--@@author A0139019E-->
 #### Editing a task/event: `edit`
 Edits an activity in TaskMan<br>
 ##### For a Task:
@@ -169,6 +169,7 @@ Examples:
   `delete d9`<br>
   Deletes the ninth activity in the Deadline panel.
 
+<!--@@author-->
 #### Showing all tags: `tags`
 Shows all tags used by the user<br>
 Command Format: `tags`
