@@ -30,6 +30,8 @@ public class CompleteCommand extends Command {
             + " d1";
 
     public static final String MESSAGE_SUCCESS = "Task completed: %1$s";
+    public static final String MESSAGE_COMPLETE_INVALID_COMMAND_FORMAT = MESSAGE_INVALID_COMMAND_FORMAT
+            + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE;
 
     private Activity.ActivityType activityType;
     private Activity activityToComplete;
@@ -46,8 +48,7 @@ public class CompleteCommand extends Command {
     public static Command prepareComplete(String arguments) {
         Optional<Pair<Activity.PanelType, Integer>> panelIndexPair = parsePanelTypeWithIndexOnly(arguments);
         if(!panelIndexPair.isPresent()){
-            return new IncorrectCommand(MESSAGE_INVALID_COMMAND_FORMAT
-                    + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE);
+            return new IncorrectCommand(MESSAGE_COMPLETE_INVALID_COMMAND_FORMAT);
         }
 
         return new CompleteCommand(
