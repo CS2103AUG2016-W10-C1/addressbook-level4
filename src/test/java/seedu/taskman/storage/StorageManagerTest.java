@@ -2,7 +2,6 @@ package seedu.taskman.storage;
 
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -45,8 +44,6 @@ public class StorageManagerTest {
      * More extensive testing of UserPref saving/reading is done in {@link JsonUserPrefsStorageTest} class.
      */
 
-    // todo: should fix
-    @Ignore
     @Test
     public void prefsReadSave() throws Exception {
         UserPrefs original = new UserPrefs();

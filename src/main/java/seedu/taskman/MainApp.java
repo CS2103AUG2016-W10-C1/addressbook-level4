@@ -3,6 +3,7 @@ package seedu.taskman;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import seedu.taskman.commons.core.config.Config;
 import seedu.taskman.commons.core.EventsCenter;
@@ -131,14 +132,14 @@ public class MainApp extends Application {
         UserPrefs initializedPrefs;
         try {
             Optional<UserPrefs> prefsOptional = storage.readUserPrefs();
-            initializedPrefs = prefsOptional.orElse(new UserPrefs());
+            initializedPrefs = prefsOptional.orElse(new UserPrefs(Screen.getPrimary().getVisualBounds()));
         } catch (DataConversionException e) {
             logger.warning("UserPrefs file at " + prefsFilePath + " is not in the correct format. " +
                     "Using default user prefs");
-            initializedPrefs = new UserPrefs();
+            initializedPrefs = new UserPrefs(Screen.getPrimary().getVisualBounds());
         } catch (IOException e) {
             logger.warning("Problem while reading from the file. . Will be starting with an empty TaskMan");
-            initializedPrefs = new UserPrefs();
+            initializedPrefs = new UserPrefs(Screen.getPrimary().getVisualBounds());
         }
 
         //Update prefs file in case it was missing to begin with or there are new/unused fields
