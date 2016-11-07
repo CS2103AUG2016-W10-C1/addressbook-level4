@@ -16,13 +16,14 @@
 
 TaskMan is a task manager for keyboard lovers. It is a Java desktop application which accepts inputs in the form of commands typed by the user. The GUI is for output.
 
-This guide is for developers to understand the workings behind TaskMan. It describes the design, requirements, analysis of existing task managers, and the implementation of TaskMan. It will help you understand how to set up the development environment of TaskMan and the logic behind TaskMan.
+This guide is for developers to understand the workings behind TaskMan. It describes the design, requirements, analysis of existing task managers, and the implementation of TaskMan. It will guide you with setting up the development environment for TaskMan and prime you towards your first patch.
 
-Please refer to the [User Guide](docs/UserGuide.md) on how to use the application as an end-user. 
+Please refer to the [User Guide](docs/UserGuide.md) on how to use the application as an end-user. Having a go with the actual application also helps greatly when working on the business logic of the app. Do give it a try!
 
 ## Setting up
 
 #### Prerequisites
+You will need to install the following prerequisites to get started.
 
 1. **JDK `1.8.0_60`**  or later<br>
 
@@ -36,6 +37,7 @@ Please refer to the [User Guide](docs/UserGuide.md) on how to use the applicatio
 
 
 #### Importing the project into Eclipse
+You can import the project into Eclipse by following the steps below:
 
 0. Fork this repo, and clone the fork to your computer
 1. Open Eclipse (Note: Ensure you have installed the **e(fx)clipse** and **buildship** plugins as given 
@@ -55,51 +57,30 @@ Please refer to the [User Guide](docs/UserGuide.md) on how to use the applicatio
 ### Architecture
 
 <img src="images/Architecture.png" width="600"><br>
-The **_Architecture Diagram_** given above explains the high-level design of the App.
-Given below is a quick overview of each component.
 
-`Main` has only one class called [`MainApp`](../src/main/java/seedu/taskman/MainApp.java). It is responsible for,
-* At app launch: Initializes the components in the correct sequence, and connect them up with each other.
-* At shut down: Shuts down the components and invoke cleanup method where necessary.
+First, let’s talk about the architecture of the whole application. You can refer to the **_Architecture Diagram_** given above for a quick overview of the high-level design of the app. 
+Do read the following short descriptions to at least have a clear idea of the separation of concerns in the application.
 
-[**`Commons`**](#common-classes) represents a collection of classes used by multiple other components.
-Two of those classes play important roles at the architecture level.
-* `EventsCenter` : This class (written using [Google's Event Bus library](https://github.com/google/guava/wiki/EventBusExplained))
-  is used by components to communicate with other components using events (i.e. a form of _Event Driven_ design)
-* `LogsCenter` : Used by many classes to write log messages to the App's log file.
+The `Main` component comprises of one class, called [`MainApp`](../src/main/java/seedu/taskman/MainApp.java). It is responsible for:
+* At app launch: Initializing the application’s components in the correct sequence, and connecting them up with each other.
+* At shut down: Shuts down the components and frees resources where necessary.
+
+[**`Commons`**](#common-classes) represents a collection of classes used by other components. You can also look here to find other helper classes. 
+Two classes in this component play important roles at the architecture level.
+* `EventsCenter`: You would need this class (written using [Google's Event Bus library](https://github.com/google/guava/wiki/EventBusExplained)) to enable communication between components using events (i.e. a form of Event Driven design)
+* `LogsCenter`: You can use this class to write log messages to the App's log file.
 
 The rest of the App consists four components.
-* [**`UI`**](#ui-component) : The UI of the App.
-* [**`Logic`**](#logic-component) : The command executor.
-* [**`Model`**](#model-component) : Holds the data of the App in-memory.
-* [**`Storage`**](#storage-component) : Reads data from, and writes data to, the hard disk.
+* [**`UI`**](#ui-component) : The User Interface (UI) of the App. You should use this component to handle user interactions, display information and accept user feedback.
+* [**`Logic`**](#logic-component) : The command executor. You should use this component to parse and execute commands entered by the user. 
+* [**`Model`**](#model-component) : Holds the data of the App in-memory. You should store and handle the data which the user interacts with in this component.
+* [**`Storage`**](#storage-component) : Reads data from, and writes data to the hard disk. You should handle file-writing and file-reading operations of the data in this component. 
 
-Each of the four components
+Each of the four components:
 * Defines its _API_ in an `interface` with the same name as the Component.
 * Exposes its functionality using a `{Component Name}Manager` class.
 
-For example, the `Logic` component (see the class diagram given below) defines it's API in the `Logic.java`
-interface and exposes its functionality using the `LogicManager.java` class.<br>
-<img src="images/LogicClassDiagram.png" width="800"><br>
-
-The _Sequence Diagram_ below shows how the components interact for the scenario where the user issues the
-command `delete 3`.
-
-<img src="images/SDForDeleteTask.png" width="800">
-
->Note how the `Model` simply raises a `TaskManChangedEvent` when the TaskMan data are changed,
- instead of asking the `Storage` to save the updates to the hard disk.
-
-The diagram below shows how the `EventsCenter` reacts to that event, which eventually results in the updates
-being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time. <br>
-
-<img src="images/SDForDeleteTaskEventHandling.png" width="800">
-
-> Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without `Model` having
-  to be coupled to either of them. This is an example of how this Event Driven approach helps us reduce direct 
-  coupling between components.
-
-The sections below give more details of each component.
+For more information on each specific component, you can read the corresponding sections in this documentation. 
 
 ### UI component
 <!--@@author A0140136W-->
@@ -107,16 +88,24 @@ The sections below give more details of each component.
 
 **API** : [`Ui.java`](../src/main/java/seedu/taskman/ui/Ui.java)
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `SchedulePanel`, `Deadline Panel`, `Floating Panel`
-`StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class
-and they can be loaded using the `UiPartLoader`.
+The `UI` component is where you should be looking at if you are interested in how the application 
+interacts with the user. The `UI` consists of a `MainWindow` that is made up of parts e.g. `CommandBox`, 
+`ResultDisplay`, `ActivityPanel`, `StatusBarFooter`, etc. You can load all these UI parts, including the
+`MainWindow`, using the `UiPartLoader` as they inherit from the abstract `UiPart` class.
 <!--@@author-->
-The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files
- that are in the `src/main/resources/view` folder.<br>
- For example, the layout of the [`MainWindow`](../src/main/java/seedu/taskman/ui/MainWindow.java) is specified in
- [`MainWindow.fxml`](../src/main/resources/view/MainWindow.fxml)
 
-The `UI` component,
+The `UI` component uses JavaFx UI framework. You can find the layout of these UI parts are in 
+matching `.fxml` files that are in the `src/main/resources/view` folder.<br>
+For example, the layout of the [`MainWindow`](../src/main/java/seedu/taskman/ui/MainWindow.java) is specified 
+in [`MainWindow.fxml`](../src/main/resources/view/MainWindow.fxml).
+<!--@@author A0121299A-->
+<img src="images/UiActivityCardClassDiagram.png" width="800"><br>
+
+You can load multiple `ActivityPanel` parts in the `MainWindow` and control 
+the kind of display for the `Activity` objects in the panel through 
+the `ActivityCardLoader` class.
+<!--@@author-->
+In summary, the `UI` component,
 * Executes user commands using the `Logic` component.
 * Binds itself to some data in the `Model` so that the UI can auto-update when data in the `Model` change.
 * Responds to events raised from various parts of the App and updates the UI accordingly.
@@ -137,32 +126,79 @@ Given below is the Sequence Diagram for interactions within the `Logic` componen
 <img src="images/DeleteTaskSdForLogic.png" width="800"><br>
 
 ### Model component
-
+<!--@@author A0121299A-->
 <img src="images/ModelClassDiagram.png" width="800"><br>
 
 **API** : [`Model.java`](../src/main/java/seedu/taskman/model/Model.java)
 
-The `Model`,
-* stores a `UserPref` object that represents the user's preferences.
+You should handle all the data which the user interacts with (i.e. tasks, events and tags) 
+here in the `Model` component. We use `TaskMan` to store the core data for the application and 
+`ModelManager` uses the core data from `TaskMan` to produce sorted and filtered lists 
+(using `UnmodifiableObservableList<Activity>`) for the UI components. You should ensure
+changes to the core data of `TaskMan` should be made through the `Model` interface.
+
+<img src="images/ModelActivityClassDiagram.png" width="800"><br>
+
+`Activity` is a wrapper class for `Task` and `Event` objects. All three classes inherit the `ReadOnlyEvent` interface. 
+You can view `Task` as an extension of `Event`, which has an additional 
+optional `Deadline` and compulsory `Status` field.
+<!--@@author-->
+In summary, the `Model`,
 * stores the TaskMan data.
 * exposes a `UnmodifiableObservableList<ReadOnlyTask>` that can be 'observed' e.g. the UI can be bound to this list
   so that the UI automatically updates when the data in the list change.
 * does not depend on any of the other three components.
 
 ### Storage component
-
+<!--@@author A0121299A-->
 <img src="images/StorageClassDiagram.png" width="800"><br>
 
 **API** : [`Storage.java`](../src/main/java/seedu/taskman/storage/Storage.java)
 
-The `Storage` component,
+You should use the `Storage` component to handle the file-writing and file-reading 
+operations required for `TaskMan`. Currently the `StorageManager` has two other parts: 
+`UserPrefStorage` for reading and writing user preferences and `TaskManStorage` 
+for reading and writing TaskMan data.
+<!--@@author-->
+
+In summary, the `Storage` component,
 * can save `UserPref` objects in json format and read it back.
 * can save the TaskMan data in xml format and read it back.
 
 ### Common classes
 
 Classes used by multiple components are in the `seedu.taskman.commons` package.
+This includes classes such as `EventsCenter`, `LogsCenter`, `Config` and other utility classes. 
 
+#### EventsCenter
+
+We use the Event Driven approach in the application to help reduce direct coupling between components. 
+
+You can follow through this example to understand how it works. The following _Sequence Diagram_ below 
+shows how the components interact for the scenario where the user issues the command `delete d1`.
+
+<img src="images/SDForDeleteTask.png" width="800">
+
+>You can see that the `Model` simply raises a `TaskManChangedEvent` when the data in TaskMan in changed, 
+    instead of asking the `Storage` to save the updates to the hard disk.
+
+The diagram below shows how the `EventsCenter` reacts to that event, which eventually results in the updates
+being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time. <br>
+
+<img src="images/SDForDeleteTaskEventHandling.png" width="800">
+
+> Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without `Model` having
+  to be coupled to either of them. This reduces direct coupling between components, which helps to
+   make the code base more maintainable.
+   
+<!--@@author A0121299A-->
+#### Config
+
+We designed the `Config` class using the Singleton pattern, to reduce any direct coupling 
+required between `Config` and the other major components. It has its own file-reading and 
+file-writing mechanism as it needs to be initialised before the other components. 
+`Config` extends from `ConfigData`, which objects you can use to contain the data for `Config`. 
+<!--@@author-->
 ## Implementation
 
 ### Logging
