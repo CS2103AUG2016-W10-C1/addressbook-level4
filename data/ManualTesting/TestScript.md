@@ -8,13 +8,13 @@ Place taskMan.xml into the data folder.
 ## Add
 
 
-1. `add`
+1. `add`<br>
 
 
 This should fail & give an example to the user in the ResultDisplay.
 
 
-2. `add task1`
+2. `add task1`<br>
 
 
 Adds a task with only a title `task1`
@@ -22,52 +22,52 @@ This should show up in FloatingTask Panel (no deadline defined).
 A description of the task will be shown in ResultDisplay.
 
 
-3. `add task1`
+3. `add task1`<br>
 
 
 This should fail as tasks cannot have same name in Task Man.
 
 
-4. `add task2 t/tag1 t/tag!@$`
+4. `add task2 t/tag1 t/tag!@$`<br>
 
 
 A new task with tags will be added
 
 
-5. `add task3 s/today, tomorrow`
+5. `add task3 s/today, tomorrow`<br>
 
 
 This adds a task with name and schedule.
 This should show up in both FloatingTask Panel and Schedule Panel.
 
 
-6. `add task4 s/01-01-16, 3 weeks from now`
+6. `add task4 s/01-01-16, 3 weeks from now`<br>
 
 
 Same as above (testing different formats for input)
 
 
-7. `add task5 s/4pm for 2 hours`
+7. `add task5 s/4pm for 2 hours`<br>
 
 
 Same as above, but with time & duration instead of time & time
 
 
-8. `add task6 d/tomorrow s/today, next wednesday 2pm`
+8. `add task6 d/tomorrow s/today, next wednesday 2pm`<br>
 
 
 Same as above, but with deadline
 Thus, this should not show up in FloatingTask Panel but would should show up in Deadline Panel.
 
 
-9. `Add taskFail d/fish`
+9. `Add taskFail d/fish`<br>
 
 
 This should fail as the deadline format is incorrect.
 Some helpful feedback will be shown to guide user in entering a proper datetime.
 
 
-10. `Add taskFail s/today for orange`
+10. `Add taskFail s/today for orange`<br>
 
 
 This should fail as the schedule format is incorrect.
