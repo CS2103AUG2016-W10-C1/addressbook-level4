@@ -48,7 +48,6 @@ This guide will get you started in just a few steps. It also has detailed 'how t
 > * Items in `SQUARE_BRACKETS` are optional.
 > * Only one item should be picked from items in `CURLY_BRACES`.
 > * Items with `...` after them can have multiple instances.
-> * The order of parameters is not fixed.
 
 Parameter | Format
 -------- | :-------- 
@@ -70,7 +69,7 @@ Command Format: `help`
 Adds a task to TaskMan<br>
 Command Format: `add TITLE [d/DEADLINE] [s/SCHEDULE] [t/TAG]...`
 
-The `SCHEDULE` represents the period of time the task is scheduled to be worked on. Tasks can have any number of tags.
+The `SCHEDULE` represents the period of time the task is scheduled to be worked on. Tasks can have any number of `TAG`s.
 
 Examples:
 * `add learn driving`
@@ -87,48 +86,44 @@ Examples:
 Adds an event to TaskMan<br>
 Command Format: `adde TITLE s/SCHEDULE [t/TAG]...`
 
-The event must have a `SCHEDULE`, and can contain any number of tags (i.e. categories).The `SCHEDULE` represents the period of time which the event is occurring.
+The event must have a `SCHEDULE`, and can contain any number of `TAG`s (i.e. categories).The `SCHEDULE` represents the period of time which the event is occurring.
 
 Examples:
 * `adde dance lesson s/tomorrow 1pm to tomorrow 3pm`
 * `adde driving test s/next Tue for 2 hours t/important`
 <!--@@author-->
 
-#### Changing the View: `view`
-Shows a different view based on the parameters entered.<br>
-Command Format: view [{more/less/cal/day}]
-
-Examples:
-* `view more`<br>
-Shows more details in the list
-* `view less`<br>
-Shows less details in the list
-* `view cal`<br>
-Shows a GUI calendar in for the specified month
-* `view day`<br>
-Shows a detailed view of the entire day, inclusive of tasks and vacant timeblocks 
-
+<!--@@author A0136070R-->
 #### Listing all tasks: `list`
-Shows a list of all tasks or events, depending on the view, whose titles contain any of the given keywords or contains any given tags.<br>
-Command Format: `list [{e/, all/}] [KEYWORD]... [t/TAG]... `
+Shows a list of all activities whose titles contain any of the given keywords or contains any given tags.<br>
+Command Format: `list [{s, d, f}] [KEYWORD]... [t/TAG]... `
 
-> * The list returns tasks only by default. Lists with `e/` returns events only while lists with `all/` returns both tasks and events.
+> * List called with an empty argument displays all activities.
+> * List with `KEYWORD` or `TAG`s filters all 3 panels in TaskMan
+> * List can be called with the paramters `{s, d, f}` to filter specific panels
 > * The search is case-insensitive. e.g `cs3244` will match `CS3244`
 > * The order of the keywords does not matter. e.g. `CS3244 Homework` will match `Homework CS3244`
-> * Only the title is searched.
 > * Only full words will be matched e.g. `CS` will not match `CS3244`
 > * Tasks/Events matching at least one keyword or one tag will be returned (i.e. `OR` search).
     e.g. `CS3244` will match `CS3244 Homework`, a task with tags `t/CS2103T` and `t/hw` will match a search for `t/hw`
 
 Examples:
-* `list CS2103T`<br>
-  Returns Tasks with `CS2103T` in their titles
-* `list CS2101 CS3230 CS2103T t/hw`<br>
-  Returns any task or event having titles `CS2101`, `CS3230`, or `CS2103T` or tag `hw`
+* `list`<br>
+  Lists all tasks without any filter
+* `list interview`<br>
+  Lists all tasks with the word `interview` in their titles
+* `list t/school`<br>
+  Lists all tasks with the tag `school`
+* `list eat alex`<br>
+  Lists all tasks with the word `eat`, `alex`, or both in their titles.
+* `list t/boyfriend t/date`<br>
+  Lists all tasks with the tags `boyfriend` or `date`
+* `list buy t/important`<br>
+  Lists all tasks with the word `buy` in their titles and with the tag `important`
 
 #### Completing a Task: `complete`
 Marks the specified task as completed.
-Command Format: `complete INDEX` or `complete list`
+Command Format: `complete INDEX`
 
 #### Editing a task/event: `edit`
 Edits a task or event to TaskMan<br>
