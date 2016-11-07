@@ -5,7 +5,6 @@ import seedu.taskman.logic.commands.AddECommand;
 import seedu.taskman.model.TaskMan;
 import seedu.taskman.model.event.Event;
 import seedu.taskman.model.event.Schedule;
-import seedu.taskman.model.event.Title;
 
 /**
  * Created by jiayee on 11/1/16.
@@ -48,11 +47,10 @@ public class AddETests extends LogicManagerTestBase {
                 new TaskMan(model.getTaskMan())
         );
 
-        // bad title
-        // assertCommandNoStateChange("adde []\\[;]");
+        // working title but missing schedule
         assertCommandBehavior(
-                AddECommand.COMMAND_WORD + " []\\[;]",
-                Title.MESSAGE_TITLE_CONSTRAINTS,
+                AddECommand.COMMAND_WORD + " working title",
+                AddECommand.MESSAGE_ADDE_INVALID_COMMAND_FORMAT,
                 new TaskMan(model.getTaskMan())
         );
     }
