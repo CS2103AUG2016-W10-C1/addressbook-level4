@@ -22,6 +22,8 @@ TaskMan is specifically designed for users who favour working entirely from the 
 
 * Some parts of this sample application were inspired by the excellent 
   [Java FX tutorial](http://code.makery.ch/library/javafx-8-tutorial/) by *Marco Jakob*. 
+  
+* Credits to [Flaticon](http://www.flaticon.com/) for their fabulous emoticons.
 
 
 # Originally Address Book (Level 4)
