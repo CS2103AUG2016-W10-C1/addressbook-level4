@@ -20,7 +20,7 @@ public class StoragelocCommand extends Command {
     public static final String MESSAGE_USAGE = "Save to the specified file name and location and sets the application to load from the specified location in the future.\n"
             + "Parameters: LOCATION\n"
             + "Example: " + COMMAND_WORD
-            + " C:/Users/Owner/Desktop/new_tasks.xm\n"
+            + " C:/Users/Owner/Desktop/new_tasks.xml\n"
             + "Use storageloc default to save to default location.\n"
             + "Use storageloc view to view current storage file location";
 
