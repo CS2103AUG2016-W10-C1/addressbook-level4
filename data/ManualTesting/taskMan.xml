@@ -89,4 +89,237 @@
         <status>incomplete</status>
         <tagged>project</tagged>
     </tasks>
+    <events>
+        <title>cs2101 presentation</title>
+        <scheduleStart>31 Oct 2016 12:00</scheduleStart>
+        <scheduleEnd>31 Oct 2016 14:00</scheduleEnd>
+        <tagged>ppt</tagged>
+    </events>
+    <events>
+        <title>cs2103t tutorial</title>
+        <scheduleStart>02 Nov 2016 10:00</scheduleStart>
+        <scheduleEnd>02 Nov 2016 11:00</scheduleEnd>
+        <tagged>lesson</tagged>
+    </events>
+    <events>
+        <title>cs2101 lesson</title>
+        <scheduleStart>03 Nov 2016 12:00</scheduleStart>
+        <scheduleEnd>03 Nov 2016 14:00</scheduleEnd>
+        <tagged>lesson</tagged>
+    </events>
+    <events>
+        <title>cs3244 tut</title>
+        <scheduleStart>04 Nov 2016 12:00</scheduleStart>
+        <scheduleEnd>04 Nov 2016 13:00</scheduleEnd>
+        <tagged>lesson</tagged>
+    </events>
+    <events>
+        <title>cs2103t lecture</title>
+        <scheduleStart>04 Nov 2016 14:00</scheduleStart>
+        <scheduleEnd>04 Nov 2016 16:00</scheduleEnd>
+        <tagged>lesson</tagged>
+    </events>
+    <events>
+        <title>cs3230 tut</title>
+        <scheduleStart>04 Nov 2016 16:00</scheduleStart>
+        <scheduleEnd>04 Nov 2016 17:00</scheduleEnd>
+        <tagged>lesson</tagged>
+    </events>
+    <events>
+        <title>tdcc concert</title>
+        <scheduleStart>06 Jan 2017 20:00</scheduleStart>
+        <scheduleEnd>06 Jan 2017 23:00</scheduleEnd>
+        <tagged>friends</tagged>
+    </events>
+    <events>
+        <title>eliz bday</title>
+        <scheduleStart>07 Nov 2016 00:00</scheduleStart>
+        <scheduleEnd>08 Nov 2016 00:00</scheduleEnd>
+        <tagged>friends</tagged>
+    </events>
+    <events>
+        <title>pris bday</title>
+        <scheduleStart>12 Nov 2016 00:00</scheduleStart>
+        <scheduleEnd>13 Nov 2016 00:00</scheduleEnd>
+        <tagged>friends</tagged>
+    </events>
+    <tasks>
+        <title>ethics project</title>
+        <status>complete</status>
+        <deadline>04 Nov 2016 23:59</deadline>
+        <tagged>hw</tagged>
+    </tasks>
+    <tasks>
+        <title>buy present for pris</title>
+        <status>incomplete</status>
+        <deadline>12 Nov 2016 03:45</deadline>
+        <tagged>friends</tagged>
+    </tasks>
+    <tasks>
+        <title>distribute welfare pack</title>
+        <status>incomplete</status>
+        <scheduleStart>02 Nov 2016 11:30</scheduleStart>
+        <scheduleEnd>02 Nov 2016 13:00</scheduleEnd>
+        <tagged>compclub</tagged>
+    </tasks>
+    <tasks>
+        <title>find time to meet eliz and pris</title>
+        <status>incomplete</status>
+        <tagged>friends</tagged>
+    </tasks>
+    <tasks>
+        <title>apply for internships</title>
+        <status>incomplete</status>
+        <tagged>future</tagged>
+    </tasks>
+    <tasks>
+        <title>algo programming assignment 3</title>
+        <status>complete</status>
+        <deadline>04 Nov 2016 23:59</deadline>
+        <tagged>hw</tagged>
+    </tasks>
+    <tasks>
+        <title>cfg essay</title>
+        <status>incomplete</status>
+        <deadline>04 Nov 2016 23:59</deadline>
+        <scheduleStart>02 Nov 2016 15:00</scheduleStart>
+        <scheduleEnd>02 Nov 2016 17:00</scheduleEnd>
+        <tagged>hw</tagged>
+    </tasks>
+    <tasks>
+        <title>algo hw 4</title>
+        <status>incomplete</status>
+        <deadline>11 Nov 2016 23:59</deadline>
+        <scheduleStart>05 Nov 2016 12:00</scheduleStart>
+        <scheduleEnd>05 Nov 2016 16:00</scheduleEnd>
+        <tagged>hw</tagged>
+    </tasks>
+    <tasks>
+        <title>cs3244 project</title>
+        <status>complete</status>
+        <deadline>01 Nov 2016 23:59</deadline>
+        <scheduleStart>01 Nov 2016 18:02</scheduleStart>
+        <scheduleEnd>01 Nov 2016 23:02</scheduleEnd>
+        <tagged>hw</tagged>
+    </tasks>
+    <tasks>
+        <title>clear emails</title>
+        <status>incomplete</status>
+    </tasks>
+    <tasks>
+        <title>pay pris money</title>
+        <status>complete</status>
+        <tagged>friends</tagged>
+    </tasks>
+    <tasks>
+        <title>buy snacks</title>
+        <status>incomplete</status>
+        <tagged>food</tagged>
+    </tasks>
+    <tasks>
+        <title>clean club room</title>
+        <status>incomplete</status>
+        <scheduleStart>04 Nov 2016 17:00</scheduleStart>
+        <scheduleEnd>04 Nov 2016 17:30</scheduleEnd>
+    </tasks>
+    <tasks>
+        <title>check comp club email</title>
+        <status>incomplete</status>
+    </tasks>
+    <tasks>
+        <title>check personal email</title>
+        <status>incomplete</status>
+    </tasks>
+    <tasks>
+        <title>exercise</title>
+        <status>incomplete</status>
+        <tagged>health</tagged>
+    </tasks>
+    <tasks>
+        <title>buy coffee powder</title>
+        <status>incomplete</status>
+        <tagged>food</tagged>
+    </tasks>
+    <tasks>
+        <title>cs2101 docs</title>
+        <status>incomplete</status>
+        <deadline>07 Nov 2016 23:59</deadline>
+        <tagged>hw</tagged>
+    </tasks>
+    <tasks>
+        <title>buy ice cream</title>
+        <status>incomplete</status>
+        <tagged>food</tagged>
+    </tasks>
+    <tasks>
+        <title>find restaurant</title>
+        <status>incomplete</status>
+        <tagged>friends</tagged>
+        <tagged>food</tagged>
+    </tasks>
+    <tasks>
+        <title>buy present for eliz</title>
+        <status>incomplete</status>
+        <deadline>07 Nov 2016 0345</deadline>
+        <scheduleStart>02 Nov 2016 1300</scheduleStart>
+        <scheduleEnd>02 Nov 2016 1500</scheduleEnd>
+        <tagged>friends</tagged>
+    </tasks>
+    <tasks>
+        <title>buy new computer</title>
+        <status>incomplete</status>
+        <tagged>money</tagged>
+    </tasks>
+    <tasks>
+        <title>write tests for SE</title>
+        <status>incomplete</status>
+        <scheduleStart>03 Nov 2016 1500</scheduleStart>
+        <scheduleEnd>03 Nov 2016 1800</scheduleEnd>
+    </tasks>
+    <tasks>
+        <title>collect welfare pack</title>
+        <status>complete</status>
+        <tagged>food</tagged>
+    </tasks>
+    <tasks>
+        <title>do dogfooding app</title>
+        <status>incomplete</status>
+        <tagged>food</tagged>
+    </tasks>
+    <tasks>
+        <title>find movie</title>
+        <status>incomplete</status>
+        <tagged>friends</tagged>
+    </tasks>
+    <tasks>
+        <title>algo hw 3</title>
+        <status>complete</status>
+        <deadline>28 Oct 2016 23:59</deadline>
+    </tasks>
+    <tasks>
+        <title>buy new shoes</title>
+        <status>incomplete</status>
+        <tagged>money</tagged>
+    </tasks>
+    <tasks>
+        <title>buy concession pass</title>
+        <status>incomplete</status>
+        <deadline>11 Nov 2016 04:12</deadline>
+        <scheduleStart>07 Nov 2016 14:30</scheduleStart>
+        <scheduleEnd>07 Nov 2016 15:00</scheduleEnd>
+        <tagged>transport</tagged>
+    </tasks>
+    <tasks>
+        <title>watch webcasts for ML</title>
+        <status>incomplete</status>
+        <deadline>30 Oct 2016 04:22</deadline>
+    </tasks>
+    <tasks>
+        <title>prepare for cs2101 presentation</title>
+        <status>complete</status>
+        <scheduleStart>31 Oct 2016 10:00</scheduleStart>
+        <scheduleEnd>31 Oct 2016 12:00</scheduleEnd>
+        <tagged>ppt</tagged>
+        <tagged>whee</tagged>
+    </tasks>
 </taskMan>
