@@ -123,7 +123,7 @@ We use CommandParser to help create the appropriate Command object, depending on
 For the more complicated concrete Command subclasses, we implement prepare{Command} in the Command subclass 
 to parse the fields entered by the user according to the type of command specifically. 
 
-The Command objects can change the HistoryDeque, Model, Storage components and/or raise events. 
+The Command objects can change the 'HistoryDeque', Model, Storage components and/or raise events. 
 
 Given below is the Sequence Diagram for interactions within the Logic component for the execute("delete d1") API call.
 
@@ -136,7 +136,7 @@ A `CommandHistory` object will be created, storing fields related to the state o
 executed, as well as the input string for the command. This object will then be stored into the HistoryDeque. 
 
 The HistoryDeque is utilized by the History and Undo commands, 
-containing snapshots of the Model component at different times.
+containing snapshots of the Model component at different states.
 
 <img src="images/CommandTypes.png" width="400"><br>
 
