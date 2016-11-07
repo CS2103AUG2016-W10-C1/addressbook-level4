@@ -46,8 +46,6 @@ public class ModelManager extends ComponentManager implements Model {
     private final SortedList<Activity> sortedSchedules;
     private final SortedList<Activity> sortedDeadlines;
     private final SortedList<Activity> sortedFloatings;
-    
-    private final SortedList<Tag> sortedTags;
 
     /**
      * Initializes a ModelManager with the given TaskMan
@@ -68,7 +66,6 @@ public class ModelManager extends ComponentManager implements Model {
         sortedSchedules = filteredSchedules.sorted(new ScheduleComparator());
         sortedDeadlines = filteredDeadlines.sorted(new DeadlineComparator());
         sortedFloatings = filteredFloatings.sorted();
-        sortedTags = taskMan.getTags().sorted();
     }
 
     public ModelManager(ReadOnlyTaskMan initialData, UserPrefs userPrefs) {
@@ -80,7 +77,6 @@ public class ModelManager extends ComponentManager implements Model {
         sortedSchedules = filteredSchedules.sorted(new ScheduleComparator());
         sortedDeadlines = filteredDeadlines.sorted(new DeadlineComparator());
         sortedFloatings = filteredFloatings.sorted();
-        sortedTags = taskMan.getTags().sorted();
     }
 
     @Override

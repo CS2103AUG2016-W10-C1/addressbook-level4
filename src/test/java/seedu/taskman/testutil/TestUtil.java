@@ -135,7 +135,7 @@ public class TestUtil {
     }
 
     public static TaskMan generateEmptyTaskMan() {
-        return new TaskMan(new UniqueActivityList(), new UniqueTagList());
+        return new TaskMan(new UniqueActivityList());
     }
 
     public static XmlSerializableTaskMan generateSampleStorageTaskMan() {

@@ -2,15 +2,12 @@ package seedu.taskman.storage;
 
 import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.model.event.Activity;
-import seedu.taskman.model.tag.Tag;
-import seedu.taskman.model.tag.UniqueTagList;
 import seedu.taskman.model.event.UniqueActivityList;
 import seedu.taskman.model.ReadOnlyTaskMan;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -25,13 +22,10 @@ public class XmlSerializableTaskMan implements ReadOnlyTaskMan {
     private List<XmlAdaptedEvent> events;
     @XmlElement
     private List<XmlAdaptedTask> tasks;
-    @XmlElement
-    private List<Tag> tags;
 
     {
         events = new ArrayList<>();
         tasks = new ArrayList<>();
-        tags = new ArrayList<>();
     }
 
     /**
@@ -52,18 +46,6 @@ public class XmlSerializableTaskMan implements ReadOnlyTaskMan {
         tasks.addAll(src.getActivityList().stream().filter(activity -> 
                                                                activity.getType().equals(Activity.ActivityType.TASK)
                                                            ).map(XmlAdaptedTask::new).collect(Collectors.toList()));
-        tags = src.getTagList();
-    }
-
-    @Override
-    public UniqueTagList getUniqueTagList() {
-        try {
-            return new UniqueTagList(tags);
-        } catch (UniqueTagList.DuplicateTagException e) {
-            //TODO: better error handling
-            e.printStackTrace();
-            return null;
-        }
     }
 
     @Override
@@ -108,11 +90,6 @@ public class XmlSerializableTaskMan implements ReadOnlyTaskMan {
                     }
                 })
                 ).collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    @Override
-    public List<Tag> getTagList() {
-        return Collections.unmodifiableList(tags);
     }
 
 }
