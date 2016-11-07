@@ -140,18 +140,18 @@ All 3 panels should be updated, as the the activity can also be listed in the th
 
 
 (if on windows)<br>
-28a. `storageloc C:/Users/Owner/Desktop/new_task.xml`<br>
+1a. `storageloc C:/Users/Owner/Desktop/new_task.xml`<br>
 (if on ubuntu)<br>
-28b. `storageloc /home/user/Desktop/MyTaskManData.xml`<br>
-This should notify the user that the storage location has changed
-29. `storageloc ./relative_postion.xml`<br>
+1b. `storageloc /home/user/Desktop/MyTaskManData.xml`<br>
+This should notify the user that the storage location has changed<br>
+2. `storageloc ./relative_postion.xml`<br>
 `exit`<br>
 Storage location should be changed to the specified relative position
-Exiting will write the file to disk. Open your file browser and see the relative_position.xml created.
-30. `storageloc view`<br>
-Should show current file location in ResultDisplay
-31. `storageloc default`<br>
-Should save to default save location as indicated in the ResultDisplay
+Exiting will write the file to disk. Open your file browser and see the relative_position.xml created.<br>
+3. `storageloc view`<br>
+Should show current file location in ResultDisplay<br>
+4. `storageloc default`<br>
+Should save to default save location as indicated in the ResultDisplay<br>
 
 
 
