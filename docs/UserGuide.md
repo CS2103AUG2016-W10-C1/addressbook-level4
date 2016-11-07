@@ -56,9 +56,12 @@ Parameter | Format
 `DEADLINE` and `DATETIME` | `[this/next] ddd [hhmm]`
 `DURATION` | `<number> <unit of time>`
 `TAG` | Can contain spaces and are case-insensitive
+`STATUS` | `complete/incomplete` or `y/n` where y denotes complete and n denotes incomplete
+`NUMBER` | integer from 1 to 10
 
 
 #### Viewing help: `help`
+View command formats.
 Command Format: `help`
 
 > * Typing help or pressing F1 displays a list of commands available in TaskMan, along with their description and respective command formats.
@@ -93,14 +96,14 @@ Examples:
 * `adde driving test s/next Tue for 2 hours t/important`
 <!--@@author-->
 
-<!--@@author A0136070R-->
+
 #### Listing all tasks: `list`
 Shows a list of all activities whose titles contain any of the given keywords or contains any given tags.<br>
 Command Format: `list [{s, d, f}] [KEYWORD]... [t/TAG]... `
 
-> * List called with an empty argument displays all activities.
-> * List with `KEYWORD` or `TAG`s filters all 3 panels in TaskMan
-> * List can be called with the paramters `{s, d, f}` to filter specific panels
+* List called with an empty argument displays all activities.
+* List with `KEYWORD` or `TAG`s filters all 3 panels in TaskMan
+* List can be called with the paramters `{s, d, f}` to filter specific panels
 > * The search is case-insensitive. e.g `cs3244` will match `CS3244`
 > * The order of the keywords does not matter. e.g. `CS3244 Homework` will match `Homework CS3244`
 > * Only full words will be matched e.g. `CS` will not match `CS3244`
@@ -121,102 +124,62 @@ Examples:
 * `list buy t/important`<br>
   Lists all tasks with the word `buy` in their titles and with the tag `important`
 
-#### Completing a Task: `complete`
-Marks the specified task as completed.
-Command Format: `complete INDEX`
+#### Selecting a Task: `select`
+Display more details of the specified task.
+Command Format: `select INDEX`
 
 #### Editing a task/event: `edit`
-Edits a task or event to TaskMan<br>
+Edits an activity in TaskMan<br>
 ##### For a Task:
 Command Format: `edit INDEX TITLE [d/DEADLINE] [s/SCHEDULE] [c/STATUS] [t/TAG]...`
 ##### For an Event:
 Command Format: `edit INDEX TITLE [s/SCHEDULE] [t/TAG]...`
 
-Parameter | Format
--------- | :-------- 
-`SCHEDULE` | `DATETIME`, `DATETIME to DATETIME` or `DATETIME for DURATION` 
-`DEADLINE` and `DATETIME` | `[this/next] ddd [hhmm]`
-`DURATION` | `<number> <unit of time>`
-`STATUS` | `complete/incomplete` or `y/n` where y denotes complete and n denotes incomplete
 
-Fields which are not present are assumed to stay unchanged. By adding tags, previous tags are removed and the new tags are added to the task/event.
+Fields which are not present are assumed to stay unchanged. By adding tags, previous tags are removed and the new tags are added to the activity.
 
 Examples:
 * `list`<br>
-  `edit 1 CS2103T Tutorial s/mon 2200 to tue 0200`<br>
-  Changes title of the first task/event to `CS2103T Tutorial` and the schedule to `mon 2200 to tue 0200`
-* `edit CS2101 Tutorial d/thu 1159`
+  `edit s7 swallow magic pill s/friday 2pm for 30 minutes`<br>
+* `edit d2 tell Alex to study for exam d/next fri 9am`
+* `edit f1 master driving d/12 saturdays from now`
+* `edit d1 d/8pm`
+
+#### Completing a Task: `complete`
+Marks the specified task as completed.
+Command Format: `complete INDEX`
 
 #### Deleting a task: `delete`
-Deletes the specified task from TaskMan. <!-- Irreversible. But we can undo, LOL. --><br>
-Command Format: `delete INDEX` or `delete list`
+Deletes the specified task from TaskMan.<br>
+Command Format: `delete INDEX`
 
-> Deletes the task at the specified `INDEX` or `list`.
+> Deletes the task at the specified `INDEX`.
   The index refers to the index number shown in the most recent listing.<br>
   The index **must be a positive integer** 1, 2, 3, ...
 
 Examples:
 * `list`<br>
-  `delete 2`<br>
-  Deletes the second task in the TaskMan display.
+  `delete f4`<br>
+  Deletes the fourth activity in the Floating panel.
 * `list CS2101`<br>
-  `delete list`<br>
-  Deletes all of the tasks in the result(s) of the `list` command.
+  `delete d9`<br>
+  Deletes the ninth activity in the Deadline panel.
 
-#### Showing all tags: `tag`
+#### Showing all tags: `tags`
 Shows all tags used by the user<br>
-Command Format: `tag list`
+Command Format: `tags`
 
 Examples:
-* `tag list`<br>
-  Outputs: Pen Pineapple Apple P3n
-
-#### Adding tags to tasks: `tag`
-Adds tags to the specified task from TaskMan<br>
-Command Format: `tag INDEX [t/TAG]...`
-
-Examples:
-* `list CS2103T`
-  `tag 1 t/V0.1`<br>
-  Tags the first task in the result(s) of `list CS2103T` with the tag V0.1.
-
-#### Removing tags from Tasks: `untag`
-Removes tags from the specified task from TaskMan
-Command Format: `untag INDEX [t/TAG]...` or `untag all`
-Examples:
-* `list CS2103T`
-  `untag 1 t/V0.1`<br>
-  Untags the tag V0.1 from the first task in the result(s) of `list CS2103T`.
-* `list`
-  `untag 1 all`<br>
-  Untags all tags from the the first task in list result(s).
-
-#### Editing tag name: `retag`
-Edits name of a tag from TaskMan.<br>
-Command Format: `retag t/ORIGINAL_NAME t/DESIRED_NAME`
-
-Examples:
-* `retag t/CS2103T t/software engine`<br>
-  Renames the tag `CS2103T` to `software engine`
-
-#### Sorting tasks: `sort`
-Sorts the recent listing of tasks according to the specified attribute. Default sort order is ascending.<br>
-Command Format: `sort ATTRIBUTE` [desc]
-
-`ATTRIBUTE` can be any of the fields seen in `add`.
-
-Examples:
-* sort title desc
-* sort deadline
-* sort schedule
+* `tags`<br>
+  Outputs: `[Apple] [Pen] [Pineapple] [P3n]`
 
 #### Viewing command history: `history`
 List the 10 most recently executed commands **which have made changes to the data** in reverse chronological order.<br>
 Command Format: `history`
 
 #### Undoing commands: `undo`
-Undo the X most recently executed commands in the command history. Irreversible. The command history stores a maximum of the 10 most recently executed commands **which have made changes to the data**.<br>
-Command Format: `undo [number]` or `undo all`
+Undo the `NUMBER` most recently executed commands in the command history. Irreversible. The command history stores a maximum of the 10 most recently executed commands **which have made changes to the data**.<br>
+Command Format: `undo [NUMBER]`
 
 Examples:
 * `undo`<br>
@@ -224,14 +187,12 @@ Examples:
 * `undo 2`<br>
   `undo 3`<br>
   Undo the 5 most recently executed commands in TaskMan.
-* `undo all`<br>
-  Undo the 10 most recently executed commands in Taskman.
 
-<!--
+
 #### Clearing all entries: `clear`
 Clears all entries from TaskMan.<br>
 Command Format: `clear`
--->
+
 
 #### Exiting the program: `exit`
 Exits the program.<br>
@@ -298,17 +259,6 @@ Example:
 > `<tagged>lecture</tagged>`<br>
 > `</events>`
 -->
-
-#### Tag
-Each Tag is saved in the following format:
-> `<tags>`<br>
-> `<tagName>TAGNAME</tagName>`<br>
-> `</tags>`
-
-Example:
-> `<tags>`<br>
-> `<tagName>CS2103T</tagName>`<br>
-> `</tags>`
 <!--@@author -->
 ## FAQ
 
