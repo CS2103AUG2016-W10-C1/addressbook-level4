@@ -110,8 +110,12 @@ public class MainWindow extends UiPart {
         addKeyPressedFilters();
     }
     
+    //@@author A0140136W
     /**
-     * Handle letter key presses.
+     * Listener and filter for keyboard shortcuts.
++    * Pressing letter keys focuses on the command box.
++    * Pressing F4 focuses on the result display.
++    * Pressing help switches to the help window.
      */
     private void addKeyPressedFilters() {
         mainScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -125,6 +129,7 @@ public class MainWindow extends UiPart {
             }
         });
     }
+    //@@author
 
     void fillInnerParts() {
         schedulePanel = ActivityPanel.load(primaryStage, getSchedulePanelPlaceholder(), logic.getSortedScheduleList(), Activity.PanelType.SCHEDULE);
@@ -230,6 +235,8 @@ public class MainWindow extends UiPart {
                 (int) primaryStage.getX(), (int) primaryStage.getY());
     }
 
+    //@@author A0140136W
+    // Handles switching to the help scene.
     public void handleHelp() {
         if (helpScene == null) {
             helpScene = HelpWindow.load(primaryStage, mainScene).getScene();
@@ -237,6 +244,7 @@ public class MainWindow extends UiPart {
         primaryStage.setScene(helpScene);
     }
     
+    // Handles focusing on the result display.
     public void handleResult() {
         resultDisplay.getResultDisplayArea().requestFocus();
     }
@@ -245,6 +253,7 @@ public class MainWindow extends UiPart {
         primaryStage.show();
     }
     
+    // Configure list views in each activity panel to be the only focus traversable components.
     private void configureFocus() {
         ArrayList<Node> nodes = getAllNodes();
         for (Node node : nodes) {
@@ -256,12 +265,14 @@ public class MainWindow extends UiPart {
         }
     }
 
+    // Gets all the nodes in the window.
     private ArrayList<Node> getAllNodes() {
         ArrayList<Node> nodes = new ArrayList<Node>();
         addAllDescendents(rootLayout, nodes);
         return nodes;
     }
 
+    // Adds all descendant nodes of a parent to an array.
     private void addAllDescendents(Parent parent, ArrayList<Node> nodes) {
         for (Node node : parent.getChildrenUnmodifiable()) {
             nodes.add(node);

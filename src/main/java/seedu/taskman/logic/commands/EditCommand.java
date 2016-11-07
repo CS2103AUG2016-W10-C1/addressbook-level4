@@ -40,6 +40,9 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_TASK_SUCCESS = "Task updated: %1$s";
     public static final String MESSAGE_DUPLICATE_ACTIVITY = "An event or a task with the same name already exists";
 
+    public static final String MESSAGE_EDIT_INVALID_COMMAND_FORMAT = MESSAGE_INVALID_COMMAND_FORMAT
+            + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE;
+
     private static final Pattern TASK_EDIT_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
             Pattern.compile("" + CommandParser.ArgumentPattern.PANEL
                     + CommandParser.ArgumentPattern.TARGET_INDEX
@@ -71,8 +74,7 @@ public class EditCommand extends Command {
         final Matcher matcher = TASK_EDIT_ARGS_FORMAT.matcher(args.trim());
 
         if (!matcher.matches()) {
-            return new IncorrectCommand(MESSAGE_INVALID_COMMAND_FORMAT
-                    + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE);
+            return new IncorrectCommand(MESSAGE_EDIT_INVALID_COMMAND_FORMAT);
         }
 
         String panelTypeRaw = matcher.group(CommandParser.Group.panel.name).trim();

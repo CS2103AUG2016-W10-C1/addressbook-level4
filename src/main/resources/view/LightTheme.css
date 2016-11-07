@@ -1,3 +1,4 @@
+/*@@author A0140136W*/
 .split-pane {
     -fx-background-color: derive(#576082, 20%);
 }
@@ -32,6 +33,7 @@
     -fx-border-width: 3px;
     -fx-border-color: -fx-focus-color;
 }
+/*@@author*/
 
 .label-id {
     -fx-font-size: 14px;
@@ -63,7 +65,8 @@
 .label-green {
     -fx-text-fill: #00bfa5;
 }
- 
+
+/*@@author A0140136W*/ 
 .status-bar {
     -fx-background-color: derive(#576082, 20%);
 }

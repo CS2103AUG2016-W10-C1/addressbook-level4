@@ -30,13 +30,16 @@ import seedu.taskman.logic.commands.UndoCommand;
 
 import java.util.logging.Logger;
 
+//@@author A0140136W
 /**
- * Controller for a help page
+ * Controller for a help window
  */
 public class HelpWindow extends UiPart {
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
     private static final String FXML = "HelpWindow.fxml";
+    
+    // A list of every command word and its respective format.
     final ObservableList<HelpTableViewRow> data = FXCollections.observableArrayList(
                                                   new HelpTableViewRow(AddCommand.COMMAND_WORD, AddCommand.MESSAGE_USAGE),
                                                   new HelpTableViewRow(AddECommand.COMMAND_WORD, AddECommand.MESSAGE_USAGE),
@@ -84,6 +87,10 @@ public class HelpWindow extends UiPart {
         return FXML;
     }
 
+    /* Creates a new scene that contains layout for help window.
+    * Stores the previous scene to go back to.
+    * Adds listener for keyboard shortcuts.
+    */
     private void configure(Scene mainScene) {
         previousScene = mainScene;
         helpScene = new Scene(mainPane);
@@ -92,6 +99,7 @@ public class HelpWindow extends UiPart {
         initTable();
     }
     
+    // Listener and filter for keyboard shortcuts.
     private void addKeyPressedFilters() {
         helpScene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             KeyCode code = event.getCode();
@@ -101,6 +109,7 @@ public class HelpWindow extends UiPart {
         });
     }
     
+    // Initialize the help table with every command and its respective formats. 
     private void initTable() {
         commandColumn.setCellValueFactory(
                       new PropertyValueFactory<HelpTableViewRow,String>("command"));
@@ -109,10 +118,12 @@ public class HelpWindow extends UiPart {
         helpTableView.setItems(data);
     }
 
+    // Gets the help scene.
     public Scene getScene() {
         return helpScene;
     }
     
+    // Handles going back to the previous scene.
     public void handleBack() {
         primaryStage.setScene(previousScene);
     }

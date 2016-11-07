@@ -27,6 +27,10 @@ public class AddECommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New event added: %1$s";
     public static final String MESSAGE_DUPLICATE_EVENT = "This event already exists in TaskMan";
+
+    public static final String MESSAGE_ADDE_INVALID_COMMAND_FORMAT = MESSAGE_INVALID_COMMAND_FORMAT
+            + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE;
+
     private static final Pattern EVENT_MARK_ARGS_FORMAT =
             Pattern.compile("" + CommandParser.ArgumentPattern.TITLE
                     + CommandParser.ArgumentPattern.SCHEDULE
@@ -57,8 +61,7 @@ public class AddECommand extends Command {
         final Matcher matcher = EVENT_MARK_ARGS_FORMAT.matcher(args.trim());
         // Validate arg string format
         if (!matcher.matches()) {
-            return new IncorrectCommand(MESSAGE_INVALID_COMMAND_FORMAT
-                    + "\n" + COMMAND_WORD + ": " + MESSAGE_USAGE);
+            return new IncorrectCommand(MESSAGE_ADDE_INVALID_COMMAND_FORMAT);
         }
         try {
             return new AddECommand(

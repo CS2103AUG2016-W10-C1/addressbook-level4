@@ -20,15 +20,12 @@ public class TagsTests extends LogicManagerTestBase {
     @Test
     public void execute_tags_emptyArgsFormat() throws Exception {
         // no args
-        assertCommandNoStateChange("tags");
+        assertCommandNoStateChange(TagsCommand.COMMAND_WORD);
 
         logic.execute("clear");
-        CommandResult result = logic.execute("tags");
+        CommandResult result = logic.execute(TagsCommand.COMMAND_WORD);
         assertTrue(result.feedbackToUser.equals(TagsCommand.TAG_STRING_HEADER
                 + TagsCommand.TAG_STRING_EMPTY_PLACEHOLDER));
-        // this is similar to assertCommandBehaviour, will be bringing it back
-
-        // TODO: Tidy up
 
         LogicManagerTestBase.TestDataHelper helper = new LogicManagerTestBase.TestDataHelper();
         Task toBeAdded = helper.generateFullTask(1);
