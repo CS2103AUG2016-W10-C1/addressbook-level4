@@ -103,7 +103,9 @@ Command Format: `list [{s, d, f}] [KEYWORD]... [t/TAG]... `
 
 * List called with an empty argument displays all activities.
 * List with `KEYWORD` or `TAG`s filters all 3 panels in TaskMan
-* List can be called with the paramters `{s, d, f}` to filter specific panels
+* List can be called with the paramters `{s, d, f}` to filter specific panels 
+<br>
+
 > * The search is case-insensitive. e.g `cs3244` will match `CS3244`
 > * The order of the keywords does not matter. e.g. `CS3244 Homework` will match `Homework CS3244`
 > * Only full words will be matched e.g. `CS` will not match `CS3244`
@@ -124,9 +126,11 @@ Examples:
 * `list buy t/important`<br>
   Lists all tasks with the word `buy` in their titles and with the tag `important`
 
+<!--@@author A0140136W-->
 #### Selecting a Task: `select`
 Display more details of the specified task.
 Command Format: `select INDEX`
+<!--@@author-->
 
 #### Editing a task/event: `edit`
 Edits an activity in TaskMan<br>
@@ -270,20 +274,16 @@ Example:
 Command | Format
 -------- | :--------
 Add | `add TITLE [d/DEADLINE] [s/SCHEDULE] [t/TAG]...    `
-Adde | `adde TITLE [s/SCHEDULE] [t/TAG]...    `
+Adde | `adde TITLE s/SCHEDULE [t/TAG]...    `
 Clear | `clear`
-Complete | `complete INDEX` or `complete list`
-Delete | `delete INDEX` or `delete list`
+Complete | `complete INDEX`
+Delete | `delete INDEX`
 Edit | `edit INDEX TITLE [d/DEADLINE] [s/SCHEDULE] [c/STATUS] [t/TAG]...`
 Exit | `exit`
 Help | `help`
 History | `history`
-List | `list [{e/, all/}] [KEYWORD]... [t/TAG]...`
-Retag | `retag t/ORIGINAL t/DESIRED`
-Sort | `sort ATTRIBUTE [desc]`
-Storageloc | `storageloc [LOCATION]` or `storageloc default`
-Tag List | `tag list`
-Tag | `tag INDEX [t/TAG]...`
+List | `list [{s, d, f}] [KEYWORD]... [t/TAG]...`
+Select | `select INDEX`
+Storageloc | `storageloc [LOCATION]` or `storageloc default` or `storageloc view`
+Tags | `tags`
 Undo | `undo [NUMBER]`
-Untag | `untag INDEX [t/TAG]...` or `untag all`
-View | `view` or `view PARAM`
