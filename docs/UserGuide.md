@@ -230,7 +230,8 @@ Each Task is saved in the following format:
 > `<tasks>`<br>
 > `<title>TITLE</title>`<br>
 > `<deadline>DD-MM-YYYY TT:TT</deadline>`<br>
-> `<schedule>DD-MM-YYYY TT:TT to DD-MM-YYYY TT:TT</schedule>`<br>
+> `<scheduleStart>DD-MM-YYYY TT:TT</scheduleStart>`<br>
+> `<scheduleEnd>DD-MM-YYYY TT:TT</scheduleEnd>`<br>
 > `<tagged>TAGNAME</tagged>`<br>
 > `<tagged>TAGNAME</tagged>`<br>
 > `</tasks>`<br>
@@ -240,7 +241,6 @@ Example:
 > `<tasks>`<br>
 > `<title>CS2103T Tutorial HW</title>`<br>
 > `<deadline>11-10-2016 23:59</deadline>`<br>
-> `<schedule></schedule>`<br>
 > `<tagged>CS2103T</tagged>`<br>
 > `</tasks>`
 
@@ -248,7 +248,8 @@ Example:
 Each Event is saved in the following format:
 > `<event>`<br>
 > `<title>TITLE</title>`<br>
-> `<schedule>DD-MM-YYYY TT:TT to DD-MM-YYYY TT:TT</schedule>`<br>
+> `<scheduleStart>DD-MM-YYYY TT:TT</scheduleStart>`<br>
+> `<scheduleEnd>DD-MM-YYYY TT:TT</scheduleEnd>`<br>
 > `<tagged>TAGNAME</tagged>`<br>
 > `<tagged>TAGNAME</tagged>`<br>
 > `</event>`
@@ -257,7 +258,8 @@ Fields which are empty can be left out.<br>
 Example:
 > `<event>`<br>
 > `<title>CS2103T Lecture</title>`<br>
-> `<schedule>01-10-2016 12:00 to 01-10-2016 14:00</schedule>`<br>
+> `<scheduleStart>01-10-2016 12:00</scheduleStart>`<br>
+> `<scheduleEnd01-10-2016 14:00</scheduleEnd>`<br>
 > `<tagged>CS2103T</tagged>`<br>
 > `</event>`
 
