@@ -38,8 +38,10 @@ public class XmlSerializableTaskMan implements ReadOnlyTaskMan {
     public XmlSerializableTaskMan() {
     }
 
+    //@@author A0140136W
     /**
-     * Conversion
+     * Converts data in source file to its respective type of Activity (i.e. Task, Event)
+     * for loading in TaskMan.
      */
     public XmlSerializableTaskMan(ReadOnlyTaskMan src) {
         events.addAll(src.getActivityList().stream().filter(activity ->
@@ -49,6 +51,7 @@ public class XmlSerializableTaskMan implements ReadOnlyTaskMan {
                                                                activity.getType().equals(Activity.ActivityType.TASK)
                                                            ).map(XmlAdaptedTask::new).collect(Collectors.toList()));
     }
+    //@@author
 
     @Override
     public UniqueActivityList getUniqueActivityList() {
