@@ -119,24 +119,30 @@ In summary, the `UI` component,
 
 When input from the user is entered, the UI would call on the Logic component to act on the command entered. 
 We use CommandParser to help create the appropriate Command object, depending on the input by the user. 
+
 For the more complicated concrete Command subclasses, we implement prepare{Command} in the Command subclass 
 to parse the fields entered by the user according to the type of command specifically. 
-The Command objects can change the Model, Storage components and/or raise events. 
+
+The Command objects can change the HistoryDeque, Model, Storage components and/or raise events. 
+
 Given below is the Sequence Diagram for interactions within the Logic component for the execute("delete d1") API call.
 
 <img src="images/LogicSequenceDiagram.png" width="800"><br>
 
-As seen above, commands that have been successfully executed (checked with result.success) and 
-have been flagged for storing (through the storeHistory field) will undergo an additional process. 
-A CommandHistory object will be created, storing fields related to the state of the Model before the command was 
+Commands that have been successfully executed (checked with result.success) and 
+have been flagged for storing (through the storeHistory field) will undergo an additional process as above. 
+
+A `CommandHistory` object will be created, storing fields related to the state of the Model before the command was 
 executed, as well as the input string for the command. This object will then be stored into the HistoryDeque. 
-The HistoryDeque is utilized by the History and Undo commands, containing snapshots of the Model component at different times.
+
+The HistoryDeque is utilized by the History and Undo commands, 
+containing snapshots of the Model component at different times.
 
 <img src="images/CommandTypes.png" width="400"><br>
+
 The above figure illustrates the storeHistory field for commands. 
 The storeHistory field is set to true for some commands, and false for others.
 View Command.java & the respective concrete Commands for more details.
-
 
 In summary, the Logic Component:
 Uses the CommandParser class to parse the user command.
