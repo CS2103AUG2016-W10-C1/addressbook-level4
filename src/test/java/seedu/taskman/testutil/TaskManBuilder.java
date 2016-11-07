@@ -24,11 +24,6 @@ public class TaskManBuilder {
         return this;
     }
 
-    public TaskManBuilder withTag(String tagName) throws IllegalValueException {
-        taskMan.addTag(new Tag(tagName));
-        return this;
-    }
-
     public TaskMan build() {
         return taskMan;
     }

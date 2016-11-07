@@ -53,7 +53,6 @@ public class XmlUtilTest {
     public void getDataFromFile_validFile_validResult() throws Exception {
         XmlSerializableTaskMan dataFromFile = XmlUtil.getDataFromFile(VALID_FILE, XmlSerializableTaskMan.class);
         assertEquals(5, dataFromFile.getActivityList().size());
-        assertEquals(2, dataFromFile.getTagList().size());
     }
 
     @Test
@@ -83,7 +82,7 @@ public class XmlUtilTest {
         assertEquals(new TaskMan(dataToWrite), new TaskMan(dataFromFile));
 
         TaskManBuilder builder = new TaskManBuilder(new TaskMan());
-        dataToWrite = new XmlSerializableTaskMan(builder.withTask(TestUtil.generateSampleTaskData().get(0)).withTag("Friends").build());
+        dataToWrite = new XmlSerializableTaskMan(builder.withTask(TestUtil.generateSampleTaskData().get(0)).build());
 
         XmlUtil.saveDataToFile(TEMP_FILE, dataToWrite);
         dataFromFile = XmlUtil.getDataFromFile(TEMP_FILE, XmlSerializableTaskMan.class);

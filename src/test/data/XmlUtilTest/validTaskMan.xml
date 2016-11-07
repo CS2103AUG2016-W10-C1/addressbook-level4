@@ -33,10 +33,4 @@
         <status>y</status>
         <deadline>10-10-2017 23:30</deadline>
     </tasks>
-    <tags>
-        <tagName>Hans</tagName>
-    </tags>
-    <tags>
-        <tagName>first</tagName>
-    </tags>
 </taskMan>

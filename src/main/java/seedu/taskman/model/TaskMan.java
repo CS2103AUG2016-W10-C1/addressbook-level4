@@ -26,12 +26,10 @@ import java.util.stream.Collectors;
 public class TaskMan implements ReadOnlyTaskMan {
 
     private final UniqueActivityList activities;
-    private final UniqueTagList tags;
 
     // TODO: format looks pretty weird. can we do something about it?
     {
         activities = new UniqueActivityList();
-        tags = new UniqueTagList();
     }
 
     public TaskMan() {
@@ -41,14 +39,14 @@ public class TaskMan implements ReadOnlyTaskMan {
      * Tasks and Tags are copied into this taskMan
      */
     public TaskMan(ReadOnlyTaskMan toBeCopied) {
-        this(toBeCopied.getUniqueActivityList(), toBeCopied.getUniqueTagList());
+        this(toBeCopied.getUniqueActivityList());
     }
 
     /**
      * Tasks and Tags are copied into this taskMan
      */
-    public TaskMan(UniqueActivityList activities, UniqueTagList tags) {
-        resetData(activities.getInternalList(), tags.getInternalList());
+    public TaskMan(UniqueActivityList activities) {
+        resetData(activities.getInternalList());
     }
 
     public static ReadOnlyTaskMan getEmptyTaskMan() {
@@ -65,22 +63,12 @@ public class TaskMan implements ReadOnlyTaskMan {
         this.activities.getInternalList().setAll(activities);
     }
 
-    // TODO: Create setEvent
-    public ObservableList<Tag> getTags() {
-        return tags.getInternalList();
-    }
-    
-    public void setTags(Collection<Tag> tags) {
-        this.tags.getInternalList().setAll(tags);
-    }
-
-    public void resetData(Collection<? extends Activity> newActivities, Collection<Tag> newTags) {
+    public void resetData(Collection<? extends Activity> newActivities) {
         setActivities(newActivities.stream().map(Activity::new).collect(Collectors.toList()));
-        setTags(newTags);
     }
 
     public void resetData(ReadOnlyTaskMan newData) {
-        resetData(newData.getActivityList(), newData.getTagList());
+        resetData(newData.getActivityList());
     }
 
 //// event-level operations
@@ -97,33 +85,7 @@ public class TaskMan implements ReadOnlyTaskMan {
      * @throws UniqueActivityList.DuplicateActivityException if an equivalent activity already exists.
      */
     public void addActivity(Activity activity) throws UniqueActivityList.DuplicateActivityException {
-        syncTagsWithMasterList(activity);
         activities.add(activity);
-    }
-
-    /**
-     * Ensures that every tag in this event:
-     * - exists in the master list {@link #tags}
-     * - points to a Tag object in the master list
-     * TODO: feels like a pretty complex way to do this...
-     * // can't we just store tags from eventTags into tagsList? Objects are passed by reference
-     */
-    private void syncTagsWithMasterList(MutableTagsEvent event) {
-        final UniqueTagList eventTags = event.getTags();
-        tags.mergeFrom(eventTags);
-
-        // Create map with values = tag object references in the master list
-        final Map<Tag, Tag> masterTagObjects = new HashMap<>();
-        for (Tag tag : tags) {
-            masterTagObjects.put(tag, tag);
-        }
-
-        // Rebuild the list of event tags using references from the master list
-        final Set<Tag> commonTagReferences = new HashSet<>();
-        for (Tag tag : eventTags) {
-            commonTagReferences.add(masterTagObjects.get(tag));
-        }
-        event.setTags(new UniqueTagList(commonTagReferences));
     }
 
     public boolean removeActivity(Task key) throws UniqueActivityList.ActivityNotFoundException {
@@ -142,17 +104,11 @@ public class TaskMan implements ReadOnlyTaskMan {
         }
     }
 
-//// tag-level operations
-
-    public void addTag(Tag t) throws UniqueTagList.DuplicateTagException {
-        tags.add(t);
-    }
-
 //// util methods
 
     @Override
     public String toString() {
-        return activities.getInternalList().size() + " activities, " + tags.getInternalList().size() + " tags";
+        return activities.getInternalList().size() + " activities";
     }
 
     @Override
@@ -161,18 +117,8 @@ public class TaskMan implements ReadOnlyTaskMan {
     }
 
     @Override
-    public List<Tag> getTagList() {
-        return Collections.unmodifiableList(tags.getInternalList());
-    }
-
-    @Override
     public UniqueActivityList getUniqueActivityList() {
         return this.activities;
-    }
-
-    @Override
-    public UniqueTagList getUniqueTagList() {
-        return this.tags;
     }
 
     @Override
@@ -180,12 +126,11 @@ public class TaskMan implements ReadOnlyTaskMan {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TaskMan taskMan = (TaskMan) o;
-        return activities.equals(taskMan.activities) &&
-                tags.equals(taskMan.tags);
+        return activities.equals(taskMan.activities);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(activities, tags);
+        return Objects.hash(activities);
     }
 }
