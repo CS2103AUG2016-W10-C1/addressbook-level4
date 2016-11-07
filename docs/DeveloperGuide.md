@@ -99,7 +99,7 @@ matching `.fxml` files that are in the `src/main/resources/view` folder.<br>
 For example, the layout of the [`MainWindow`](../src/main/java/seedu/taskman/ui/MainWindow.java) is specified 
 in [`MainWindow.fxml`](../src/main/resources/view/MainWindow.fxml).
 <!--@@author A0121299A-->
-<img src="images/UiActivityCardClassDiagram.PNG" width="800"><br>
+<img src="images/UiActivityCardClassDiagram.PNG" width="500"><br>
 
 You can load multiple `ActivityPanel` parts in the `MainWindow` and control 
 the kind of display for the `Activity` objects in the panel through 
@@ -137,7 +137,7 @@ here in the `Model` component. We use `TaskMan` to store the core data for the a
 (using `UnmodifiableObservableList<Activity>`) for the UI components. You should ensure
 changes to the core data of `TaskMan` should be made through the `Model` interface.
 
-<img src="images/ModelActivityClassDiagram.PNG" width="800"><br>
+<img src="images/ModelActivityClassDiagram.PNG" width="500"><br>
 
 `Activity` is a wrapper class for `Task` and `Event` objects. All three classes inherit the `ReadOnlyEvent` interface. 
 You can view `Task` as an extension of `Event`, which has an additional 
