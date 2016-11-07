@@ -1,6 +1,5 @@
 package seedu.taskman.logic.logicmanager;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import seedu.taskman.commons.exceptions.IllegalValueException;
 import seedu.taskman.logic.commands.EditCommand;
@@ -38,8 +37,6 @@ public class EditTests extends LogicManagerTestBase {
         assertCommandNoStateChange(String.format(EditCommand.COMMAND_WORD, " []\\[;]"));
     }
 
-    // TODO: Fix java.lang.NullPointerException
-    @Ignore
     @Test
     public void execute_edit_successful() throws Exception {
         LogicManagerTestBase.TestDataHelper helper = new LogicManagerTestBase.TestDataHelper();
@@ -55,7 +52,7 @@ public class EditTests extends LogicManagerTestBase {
 
         // edit deadline & tags for one task
         Deadline newDeadline = generateDifferentDeadline(new Activity(originalTask));
-        Task editedTask = originalTask;
+        Task editedTask = new Task(originalTask);
         editedTask.setDeadline(newDeadline);
 
         UniqueTagList tags = editedTask.getTags();
