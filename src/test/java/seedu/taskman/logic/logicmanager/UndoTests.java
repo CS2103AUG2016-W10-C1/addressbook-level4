@@ -1,6 +1,5 @@
 package seedu.taskman.logic.logicmanager;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import seedu.taskman.logic.commands.CommandResult;
 import seedu.taskman.model.TaskMan;
@@ -12,7 +11,6 @@ import static org.junit.Assert.assertTrue;
 //@@author A0139019E
 public class UndoTests extends LogicManagerTestBase {
 
-    //TODO: change hardcoded add commands to generated ones
     @Test
     public void execute_undoNothingToUndo_failure() {
         assertTrue(!logic.execute("undo").succeeded);
