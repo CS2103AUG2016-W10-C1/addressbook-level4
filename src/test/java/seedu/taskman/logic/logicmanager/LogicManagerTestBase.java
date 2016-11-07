@@ -272,6 +272,10 @@ public abstract class LogicManagerTestBase {
             return command.toString();
         }
 
+        protected String generateAddCommandWithOnlyTaskTitle(String title) throws Exception {
+            return generateAddCommand(generateTaskWithOnlyTitle(title)) ;
+        }
+
         protected String generateAddECommand(Event event) {
             StringBuilder command = new StringBuilder();
 
@@ -461,6 +465,15 @@ public abstract class LogicManagerTestBase {
                     new UniqueTagList(),
                     null,
                     new Schedule("02/05/2016 5pm, 05/05/2016 5pm")
+            );
+        }
+
+        protected Task generateTaskWithOnlyTitle(String title) throws Exception {
+            return new Task(
+                    new Title(title),
+                    new UniqueTagList(),
+                    null,
+                    null
             );
         }
     }
