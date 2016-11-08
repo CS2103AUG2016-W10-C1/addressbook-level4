@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<taskMan>
+    <events>
+        <title>factory visit with boss</title>
+        <scheduleStart>25 Nov 2016 14:00</scheduleStart>
+        <scheduleEnd>25 Nov 2016 18:00</scheduleEnd>
+        <tagged>impt</tagged>
+    </events>
+    <events>
+        <title>client meeting with Jane</title>
+        <scheduleStart>14 Nov 2016 13:00</scheduleStart>
+        <scheduleEnd>14 Nov 2016 15:00</scheduleEnd>
+        <tagged>meeting</tagged>
+    </events>
+    <events>
+        <title>meet exboss</title>
+        <scheduleStart>08 Jan 2017 15:00</scheduleStart>
+        <scheduleEnd>08 Jan 2017 19:00</scheduleEnd>
+        <tagged>meeting</tagged>
+    </events>
+    <events>
+        <title>star gazing</title>
+        <scheduleStart>03 Jan 2017 23:00</scheduleStart>
+        <scheduleEnd>04 Jan 2017 17:48</scheduleEnd>
+        <tagged>leisure</tagged>
+    </events>
+    <events>
+        <title>moon watching</title>
+        <scheduleStart>12 Feb 2017 23:00</scheduleStart>
+        <scheduleEnd>13 Feb 2017 01:00</scheduleEnd>
+        <tagged>leisure</tagged>
+    </events>
+    <events>
+        <title>shop for guitar tools</title>
+        <scheduleStart>07 Mar 2017 14:00</scheduleStart>
+        <scheduleEnd>07 Mar 2017 15:00</scheduleEnd>
+        <tagged>bass</tagged>
+        <tagged>leisure</tagged>
+    </events>
+    <events>
+        <title>driving test</title>
+        <scheduleStart>06 Apr 2017 10:00</scheduleStart>
+        <scheduleEnd>06 Apr 2017 10:15</scheduleEnd>
+        <tagged>important</tagged>
+        <tagged>test</tagged>
+    </events>
+    <events>
+        <title>set up bass</title>
+        <scheduleStart>08 Mar 2017 11:00</scheduleStart>
+        <scheduleEnd>08 Mar 2017 12:00</scheduleEnd>
+        <tagged>bass</tagged>
+        <tagged>leisure</tagged>
+    </events>
+    <events>
+        <title>fishing</title>
+        <scheduleStart>11 Jan 2017 07:00</scheduleStart>
+        <scheduleEnd>11 Jan 2017 09:00</scheduleEnd>
+        <tagged>leisure</tagged>
+    </events>
+    <events>
+        <title>tdcc concert</title>
+        <scheduleStart>06 Jan 2017 20:00</scheduleStart>
+        <scheduleEnd>06 Jan 2017 23:00</scheduleEnd>
+        <tagged>friends</tagged>
+    </events>
+    <events>
+        <title>go for reservist</title>
+        <scheduleStart>28 Nov 2016 22:12</scheduleStart>
+        <scheduleEnd>05 Dec 2016 22:12</scheduleEnd>
+    </events>
+    <events>
+        <title>eliz bday</title>
+        <scheduleStart>07 Nov 2017 00:00</scheduleStart>
+        <scheduleEnd>08 Nov 2017 00:00</scheduleEnd>
+        <tagged>friends</tagged>
+    </events>
+    <events>
+        <title>pris bday</title>
+        <scheduleStart>12 Nov 2017 00:00</scheduleStart>
+        <scheduleEnd>13 Nov 2017 00:00</scheduleEnd>
+        <tagged>friends</tagged>
+    </events>
+    <events>
+        <title>practice for ippt</title>
+        <scheduleStart>15 Nov 2016 10:00</scheduleStart>
+        <scheduleEnd>15 Nov 2016 11:00</scheduleEnd>
+    </events>
+    <events>
+        <title>practice for ippt 2</title>
+        <scheduleStart>23 Nov 2016 10:00</scheduleStart>
+        <scheduleEnd>23 Nov 2016 11:00</scheduleEnd>
+    </events>
+    <events>
+        <title>practice for ippt 3</title>
+        <scheduleStart>01 Dec 2016 11:00</scheduleStart>
+        <scheduleEnd>01 Dec 2016 12:00</scheduleEnd>
+    </events>
+    <tasks>
+        <title>find timeslot</title>
+        <status>incomplete</status>
+        <tagged>impt</tagged>
+        <tagged>meeting</tagged>
+    </tasks>
+    <tasks>
+        <title>get sales report from john</title>
+        <status>incomplete</status>
+    </tasks>
+    <tasks>
+        <title>ask jane to email boss</title>
+        <status>incomplete</status>
+    </tasks>
+    <tasks>
+        <title>ask John and Jane for budget</title>
+        <status>incomplete</status>
+        <deadline>14 Nov 2016 21:23</deadline>
+        <tagged>impt</tagged>
+    </tasks>
+    <tasks>
+        <title>prepare report and slides</title>
+        <status>incomplete</status>
+        <deadline>16 Nov 2016 21:25</deadline>
+        <scheduleStart>15 Nov 2016 10:00</scheduleStart>
+        <scheduleEnd>15 Nov 2016 12:00</scheduleEnd>
+        <tagged>meeting</tagged>
+    </tasks>
+    <tasks>
+        <title>buy christmas gift for nephew</title>
+        <status>incomplete</status>
+        <deadline>20 Dec 2016 17:51</deadline>
+        <scheduleStart>19 Dec 2016 18:00</scheduleStart>
+        <scheduleEnd>19 Dec 2016 19:00</scheduleEnd>
+        <tagged>important</tagged>
+        <tagged>family</tagged>
+    </tasks>
+    <tasks>
+        <title>buy bakwa for siblings</title>
+        <status>incomplete</status>
+        <deadline>20 Jan 2017 18:00</deadline>
+        <scheduleStart>18 Jan 2017 13:00</scheduleStart>
+        <scheduleEnd>18 Jan 2017 14:00</scheduleEnd>
+        <tagged>family</tagged>
+    </tasks>
+    <tasks>
+        <title>go on a gourmet tour</title>
+        <status>incomplete</status>
+        <tagged>leisure</tagged>
+        <tagged>food</tagged>
+    </tasks>
+    <tasks>
+        <title>pay utility bills</title>
+        <status>incomplete</status>
+        <deadline>10 Jan 2017 18:00</deadline>
+        <scheduleStart>09 Jan 2017 11:00</scheduleStart>
+        <scheduleEnd>09 Jan 2017 11:30</scheduleEnd>
+        <tagged>important</tagged>
+        <tagged>bills</tagged>
+    </tasks>
+    <tasks>
+        <title>repair desktop</title>
+        <status>incomplete</status>
+        <deadline>28 Dec 2016 18:10</deadline>
+        <scheduleStart>26 Dec 2016 11:00</scheduleStart>
+        <scheduleEnd>26 Dec 2016 12:00</scheduleEnd>
+    </tasks>
+    <tasks>
+        <title>pick up Android</title>
+        <status>incomplete</status>
+        <tagged>project</tagged>
+    </tasks>
+    <tasks>
+        <title>find time to meet eliz and pris</title>
+        <status>incomplete</status>
+        <tagged>friends</tagged>
+    </tasks>
+    <tasks>
+        <title>clear emails</title>
+        <status>incomplete</status>
+    </tasks>
+    <tasks>
+        <title>pay pris money</title>
+        <status>complete</status>
+        <tagged>friends</tagged>
+    </tasks>
+    <tasks>
+        <title>buy snacks</title>
+        <status>incomplete</status>
+        <tagged>food</tagged>
+    </tasks>
+    <tasks>
+        <title>check comp club email</title>
+        <status>incomplete</status>
+    </tasks>
+    <tasks>
+        <title>check personal email</title>
+        <status>incomplete</status>
+    </tasks>
+    <tasks>
+        <title>exercise</title>
+        <status>incomplete</status>
+        <tagged>health</tagged>
+    </tasks>
+    <tasks>
+        <title>find restaurant</title>
+        <status>incomplete</status>
+        <tagged>friends</tagged>
+        <tagged>food</tagged>
+    </tasks>
+    <tasks>
+        <title>collect welfare pack</title>
+        <status>complete</status>
+        <tagged>food</tagged>
+    </tasks>
+    <tasks>
+        <title>do dogfooding app</title>
+        <status>incomplete</status>
+        <tagged>food</tagged>
+    </tasks>
+    <tasks>
+        <title>find movie</title>
+        <status>incomplete</status>
+        <tagged>friends</tagged>
+    </tasks>
+    <tasks>
+        <title>buy new shoes</title>
+        <status>incomplete</status>
+        <tagged>money</tagged>
+    </tasks>
+    <tasks>
+        <title>buy thunderbolt display cable</title>
+        <status>incomplete</status>
+    </tasks>
+    <tasks>
+        <title>take a break</title>
+        <status>incomplete</status>
+        <tagged>stress</tagged>
+    </tasks>
+    <tasks>
+        <title>plan trip to japan</title>
+        <status>incomplete</status>
+        <deadline>07 Nov 2017 22:10</deadline>
+    </tasks>
+    <tasks>
+        <title>plan ios workplan</title>
+        <status>incomplete</status>
+    </tasks>
+    <tasks>
+        <title>schedule ippt test in a month</title>
+        <status>incomplete</status>
+        <deadline>07 Dec 2016 22:12</deadline>
+    </tasks>
+    <tasks>
+        <title>prepare for design ppt</title>
+        <status>complete</status>
+        <scheduleStart>31 Oct 2016 10:00</scheduleStart>
+        <scheduleEnd>31 Oct 2016 12:00</scheduleEnd>
+        <tagged>ppt</tagged>
+        <tagged>whee</tagged>
+    </tasks>
+    <tasks>
+        <title>buy present for pris</title>
+        <status>incomplete</status>
+        <deadline>12 Nov 2017 00:00</deadline>
+        <tagged>friends</tagged>
+    </tasks>
+    <tasks>
+        <title>ask Jack for ML jobs</title>
+        <status>incomplete</status>
+        <deadline>04 Nov 2016 22:06</deadline>
+    </tasks>
+    <tasks>
+        <title>clean office</title>
+        <status>incomplete</status>
+        <scheduleStart>08 Dec 2016 17:00</scheduleStart>
+        <scheduleEnd>08 Dec 2016 18:00</scheduleEnd>
+    </tasks>
+    <tasks>
+        <title>buy coffee for office</title>
+        <status>incomplete</status>
+        <tagged>food</tagged>
+    </tasks>
+</taskMan>
